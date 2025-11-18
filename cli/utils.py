@@ -152,6 +152,10 @@ def select_shallow_thinking_agent(provider) -> str:
         "ollama": [
             ("llama3.1 local", "llama3.1"),
             ("llama3.2 local", "llama3.2"),
+        ],
+        "typhoon": [
+            ("Typhoon-v2.1-12b-instruct - Optimized for quick responses and efficient processing", "typhoon-v2.1-12b-instruct"),
+            ("Typhoon-v2.5-30b-a3b-instruct - Balanced model for speed and capability", "typhoon-v2.5-30b-a3b-instruct"),
         ]
     }
 
@@ -214,6 +218,10 @@ def select_deep_thinking_agent(provider) -> str:
         "ollama": [
             ("llama3.1 local", "llama3.1"),
             ("qwen3", "qwen3"),
+        ],
+        "typhoon": [
+            ("Typhoon-v2.1-12b-instruct - Optimized for quick responses and efficient processing", "typhoon-v2.1-12b-instruct"),
+            ("Typhoon-v2.5-30b-a3b-instruct - Balanced model for speed and capability", "typhoon-v2.5-30b-a3b-instruct"),
         ]
     }
     
@@ -247,7 +255,8 @@ def select_llm_provider() -> tuple[str, str]:
         ("Anthropic", "https://api.anthropic.com/"),
         ("Google", "https://generativelanguage.googleapis.com/v1"),
         ("Openrouter", "https://openrouter.ai/api/v1"),
-        ("Ollama", "http://localhost:11434/v1"),        
+        ("Ollama", "http://localhost:11434/v1"),
+        ("Typhoon", "https://api.opentyphoon.ai/v1"),        
     ]
     
     choice = questionary.select(

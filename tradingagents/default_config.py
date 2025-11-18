@@ -3,16 +3,22 @@ import os
 DEFAULT_CONFIG = {
     "project_dir": os.path.abspath(os.path.join(os.path.dirname(__file__), ".")),
     "results_dir": os.getenv("TRADINGAGENTS_RESULTS_DIR", "./results"),
-    "data_dir": "/Users/yluo/Documents/Code/ScAI/FR1-data",
+    "data_dir": r"C:\TradingAgents_fail\tradingagents\dataflows\data_cache",
+    
     "data_cache_dir": os.path.join(
         os.path.abspath(os.path.join(os.path.dirname(__file__), ".")),
         "dataflows/data_cache",
     ),
     # LLM settings
-    "llm_provider": "openai",
-    "deep_think_llm": "o4-mini",
-    "quick_think_llm": "gpt-4o-mini",
-    "backend_url": "https://api.openai.com/v1",
+    # "llm_provider": "openai",
+    # "deep_think_llm": "o4-mini",
+    # "quick_think_llm": "gpt-4o-mini",
+    # "backend_url": "https://api.openai.com/v1",
+    # LLM settings
+    "llm_provider": "typhoon",
+    "deep_think_llm": "typhoon-v2.1-12b-instruct",
+    "quick_think_llm": "typhoon-v2.1-12b-instruct",
+    "backend_url": "https://api.opentyphoon.ai/v1",
     # Debate and discussion settings
     "max_debate_rounds": 1,
     "max_risk_discuss_rounds": 1,
@@ -29,5 +35,6 @@ DEFAULT_CONFIG = {
     "tool_vendors": {
         # Example: "get_stock_data": "alpha_vantage",  # Override category default
         # Example: "get_news": "openai",               # Override category default
+        "get_global_news": "local",
     },
 }

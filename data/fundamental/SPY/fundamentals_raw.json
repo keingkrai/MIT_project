@@ -1,0 +1,78 @@
+{
+  "symbol": "SPY",
+  "timestamp": "2025-11-21T04:06:52.378671+00:00",
+  "raw": {
+    "yfinance": {
+      "overview": {
+        "marketCap": null,
+        "sharesOutstanding": null,
+        "peRatio": null,
+        "currency": "USD",
+        "exchange": "PCX",
+        "name": "SPDR S&P 500",
+        "sector": null,
+        "industry": null
+      },
+      "balancesheet": {
+        "totalAssets": null,
+        "totalLiabilities": null,
+        "shareholderEquity": null
+      },
+      "cashflow": {
+        "operatingCashFlow": null,
+        "freeCashFlow": null,
+        "capitalExpenditures": null
+      },
+      "incomestatement": {
+        "totalRevenue": null,
+        "netIncome": null,
+        "eps": null
+      }
+    },
+    "finnhub": {
+      "overview": {
+        "name": null,
+        "currency": null,
+        "exchange": null,
+        "sector": null,
+        "industry": null,
+        "marketCap": null,
+        "sharesOutstanding": null,
+        "peRatio": null
+      },
+      "balancesheet": {
+        "totalAssets": null,
+        "totalLiabilities": null,
+        "shareholderEquity": null
+      },
+      "cashflow": {
+        "operatingCashFlow": null,
+        "freeCashFlow": null,
+        "capitalExpenditures": null
+      },
+      "incomestatement": {
+        "totalRevenue": null,
+        "netIncome": null,
+        "eps": null
+      }
+    },
+    "alphavantage": {
+      "overview": {},
+      "balancesheet": {
+        "totalAssets": null,
+        "totalLiabilities": null,
+        "shareholderEquity": null
+      },
+      "cashflow": {
+        "operatingCashFlow": null,
+        "freeCashFlow": null,
+        "capitalExpenditures": null
+      },
+      "incomestatement": {
+        "totalRevenue": null,
+        "netIncome": null,
+        "eps": null
+      }
+    }
+  }
+}

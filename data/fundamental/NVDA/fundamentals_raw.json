@@ -1,0 +1,87 @@
+{
+  "symbol": "NVDA",
+  "timestamp": "2025-11-21T06:49:34.509438+00:00",
+  "raw": {
+    "yfinance": {
+      "overview": {
+        "marketCap": 4390455185165.4053,
+        "sharesOutstanding": null,
+        "peRatio": null,
+        "currency": "USD",
+        "exchange": "NMS",
+        "name": "NVIDIA Corporation",
+        "sector": "Technology",
+        "industry": "Semiconductors"
+      },
+      "balancesheet": {
+        "totalAssets": 111601000000.0,
+        "totalLiabilities": 32274000000.0,
+        "shareholderEquity": 79327000000.0
+      },
+      "cashflow": {
+        "operatingCashFlow": 64089000000.0,
+        "freeCashFlow": 60853000000.0,
+        "capitalExpenditures": null
+      },
+      "incomestatement": {
+        "totalRevenue": 130497000000.0,
+        "netIncome": 72880000000.0,
+        "eps": null
+      }
+    },
+    "finnhub": {
+      "overview": {
+        "name": "NVIDIA Corp",
+        "currency": "USD",
+        "exchange": "NASDAQ NMS - GLOBAL MARKET",
+        "sector": "Semiconductors",
+        "industry": "Semiconductors",
+        "marketCap": 4389552100548066.0,
+        "sharesOutstanding": 24300.0,
+        "peRatio": 45.6908
+      },
+      "balancesheet": {
+        "totalAssets": null,
+        "totalLiabilities": null,
+        "shareholderEquity": null
+      },
+      "cashflow": {
+        "operatingCashFlow": null,
+        "freeCashFlow": null,
+        "capitalExpenditures": null
+      },
+      "incomestatement": {
+        "totalRevenue": null,
+        "netIncome": null,
+        "eps": null
+      }
+    },
+    "alphavantage": {
+      "overview": {
+        "name": "NVIDIA Corporation",
+        "currency": "USD",
+        "exchange": "NASDAQ",
+        "sector": "TECHNOLOGY",
+        "industry": "SEMICONDUCTORS",
+        "marketCap": 4548767252000.0,
+        "sharesOutstanding": 24347000000.0,
+        "peRatio": 53.14
+      },
+      "balancesheet": {
+        "totalAssets": null,
+        "totalLiabilities": null,
+        "shareholderEquity": null
+      },
+      "cashflow": {
+        "operatingCashFlow": null,
+        "freeCashFlow": null,
+        "capitalExpenditures": null
+      },
+      "incomestatement": {
+        "totalRevenue": null,
+        "netIncome": null,
+        "eps": null
+      }
+    }
+  }
+}

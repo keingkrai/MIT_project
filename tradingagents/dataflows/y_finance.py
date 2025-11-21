@@ -35,6 +35,8 @@ def get_YFin_data_online(
     for col in numeric_columns:
         if col in data.columns:
             data[col] = data[col].round(2)
+        
+    data = data[["Open", "High", "Low", "Close", "Volume"]]
 
     # Convert DataFrame to CSV string
     csv_string = data.to_csv()
@@ -44,7 +46,8 @@ def get_YFin_data_online(
     header += f"# Total records: {len(data)}\n"
     header += f"# Data retrieved on: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n\n"
 
-    return header + csv_string
+    # return header + csv_string
+    return header, csv_string
 
 def get_stock_stats_indicators_window(
     symbol: Annotated[str, "ticker symbol of the company"],
@@ -405,4 +408,3 @@ def get_insider_transactions(
         
     except Exception as e:
         return f"Error retrieving insider transactions for {ticker}: {str(e)}"
-    

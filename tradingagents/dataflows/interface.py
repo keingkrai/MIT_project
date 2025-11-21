@@ -1,12 +1,12 @@
 from typing import Annotated
 
 # Import from vendor-specific modules
-from .local import get_YFin_data, get_finnhub_news, get_finnhub_company_insider_sentiment, get_finnhub_company_insider_transactions, get_simfin_balance_sheet, get_simfin_cashflow, get_simfin_income_statements, get_reddit_global_news, get_reddit_company_news, fetch_and_choose
+from .local import pick_fundamental_source, get_YFin_data, get_finnhub_news, get_finnhub_company_insider_sentiment, get_finnhub_company_insider_transactions, get_simfin_balance_sheet, get_simfin_cashflow, get_simfin_income_statements, get_reddit_global_news, get_reddit_companynews, fetch_and_choose
 from .y_finance import get_YFin_data_online, get_stock_stats_indicators_window, get_balance_sheet as get_yfinance_balance_sheet, get_cashflow as get_yfinance_cashflow, get_income_statement as get_yfinance_income_statement, get_insider_transactions as get_yfinance_insider_transactions
 from .google import get_google_news
 from .openai import get_stock_news_openai, get_global_news_openai, get_fundamentals_openai
 from .alpha_vantage import (
-    get_stock as get_alpha_vantage_stock,
+    get_alpha_vantage_stock,
     get_indicator as get_alpha_vantage_indicator,
     get_fundamentals as get_alpha_vantage_fundamentals,
     get_balance_sheet as get_alpha_vantage_balance_sheet,
@@ -19,6 +19,26 @@ from .alpha_vantage_common import AlphaVantageRateLimitError
 
 # Configuration and routing logic
 from .config import get_config
+
+# fix more
+from .local_call import (
+    
+    #fundamental data
+    get_fundamentals_local, 
+    
+    #company news data
+    get_finnhub_company_news, 
+    get_reddit_company_news, 
+    yfinance_get_company_news,
+    
+    #globalnews data
+    get_reddit_world_news,
+    
+    #indicators data
+    get_indicator
+    )
+
+from .core_stock_price import get_stock_data
 
 # Tools organized by category
 TOOLS_CATEGORIES = {
@@ -67,19 +87,27 @@ VENDOR_METHODS = {
     "get_stock_data": {
         "alpha_vantage": get_alpha_vantage_stock,
         "yfinance": get_YFin_data_online,
-        "local": get_YFin_data,
+        "local": get_stock_data
     },
+    
+    
     # technical_indicators
     "get_indicators": {
         "alpha_vantage": get_alpha_vantage_indicator,
         "yfinance": get_stock_stats_indicators_window,
-        "local": get_stock_stats_indicators_window
-        #"local": fetch_and_choose_fixed6("AAPL", as_markdown=True)
+        
+        #more
+        "local": get_indicator
     },
+    
+    
     # fundamental_data
     "get_fundamentals": {
         "alpha_vantage": get_alpha_vantage_fundamentals,
         "openai": get_fundamentals_openai,
+        
+        #more
+        "local": get_fundamentals_local,
     },
     "get_balance_sheet": {
         "alpha_vantage": get_alpha_vantage_balance_sheet,
@@ -96,16 +124,22 @@ VENDOR_METHODS = {
         "yfinance": get_yfinance_income_statement,
         "local": get_simfin_income_statements,
     },
+    
+    
     # news_data
     "get_news": {
         "alpha_vantage": get_alpha_vantage_news,
         "openai": get_stock_news_openai,
         "google": get_google_news,
-        "local": [get_finnhub_news, get_reddit_company_news, get_google_news],
+        
+        #more
+        "local": [get_finnhub_company_news, get_reddit_company_news, yfinance_get_company_news],
     },
     "get_global_news": {
         "openai": get_global_news_openai,
-        "local": get_reddit_global_news
+        
+        #more
+        "local": get_reddit_world_news
     },
     "get_insider_sentiment": {
         "local": get_finnhub_company_insider_sentiment

@@ -1,17 +1,17 @@
 from __future__ import annotations
 
 from tkinter import END
-from typing import Annotated
+from typing import List, Dict, Optional, Iterable, Tuple, Annotated
 import pandas as pd
-import os
+import os, time, json, requests, re
 from .config import DATA_DIR
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
-import json
 from .reddit_utils import fetch_top_from_category
 from tqdm import tqdm
 from tradingview_ta import TA_Handler, Interval
-import json
+from datetime import datetime, timezone
+import math
 
 def get_YFin_data_window(
     symbol: Annotated[str, "ticker symbol of the company"],
@@ -421,7 +421,7 @@ def get_reddit_global_news(
 
     return f"## Global News Reddit, from {before} to {curr_date}:\n{news_str}"
 
-def get_reddit_company_news(
+def get_reddit_companynews(
     query: Annotated[str, "Search query or ticker symbol"],
     start_date: Annotated[str, "Start date in yyyy-mm-dd format"],
     end_date: Annotated[str, "End date in yyyy-mm-dd format"],
@@ -627,7 +627,6 @@ def get_tradingview_indicators(
 # pip install yfinance pandas ta
 import pandas as pd
 import yfinance as yf
-from datetime import datetime, timezone
 from typing import Dict, Optional
 
 from ta.trend import EMAIndicator, SMAIndicator, MACD
@@ -863,8 +862,6 @@ def get_yfin_indicators_online(
 
 
 # ------------------------ twelve data  ------------------------ #
-# pip install requests pandas
-import os, requests
 
 TD_BASE = "https://api.twelvedata.com"
 
@@ -1027,25 +1024,22 @@ def format_choices_markdown(choices: dict) -> str:
 # ------------------------------
 # Orchestrator: fetch → choose (auto-skip rate limits)
 # ------------------------------
-def fetch_and_choose(
-    symbol: str,
-    *,
-    tv_exchange: str = "NASDAQ",
-    tv_screener: str = "america",
-    tv_interval: str = "1d",
-    yf_period: str = "2y",
-    yf_interval: str = "1d",
-    td_interval: str = "1day",
-    decimals: int = 6,
-    priority: tuple[str, ...] = SOURCE_PRIORITY_DEFAULT,
-    as_markdown: bool = False,
-):
+def fetch_and_choose( symbol: str ):
     """
     ดึงค่าอินดิเคเตอร์จากแต่ละแหล่ง (ข้ามแหล่งที่เออเรอร์/ลิมิต)
     แล้วเลือกผล 'แหล่งเดียวต่อหัวข้อ' ตามลำดับความสำคัญ:
       tradingview → yfinance → twelvedata
     - as_markdown=True จะคืนเป็นข้อความตาราง Markdown
     """
+    tv_exchange: str = "NASDAQ"
+    tv_screener: str = "america"
+    tv_interval: str = "1d"
+    yf_period: str = "2y"
+    yf_interval: str = "1d"
+    td_interval: str = "1day"
+    decimals: int = 6
+    priority: tuple[str, ...] = SOURCE_PRIORITY_DEFAULT
+    as_markdown: bool = True
     sources = {}
 
     try:
@@ -1092,199 +1086,114 @@ def fetch_and_choose(
     return choices
 
 # ------------------------------ EDIT NEWS(GLOBAL) -----------------------------------------#
-
-import os, time, json
-from typing import Iterable, List, Dict, Optional, Literal, Tuple
-from datetime import datetime, timezone
-from dateutil import parser as dtparser
-
-import pandas as pd
+# ---------------- Finnhub News  -----------------
 import finnhub
 
-# -----------------------
-# Utilities (I/O + time)
-# -----------------------
+DEFAULT_API_KEY = os.getenv("FINNHUB_API_KEY", "d49dhs1r01qshn3lpbn0d49dhs1r01qshn3lpbng")
+
+def _fh_client(api_key: Optional[str] = "d49dhs1r01qshn3lpbn0d49dhs1r01qshn3lpbng") -> finnhub.Client:
+    key = api_key or DEFAULT_API_KEY
+    if not key:
+        raise RuntimeError("Missing FINNHUB_API_KEY")
+    return finnhub.Client(api_key=key)
+
+# ----------------- Small IO helpers -----------------
+def _ensure_dir(path: str):
+    os.makedirs(os.path.dirname(path) or ".", exist_ok=True)
 
 def save_json(data, path: str):
-    os.makedirs(os.path.dirname(path) or ".", exist_ok=True)
+    _ensure_dir(path)
     with open(path, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
 
-def save_jsonl(items: Iterable[dict], path: str, append: bool = False):
-    os.makedirs(os.path.dirname(path) or ".", exist_ok=True)
+def save_jsonl(items: List[Dict], path: str, append: bool = False):
+    _ensure_dir(path)
     mode = "a" if append else "w"
     with open(path, mode, encoding="utf-8") as f:
         for obj in items:
             f.write(json.dumps(obj, ensure_ascii=False) + "\n")
 
-def _to_iso_utc(ts) -> str:
-    """รับ epoch seconds / ISO string → คืน ISO (UTC)"""
-    if ts is None:
-        return ""
+# ----------------- Time helpers -----------------
+def _to_iso_or_raw(ts):
     if isinstance(ts, (int, float)):
-        return datetime.fromtimestamp(ts, tz=timezone.utc).isoformat().replace("+00:00","Z")
-    dt = dtparser.parse(str(ts))
-    if not dt.tzinfo:
-        dt = dt.replace(tzinfo=timezone.utc)
-    else:
-        dt = dt.astimezone(timezone.utc)
-    return dt.isoformat().replace("+00:00","Z")
+        return datetime.fromtimestamp(ts, tz=timezone.utc).isoformat()
+    return ts
 
-def _within(dt_iso: str, start: Optional[str], end: Optional[str]) -> bool:
-    if not dt_iso:
-        return False
-    t = dtparser.parse(dt_iso)
-    if start and t < dtparser.parse(start): return False
-    if end   and t > dtparser.parse(end):   return False
-    return True
+# ----------------- Field projection -----------------
+WANTED_KEYS = {"datetime", "headline", "id", "source", "summary", "url"}
 
-# -----------------------
-# Core fetch functions
-# -----------------------
+def project_fields(items: List[Dict]) -> List[Dict]:
+    """เลือกเฉพาะฟิลด์สำคัญ + แปลง datetime เป็น ISO 8601"""
+    out = []
+    for it in items:
+        obj = {k: it.get(k) for k in WANTED_KEYS}
+        obj["datetime"] = _to_iso_or_raw(obj.get("datetime"))
+        out.append(obj)
+    return out
 
-def make_finnhub_client(api_key: Optional[str] = None) -> finnhub.Client:
-    """สร้าง finnhub.Client จากพารามิเตอร์หรือ ENV FINNHUB_API_KEY"""
-    key = api_key or os.getenv("FINNHUB_API_KEY")
-    if not key:
-        raise RuntimeError("Missing FINNHUB_API_KEY (pass api_key=... หรือ set ใน environment)")
-    return finnhub.Client(api_key=key)
-
-def fetch_general_news_paged(
-    client: finnhub.Client,
+# ----------------- Core fetcher -----------------
+def fetch_finnhub_world_news_raw(
     category: str = "general",
     *,
     max_pages: int = 3,
     sleep_s: float = 0.6,
-    start_min_id: int = 0,
-    retries: int = 2,
-) -> List[dict]:
+) -> List[Dict]:
     """
-    ดึงข่าวทั่วไปแบบแบ่งหน้าโดยใช้ min_id ต่อเนื่อง
-    คืนค่าเป็น raw list (จาก API) ต่อกันทุกหน้า
+    ดึงข่าว 'ทั่วไป/ข่าวโลก' จาก Finnhub แบบ RAW (ไม่ตัดฟิลด์)
+    - ใช้การแบ่งหน้า (pagination) ด้วย min_id
+    - category ที่นิยม: "general", "forex", "crypto", "merger"
     """
-    all_items: List[dict] = []
-    min_id = start_min_id
+    api_key = "d49dhs1r01qshn3lpbn0d49dhs1r01qshn3lpbng"
+    client = _fh_client(api_key)
+    all_items: List[Dict] = []
+    min_id = 0
     for _ in range(max_pages):
-        last_err = None
-        for attempt in range(retries + 1):
-            try:
-                batch = client.general_news(category, min_id=min_id) or []
-                break
-            except Exception as e:
-                last_err = e
-                if attempt < retries:
-                    time.sleep(0.8 + attempt * 0.5)
-                else:
-                    raise
+        batch = client.general_news(category, min_id=min_id)
         if not batch:
             break
         all_items.extend(batch)
+        # min_id ถัดไป = id ของรายการสุดท้ายในหน้าปัจจุบัน
         min_id = batch[-1].get("id", min_id)
-        if sleep_s > 0:
-            time.sleep(sleep_s)
+        time.sleep(sleep_s)
     return all_items
 
-# -----------------------
-# Projection / Canonical
-# -----------------------
-
-WANTED_KEYS = {"datetime", "headline", "id", "source", "summary", "url"}
-
-def project_fields(items: List[dict]) -> List[dict]:
+def fetch_finnhub_world_news() -> List[Dict]:
     """
-    เลือกเฉพาะฟิลด์ที่ต้องการ + แปลง datetime → ISO UTC
+    ดึงข่าวโลกจาก Finnhub แล้ว (ค่าเริ่มต้น):
+      - คัดเฉพาะฟิลด์ที่ต้องใช้ (datetime/headline/id/source/summary/url) + datetime → ISO
+      - ถ้าต้องการ RAW ให้ตั้ง return_raw=True
+      - รองรับการเซฟ JSON/JSONL (ถ้าระบุ path)
+
+    Return: List[Dict] (raw หรือ slim ตาม return_raw)
     """
-    out: List[dict] = []
-    for it in items:
-        obj = {k: it.get(k) for k in WANTED_KEYS}
-        obj["datetime"] = _to_iso_utc(obj.get("datetime"))
-        out.append(obj)
-    return out
-
-def filter_by_date(items: List[dict], start_date: Optional[str], end_date: Optional[str]) -> List[dict]:
-    """กรองรายการตามช่วงเวลา (YYYY-MM-DD หรือ ISO ก็ได้)"""
-    if not (start_date or end_date):
-        return items
-    out: List[dict] = []
-    for it in items:
-        if _within(it.get("datetime",""), start_date, end_date):
-            out.append(it)
-    return out
-
-# -----------------------
-# Public high-level API
-# -----------------------
-
-def get_finnhub_general_news(
-    category: Literal["general","forex","crypto","merger"] = "general",
-    *,
-    start_date: Optional[str] = None,  # "YYYY-MM-DD" หรือ ISO string
-    end_date: Optional[str] = None,    # "
-    max_pages: int = 3,
-    sleep_s: float = 0.6,
-    api_key: Optional[str] = None,
-    output: Literal["list","df","markdown"] = "list",
-    save_to: Optional[str] = None,     # .json หรือ .jsonl (อัตโนมัติ)
-) -> Tuple[object, List[dict]]:
-    """
-    ดึงข่าวทั่วไปจาก Finnhub → project fields → กรองช่วงเวลา (ถ้ามี)
-    Args:
-        category: หมวดข่าวของ Finnhub (ค่าเริ่มต้น "general")
-        start_date/end_date: กรองช่วงเวลา
-        max_pages/sleep_s: ควบคุมการแบ่งหน้า/พักระหว่างเรียก
-        api_key: ถ้าไม่ส่งจะอ่านจาก ENV FINNHUB_API_KEY
-        output: "list" | "df" | "markdown"
-        save_to: ถ้าระบุไฟล์ .json หรือ .jsonl จะเซฟผลลัพธ์ให้ (เฉพาะ projected&filtered)
-    Returns:
-        (result, items)  โดย result = ตาม output, items = list[dict] (projected & filtered)
-    """
-    client = make_finnhub_client(api_key="d49dhs1r01qshn3lpbn0d49dhs1r01qshn3lpbng")
-
-    raw = fetch_general_news_paged(
-        client,
-        category=category,
-        max_pages=max_pages,
-        sleep_s=sleep_s,
+    
+    category: str = "general"
+    max_pages: int = 3
+    sleep_s: float = 0.6
+    return_raw: bool = False
+    save_jsonl_path: Optional[str] = "./data/global_news/finnhub_world_news.jsonl"  # เช่น "./data/news/world/finnhub_general_news.slim.jsonl"
+    api_key = "d49dhs1r01qshn3lpbn0d49dhs1r01qshn3lpbng"
+    raw_items = fetch_finnhub_world_news_raw(
+        category=category, max_pages=max_pages, sleep_s=sleep_s
     )
-    items = project_fields(raw)
-    items = filter_by_date(items, start_date, end_date)
 
-    # save ถ้ากำหนด
-    if save_to:
-        ext = os.path.splitext(save_to)[-1].lower()
-        if ext == ".json":
-            save_json(items, save_to)
-        elif ext == ".jsonl":
-            save_jsonl(items, save_to, append=False)
-        else:
-            raise ValueError("save_to ต้องลงท้ายด้วย .json หรือ .jsonl")
+    if return_raw:
+        if save_jsonl_path:
+            save_jsonl(raw_items, save_jsonl_path, append=False)
+        return raw_items
 
-    # รูปแบบผลลัพธ์
-    if output == "list":
-        return items, items
-    elif output == "df":
-        df = pd.DataFrame(items)
-        return df, items
-    elif output == "markdown":
-        md_lines = []
-        for i, n in enumerate(items, 1):
-            ts = (n.get("datetime") or "").replace("T"," ").replace("Z"," UTC")
-            headline = n.get("headline") or ""
-            src = n.get("source") or ""
-            url = n.get("url") or ""
-            md_lines.append(f"{i}. [{ts}] {headline} ({src})" + (f" — {url}" if url else ""))
-            if n.get("summary"):
-                md_lines.append(f"   \n   {n['summary']}")
-        md = "\n".join(md_lines) if md_lines else "(no news)"
-        return md, items
-    else:
-        raise ValueError("output must be one of: 'list','df','markdown'")
+    # slim (เลือกฟิลด์/แปลงเวลา)
+    slim = project_fields(raw_items)
+
+    # เซฟ (slim) ถ้าระบุ path
+    if save_jsonl_path:
+        save_jsonl(slim, save_jsonl_path, append=False)
+
+    return slim
     
 # ------------------------------ EDIT NEWS GLOBAL(REDDIT) -----------------------------------------#
     
-import os, time, json
 from typing import Iterable, List, Dict, Optional
-from datetime import datetime, timezone
 import praw
 
 
@@ -1321,11 +1230,6 @@ def make_reddit_client(
     )
     reddit.read_only = True
     return reddit
-
-
-# ---------------------------
-# Fetchers
-# ---------------------------
 
 def _ts_to_iso(ts: float | int | None) -> Optional[str]:
     if ts is None:
@@ -1417,10 +1321,6 @@ def fetch_multi_subs_top(
     return all_posts
 
 
-# ---------------------------
-# Orchestrators
-# ---------------------------
-
 def fetch_world_news_today(
     subs: Iterable[str] = DEFAULT_SUBS,
     *,
@@ -1442,18 +1342,16 @@ def fetch_world_news_today(
     )
 
 
-def fetch_reddit_world_news(
-    out_path: str = "C:\\TradingAgents_fail\\data\\global_news\\reddit_world_news.jsonl",
-    subs: Iterable[str] = DEFAULT_SUBS,
-    *,
-    per_sub_limit: int = 20,
-        time_filter: str = "day",
-        jsonl: bool = True,
-) -> str:
+def fetch_reddit_world_news() -> str:
     """
     ดึง → รวม → เซฟเป็นไฟล์ (JSONL เป็นค่าเริ่มต้น)
     คืน path ของไฟล์ที่บันทึก
     """
+    out_path: str = "C:\\TradingAgents_fail\\data\\global_news\\reddit_world_news.jsonl"
+    subs: Iterable[str] = DEFAULT_SUBS
+    per_sub_limit: int = 20
+    time_filter: str = "day"
+    jsonl: bool = True
     posts = fetch_world_news_today(
         subs=subs,
         per_sub_limit=per_sub_limit,
@@ -1468,15 +1366,8 @@ def fetch_reddit_world_news(
 
 # ------------------------------ EDIT NEWS GLOBAL(YFINANCE) -----------------------------------------#
 
-import os, json
-from typing import List, Dict, Optional, Iterable, Tuple
 from datetime import datetime, timedelta, timezone
 from yfinance import Search
-
-
-# ---------------------------
-# Time & IO helpers
-# ---------------------------
 
 def _to_epoch(dt: datetime) -> int:
     return int(dt.replace(tzinfo=timezone.utc).timestamp())
@@ -1503,11 +1394,6 @@ def _window_epochs(curr_date: str, look_back_days: int) -> Tuple[int, int]:
     start_dt = (curr_dt - timedelta(days=look_back_days)).replace(hour=0, minute=0, second=0, microsecond=0)
     end_dt   = curr_dt.replace(hour=23, minute=59, second=59, microsecond=0)
     return _to_epoch(start_dt), _to_epoch(end_dt)
-
-
-# ---------------------------
-# Normalization
-# ---------------------------
 
 _YF_KEEP = {
     "title", "link", "publisher", "providerPublishTime",
@@ -1590,15 +1476,7 @@ DEFAULT_WORLD_KEYWORDS = [
     "world", "world news", "geopolitics", "global economy", "international"
 ]
 
-def get_world_news_yf(
-    curr_date: str = datetime.now(timezone.utc).strftime("%Y-%m-%d"),
-    look_back_days: int = 7,
-    limit: int = 50,
-    *,
-    keywords: Optional[Iterable[str]] = None,
-    per_keyword: Optional[int] = None,
-    save_jsonl_path: Optional[str] = "C:\\TradingAgents_fail\\data\\global_news\\yfinance_world_news.jsonl",
-) -> List[Dict]:
+def get_world_news_yf() -> List[Dict]:
     """
     ดึง 'ข่าวโลก' ด้วย yfinance (ค้นหลายคีย์เวิร์ดทั่วไป):
       1) นิยามหน้าต่างเวลา [curr_date - look_back_days, curr_date]
@@ -1608,14 +1486,27 @@ def get_world_news_yf(
 
     return: list[dict] ที่ normalize แล้ว
     """
+    curr_date: str = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    look_back_days: int = 7
+    limit: int = 50
+    keywords: Optional[Iterable[str]] = None
+    per_keyword: Optional[int] = None
+    save_jsonl_path: Optional[str] = "C:\\TradingAgents_fail\\data\\global_news\\yfinance_world_news.jsonl"
     start_epoch, end_epoch = _window_epochs(curr_date, look_back_days)
     kw = list(keywords) if keywords else DEFAULT_WORLD_KEYWORDS
 
-    # เผื่อดึงเกินมาบ้างเพื่อดีดซ้ำออก (ประมาณการแบบง่าย)
+    # 1) สร้างช่วงเวลา
+    start_epoch, end_epoch = _window_epochs(curr_date, look_back_days)
+
+    # 2) กำหนดคีย์เวิร์ด
+    kw = list(keywords) if keywords else DEFAULT_WORLD_KEYWORDS
+
+    # 3) เผื่อดึงเกินมาเพื่อดีดซ้ำออก
     if per_keyword is None:
         per_keyword = max(10, min(100, (limit // max(1, len(kw))) * 2 or 20))
 
-    items = fetch_yf_news_by_keywords(
+    # 4) ดึงข่าวดิบจาก yfinance (ผลลัพธ์ดิบจะมีฟิลด์เช่น: uuid, title, link, publisher, providerPublishTime)
+    raw_items = fetch_yf_news_by_keywords(
         kw,
         start_epoch=start_epoch,
         end_epoch=end_epoch,
@@ -1623,17 +1514,35 @@ def get_world_news_yf(
         limit_total=limit,
     )
 
-    if save_jsonl_path:
-        _save_jsonl(items, save_jsonl_path, append=False)
+    # 5) map ให้เหลือ 5 ฟิลด์ตามต้องการ
+    normalized: List[Dict] = []
+    seen = set()
+    for n in raw_items:
+        # ใช้ uuid เป็นตัวลบซ้ำหลัก; ถ้าไม่มีให้ fallback เป็น link
+        dedup = n.get("uuid") or n.get("link")
+        if not dedup or dedup in seen:
+            continue
+        seen.add(dedup)
 
-    return items
+        normalized.append({
+            "uuid":           n.get("uuid") or "",
+            "publisher":      n.get("publisher") or "",
+            "title":          n.get("title") or "",
+            "link":           n.get("link") or "",
+            "published_date": _epoch_to_iso(n.get("providerPublishTime")),
+        })
+
+    # 6) (ออปชัน) บันทึก JSONL
+    if save_jsonl_path:
+        os.makedirs(os.path.dirname(save_jsonl_path) or ".", exist_ok=True)
+        _save_jsonl(normalized, save_jsonl_path, append=False)
+
+    return normalized
 
 # ------------------------------ EDIT NEWS(PER_STOCK) -----------------------------------------#
 # --------------------------- finnhub ------------------------#
 import os, json
-from typing import List, Dict, Optional, Iterable, Tuple
 from datetime import datetime, timedelta, timezone
-
 import finnhub
 import yfinance as yf
 
@@ -1653,10 +1562,6 @@ def save_jsonl(items: List[Dict], path: str, append: bool = False):
         for obj in items:
             f.write(json.dumps(obj, ensure_ascii=False))
             f.write("\n")
-
-# ---------------------------
-# Time helpers
-# ---------------------------
 
 def _to_epoch(dt: datetime) -> int:
     return int(dt.replace(tzinfo=timezone.utc).timestamp())
@@ -1798,21 +1703,18 @@ def merge_company_news(
     merged.sort(key=lambda x: (x.get("published_epoch") or 0), reverse=True)
     return merged[:limit]
 
-def finnhub_get_company_news(
-    symbol: str,
-    *,
-    # Finnhub window
-    start_date: Optional[str] = (datetime.now(timezone.utc) - timedelta(days=30)).strftime("%Y-%m-%d"),
-    end_date: Optional[str] = datetime.now(timezone.utc).strftime("%Y-%m-%d"),
-    # runtime
-    limit: int = 100,
-    save_jsonl_path: Optional[str] = "C:\\TradingAgents_fail\\data\\stock\\{symbol}\\finnhub_company_news.jsonl",
-) -> List[Dict]:
+def finnhub_get_company_news( symbol: str ) -> List[Dict]:
     """
     Orchestrator: ดึงข่าวบริษัทจาก Finnhub + yfinance → รวม/ลบซ้ำ/เรียง/ตัด
     - อย่างน้อยควรส่งช่วงวันสำหรับ Finnhub (start_date/end_date)
     - ถ้าอยากกรอง yfinance ด้วย ก็ส่ง curr_date + look_back_days เพิ่ม
     """
+    # Finnhub window
+    start_date: Optional[str] = (datetime.now(timezone.utc) - timedelta(days=30)).strftime("%Y-%m-%d")
+    end_date: Optional[str] = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    # runtime
+    limit: int = 100
+    save_jsonl_path: Optional[str] = "C:\\TradingAgents_fail\\data\\stock\\{symbol}\\finnhub_company_news.jsonl"
     items_fh: List[Dict] = []
     items_yf: List[Dict] = []
     finnhub_api_key = "d49dhs1r01qshn3lpbn0d49dhs1r01qshn3lpbng"
@@ -1841,7 +1743,6 @@ def finnhub_get_company_news(
     return merged
 
 # ------------------------------ news stock subreddit -----------------------------------------#
-import os, time, json, requests, re
 from datetime import datetime, timedelta, timezone
 
 REDDIT_TOKEN_URL  = "https://www.reddit.com/api/v1/access_token"
@@ -1881,19 +1782,17 @@ def get_token():
     return r.json()["access_token"]
 
 # ---------- main search ----------
-def reddit_get_company_news(
-    sub: str = "news",
-    start_dt: datetime = datetime.now(tz=timezone.utc) - timedelta(days=30),
-    end_dt: datetime   = datetime.now(tz=timezone.utc),
-    query: str = None,
-    limit: int = 50,
-    save_path: str | None = None,   # << ใหม่: ส่ง path เองได้ ถ้าไม่ส่งจะ generate ให้
-):
+def reddit_get_company_news(query: str):
     """
     ค้นใน subreddit เดียวด้วย restrict_sr + sort=top (เวอร์ชันเรียบง่าย)
     - ถ้าไม่ส่ง save_path → จะสร้าง path อัตโนมัติ: C:\TradingAgents_fail\data\stock\<query>\reddit_search_<sub>_<YYYYMMDD>_<YYYYMMDD>.jsonl
     - สร้างโฟลเดอร์ปลายทางให้เสมอ
     """
+    sub: str = "news",
+    start_dt: datetime = datetime.now(tz=timezone.utc) - timedelta(days=30)
+    end_dt: datetime   = datetime.now(tz=timezone.utc)
+    limit: int = 50
+    save_path: str | None = None
     token = get_token()
     s = requests.Session()
     s.headers.update({
@@ -1906,7 +1805,7 @@ def reddit_get_company_news(
         qslug = _slug(query)
         start_str = start_dt.astimezone(timezone.utc).strftime("%Y%m%d")
         end_str   = end_dt.astimezone(timezone.utc).strftime("%Y%m%d")
-        save_path = rf"C:\TradingAgents_fail\data\stock\{qslug}\reddit_get_company_news_{end_str}.jsonl"
+        save_path = rf"C:\TradingAgents_fail\data\stock\{qslug}\reddit_company_news_{end_str}.jsonl"
 
     url = f"{REDDIT_OAUTH_BASE}/r/{sub}/search.json"
     params = {
@@ -1954,10 +1853,7 @@ def reddit_get_company_news(
     return out
 
 # ------------------------------ news stock yfinance -----------------------------------------#
-import os, json
-from typing import List, Dict
 import yfinance as yf
-from datetime import datetime, timezone
 
 def _ensure_dir(path: str):
     os.makedirs(os.path.dirname(path) or ".", exist_ok=True)
@@ -1998,9 +1894,6 @@ def yfinance_get_company_news(symbol: str) -> List[Dict]:
     return news
 # ------------------------------ EDIT SOCIAL MEDIA ---------------------------------#
 # ------------------------------  BlueSky  ---------------------------------#
-import os, json, time
-from typing import List, Dict, Optional
-from datetime import datetime, timezone
 from atproto import Client, models as atp_models
 
 # =============================== IO helpers ===============================
@@ -2141,4 +2034,715 @@ def fetch_bsky_stock_posts(
         save_jsonl(uniq, save_path, append=False)
 
     return uniq
+
+# ------------------------------ mastodon --------------------------------#
+from mastodon import Mastodon
+from html import unescape
+import re, json, os, time
+from datetime import datetime
+from urllib.parse import urljoin
+
+def _ensure_dir(path: str):
+    os.makedirs(os.path.dirname(path) or ".", exist_ok=True)
+
+def save_jsonl(items: List[Dict], path: str, append: bool = False):
+    _ensure_dir(path)
+    mode = "a" if append else "w"
+    with open(path, mode, encoding="utf-8") as f:
+        for obj in items:
+            f.write(json.dumps(obj, ensure_ascii=False) + "\n")
+
+def _strip_html(html: str) -> str:
+    if not html:
+        return ""
+    text = re.sub(r"<br\s*/?>", "\n", html, flags=re.IGNORECASE)
+    text = re.sub(r"<.*?>", "", text, flags=re.DOTALL)
+    return unescape(text).strip()
+
+def _to_iso(dt) -> str:
+    try:
+        return dt.isoformat()
+    except Exception:
+        return str(dt)
+
+def _mk_client(instance_base_url: str, app_token: Optional[str]) -> Mastodon:
+    if app_token:
+        return Mastodon(access_token=app_token, api_base_url=instance_base_url)
+    return Mastodon(api_base_url=instance_base_url)  # public read
+
+def _timeline_hashtag_all(
+    m: Mastodon, tag: str, *, limit_total: int, sleep_s: float = 0.05
+) -> List[Dict]:
+    """
+    ดึง timeline hashtag #<tag> แบบไล่หน้า (max_id) จนครบ limit_total หรือหมด
+    """
+    out: List[Dict] = []
+    max_id = None
+    while len(out) < limit_total:
+        page = m.timeline_hashtag(tag, limit=min(40, limit_total - len(out)), max_id=max_id)
+        if not page:
+            break
+        for t in page:
+            out.append({
+                "who": f'{t["account"].get("display_name") or t["account"].get("acct")}',
+                "when": _to_iso(t.get("created_at")),
+                "content": _strip_html(t.get("content", "")),
+                "url": t.get("url") or t.get("uri"),
+                "id": str(t.get("id")),
+                "source": "mastodon#hashtag",
+            })
+        max_id = page[-1].get("id")
+        time.sleep(sleep_s)
+    return out
+
+def _search_statuses(
+    m: Mastodon, q: str, *, limit_total: int, sleep_s: float = 0.05
+) -> List[Dict]:
+    """
+    ดึงจาก search results (statuses) — ใช้ search_v2 ได้ก็ใช้, ไม่งั้น fallback เป็น search
+    หมายเหตุ: บาง instance จำกัดผลลัพธ์ทีละหน้า ไม่มีคอร์เซอร์ ก็จะดึงได้เท่าที่ API ให้
+    """
+    try:
+        if hasattr(m, "search_v2"):
+            res = m.search_v2(q=q, type="statuses", limit=min(40, limit_total), resolve=True)
+            statuses = res.get("statuses", []) if isinstance(res, dict) else []
+        else:
+            res = m.search(q=q, resolve=True, limit=min(40, limit_total))
+            statuses = res.get("statuses", []) if isinstance(res, dict) else []
+    except Exception:
+        statuses = []
+
+    out: List[Dict] = []
+    for t in statuses:
+        out.append({
+            "who": f'{t["account"].get("display_name") or t["account"].get("acct")}',
+            "when": _to_iso(t.get("created_at")),
+            "content": _strip_html(t.get("content", "")),
+            "url": t.get("url") or t.get("uri"),
+            "id": str(t.get("id")),
+            "source": "mastodon#search",
+        })
+    time.sleep(sleep_s)
+    return out
+
+def fetch_mastodon_stock_posts(
+    symbol: str,
+    *,
+    # ทั้งหมดนี้เป็นค่าเริ่มต้น/อ่านจาก ENV — ผู้ใช้ใส่แค่ symbol ก็พอ
+    instance_base_url: Optional[str] = None,
+    limit_hashtag: int = 120,
+    limit_search: int = 120,
+    app_token: Optional[str] = None,
+    save_jsonl_path: Optional[str] = r"./data/social/{symbol}/mastodon_{symbol}_posts.jsonl",
+) -> List[Dict]:
+    """
+    ดึงโพสต์ Mastodon ที่เกี่ยวกับหุ้น:
+      - Hashtag timeline: #<SYMBOL>
+      - Text search: <SYMBOL>, $<SYMBOL>
+    รวม, ลบซ้ำ (id), เติม 'symbol', เรียงเวลาใหม่สุดก่อน และบันทึก .jsonl อัตโนมัติ
+
+    ENV ที่รองรับ:
+      - MASTODON_BASE_URL (เช่น https://mastodon.social)
+      - MASTODON_TOKEN    (app/user token ถ้ามี จะช่วยเพิ่มโควต้า/ข้ามบางข้อจำกัด)
+    """
+    instance_base_url = instance_base_url or os.getenv("MASTODON_BASE_URL", "https://mastodon.social")
+    app_token = app_token or os.getenv("MASTODON_TOKEN")
+
+    m = _mk_client(instance_base_url, app_token)
+    tag = symbol.upper()
+
+    # 1) Hashtag timeline
+    rows = _timeline_hashtag_all(m, tag, limit_total=limit_hashtag)
+
+    # 2) Search statuses: SYMBOL และ $SYMBOL
+    rows += _search_statuses(m, tag,     limit_total=limit_search)
+    rows += _search_statuses(m, f"${tag}", limit_total=limit_search)
+
+    # de-dup by id
+    seen = set()
+    uniq: List[Dict] = []
+    for r in rows:
+        rid = r.get("id")
+        if not rid or rid in seen:
+            continue
+        seen.add(rid)
+        r["symbol"] = tag
+        # เติม absolute URL ถ้าจำเป็น (บาง instance ให้เป็น /@user/…)
+        if r.get("url") and r["url"].startswith("/"):
+            r["url"] = urljoin(instance_base_url, r["url"])
+        uniq.append(r)
+
+    # sort latest first
+    uniq.sort(key=lambda x: x.get("when") or "", reverse=True)
+
+    # save
+    if save_jsonl_path:
+        try:
+            out_path = save_jsonl_path.format(symbol=tag)
+        except Exception:
+            out_path = save_jsonl_path
+        save_jsonl(uniq, out_path, append=False)
+
+    return uniq
+
+# ------------------------------ Subreddit social ---------------------------------#
+import praw
+
+DEFAULT_SUBS = [
+    "stocks", "investing", "StockMarket", "wallstreetbets",
+    "news", "business", "technology"
+]
+
+def _ensure_dir(path: str):
+    d = os.path.dirname(path)
+    if d:
+        os.makedirs(d, exist_ok=True)
+
+def save_jsonl(items: List[Dict], path: str, append: bool = False):
+    _ensure_dir(path)
+    mode = "a" if append else "w"
+    with open(path, mode, encoding="utf-8") as f:
+        for it in items:
+            f.write(json.dumps(it, ensure_ascii=False) + "\n")
+
+def _mk_reddit():
+    return praw.Reddit(
+        client_id="6ntwQ2TEM4UZNlsjqO9T0A",
+        client_secret="GaSCQu0ZMPwLr-zfs9PBFFfVPKrncg",
+        user_agent="your-app:v1 (by u/yourname)",
+        ratelimit_seconds=5,
+    )
+
+def fetch_reddit_symbol_top_praw(
+    symbol: str,
+    timeframe: str = "week",           # "hour","day","week","month","year","all"
+    subs: Optional[List[str]] = None,  # ถ้า None ใช้ DEFAULT_SUBS
+    limit_per_sub: int = 50,
+    include_selftext: bool = False,
+    out_path: Optional[str] = r"./data/social/{symbol}/reddit_{symbol}_post.jsonl",
+) -> List[Dict]:
+    """
+    ค้นหาโพสต์ที่กล่าวถึง symbol (เช่น NVDA, $NVDA) ในหลาย subreddit
+    - เรียงตาม top ภายใน timeframe ที่กำหนด
+    - ลบซ้ำด้วย post.id
+    - เซฟเป็น JSONL อัตโนมัติ (รองรับ {symbol},{timeframe} ในพาธ)
+    """
+    symbol_up = symbol.upper()
+    query_variants = [symbol_up, f"${symbol_up}"]
+
+    subs = subs or DEFAULT_SUBS
+    reddit = _mk_reddit()
+    results: List[Dict] = []
+    seen = set()
+
+    for sub in subs:
+        sr = reddit.subreddit(sub)
+        # รวมผลการค้นหาแต่ละ query variant
+        fetched = 0
+        for q in query_variants:
+            # ใช้ search + sort=top + time_filter
+            try:
+                for p in sr.search(query=q, sort="top", time_filter=timeframe, limit=limit_per_sub):
+                    if getattr(p, "over_18", False):
+                        continue
+                    if p.id in seen:
+                        continue
+                    seen.add(p.id)
+                    item = {
+                        "id": p.id,
+                        "subreddit": sub,
+                        "title": p.title,
+                        "url": p.url,
+                        "permalink": f"https://reddit.com{p.permalink}",
+                        "created_utc": float(getattr(p, "created_utc", 0.0) or 0.0),
+                        "score": getattr(p, "score", None),
+                        "num_comments": getattr(p, "num_comments", None),
+                        "flair": getattr(p, "link_flair_text", None),
+                        "symbol": symbol_up,
+                        "query": q,
+                    }
+                    if include_selftext:
+                        item["selftext"] = (getattr(p, "selftext", "") or "").strip()
+                    results.append(item)
+                    fetched += 1
+                    # ระวัง rate-limit นิดนึง
+                    time.sleep(0.03)
+            except Exception:
+                # ถ้าซับปิด/จำกัด ก็ข้าม
+                continue
+
+    # sort latest first (ตามเวลาสร้าง)
+    results.sort(key=lambda x: x.get("created_utc", 0.0), reverse=True)
+
+    # save
+    if out_path:
+        try:
+            out_path = out_path.format(symbol=symbol_up, timeframe=timeframe)
+        except Exception:
+            pass
+        save_jsonl(results, out_path, append=False)
+
+    return results
 # ------------------------------ EDIT FUNDAMENTALS ---------------------------------#
+
+import yfinance as yf
+from typing import Dict, List, Optional, Tuple
+
+# =========================
+# CONFIG (ตั้งค่าได้ทาง ENV)
+# =========================
+FINNHUB_API_KEY      = os.getenv("FINNHUB_API_KEY", "d49dhs1r01qshn3lpbn0d49dhs1r01qshn3lpbng")
+ALPHAVANTAGE_API_KEY = os.getenv("ALPHAVANTAGE_API_KEY", "7DJF0DNKIR9T1F9X")
+REQUEST_TIMEOUT      = float(os.getenv("REQ_TIMEOUT", "30"))
+
+# เส้นทางบันทึกผล (รองรับ {symbol})
+DEFAULT_JSONL_PATH = r"C:\TradingAgents_fail\data\fundamental\{symbol}\fundamentals_choice.jsonl"
+DEFAULT_JSON_PATH  = r"C:\TradingAgents_fail\data\fundamental\{symbol}\fundamentals_choice.json"
+DEFAULT_RAW_JSON   = r"C:\TradingAgents_fail\data\fundamental\{symbol}\fundamentals_raw.json"
+
+# =========================
+# สคีมาฟิลด์ที่ “พยายามเทียบ” ระหว่าง 3 แหล่ง
+# =========================
+NUM_FIELDS = {
+    "overview":        ["marketCap", "sharesOutstanding", "peRatio"],
+    "balancesheet":    ["totalAssets", "totalLiabilities", "shareholderEquity"],
+    "cashflow":        ["operatingCashFlow", "freeCashFlow", "capitalExpenditures"],
+    "incomestatement": ["totalRevenue", "netIncome", "eps"],
+}
+STR_FIELDS = {
+    "overview": ["name", "currency", "exchange", "sector", "industry"],
+    "balancesheet": [],
+    "cashflow": [],
+    "incomestatement": [],
+}
+
+PREFERRED_ORDER = ["yfinance", "finnhub", "alphavantage"]   # ใช้เป็นตัวตัดสินสุดท้ายเมื่อคะแนนเสมอ
+UNIT_SCALES = [1, 10, 1000, 1_000_000, 1_000_000_000]       # เผื่อค่ามาต่างหน่วย (เช่น billion vs dollar)
+
+# =========================
+# IO Helpers
+# =========================
+def _ensure_dir_for(path: str):
+    os.makedirs(os.path.dirname(path) or ".", exist_ok=True)
+
+def _fmt_path(tpl: Optional[str], symbol: str) -> Optional[str]:
+    if not tpl:
+        return None
+    try:
+        p = tpl.format(symbol=symbol)
+    except Exception:
+        p = tpl
+    _ensure_dir_for(p)
+    return p
+
+def save_json(obj, path: str):
+    _ensure_dir_for(path)
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(obj, f, ensure_ascii=False, indent=2)
+
+def save_jsonl_line(obj, path: str, append: bool = True):
+    _ensure_dir_for(path)
+    mode = "a" if append else "w"
+    with open(path, mode, encoding="utf-8") as f:
+        f.write(json.dumps(obj, ensure_ascii=False) + "\n")
+
+# =========================
+# Utils
+# =========================
+def _now_iso() -> str:
+    return datetime.now(timezone.utc).isoformat()
+
+def _try_float(x):
+    try:
+        if x in (None, "", "None", "NaN", "null"):
+            return None
+        return float(x)
+    except Exception:
+        return None
+
+def _almost_equal(a: float, b: float, abs_tol=1e-2, rel_tol=1e-3) -> bool:
+    diff = abs(a - b)
+    return diff <= max(abs_tol, rel_tol * max(abs(a), abs(b), 1e-12))
+
+def _match_units(a: float, b: float) -> bool:
+    if a is None or b is None:
+        return False
+    for sa in UNIT_SCALES:
+        for sb in UNIT_SCALES:
+            if _almost_equal(a * sa, b * sb):
+                return True
+    return False
+
+def _str_equal(a: Optional[str], b: Optional[str]) -> bool:
+    if not a or not b:
+        return False
+    return str(a).strip().lower() == str(b).strip().lower()
+
+def _most_recent_col_frame(df) -> Optional[Tuple[str, Dict[str, float]]]:
+    try:
+        if df is None or getattr(df, "empty", True):
+            return None
+        col0 = df.columns[0]  # yfinance เรียงคอลัมน์ล่าสุดไว้ซ้าย
+        series = df[col0]
+        row_dict = {}
+        for idx, val in series.items():
+            row_dict[str(idx)] = _try_float(val)
+        return str(col0), row_dict
+    except Exception:
+        return None
+
+# =========================
+# Fetchers: yfinance
+# =========================
+def _fetch_yf_overview(symbol: str) -> Dict:
+    t = yf.Ticker(symbol)
+    out = {}
+    try:
+        finfo = t.fast_info
+        out["marketCap"]         = _try_float(getattr(finfo, "market_cap", None))
+        out["sharesOutstanding"] = _try_float(getattr(finfo, "shares_outstanding", None))
+        out["peRatio"]           = _try_float(getattr(finfo, "trailing_pe", None))
+        out["currency"]          = getattr(finfo, "currency", None)
+        out["exchange"]          = getattr(finfo, "exchange", None)
+    except Exception:
+        pass
+    try:
+        info = t.get_info()
+        out["name"]     = info.get("shortName") or info.get("longName")
+        out["sector"]   = info.get("sector")
+        out["industry"] = info.get("industry")
+        out["exchange"] = out.get("exchange") or info.get("fullExchangeName") or info.get("exchange")
+        out["currency"] = out.get("currency") or info.get("currency")
+    except Exception:
+        pass
+    return out
+
+def _fetch_yf_statements(symbol: str) -> Dict[str, Dict]:
+    t = yf.Ticker(symbol)
+
+    # Balance Sheet
+    bs = {"totalAssets": None, "totalLiabilities": None, "shareholderEquity": None}
+    bs_latest = _most_recent_col_frame(getattr(t, "balance_sheet", None))
+    if bs_latest:
+        _, r = bs_latest
+        bs["totalAssets"]       = r.get("Total Assets")
+        bs["totalLiabilities"]  = r.get("Total Liab") or r.get("Total Liabilities Net Minority Interest")
+        bs["shareholderEquity"] = r.get("Total Stockholder Equity") or r.get("Total Equity Gross Minority Interest")
+
+    # Cash Flow
+    cf = {"operatingCashFlow": None, "freeCashFlow": None, "capitalExpenditures": None}
+    cf_latest = _most_recent_col_frame(getattr(t, "cashflow", None))
+    if cf_latest:
+        _, r = cf_latest
+        op    = r.get("Total Cash From Operating Activities") or r.get("Operating Cash Flow")
+        capex = r.get("Capital Expenditures")
+        fcf   = r.get("Free Cash Flow")
+        if fcf is None and (op is not None) and (capex is not None):
+            fcf = op - capex
+        cf["operatingCashFlow"]   = op
+        cf["capitalExpenditures"] = capex
+        cf["freeCashFlow"]        = fcf
+
+    # Income Statement
+    inc = {"totalRevenue": None, "netIncome": None, "eps": None}
+    inc_latest = _most_recent_col_frame(getattr(t, "financials", None))
+    if inc_latest:
+        _, r = inc_latest
+        inc["totalRevenue"] = r.get("Total Revenue")
+        inc["netIncome"]    = r.get("Net Income")
+    try:
+        finfo = t.fast_info
+        inc["eps"] = _try_float(getattr(finfo, "trailing_eps", None))
+    except Exception:
+        pass
+
+    return {"balancesheet": bs, "cashflow": cf, "incomestatement": inc}
+
+def fetch_yfinance(symbol: str) -> Dict[str, Dict]:
+    return {"overview": _fetch_yf_overview(symbol), **_fetch_yf_statements(symbol)}
+
+# =========================
+# Fetchers: Alpha Vantage
+# =========================
+def _av_get(function: str, symbol: str, apikey: str, params: Optional[Dict]=None) -> Dict:
+    if not apikey:
+        return {}
+    url = "https://www.alphavantage.co/query"
+    q = {"function": function, "symbol": symbol, "apikey": apikey}
+    if params:
+        q.update(params)
+    r = requests.get(url, params=q, timeout=REQUEST_TIMEOUT)
+    r.raise_for_status()
+    data = r.json()
+    if any(k in data for k in ("Note", "Information", "Error Message")):
+        return {}
+    return data
+
+def fetch_alphavantage(symbol: str) -> Dict[str, Dict]:
+    # OVERVIEW
+    ov_raw = _av_get("OVERVIEW", symbol, ALPHAVANTAGE_API_KEY)
+    overview = {}
+    if ov_raw:
+        overview = {
+            "name": ov_raw.get("Name"),
+            "currency": ov_raw.get("Currency"),
+            "exchange": ov_raw.get("Exchange"),
+            "sector": ov_raw.get("Sector"),
+            "industry": ov_raw.get("Industry"),
+            "marketCap": _try_float(ov_raw.get("MarketCapitalization")),
+            "sharesOutstanding": _try_float(ov_raw.get("SharesOutstanding")),
+            "peRatio": _try_float(ov_raw.get("PERatio")),
+        }
+
+    # BALANCE_SHEET
+    bs = {"totalAssets": None, "totalLiabilities": None, "shareholderEquity": None}
+    bs_raw = _av_get("BALANCE_SHEET", symbol, ALPHAVANTAGE_API_KEY)
+    rep = (bs_raw.get("annualReports") or [])[:1] if bs_raw else []
+    if rep:
+        r0 = rep[0]
+        bs["totalAssets"]       = _try_float(r0.get("totalAssets"))
+        bs["totalLiabilities"]  = _try_float(r0.get("totalLiabilities"))
+        bs["shareholderEquity"] = _try_float(r0.get("totalShareholderEquity"))
+
+    # CASH_FLOW
+    cf = {"operatingCashFlow": None, "freeCashFlow": None, "capitalExpenditures": None}
+    cf_raw = _av_get("CASH_FLOW", symbol, ALPHAVANTAGE_API_KEY)
+    rep = (cf_raw.get("annualReports") or [])[:1] if cf_raw else []
+    if rep:
+        r0 = rep[0]
+        op    = _try_float(r0.get("operatingCashflow"))
+        capex = _try_float(r0.get("capitalExpenditures"))
+        fcf   = _try_float(r0.get("freeCashFlow"))
+        if fcf is None and (op is not None) and (capex is not None):
+            fcf = op - capex
+        cf["operatingCashFlow"]   = op
+        cf["capitalExpenditures"] = capex
+        cf["freeCashFlow"]        = fcf
+
+    # INCOME_STATEMENT
+    inc = {"totalRevenue": None, "netIncome": None, "eps": None}
+    inc_raw = _av_get("INCOME_STATEMENT", symbol, ALPHAVANTAGE_API_KEY)
+    rep = (inc_raw.get("annualReports") or [])[:1] if inc_raw else []
+    if rep:
+        r0 = rep[0]
+        inc["totalRevenue"] = _try_float(r0.get("totalRevenue"))
+        inc["netIncome"]    = _try_float(r0.get("netIncome"))
+        inc["eps"]          = _try_float(r0.get("reportedEPS") or r0.get("eps"))
+
+    return {"overview": overview, "balancesheet": bs, "cashflow": cf, "incomestatement": inc}
+
+# =========================
+# Fetchers: Finnhub
+# =========================
+def _fh_get(path: str, params: Optional[Dict]=None) -> Dict:
+    if not FINNHUB_API_KEY:
+        return {}
+    base = "https://finnhub.io/api/v1"
+    q = {"token": FINNHUB_API_KEY}
+    if params:
+        q.update(params)
+    r = requests.get(f"{base}/{path}", params=q, timeout=REQUEST_TIMEOUT)
+    r.raise_for_status()
+    data = r.json()
+    if isinstance(data, dict) and data.get("error"):
+        return {}
+    return data
+
+def fetch_finnhub(symbol: str) -> Dict[str, Dict]:
+    # OVERVIEW (profile2)
+    prof = _fh_get("stock/profile2", {"symbol": symbol}) or {}
+    overview = {
+        "name": prof.get("name"),
+        "currency": prof.get("currency"),
+        "exchange": prof.get("exchange"),
+        "sector": prof.get("finnhubIndustry"),
+        "industry": prof.get("finnhubIndustry"),
+        "marketCap": _try_float(prof.get("marketCapitalization")) * 1_000_000_000 if _try_float(prof.get("marketCapitalization")) is not None else None,
+        "sharesOutstanding": _try_float(prof.get("shareOutstanding")),
+        "peRatio": None,
+    }
+    try:
+        met = _fh_get("stock/metric", {"symbol": symbol, "metric": "all"})
+        overview["peRatio"] = _try_float((met.get("metric") or {}).get("peTTM"))
+    except Exception:
+        pass
+
+    # FINANCIALS-REPORTED → ล่าสุด
+    rep = _fh_get("stock/financials-reported", {"symbol": symbol}) or {}
+    data = rep.get("data") or []
+    bs = {"totalAssets": None, "totalLiabilities": None, "shareholderEquity": None}
+    cf = {"operatingCashFlow": None, "freeCashFlow": None, "capitalExpenditures": None}
+    inc = {"totalRevenue": None, "netIncome": None, "eps": None}
+    if data:
+        latest = data[0]
+        report = latest.get("report") or {}
+        bs_list = report.get("bs") or []
+        cf_list = report.get("cf") or []
+        ic_list = report.get("ic") or []
+
+        def _pick(items: List[Dict], keys: List[str]) -> Optional[float]:
+            for k in keys:
+                for it in items:
+                    c = str(it.get("concept") or it.get("label") or "").lower()
+                    if c == k.lower():
+                        return _try_float(it.get("value"))
+            return None
+
+        # balance
+        bs["totalAssets"]       = _pick(bs_list, ["TotalAssets"])
+        bs["totalLiabilities"]  = _pick(bs_list, ["Liabilities"]) or _pick(bs_list, ["LiabilitiesCurrent"]) or _pick(bs_list, ["LiabilitiesNoncurrent"])
+        bs["shareholderEquity"] = _pick(bs_list, ["StockholdersEquity"]) or _pick(bs_list, ["Equity"]) or _pick(bs_list, ["EquityAttributableToParent"])
+
+        # cashflow
+        op  = _pick(cf_list, ["NetCashProvidedByUsedInOperatingActivities", "NetCashProvidedByOperatingActivities"])
+        cap = _pick(cf_list, ["PaymentsToAcquirePropertyPlantAndEquipment", "CapitalExpenditures"])
+        fcf = None
+        if (op is not None) and (cap is not None):
+            fcf = op - cap
+        cf["operatingCashFlow"]   = op
+        cf["capitalExpenditures"] = cap
+        cf["freeCashFlow"]        = fcf
+
+        # income
+        inc["totalRevenue"] = _pick(ic_list, ["Revenues", "SalesRevenueNet"])
+        inc["netIncome"]    = _pick(ic_list, ["NetIncomeLoss", "ProfitLoss"])
+        inc["eps"]          = _pick(ic_list, ["EarningsPerShareBasic", "EarningsPerShareDiluted"])
+
+    return {"overview": overview, "balancesheet": bs, "cashflow": cf, "incomestatement": inc}
+
+# =========================
+# Scoring & Picking
+# =========================
+def _score_section(section: str, by_src: Dict[str, Dict]) -> Dict[str, int]:
+    srcs = ["yfinance", "finnhub", "alphavantage"]
+    score = {s: 0 for s in srcs}
+    nums = NUM_FIELDS.get(section, [])
+    strs = STR_FIELDS.get(section, [])
+
+    for f in nums:
+        vals = {s: _try_float((by_src.get(s) or {}).get(f)) for s in srcs}
+        for a, b in [("yfinance","finnhub"), ("yfinance","alphavantage"), ("finnhub","alphavantage")]:
+            va, vb = vals.get(a), vals.get(b)
+            if isinstance(va, (int, float)) and isinstance(vb, (int, float)) and _match_units(va, vb):
+                score[a] += 1; score[b] += 1
+
+    for f in strs:
+        vals = {s: (by_src.get(s) or {}).get(f) for s in srcs}
+        for a, b in [("yfinance","finnhub"), ("yfinance","alphavantage"), ("finnhub","alphavantage")]:
+            if _str_equal(vals.get(a), vals.get(b)):
+                score[a] += 1; score[b] += 1
+    return score
+
+def _completeness(section: str, by_src: Dict[str, Dict]) -> Dict[str, int]:
+    fields = NUM_FIELDS.get(section, []) + STR_FIELDS.get(section, [])
+    srcs = ["yfinance","finnhub","alphavantage"]
+    comp = {s: 0 for s in srcs}
+    for s in srcs:
+        d = by_src.get(s) or {}
+        for f in fields:
+            v = d.get(f)
+            if isinstance(v, (int, float)):
+                if v is not None and not (isinstance(v, float) and math.isnan(v)):
+                    comp[s] += 1
+            elif isinstance(v, str):
+                if v.strip():
+                    comp[s] += 1
+    return comp
+
+def _winner(total_score: Dict[str,int], total_comp: Dict[str,int]) -> str:
+    top = max(total_score.values())
+    cands = [s for s, sc in total_score.items() if sc == top]
+    if len(cands) == 1:
+        return cands[0]
+    best_comp = max(total_comp[s] for s in cands)
+    cands2 = [s for s in cands if total_comp[s] == best_comp]
+    if len(cands2) == 1:
+        return cands2[0]
+    for s in PREFERRED_ORDER:
+        if s in cands2:
+            return s
+    return cands2[0]
+
+# =========================
+# Orchestrator (ดึง→เทียบ→เลือก)
+# =========================
+def fetch_all_fundamentals(symbol: str) -> Dict:
+    y = fetch_yfinance(symbol)
+    time.sleep(0.4)
+    f = fetch_finnhub(symbol) if FINNHUB_API_KEY else {"overview":{}, "balancesheet":{}, "cashflow":{}, "incomestatement":{}}
+    time.sleep(0.4)
+    a = fetch_alphavantage(symbol) if ALPHAVANTAGE_API_KEY else {"overview":{}, "balancesheet":{}, "cashflow":{}, "incomestatement":{}}
+    return {"symbol": symbol, "raw": {"yfinance": y, "finnhub": f, "alphavantage": a}}
+
+def decide_single_source(fetched: Dict) -> Dict:
+    symbol = fetched.get("symbol")
+    raw = fetched.get("raw") or {}
+    y, f, a = raw.get("yfinance", {}), raw.get("finnhub", {}), raw.get("alphavantage", {})
+
+    sections = ["overview", "balancesheet", "cashflow", "incomestatement"]
+    total_score = {"yfinance":0, "finnhub":0, "alphavantage":0}
+    total_comp  = {"yfinance":0, "finnhub":0, "alphavantage":0}
+    detail = {}
+
+    for sec in sections:
+        by_src = {"yfinance": y.get(sec, {}), "finnhub": f.get(sec, {}), "alphavantage": a.get(sec, {})}
+        sscore = _score_section(sec, by_src)
+        scomp  = _completeness(sec, by_src)
+        for k in total_score: total_score[k] += sscore[k]
+        for k in total_comp:  total_comp[k]  += scomp[k]
+        detail[sec] = {"scores": sscore, "completeness": scomp}
+
+    winner = _winner(total_score, total_comp)
+    final_payload = {
+        "overview":        (raw.get(winner, {}) or {}).get("overview", {}),
+        "balancesheet":    (raw.get(winner, {}) or {}).get("balancesheet", {}),
+        "cashflow":        (raw.get(winner, {}) or {}).get("cashflow", {}),
+        "incomestatement": (raw.get(winner, {}) or {}).get("incomestatement", {}),
+    }
+    return {
+        "symbol": symbol,
+        "chosen_source": winner,
+        "scores": total_score,
+        "completeness": total_comp,
+        "sections": detail,
+        "final_payload": final_payload,
+        "raw": raw,
+        "timestamp": _now_iso(),
+    }
+
+def pick_fundamental_source(symbol: str) -> Dict:
+    """จ่ายแค่ symbol → ได้ผลลัพธ์ (แหล่งเดียวที่เลือก) และบันทึก JSONL/JSON ตาม path ที่กำหนดไว้แล้ว"""
+    save_jsonl_path: Optional[str] = DEFAULT_JSONL_PATH
+    save_json_path:  Optional[str] = DEFAULT_JSON_PATH
+    save_raw_json_path: Optional[str] = DEFAULT_RAW_JSON
+    fetched = fetch_all_fundamentals(symbol)
+    result  = decide_single_source(fetched)
+
+    # บันทึก raw (ออปชัน)
+    raw_path = _fmt_path(save_raw_json_path, symbol)
+    if raw_path:
+        save_json({"symbol": symbol, "timestamp": result["timestamp"], "raw": result["raw"]}, raw_path)
+
+    # บันทึกผลสรุปเป็น JSON ปกติ (ออปชัน)
+    json_path = _fmt_path(save_json_path, symbol)
+    if json_path:
+        # ตัด raw ออกจากไฟล์สรุปเพื่อให้เบา
+        to_save = {k: v for k, v in result.items() if k != "raw"}
+        save_json(to_save, json_path)
+
+    # บันทึกผลสรุปเป็น JSONL (มี 1 บรรทัดต่อการรัน)
+    jsonl_path = _fmt_path(save_jsonl_path, symbol)
+    if jsonl_path:
+        to_line = {
+            "timestamp": result["timestamp"],
+            "symbol": result["symbol"],
+            "chosen_source": result["chosen_source"],
+            "scores": result["scores"],
+            "completeness": result["completeness"],
+            "final_payload": result["final_payload"],
+        }
+        save_jsonl_line(to_line, jsonl_path, append=True)
+        
+    print(f"\n\n\nFundamental data for {symbol} saved. Chosen source: {result['chosen_source']}\n\n\n")
+
+    return result

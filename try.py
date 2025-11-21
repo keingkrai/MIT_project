@@ -8,8 +8,33 @@ from tradingagents.dataflows.y_finance import get_YFin_data_online
 
 from tradingagents.dataflows.alpha_vantage import get_stock as get_alpha_vantage_stock
 
-from tradingagents.dataflows.local import fetch_bsky_stock_posts, yfinance_get_company_news, reddit_get_company_news, finnhub_get_company_news, get_world_news_yf, fetch_reddit_world_news, get_tradingview_indicators, get_yfin_indicators_online, get_twelve_data_indicator, fetch_and_choose, get_finnhub_general_news
-
+from tradingagents.dataflows.local import (
+    
+    #fundamental data
+    pick_fundamental_source, 
+    
+    #globalnews data
+    fetch_finnhub_world_news, 
+    get_world_news_yf,
+    fetch_reddit_world_news,
+    
+    #company news data
+    yfinance_get_company_news, 
+    reddit_get_company_news, 
+    finnhub_get_company_news, 
+    
+    #social media posts data 
+    fetch_reddit_symbol_top_praw, 
+    fetch_mastodon_stock_posts, 
+    fetch_bsky_stock_posts, 
+    
+    #indicators data
+    get_tradingview_indicators, 
+    get_yfin_indicators_online, 
+    get_twelve_data_indicator, 
+    fetch_and_choose
+    
+    )
 from datetime import datetime, timezone, timedelta
 # โหลดค่าจากไฟล์ .env
 load_dotenv()
@@ -38,12 +63,15 @@ load_dotenv()
 # print(items)
 
 #--------------- reddit world news ---------------
-# test = fetch_reddit_world_news(per_sub_limit=30, time_filter="day")
+# test = fetch_reddit_world_news()
 # print(test)
 
 #--------------- yfinance world news ---------------
 # test2 = get_world_news_yf()
 # print(test2)
+
+# e = fetch_finnhub_world_news()
+# print(e)
 
 #--------------- finn news stock---------------
 # test3 = finnhub_get_company_news("NVDA", limit=50)
@@ -54,12 +82,18 @@ load_dotenv()
 # items = reddit_get_company_news(query=q)
 
 # ----------------------------- stock y-finance news ------------
-q = 'AAPL'
+# q = 'AAPL'
 # f = fetch_company_news_yfinance(symbol=q)
 # print(f)
 
 # yfinance_get_company_news(symbol=q)
 
 # ----------------------------- bluesky posts ------------
-posts = fetch_bsky_stock_posts(symbol=q)
-print(posts)
+# posts = fetch_bsky_stock_posts(symbol=q)
+# print(posts)
+
+# fetch_mastodon_stock_posts(symbol=q)
+
+# fetch_reddit_symbol_top_praw(symbol=q)
+# fetch_finnhub_world_news()
+# print(pick_fundamental_source('NVDA'))

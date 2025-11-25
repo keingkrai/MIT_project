@@ -69,3 +69,21 @@ def get_insider_transactions(
         str: A report of insider transaction data
     """
     return route_to_vendor("get_insider_transactions", ticker, curr_date)
+
+@tool
+def get_social(
+    ticker: Annotated[str, "ticker symbol"],
+) -> str:
+    """
+    Retrieve social media sentiment data about a company.
+    Uses the configured news_data vendor.
+    Args:
+        ticker (str): Ticker symbol of the company
+    Returns:
+        str: A report of social media sentiment data
+    """
+    
+    print("\n\n\nDEBUG:get_social")
+    print(route_to_vendor("get_social", ticker))
+    print("\n\n\nFINISH DEBUG:get_social")
+    return route_to_vendor("get_social", ticker)

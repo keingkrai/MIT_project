@@ -1,21 +1,21 @@
 {
   "symbol": "NVDA",
-  "chosen_source": "yfinance",
+  "chosen_source": "alphavantage",
   "scores": {
-    "yfinance": 7,
-    "finnhub": 5,
-    "alphavantage": 6
+    "yfinance": 13,
+    "finnhub": 4,
+    "alphavantage": 13
   },
   "completeness": {
     "yfinance": 13,
     "finnhub": 8,
-    "alphavantage": 8
+    "alphavantage": 16
   },
   "sections": {
     "overview": {
       "scores": {
-        "yfinance": 7,
-        "finnhub": 5,
+        "yfinance": 6,
+        "finnhub": 4,
         "alphavantage": 6
       },
       "completeness": {
@@ -26,51 +26,51 @@
     },
     "balancesheet": {
       "scores": {
-        "yfinance": 0,
+        "yfinance": 3,
         "finnhub": 0,
-        "alphavantage": 0
+        "alphavantage": 3
       },
       "completeness": {
         "yfinance": 3,
         "finnhub": 0,
-        "alphavantage": 0
+        "alphavantage": 3
       }
     },
     "cashflow": {
       "scores": {
-        "yfinance": 0,
+        "yfinance": 2,
         "finnhub": 0,
-        "alphavantage": 0
+        "alphavantage": 2
       },
       "completeness": {
         "yfinance": 2,
         "finnhub": 0,
-        "alphavantage": 0
+        "alphavantage": 3
       }
     },
     "incomestatement": {
       "scores": {
-        "yfinance": 0,
+        "yfinance": 2,
         "finnhub": 0,
-        "alphavantage": 0
+        "alphavantage": 2
       },
       "completeness": {
         "yfinance": 2,
         "finnhub": 0,
-        "alphavantage": 0
+        "alphavantage": 2
       }
     }
   },
   "final_payload": {
     "overview": {
-      "marketCap": 4390455185165.4053,
-      "sharesOutstanding": null,
-      "peRatio": null,
-      "currency": "USD",
-      "exchange": "NMS",
       "name": "NVIDIA Corporation",
-      "sector": "Technology",
-      "industry": "Semiconductors"
+      "currency": "USD",
+      "exchange": "NASDAQ",
+      "sector": "TECHNOLOGY",
+      "industry": "SEMICONDUCTORS",
+      "marketCap": 4362446307000.0,
+      "sharesOutstanding": 24347000000.0,
+      "peRatio": 44.28
     },
     "balancesheet": {
       "totalAssets": 111601000000.0,
@@ -80,7 +80,7 @@
     "cashflow": {
       "operatingCashFlow": 64089000000.0,
       "freeCashFlow": 60853000000.0,
-      "capitalExpenditures": null
+      "capitalExpenditures": 3236000000.0
     },
     "incomestatement": {
       "totalRevenue": 130497000000.0,
@@ -88,5 +88,5 @@
       "eps": null
     }
   },
-  "timestamp": "2025-11-21T06:49:34.509438+00:00"
+  "timestamp": "2025-11-25T06:53:09.776253+00:00"
 }

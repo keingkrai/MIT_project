@@ -35,7 +35,12 @@ from .local_call import (
     get_reddit_world_news,
     
     #indicators data
-    get_indicator
+    get_indicator,
+    
+    #social media posts data
+    get_bluesky_news,
+    get_mastodon_news,
+    get_subreddit_news
     )
 
 from .core_stock_price import get_stock_data
@@ -70,6 +75,7 @@ TOOLS_CATEGORIES = {
             "get_global_news",
             "get_insider_sentiment",
             "get_insider_transactions",
+            "get_social",
         ]
     }
 }
@@ -149,6 +155,9 @@ VENDOR_METHODS = {
         "yfinance": get_yfinance_insider_transactions,
         "local": get_finnhub_company_insider_transactions,
     },
+        "get_social": {
+        "local": [get_bluesky_news, get_mastodon_news, get_subreddit_news]
+    }
 }
 
 def get_category_for_method(method: str) -> str:

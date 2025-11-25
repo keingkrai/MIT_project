@@ -920,20 +920,30 @@ COMPARE_KEYS = [
     "close_200_sma",  # 200 sma
     "close_10_ema",   # 10 ema
     "macd",           # macd
+    "macds",          # macd signal
+    "macdh",          # macd histogram
     "rsi",            # rsi
+    "boll",           # Bollinger middle band
     "boll_ub",        # Bollinger upper band
     "boll_lb",        # Bollinger lower band
+    "atr",            # ATR
+    "vwma",           # VWMA
 ]
 
 # tolerance ต่ออินดิเคเตอร์ (จูนได้)
 INDICATOR_TOL = {
     "rsi":            {"abs": 0.25, "rel": 0.0},
     "macd":           {"abs": 0.005, "rel": 0.0},
+    "macds":          {"abs": 0.005, "rel": 0.0},
+    "macdh":          {"abs": 0.005, "rel": 0.0},
     "close_10_ema":   {"abs": 0.03,  "rel": 6e-4},
     "close_50_sma":   {"abs": 0.04,  "rel": 6e-4},
     "close_200_sma":  {"abs": 0.06,  "rel": 6e-4},
+    "boll":          {"abs": 0.05,  "rel": 7e-4},
     "boll_ub":        {"abs": 0.06,  "rel": 7e-4},
     "boll_lb":        {"abs": 0.06,  "rel": 7e-4},
+    "atr":            {"abs": 0.05,  "rel": 7e-4},
+    "vwma":           {"abs": 0.05,  "rel": 7e-4},
 }
 
 # ===========================
@@ -942,112 +952,173 @@ INDICATOR_TOL = {
 
 from typing import Optional
 
-SOURCE_PRIORITY_DEFAULT = ("tradingview", "yfinance", "twelvedata")
+def _ensure_dir(path: str):
+    os.makedirs(os.path.dirname(path) or ".", exist_ok=True)
 
-def _first_numeric(d: dict, keys_in_priority: tuple[str, ...]) -> tuple[Optional[str], Optional[float]]:
-    """
-    คืน (source, value) แหล่งแรกที่มีค่าตัวเลข ตามลำดับความสำคัญใน keys_in_priority
-    ถ้าไม่เจอคืน (None, None)
-    """
-    for src in keys_in_priority:
-        v = d.get(src)
-        if isinstance(v, (int, float)):
-            return src, float(v)
-    return None, None
+def _save_json(obj, path: str):
+    _ensure_dir(path)
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(obj, f, ensure_ascii=False, indent=2)
 
-def choose_single_source_fixed6(
+def _append_jsonl_line(obj, path: str):
+    _ensure_dir(path)
+    with open(path, "a", encoding="utf-8") as f:
+        f.write(json.dumps(obj, ensure_ascii=False) + "\n")
+
+def _is_num(x) -> bool:
+    return isinstance(x, (int, float)) and not isinstance(x, bool) and math.isfinite(x)
+
+def _restrict(d: Optional[Dict]) -> Dict:
+    """
+    รับอะไรมาก็ตาม ถ้าไม่ใช่ dict → คืน {}
+    ถ้าเป็น dict → คัดเหลือเฉพาะคีย์ที่อยู่ใน COMPARE_KEYS และแปลงเป็น float/None
+    """
+    if not isinstance(d, dict):
+        return {}
+    out = {}
+    for k in COMPARE_KEYS:
+        v = d.get(k, None)
+        if _is_num(v):
+            out[k] = float(v)
+        else:
+            out[k] = None
+    return out
+
+def _completeness(d: Dict, keys=COMPARE_KEYS) -> Tuple[int, int, float]:
+    """
+    คืน (นับคีย์ที่เป็นตัวเลข, นับคีย์ทั้งหมด, สัดส่วนความครบ)
+    ถ้า d ไม่ใช่ dict ให้ถือว่าไม่มีข้อมูล
+    """
+    if not isinstance(d, dict):
+        return 0, len(keys), 0.0
+    n_tot = len(keys)
+    n_num = sum(1 for k in keys if _is_num(d.get(k)))
+    frac = (n_num / n_tot) if n_tot else 0.0
+    return n_num, n_tot, frac
+
+def _is_close_key(key: str, a: float, b: float, tol_cfg: dict) -> bool:
+    cfg = tol_cfg.get(key, {"abs": 0.05, "rel": 1e-3})
+    tol_abs, tol_rel = cfg["abs"], cfg["rel"]
+    diff = abs(a - b)
+    return diff <= max(tol_abs, tol_rel * max(abs(a), abs(b), 1e-12))
+
+def _pair_agreement(a: Dict, b: Dict, keys=COMPARE_KEYS, tol_cfg=INDICATOR_TOL) -> Tuple[int, int, float]:
+    """
+    เปรียบเทียบสองแหล่ง: (hits, comps, score)
+    - ถ้า a/b ไม่ใช่ dict ให้ถือว่าเทียบไม่ได้ (score=0)
+    """
+    if not isinstance(a, dict) or not isinstance(b, dict):
+        return 0, 0, 0.0
+    comps = 0
+    hits = 0
+    for k in keys:
+        va, vb = a.get(k), b.get(k)
+        if _is_num(va) and _is_num(vb):
+            comps += 1
+            if _is_close_key(k, float(va), float(vb), tol_cfg):
+                hits += 1
+    return hits, comps, (hits / comps if comps else 0.0)
+
+def _consensus_scores(tv: Optional[Dict], yf: Optional[Dict], td: Optional[Dict]) -> Dict[str, Dict[str, float]]:
+    """
+    คำนวณคะแนน agreement ต่อแหล่ง (รองรับ input ที่ไม่ใช่ dict)
+    """
+    tv_r, yf_r, td_r = _restrict(tv), _restrict(yf), _restrict(td)
+    present = {k: v for k, v in {"tradingview": tv_r, "yfinance": yf_r, "twelvedata": td_r}.items() if v}
+    names = list(present.keys())
+    scores = {name: {"hits": 0, "comps": 0, "score": 0.0} for name in names}
+
+    for i in range(len(names)):
+        for j in range(i + 1, len(names)):
+            ni, nj = names[i], names[j]
+            hi, ci, _ = _pair_agreement(present[ni], present[nj])
+            scores[ni]["hits"]  += hi
+            scores[ni]["comps"] += ci
+            scores[nj]["hits"]  += hi
+            scores[nj]["comps"] += ci
+
+    for n in names:
+        h, c = scores[n]["hits"], scores[n]["comps"]
+        scores[n]["score"] = (h / c) if c else 0.0
+    return scores
+
+def choose_single_source_by_consensus(
     *,
     tv: Optional[dict] = None,
     yf: Optional[dict] = None,
     td: Optional[dict] = None,
-    priority: tuple[str, ...] = SOURCE_PRIORITY_DEFAULT,
-    decimals: int = 6,
-) -> dict:
+) -> Dict:
     """
-    เลือกผลลัพธ์ 'แหล่งเดียวต่อหัวข้อ' ตามลำดับความสำคัญ:
-      tradingview → yfinance → twelvedata
-    คืน dict รูปแบบ:
-      {
-        "<key>": {"source": "tradingview" | "yfinance" | "twelvedata" | None,
-                  "value": <float|None>}
-      }
+    เลือก 'เพียงแหล่งเดียว' ตามเกณฑ์:
+      1) agreement สูงสุด
+      2) completeness สูงสุด (tie-break)
+      3) numeric_count สูงสุด (tie-break)
+      4) ลำดับชื่อ (deterministic)
     """
-    tv = tv or {}
-    yf = yf or {}
-    td = td or {}
+    tv_r, yf_r, td_r = _restrict(tv), _restrict(yf), _restrict(td)
+    present = {k: v for k, v in {"tradingview": tv_r, "yfinance": yf_r, "twelvedata": td_r}.items() if isinstance(v, dict) and v}
 
-    # รวมเป็นโครงสร้างต่อหัวข้อ
-    # { key: { 'tradingview': val, 'yfinance': val, 'twelvedata': val } }
-    combined = {}
-    for k in COMPARE_KEYS:
-        combined[k] = {
-            "tradingview": tv.get(k, None),
-            "yfinance":    yf.get(k, None),
-            "twelvedata":  td.get(k, None),
-        }
+    if not present:
+        raise RuntimeError("ไม่พบข้อมูลจากทุกแหล่ง")
 
-    out = {}
-    for k, d in combined.items():
-        src, val = _first_numeric(d, priority)
-        if src is None:
-            out[k] = {"source": None, "value": None}
-        else:
-            out[k] = {"source": src, "value": round(val, decimals)}
-    return out
+    cons = _consensus_scores(tv_r, yf_r, td_r)
 
-def format_choices_markdown(choices: dict) -> str:
-    """
-    สรุปผลที่เลือกเป็นตาราง Markdown (อ่านง่าย)
-    """
-    title_map = {
-        "close_50_sma":  "50 SMA",
-        "close_200_sma": "200 SMA",
-        "close_10_ema":  "10 EMA",
-        "macd":          "MACD",
-        "rsi":           "RSI",
-        "boll_ub":       "Bollinger Upper Band",
-        "boll_lb":       "Bollinger Lower Band",
+    for name, d in present.items():
+        n_num, n_tot, frac = _completeness(d)
+        cons.setdefault(name, {})
+        cons[name]["completeness"] = frac
+        cons[name]["numeric_count"] = n_num
+
+    rank = sorted(
+        present.keys(),
+        key=lambda n: (
+            cons.get(n, {}).get("score", 0.0),
+            cons.get(n, {}).get("completeness", 0.0),
+            cons.get(n, {}).get("numeric_count", 0),
+            {"tradingview": 0, "yfinance": 1, "twelvedata": 2}.get(n, 9),
+        ),
+        reverse=True,
+    )
+    chosen = rank[0]
+    final_payload = present[chosen]
+
+    return {
+        "chosen_source": chosen,
+        "final_payload": final_payload,
+        "scores": cons,
     }
-    lines = []
-    lines.append("## indicators")
-    lines.append("| Indicator | Source | Value |")
-    lines.append("|---|---|---|")
-    for k in COMPARE_KEYS:
-        entry = choices.get(k, {"source": None, "value": None})
-        src = entry.get("source", None) or "–"
-        val = entry.get("value", None)
-        val_str = "–" if val is None else f"{val}"
-        lines.append(f"| {title_map.get(k,k)} | {src} | {val_str} |")
-    lines.append("")
-    return "\n".join(lines)
 
-# ------------------------------
-# Orchestrator: fetch → choose (auto-skip rate limits)
-# ------------------------------
-def fetch_and_choose( symbol: str ):
+# =========================
+# Orchestrator: fetch → choose one source → save
+# ใช้ตัวดึงเดิมของคุณ: get_tradingview_indicators_dict, get_yfin_indicators_online_dict, get_twelve_data_indicator
+# =========================
+def fetch_and_choose(symbol: str):
     """
-    ดึงค่าอินดิเคเตอร์จากแต่ละแหล่ง (ข้ามแหล่งที่เออเรอร์/ลิมิต)
-    แล้วเลือกผล 'แหล่งเดียวต่อหัวข้อ' ตามลำดับความสำคัญ:
-      tradingview → yfinance → twelvedata
-    - as_markdown=True จะคืนเป็นข้อความตาราง Markdown
+    ดึงค่าจาก 3 แหล่ง (TV / yfinance / TwelveData) → เลือก 'แหล่งเดียว' จากเกณฑ์
+      1) agreement สูงสุด
+      2) completeness สูงสุด (tie-break)
+      3) numeric_count สูงสุด (tie-break)
+    จากนั้นบันทึกผลทั้งแบบ JSONL (summary) และ JSON (detail)
+
+    return: Markdown ตารางสรุป (แสดง 'แหล่งเดียว' ที่เลือก + ค่า)
     """
+    # ---------------- fetch ----------------
     tv_exchange: str = "NASDAQ"
     tv_screener: str = "america"
     tv_interval: str = "1d"
     yf_period: str = "2y"
     yf_interval: str = "1d"
     td_interval: str = "1day"
-    decimals: int = 6
-    priority: tuple[str, ...] = SOURCE_PRIORITY_DEFAULT
-    as_markdown: bool = True
+
     sources = {}
+    tv = yf = td = None
 
     try:
         tv = get_tradingview_indicators_dict(
             symbol, exchange=tv_exchange, screener=tv_screener, interval=tv_interval
         )
         if tv:
-            sources["tv"] = tv
+            sources["tradingview"] = tv
     except Exception:
         pass
 
@@ -1056,14 +1127,14 @@ def fetch_and_choose( symbol: str ):
             symbol, period=yf_period, interval=yf_interval
         )
         if yf:
-            sources["yf"] = yf
+            sources["yfinance"] = yf
     except Exception:
         pass
 
     try:
         td = get_twelve_data_indicator(symbol, interval=td_interval)
         if td:
-            sources["td"] = td
+            sources["twelvedata"] = td
     except Exception:
         pass
 
@@ -1073,17 +1144,78 @@ def fetch_and_choose( symbol: str ):
             "note": "ไม่สามารถดึงค่าจากทุกแหล่งได้ในตอนนี้",
         }
 
-    choices = choose_single_source_fixed6(
-        tv=sources.get("tv"),
-        yf=sources.get("yf"),
-        td=sources.get("td"),
-        priority=priority,
-        decimals=decimals,
-    )
+    # --------------- decide ONE source ---------------
+    decision = choose_single_source_by_consensus(tv=tv, yf=yf, td=td)
+    chosen = decision["chosen_source"]
+    final_payload = decision["final_payload"]
+    scores = decision["scores"]
 
-    if as_markdown:
-        return format_choices_markdown(choices)
-    return choices
+    # --------------- save ---------------
+    save_dir: str = fr"data\indicators\{symbol.upper()}"
+    jsonl_path: str = os.path.join(save_dir, "indicator_pick.jsonl")
+    json_path:  str = os.path.join(save_dir, "indicator_pick_detail.json")
+
+    now_iso = datetime.now(timezone.utc).isoformat()
+
+    # summary JSONL (หนึ่งบรรทัดต่อการรัน)
+    _append_jsonl_line({
+        "timestamp": now_iso,
+        "symbol": symbol.upper(),
+        "chosen_source": chosen,
+        "compare_keys": COMPARE_KEYS,
+        "tolerance": INDICATOR_TOL,
+        "scores": scores,
+        "final_payload": final_payload,
+        "available_sources": {
+            "tradingview": bool(tv),
+            "yfinance": bool(yf),
+            "twelvedata": bool(td),
+        }
+    }, jsonl_path)
+
+    # detail JSON
+    _save_json({
+        "timestamp": now_iso,
+        "symbol": symbol.upper(),
+        "chosen_source": chosen,
+        "compare_keys": COMPARE_KEYS,
+        "tolerance": INDICATOR_TOL,
+        "scores": scores,
+        "final_payload": final_payload,
+        "raw": {
+            "tradingview": tv or {},
+            "yfinance": yf or {},
+            "twelvedata": td or {},
+        }
+    }, json_path)
+
+    # --------------- return (markdown สั้นอ่านง่าย) ---------------
+    # แสดง “แหล่งเดียวที่เลือก” + ค่า
+    title_map = {
+        "close_50_sma":  "50 SMA",
+        "close_200_sma": "200 SMA",
+        "close_10_ema":  "10 EMA",
+        "macd":          "MACD",
+        "macds":         "MACD Signal",
+        "macdh":         "MACD Histogram",
+        "rsi":           "RSI",
+        "boll":          "Bollinger Middle Band",
+        "boll_ub":       "Bollinger Upper Band",
+        "boll_lb":       "Bollinger Lower Band",
+        "atr":           "ATR",
+        "vwma":          "VWMA",
+    }
+    lines = []
+    lines.append(f"# Indicator pick for {symbol.upper()} — **{chosen}**")
+    lines.append("")
+    lines.append("| Indicator | Value |")
+    lines.append("|---|---|")
+    for k in COMPARE_KEYS:
+        v = final_payload.get(k)
+        lines.append(f"| {title_map.get(k,k)} | {('-' if v is None else v)} |")
+    lines.append("")
+    return "\n".join(lines)
+
 
 # ------------------------------ EDIT NEWS(GLOBAL) -----------------------------------------#
 # ---------------- Finnhub News  -----------------
@@ -2296,9 +2428,9 @@ ALPHAVANTAGE_API_KEY = os.getenv("ALPHAVANTAGE_API_KEY", "7DJF0DNKIR9T1F9X")
 REQUEST_TIMEOUT      = float(os.getenv("REQ_TIMEOUT", "30"))
 
 # เส้นทางบันทึกผล (รองรับ {symbol})
-DEFAULT_JSONL_PATH = r"C:\TradingAgents_fail\data\fundamental\{symbol}\fundamentals_choice.jsonl"
-DEFAULT_JSON_PATH  = r"C:\TradingAgents_fail\data\fundamental\{symbol}\fundamentals_choice.json"
-DEFAULT_RAW_JSON   = r"C:\TradingAgents_fail\data\fundamental\{symbol}\fundamentals_raw.json"
+DEFAULT_JSONL_PATH = r"data\fundamental\{symbol}\fundamentals_choice.jsonl"
+DEFAULT_JSON_PATH  = r"data\fundamental\{symbol}\fundamentals_choice.json"
+DEFAULT_RAW_JSON   = r"data\fundamental\{symbol}\fundamentals_raw.json"
 
 # =========================
 # สคีมาฟิลด์ที่ “พยายามเทียบ” ระหว่าง 3 แหล่ง
@@ -2633,21 +2765,31 @@ def _score_section(section: str, by_src: Dict[str, Dict]) -> Dict[str, int]:
                 score[a] += 1; score[b] += 1
     return score
 
-def _completeness(section: str, by_src: Dict[str, Dict]) -> Dict[str, int]:
-    fields = NUM_FIELDS.get(section, []) + STR_FIELDS.get(section, [])
-    srcs = ["yfinance","finnhub","alphavantage"]
+
+# ===== แทนที่/เพิ่มฟังก์ชัน completeness ให้เป็น dict ต่อแหล่ง =====
+def _completeness_section(section: str, by_src: Dict[str, Dict]) -> Dict[str, int]:
+    """
+    นับ 'ฟิลด์ที่มีข้อมูล' ต่อแหล่ง (ยึดตาม NUM_FIELDS + STR_FIELDS ของ section นั้น)
+    คืนค่า: {"yfinance": <int>, "finnhub": <int>, "alphavantage": <int>}
+    """
+    fields = (NUM_FIELDS.get(section, []) or []) + (STR_FIELDS.get(section, []) or [])
+    srcs = ["yfinance", "finnhub", "alphavantage"]
     comp = {s: 0 for s in srcs}
+
     for s in srcs:
         d = by_src.get(s) or {}
+        cnt = 0
         for f in fields:
             v = d.get(f)
-            if isinstance(v, (int, float)):
-                if v is not None and not (isinstance(v, float) and math.isnan(v)):
-                    comp[s] += 1
-            elif isinstance(v, str):
-                if v.strip():
-                    comp[s] += 1
+            # มีตัวเลขที่เป็น finite
+            if isinstance(v, (int, float)) and not (isinstance(v, float) and (math.isnan(v) or math.isinf(v))):
+                cnt += 1
+            # มี string ที่ไม่ว่าง
+            elif isinstance(v, str) and v.strip():
+                cnt += 1
+        comp[s] = cnt
     return comp
+
 
 def _winner(total_score: Dict[str,int], total_comp: Dict[str,int]) -> str:
     top = max(total_score.values())
@@ -2687,7 +2829,7 @@ def decide_single_source(fetched: Dict) -> Dict:
     for sec in sections:
         by_src = {"yfinance": y.get(sec, {}), "finnhub": f.get(sec, {}), "alphavantage": a.get(sec, {})}
         sscore = _score_section(sec, by_src)
-        scomp  = _completeness(sec, by_src)
+        scomp  = _completeness_section(sec, by_src)
         for k in total_score: total_score[k] += sscore[k]
         for k in total_comp:  total_comp[k]  += scomp[k]
         detail[sec] = {"scores": sscore, "completeness": scomp}
@@ -2709,6 +2851,28 @@ def decide_single_source(fetched: Dict) -> Dict:
         "raw": raw,
         "timestamp": _now_iso(),
     }
+    
+def sent_fundamental_to_telegram(report_message, score: dict, chosen_source: str):
+    """Send comparison result to Telegram bot."""
+    TOKEN = os.getenv("TELEGRAM_TOKEN")
+    CHAT_ID = os.getenv("TELEGRAM_CHAT_ID")
+
+    MESSAGE = f"Fundamental Data Source Comparison Result:\n\n" \
+                f"{report_message}\n" \
+              f"\n===== SIMILARITY SCORE =====\n"\
+              f"YFinance Score: {score['yfinance']}\n" \
+              f"AlphaVantage Score: {score['alphavantage']}\n" \
+              f"Finnhub Score: {score['finnhub']}\n\n" \
+              f"Best Source: {chosen_source.upper()}"
+    
+    url = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
+    data = {
+        "chat_id": CHAT_ID,
+        "text": MESSAGE
+    }
+    
+    resp = requests.post(url, data=data)
+    print(resp.json())
 
 def pick_fundamental_source(symbol: str) -> Dict:
     """จ่ายแค่ symbol → ได้ผลลัพธ์ (แหล่งเดียวที่เลือก) และบันทึก JSONL/JSON ตาม path ที่กำหนดไว้แล้ว"""
@@ -2742,6 +2906,14 @@ def pick_fundamental_source(symbol: str) -> Dict:
             "final_payload": result["final_payload"],
         }
         save_jsonl_line(to_line, jsonl_path, append=True)
+    
+    # ส่งผลการเปรียบเทียบไปยัง Telegram (ถ้ามีการตั้งค่า)
+    if os.getenv("TELEGRAM_TOKEN") and os.getenv("TELEGRAM_CHAT_ID"):
+        sent_fundamental_to_telegram(
+            report_message=f"Fundamental data for {symbol} has been processed.",
+            score=result["scores"],
+            chosen_source=result["chosen_source"]
+        )
         
     print(f"\n\n\nFundamental data for {symbol} saved. Chosen source: {result['chosen_source']}\n\n\n")
 

@@ -4,10 +4,6 @@ from tradingagents.dataflows.interface import route_to_vendor
 
 from dotenv import load_dotenv
 
-from tradingagents.dataflows.y_finance import get_YFin_data_online
-
-from tradingagents.dataflows.alpha_vantage import get_stock as get_alpha_vantage_stock
-
 from tradingagents.dataflows.local import (
     
     #fundamental data
@@ -54,7 +50,7 @@ load_dotenv()
 # print(get_twelve_data_indicator("AAPL"))
 
 # print("--------------- compare and pick 2 of 3 ---------------")
-# print(fetch_and_choose("AAPL", as_markdown=True))
+#print(fetch_and_choose("AAPL"))
 
 
 #----------------------------- get news ------------------------------
@@ -96,4 +92,4 @@ load_dotenv()
 
 # fetch_reddit_symbol_top_praw(symbol=q)
 # fetch_finnhub_world_news()
-# print(pick_fundamental_source('NVDA'))
+print(pick_fundamental_source('NVDA'))

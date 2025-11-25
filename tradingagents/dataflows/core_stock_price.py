@@ -193,7 +193,7 @@ def sent_to_telegram(report_message, score: dict, best_source: str):
               f"{report_message}"\
               f"\n===== SIMILARITY SCORE =====\n"\
               f"YFinance Score: {score['yf']}\n" \
-              f"AlphaVantage Score: {score['av']}\n" \
+              f"AlphaVantage Score: {score['tw']}\n" \
               f"TradingView Score: {score['tv']}\n\n" \
               f"Best Source: {best_source.upper()}"
     

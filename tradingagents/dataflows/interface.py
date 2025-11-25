@@ -93,10 +93,10 @@ VENDOR_LIST = [
 VENDOR_METHODS = {
     # core_stock_apis
     "get_stock_data": {
-        "core_stock_price": get_stock_data,
-        # "alpha_vantage": get_alpha_vantage_stock,
+        #"core_stock_price": get_stock_data,
+        "alpha_vantage": get_alpha_vantage_stock,
         # "yfinance": get_YFin_data_online,
-        # "local": get_stock_data
+        "local": get_stock_data
     },
     
     

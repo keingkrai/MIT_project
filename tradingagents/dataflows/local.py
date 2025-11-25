@@ -2296,9 +2296,9 @@ ALPHAVANTAGE_API_KEY = os.getenv("ALPHAVANTAGE_API_KEY", "7DJF0DNKIR9T1F9X")
 REQUEST_TIMEOUT      = float(os.getenv("REQ_TIMEOUT", "30"))
 
 # เส้นทางบันทึกผล (รองรับ {symbol})
-DEFAULT_JSONL_PATH = r"C:\TradingAgents_fail\data\fundamental\{symbol}\fundamentals_choice.jsonl"
-DEFAULT_JSON_PATH  = r"C:\TradingAgents_fail\data\fundamental\{symbol}\fundamentals_choice.json"
-DEFAULT_RAW_JSON   = r"C:\TradingAgents_fail\data\fundamental\{symbol}\fundamentals_raw.json"
+DEFAULT_JSONL_PATH = r"TradingAgents_fail\data\fundamental\{symbol}\fundamentals_choice.jsonl"
+DEFAULT_JSON_PATH  = r"TradingAgents_fail\data\fundamental\{symbol}\fundamentals_choice.json"
+DEFAULT_RAW_JSON   = r"TradingAgents_fail\data\fundamental\{symbol}\fundamentals_raw.json"
 
 # =========================
 # สคีมาฟิลด์ที่ “พยายามเทียบ” ระหว่าง 3 แหล่ง

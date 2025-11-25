@@ -1,0 +1,92 @@
+{
+  "symbol": "AAPL",
+  "chosen_source": "alphavantage",
+  "scores": {
+    "yfinance": 12,
+    "finnhub": 6,
+    "alphavantage": 14
+  },
+  "completeness": {
+    "yfinance": 13,
+    "finnhub": 8,
+    "alphavantage": 16
+  },
+  "sections": {
+    "overview": {
+      "scores": {
+        "yfinance": 5,
+        "finnhub": 6,
+        "alphavantage": 7
+      },
+      "completeness": {
+        "yfinance": 6,
+        "finnhub": 8,
+        "alphavantage": 8
+      }
+    },
+    "balancesheet": {
+      "scores": {
+        "yfinance": 3,
+        "finnhub": 0,
+        "alphavantage": 3
+      },
+      "completeness": {
+        "yfinance": 3,
+        "finnhub": 0,
+        "alphavantage": 3
+      }
+    },
+    "cashflow": {
+      "scores": {
+        "yfinance": 2,
+        "finnhub": 0,
+        "alphavantage": 2
+      },
+      "completeness": {
+        "yfinance": 2,
+        "finnhub": 0,
+        "alphavantage": 3
+      }
+    },
+    "incomestatement": {
+      "scores": {
+        "yfinance": 2,
+        "finnhub": 0,
+        "alphavantage": 2
+      },
+      "completeness": {
+        "yfinance": 2,
+        "finnhub": 0,
+        "alphavantage": 2
+      }
+    }
+  },
+  "final_payload": {
+    "overview": {
+      "name": "Apple Inc",
+      "currency": "USD",
+      "exchange": "NASDAQ",
+      "sector": "TECHNOLOGY",
+      "industry": "CONSUMER ELECTRONICS",
+      "marketCap": 4029017227000.0,
+      "sharesOutstanding": 14776353000.0,
+      "peRatio": 36.34
+    },
+    "balancesheet": {
+      "totalAssets": 359241000000.0,
+      "totalLiabilities": 285508000000.0,
+      "shareholderEquity": 73733000000.0
+    },
+    "cashflow": {
+      "operatingCashFlow": 111482000000.0,
+      "freeCashFlow": 98767000000.0,
+      "capitalExpenditures": 12715000000.0
+    },
+    "incomestatement": {
+      "totalRevenue": 416161000000.0,
+      "netIncome": 112010000000.0,
+      "eps": null
+    }
+  },
+  "timestamp": "2025-11-25T06:53:23.670317+00:00"
+}

@@ -13,7 +13,7 @@ def create_market_analyst(llm):
         company_name = state["company_of_interest"]
 
         tools = [
-            get_stock_data,
+            # get_stock_data,
             get_indicators,
         ]
 

@@ -1,0 +1,2 @@
+# terminate program
+sys.exit("Program stopped by user request")

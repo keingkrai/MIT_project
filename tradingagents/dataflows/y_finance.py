@@ -57,6 +57,8 @@ def get_stock_stats_indicators_window(
     ],
     look_back_days: Annotated[int, "how many days to look back"],
 ) -> str:
+    
+    input_indicator = indicator.lower().strip()
 
     best_ind_params = {
         # Moving Averages
@@ -178,11 +180,13 @@ def get_stock_stats_indicators_window(
             curr_date_dt = curr_date_dt - relativedelta(days=1)
 
     result_str = (
-        f"## {indicator} values from {before.strftime('%Y-%m-%d')} to {end_date}:\n\n"
+        f"## {input_indicator} values from {before.strftime('%Y-%m-%d')} to {end_date}:\n\n"
         + ind_string
         + "\n\n"
-        + best_ind_params.get(indicator, "No description available.")
+        + best_ind_params.get(input_indicator, "No description available.")
     )
+
+    # print(result_str)
 
     return result_str
 

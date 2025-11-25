@@ -3,7 +3,7 @@ import os
 DEFAULT_CONFIG = {
     "project_dir": os.path.abspath(os.path.join(os.path.dirname(__file__), ".")),
     "results_dir": os.getenv("TRADINGAGENTS_RESULTS_DIR", "./results"),
-    "data_dir": r"C:\TradingAgents_fail\tradingagents\dataflows\data_cache",
+    "data_dir": r"\TradingAgents_fail\tradingagents\dataflows\data_cache",
     
     "data_cache_dir": os.path.join(
         os.path.abspath(os.path.join(os.path.dirname(__file__), ".")),

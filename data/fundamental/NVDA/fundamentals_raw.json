@@ -1,10 +1,10 @@
 {
   "symbol": "NVDA",
-  "timestamp": "2025-11-21T06:49:34.509438+00:00",
+  "timestamp": "2025-11-25T06:53:09.776253+00:00",
   "raw": {
     "yfinance": {
       "overview": {
-        "marketCap": 4390455185165.4053,
+        "marketCap": 4436877824172.974,
         "sharesOutstanding": null,
         "peRatio": null,
         "currency": "USD",
@@ -36,9 +36,9 @@
         "exchange": "NASDAQ NMS - GLOBAL MARKET",
         "sector": "Semiconductors",
         "industry": "Semiconductors",
-        "marketCap": 4389552100548066.0,
+        "marketCap": 4346784118652000.0,
         "sharesOutstanding": 24300.0,
-        "peRatio": 45.6908
+        "peRatio": 43.8193
       },
       "balancesheet": {
         "totalAssets": null,
@@ -63,23 +63,23 @@
         "exchange": "NASDAQ",
         "sector": "TECHNOLOGY",
         "industry": "SEMICONDUCTORS",
-        "marketCap": 4548767252000.0,
+        "marketCap": 4362446307000.0,
         "sharesOutstanding": 24347000000.0,
-        "peRatio": 53.14
+        "peRatio": 44.28
       },
       "balancesheet": {
-        "totalAssets": null,
-        "totalLiabilities": null,
-        "shareholderEquity": null
+        "totalAssets": 111601000000.0,
+        "totalLiabilities": 32274000000.0,
+        "shareholderEquity": 79327000000.0
       },
       "cashflow": {
-        "operatingCashFlow": null,
-        "freeCashFlow": null,
-        "capitalExpenditures": null
+        "operatingCashFlow": 64089000000.0,
+        "freeCashFlow": 60853000000.0,
+        "capitalExpenditures": 3236000000.0
       },
       "incomestatement": {
-        "totalRevenue": null,
-        "netIncome": null,
+        "totalRevenue": 130497000000.0,
+        "netIncome": 72880000000.0,
         "eps": null
       }
     }

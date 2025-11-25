@@ -13,7 +13,8 @@ def get_TV_data_online(
     interval: Annotated[str, "Interval for data, e.g., 1d, 1h"] = "1d",
 ):
     dotenv.load_dotenv()
-    tv = TvDatafeed(username=os.getenv('TV_USERNAME'), password=os.getenv('TV_PASSWORD'))
+    # tv = TvDatafeed(username=os.getenv('TV_USERNAME'), password=os.getenv('TV_PASSWORD'))
+    tv = TvDatafeed()
 
     # Validate date
     datetime.strptime(start_date, "%Y-%m-%d")
@@ -114,7 +115,7 @@ import pandas as pd
 # สร้าง object สำหรับ login TradingView (anonymous ก็ได้)
 
 
-def get_tradingview_indicators(symbol, indicator, curr_date, look_back_days, exchange='NASDAQ'):
+def get_tradingview_indicators(symbol, indicator, curr_date, look_back_days = 30, exchange='NASDAQ'):
 
     indicator_descriptions = {
         "close_50_sma": "50 SMA: A medium-term trend indicator. Usage: Identify trend direction and serve as dynamic support/resistance. Tips: It lags price; combine with faster indicators for timely signals.",
@@ -160,6 +161,8 @@ def get_tradingview_indicators(symbol, indicator, curr_date, look_back_days, exc
     # filter วันย้อนหลัง
     df_filtered = df[df['datetime'] <= curr_dt].tail(look_back_days + 1)
 
+    df_filtered = df_filtered[df_filtered['datetime'] >= before_dt]
+
     # สร้าง string output
     ind_string = ""
     for _, row in df_filtered.iterrows():
@@ -169,13 +172,13 @@ def get_tradingview_indicators(symbol, indicator, curr_date, look_back_days, exc
 
     # รวมผลลัพธ์ + description
     result_str = (
-        f"## {indicator.upper()} values from {before_dt.strftime('%Y-%m-%d')} to {curr_date}:\n\n"
+        f"\n\n=== tradingview ===\n## {indicator.upper()} values from {before_dt.strftime('%Y-%m-%d')} to {curr_date}:\n\n"
         + ind_string
         + "\n\n"
         + indicator_descriptions.get(indicator, "No description available.")
     )
 
-    return result_str
+    return result_str, df_filtered
 
 
 # ตัวอย่างเรียกใช้งาน

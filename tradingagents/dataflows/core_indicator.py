@@ -1,75 +1,137 @@
 import os
-from tvDatafeed import TvDatafeed, Interval
-from stockstats import wrap
-from datetime import datetime, timedelta
-import pandas as pd
+import sys
+from turtle import pd
+from typing import Annotated
 
-# สร้าง object สำหรับ login TradingView (anonymous ก็ได้)
+import requests
+from tradingagents.dataflows.y_finance import get_stock_stats_indicators_window
+from tradingagents.dataflows.alpha_vantage_indicator import get_indicator
+from tradingagents.dataflows.trading_view import get_tradingview_indicators
 
+from datetime import datetime
 
-def get_tradingview_indicators(symbol, indicator, curr_date, look_back_days, exchange='NASDAQ'):
+def compute_core_indicator_score(data_yf, data_av, data_tv, indicator, tolerance=0.01):
+    """
+    data_yf: list of (date_str, value_str)
+    data_av: list of (datetime_obj, value_str)
+    data_tv: pandas DataFrame with 'datetime' and indicator column
+    tolerance: relative difference threshold
+    """
+    # 1. แปลงข้อมูลเป็น dict
+    dict_yf = {d: float(v) for d, v in data_yf}
+    dict_av = {dt.strftime('%Y-%m-%d'): float(v) for dt, v in data_av}
+    dict_tv = {dt.strftime('%Y-%m-%d'): float(v) for dt, v in zip(data_tv['datetime'], data_tv[indicator])}
 
-    indicator_descriptions = {
-        "close_50_sma": "50 SMA: A medium-term trend indicator. Usage: Identify trend direction and serve as dynamic support/resistance. Tips: It lags price; combine with faster indicators for timely signals.",
-        "close_200_sma": "200 SMA: A long-term trend benchmark. Usage: Confirm overall market trend and identify golden/death cross setups. Tips: It reacts slowly; best for strategic trend confirmation rather than frequent trading entries.",
-        "close_10_ema": "10 EMA: A responsive short-term average. Usage: Capture quick shifts in momentum and potential entry points. Tips: Prone to noise in choppy markets; use alongside longer averages for filtering false signals.",
-        "macd": "MACD: Computes momentum via differences of EMAs. Usage: Look for crossovers and divergence as signals of trend changes. Tips: Confirm with other indicators in low-volatility or sideways markets.",
-        "macds": "MACD Signal: An EMA smoothing of the MACD line. Usage: Use crossovers with the MACD line to trigger trades. Tips: Should be part of a broader strategy to avoid false positives.",
-        "macdh": "MACD Histogram: Shows the gap between the MACD line and its signal. Usage: Visualize momentum strength and spot divergence early. Tips: Can be volatile; complement with additional filters in fast-moving markets.",
-        "rsi": "RSI: Measures momentum to flag overbought/oversold conditions. Usage: Apply 70/30 thresholds and watch for divergence to signal reversals. Tips: In strong trends, RSI may remain extreme; always cross-check with trend analysis.",
-        "boll": "Bollinger Middle: A 20 SMA serving as the basis for Bollinger Bands. Usage: Acts as a dynamic benchmark for price movement. Tips: Combine with the upper and lower bands to effectively spot breakouts or reversals.",
-        "boll_ub": "Bollinger Upper Band: Typically 2 standard deviations above the middle line. Usage: Signals potential overbought conditions and breakout zones. Tips: Confirm signals with other tools; prices may ride the band in strong trends.",
-        "boll_lb": "Bollinger Lower Band: Typically 2 standard deviations below the middle line. Usage: Indicates potential oversold conditions. Tips: Use additional analysis to avoid false reversal signals.",
-        "atr": "ATR: Averages true range to measure volatility. Usage: Set stop-loss levels and adjust position sizes based on current market volatility. Tips: It's a reactive measure, so use it as part of a broader risk management strategy.",
-        "vwma": "VWMA: A moving average weighted by volume. Usage: Confirm trends by integrating price action with volume data. Tips: Watch for skewed results from volume spikes; use in combination with other volume analyses."
+    all_dates = set(dict_yf.keys()) & set(dict_av.keys()) & set(dict_tv.keys())
+    
+    scores = {'yahoo': 0, 'alpha': 0, 'tv': 0}
+
+    for date in sorted(all_dates):
+        vals = {'yahoo': dict_yf[date], 'alpha': dict_av[date], 'tv': dict_tv[date]}
+        
+        # เปรียบเทียบกันทีละคู่
+        for src1, src2 in [('yahoo','alpha'), ('yahoo','tv'), ('alpha','tv')]:
+            v1, v2 = vals[src1], vals[src2]
+            if abs(v1-v2)/max(v1,v2) <= tolerance:
+                scores[src1] += 1
+                scores[src2] += 1
+
+    # เลือก source ที่ max score
+    max_score = max(scores.values())
+    best_sources = [k for k, v in scores.items() if v == max_score]
+
+    return scores, best_sources
+
+def sent_to_telegram(report_message):
+    """Send comparison result to Telegram bot."""
+    TOKEN = os.getenv("TELEGRAM_TOKEN")
+    CHAT_ID = os.getenv("TELEGRAM_CHAT_ID")
+
+    MESSAGE = report_message
+    
+    url = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
+    data = {
+        "chat_id": CHAT_ID,
+        "text": MESSAGE
     }
+    resp = requests.post(url, data=data)
+    # print(resp.json())
 
-    tv = TvDatafeed(username=os.getenv('TV_USERNAME'), password=os.getenv('TV_PASSWORD'))
+def get_core_indicator(
+    symbol: str,
+    indicator: str,
+    curr_date: str,
+    look_back_days: int,
+) -> str:
+    # result_str_yf, data_yf = get_stock_stats_indicators_window(symbol, indicator, curr_date, look_back_days)
+    # # print(f"\n\n=== Yahoo Finance ===\n{data_yf}")
+    # result_str_av, data_av = get_indicator(symbol, indicator, curr_date, look_back_days)
+    # # print(f"\n\n=== Alpha Vantage ===\n{data_av}")
+    # result_str_tv, data_tv = get_tradingview_indicators(symbol, indicator, curr_date, look_back_days)
+    # # print(f"\n\n=== TradingView ===\n{data_tv}")
 
-    curr_dt = datetime.strptime(curr_date, "%Y-%m-%d")
-    before_dt = curr_dt - timedelta(days=look_back_days)
+    # scores, best_sources = compute_core_indicator_score(
+    #     data_yf=data_yf,
+    #     data_av=data_av,
+    #     data_tv=data_tv,
+    #     indicator=indicator,
+    #     tolerance=0.01
+    # )
 
-    # ดึงข้อมูล OHLC จาก TV
-    df = tv.get_hist(symbol, exchange, interval=Interval.in_daily, n_bars=look_back_days + 100)
-    if df.empty:
-        return f"No data found for {symbol}"
+    # print(f"\n\n=== Scores ===\n{scores}\nBest sources: {best_sources}")
 
-    df = df.reset_index()  # datetime index → column 'datetime'
-    df['datetime'] = pd.to_datetime(df['datetime'])
+    # try check null result
 
-    # wrap เฉพาะ OHLC + volume
-    df_wrap = df[['open', 'high', 'low', 'close', 'volume']].copy()
-    df_wrap = wrap(df_wrap)
-
-    # trigger calculation indicator
     try:
-        df_wrap[indicator]
+        result_str_yf, data_yf = get_stock_stats_indicators_window(symbol, indicator, curr_date, look_back_days)
     except Exception as e:
-        return f"Indicator {indicator} not available: {e}"
+        result_str_yf, data_yf = "", []
+        print(f"Yahoo Finance error for indicator '{indicator}': {e}")
 
-    # merge indicator กลับกับ datetime
-    df[indicator] = df_wrap[indicator]
+    try:
+        result_str_av, data_av = get_indicator(symbol, indicator, curr_date, look_back_days)
+    except Exception as e:
+        result_str_av, data_av = "", []
+        print(f"Alpha Vantage error for indicator '{indicator}': {e}")
 
-    # filter วันย้อนหลัง
-    df_filtered = df[df['datetime'] <= curr_dt].tail(look_back_days + 1)
+    try:
+        result_str_tv, data_tv = get_tradingview_indicators(symbol, indicator, curr_date, look_back_days)
+    except Exception as e:
+        result_str_tv, data_tv = "", pd.DataFrame()
+        print(f"TradingView error for indicator '{indicator}': {e}")
 
-    # สร้าง string output
-    ind_string = ""
-    for _, row in df_filtered.iterrows():
-        value = row[indicator]
-        value = "N/A" if pd.isna(value) else value
-        ind_string += f"{row['datetime'].strftime('%Y-%m-%d')}: {value}\n"
-
-    # รวมผลลัพธ์ + description
-    result_str = (
-        f"## {indicator.upper()} values from {before_dt.strftime('%Y-%m-%d')} to {curr_date}:\n\n"
-        + ind_string
-        + "\n\n"
-        + indicator_descriptions.get(indicator, "No description available.")
+    # count score for each provider
+    scores, best_sources = compute_core_indicator_score(
+        data_yf=data_yf,
+        data_av=data_av,
+        data_tv=data_tv,
+        indicator=indicator,
+        tolerance=0.001
     )
 
-    return result_str
+    # max score provider
+    print(f"\n\n=== Scores ===\n{scores}\nBest sources: {best_sources}")
 
+    # send to telegram
+    report_message = (
+        f"Stock Indicator Data Source Comparison Result for {symbol} - {indicator}:\n\n"
+        f"Yahoo Finance Score: {scores.get('yahoo', 0)}\n"
+        f"Alpha Vantage Score: {scores.get('alpha', 0)}\n"
+        f"TradingView Score: {scores.get('tv', 0)}\n\n"
+        f"Best Sources: {', '.join(best_sources)}"
+    )
+    print("Sending report to Telegram...")
+    print(report_message)
+    sent_to_telegram(report_message)
 
-# ตัวอย่างเรียกใช้งาน
-print(get_tradingview_indicators("AAPL", "close_50_sma", "2025-11-25", 30))
+    # sys.exit("Program stopped by user request")
+
+    # return max score provider result
+    if 'alpha' in best_sources and result_str_av is not None:
+        return result_str_av
+    elif 'yahoo' in best_sources and result_str_yf is not None:
+        return result_str_yf
+    elif 'tv' in best_sources and result_str_tv is not None:
+        return result_str_tv
+    else:
+        return result_str_av

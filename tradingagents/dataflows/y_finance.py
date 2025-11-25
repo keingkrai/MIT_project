@@ -55,7 +55,7 @@ def get_stock_stats_indicators_window(
     curr_date: Annotated[
         str, "The current trading date you are trading on, YYYY-mm-dd"
     ],
-    look_back_days: Annotated[int, "how many days to look back"],
+    look_back_days: Annotated[int, "how many days to look back"] = 30,
 ) -> str:
     
     input_indicator = indicator.lower().strip()
@@ -156,10 +156,11 @@ def get_stock_stats_indicators_window(
             # Look up the indicator value for this date
             if date_str in indicator_data:
                 indicator_value = indicator_data[date_str]
+                date_values.append((date_str, indicator_value))
             else:
-                indicator_value = "N/A: Not a trading day (weekend or holiday)"
-            
-            date_values.append((date_str, indicator_value))
+                # indicator_value = "N/A: Not a trading day (weekend or holiday)"
+                pass
+            # date_values.append((date_str, indicator_value))
             current_dt = current_dt - relativedelta(days=1)
         
         # Build the result string
@@ -180,7 +181,7 @@ def get_stock_stats_indicators_window(
             curr_date_dt = curr_date_dt - relativedelta(days=1)
 
     result_str = (
-        f"## {input_indicator} values from {before.strftime('%Y-%m-%d')} to {end_date}:\n\n"
+        f"\n\n=== yfinance ===\n## {input_indicator} values from {before.strftime('%Y-%m-%d')} to {end_date}:\n\n"
         + ind_string
         + "\n\n"
         + best_ind_params.get(input_indicator, "No description available.")
@@ -188,7 +189,7 @@ def get_stock_stats_indicators_window(
 
     # print(result_str)
 
-    return result_str
+    return result_str, date_values
 
 
 def _get_stock_stats_bulk(

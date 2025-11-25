@@ -1,5 +1,7 @@
 from typing import Annotated
 
+from tradingagents.dataflows.core_indicator import get_core_indicator
+
 # Import from vendor-specific modules
 from .local import pick_fundamental_source, get_YFin_data, get_finnhub_news, get_finnhub_company_insider_sentiment, get_finnhub_company_insider_transactions, get_simfin_balance_sheet, get_simfin_cashflow, get_simfin_income_statements, get_reddit_global_news, get_reddit_companynews, fetch_and_choose
 from .y_finance import get_YFin_data_online, get_stock_stats_indicators_window, get_balance_sheet as get_yfinance_balance_sheet, get_cashflow as get_yfinance_cashflow, get_income_statement as get_yfinance_income_statement, get_insider_transactions as get_yfinance_insider_transactions
@@ -94,8 +96,9 @@ VENDOR_METHODS = {
     
     # technical_indicators
     "get_indicators": {
+        "core_indicator": get_core_indicator,
         # "alpha_vantage": get_alpha_vantage_indicator,
-        "yfinance": get_stock_stats_indicators_window,
+        # "yfinance": get_stock_stats_indicators_window,
         
         # #more
         # "local": get_indicator

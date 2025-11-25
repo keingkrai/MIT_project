@@ -4,7 +4,7 @@ def get_indicator(
     symbol: str,
     indicator: str,
     curr_date: str,
-    look_back_days: int,
+    look_back_days: int = 30,
     interval: str = "daily",
     time_period: int = 14,
     series_type: str = "close"
@@ -209,13 +209,13 @@ def get_indicator(
             ind_string = "No data available for the specified date range.\n"
 
         result_str = (
-            f"## {indicator.upper()} values from {before.strftime('%Y-%m-%d')} to {curr_date}:\n\n"
+            f"\n\n=== alpha_vantage ===\n## {indicator.upper()} values from {before.strftime('%Y-%m-%d')} to {curr_date}:\n\n"
             + ind_string
             + "\n\n"
             + indicator_descriptions.get(indicator, "No description available.")
         )
 
-        return result_str
+        return result_str, result_data
 
     except Exception as e:
         print(f"Error getting Alpha Vantage indicator data for {indicator}: {e}")

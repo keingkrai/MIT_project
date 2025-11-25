@@ -36,10 +36,10 @@ DEFAULT_CONFIG = {
         # Example: "get_stock_data": "alpha_vantage",  # Override category default
         # Example: "get_news": "openai",
         # Override category default
-        "get_stock_data": "local",
+        # "get_stock_data": "local",
         "get_global_news": "local",
         "get_news": "local",
-        "get_indicators": "local",
+        # "get_indicators": "local",
         "get_fundamentals": "local",
     },
 }

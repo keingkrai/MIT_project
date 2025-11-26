@@ -9,30 +9,6 @@ import io
 import re
 import requests
 
-def get_stock_data(
-    symbol: str,
-    start_date: str,
-    end_date: str,
-) -> str:
-    """Retrieve stock price data (OHLCV) for a given ticker symbol.
-
-    Args:
-        symbol: Ticker symbol of the company, e.g. AAPL, TSM
-        start_date: Start date in yyyy-mm-dd format
-        end_date: End date in yyyy-mm-dd format
-    Returns:
-        A formatted dataframe containing the stock price data for the specified ticker symbol in the specified date range.
-    """
-    # print("\n\n\nDEBUG:get_stock_data")
-
-    header, csv_string = compare_stock_providers(symbol, start_date, end_date)
-
-    # print("\n\n\nFINISH DEBUG:get_stock_data")
-
-    # sys.exit("Program stopped by user request")
-
-    return header + csv_string
-
 def compare_stock_providers(symbol, start_date, end_date):
 
     # --- call each provider ---
@@ -205,3 +181,27 @@ def sent_to_telegram(report_message, score: dict, best_source: str):
 
     resp = requests.post(url, data=data)
     print(resp.json())
+
+def get_stock_data(
+    symbol: str,
+    start_date: str,
+    end_date: str,
+) -> str:
+    """Retrieve stock price data (OHLCV) for a given ticker symbol.
+
+    Args:
+        symbol: Ticker symbol of the company, e.g. AAPL, TSM
+        start_date: Start date in yyyy-mm-dd format
+        end_date: End date in yyyy-mm-dd format
+    Returns:
+        A formatted dataframe containing the stock price data for the specified ticker symbol in the specified date range.
+    """
+    # print("\n\n\nDEBUG:get_stock_data")
+
+    header, csv_string = compare_stock_providers(symbol, start_date, end_date)
+
+    # print("\n\n\nFINISH DEBUG:get_stock_data")
+
+    # sys.exit("Program stopped by user request")
+
+    return header + csv_string

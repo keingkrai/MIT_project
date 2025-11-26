@@ -32,6 +32,7 @@ from tradingagents.dataflows.local import (
     
     )
 from datetime import datetime, timezone, timedelta
+from tradingagents.dataflows.core_stock_price import get_stock_data
 # โหลดค่าจากไฟล์ .env
 load_dotenv()
 
@@ -70,11 +71,11 @@ load_dotenv()
 # print(e)
 
 #--------------- finn news stock---------------
-# test3 = finnhub_get_company_news("NVDA", limit=50)
+# test3 = finnhub_get_company_news("NVDA")
 # print(test3)
 
 # ----------------------------- reddit posts news ------------
-# q = 'AAPL'
+q = 'RBLX'
 # items = reddit_get_company_news(query=q)
 
 # ----------------------------- stock y-finance news ------------
@@ -82,14 +83,16 @@ load_dotenv()
 # f = fetch_company_news_yfinance(symbol=q)
 # print(f)
 
-# yfinance_get_company_news(symbol=q)
+# yfinance_get_company_news(q)
 
 # ----------------------------- bluesky posts ------------
-# posts = fetch_bsky_stock_posts(symbol=q)
-# print(posts)
+posts = fetch_bsky_stock_posts(symbol='NVDA')
+print(posts)
 
-# fetch_mastodon_stock_posts(symbol=q)
+#fetch_mastodon_stock_posts(symbol='RBLX')
 
-# fetch_reddit_symbol_top_praw(symbol=q)
+#fetch_reddit_symbol_top_praw(symbol=q)
 # fetch_finnhub_world_news()
-print(pick_fundamental_source('NVDA'))
+# print(pick_fundamental_source('NVDA'))
+
+# print(get_stock_data("AAPL", "2025-11-01", "2025-11-20"))

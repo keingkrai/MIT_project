@@ -1,27 +1,27 @@
 {
-  "symbol": "AAPL",
-  "chosen_source": "alphavantage",
+  "symbol": "RBLX",
+  "chosen_source": "yfinance",
   "scores": {
-    "yfinance": 5,
-    "finnhub": 6,
-    "alphavantage": 7
+    "yfinance": 1,
+    "finnhub": 1,
+    "alphavantage": 0
   },
   "completeness": {
     "yfinance": 13,
-    "finnhub": 8,
-    "alphavantage": 8
+    "finnhub": 7,
+    "alphavantage": 0
   },
   "sections": {
     "overview": {
       "scores": {
-        "yfinance": 5,
-        "finnhub": 6,
-        "alphavantage": 7
+        "yfinance": 1,
+        "finnhub": 1,
+        "alphavantage": 0
       },
       "completeness": {
         "yfinance": 6,
-        "finnhub": 8,
-        "alphavantage": 8
+        "finnhub": 7,
+        "alphavantage": 0
       }
     },
     "balancesheet": {
@@ -63,30 +63,30 @@
   },
   "final_payload": {
     "overview": {
-      "name": "Apple Inc",
+      "marketCap": 63334740943.15732,
+      "sharesOutstanding": null,
+      "peRatio": null,
       "currency": "USD",
-      "exchange": "NASDAQ",
-      "sector": "TECHNOLOGY",
-      "industry": "CONSUMER ELECTRONICS",
-      "marketCap": 4094760583000.0,
-      "sharesOutstanding": 14776353000.0,
-      "peRatio": 37.04
+      "exchange": "NYQ",
+      "name": "Roblox Corporation",
+      "sector": "Communication Services",
+      "industry": "Electronic Gaming & Multimedia"
     },
     "balancesheet": {
-      "totalAssets": null,
-      "totalLiabilities": null,
-      "shareholderEquity": null
+      "totalAssets": 7175003000.0,
+      "totalLiabilities": 6966349000.0,
+      "shareholderEquity": 208654000.0
     },
     "cashflow": {
-      "operatingCashFlow": null,
-      "freeCashFlow": null,
+      "operatingCashFlow": 822316000.0,
+      "freeCashFlow": 641300000.0,
       "capitalExpenditures": null
     },
     "incomestatement": {
-      "totalRevenue": null,
-      "netIncome": null,
+      "totalRevenue": 3601979000.0,
+      "netIncome": -935384000.0,
       "eps": null
     }
   },
-  "timestamp": "2025-11-25T17:16:28.551080+00:00"
+  "timestamp": "2025-11-25T19:30:57.108572+00:00"
 }

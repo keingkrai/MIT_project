@@ -1,6 +1,7 @@
 from typing import Annotated
-from .local import fetch_reddit_symbol_top_praw, fetch_mastodon_stock_posts, fetch_bsky_stock_posts, pick_fundamental_source, finnhub_get_company_news, reddit_get_company_news, yfinance_get_company_news, fetch_finnhub_world_news, fetch_and_choose
+from .local import get_world_news_yf, fetch_reddit_world_news, fetch_reddit_symbol_top_praw, fetch_mastodon_stock_posts, fetch_bsky_stock_posts, pick_fundamental_source, finnhub_get_company_news, reddit_get_company_news, yfinance_get_company_news, fetch_finnhub_world_news, fetch_and_choose
     
+#fundamental data
 def get_fundamentals_local(ticker, curr_date):
     """
     มีการรับ parameter ตามรูปบบที่ต้นฉบับใช้เพื่อความรวดเร็วและลดการแก้ไขมากที่สุด
@@ -12,6 +13,7 @@ def get_fundamentals_local(ticker, curr_date):
     # print(f'\n\n\n [get_fundamentals_local] Chosen fundamental data source result:\n{res}\n\n\n')
     return res
 
+#company news data
 def get_finnhub_company_news(
     query: Annotated[str, "Search query or ticker symbol"],
     start_date: Annotated[str, "Start date in yyyy-mm-dd format"],
@@ -41,16 +43,40 @@ def get_yfinance_company_news(
     # print(f'\n\n\n [get_yfinance_company_news] YFinance company news result:\n{res}\n\n\n')
     return res
 
+
+#global news data
+def get_yfinance_world_news(
+    curr_date: Annotated[str, "Current date in yyyy-mm-dd format"],
+    look_back_days: Annotated[int, "Number of days to look back"] = 7,
+    limit: Annotated[int, "Maximum number of articles to return"] = 5,
+) -> str:
+
+    res = get_world_news_yf()
+    # print(f'\n\n\n [get_reddit_world_news] Reddit world news result:\n{res}\n\n\n')
+    return res
+
 def get_reddit_world_news(
     curr_date: Annotated[str, "Current date in yyyy-mm-dd format"],
     look_back_days: Annotated[int, "Number of days to look back"] = 7,
     limit: Annotated[int, "Maximum number of articles to return"] = 5,
 ) -> str:
 
-    res = fetch_finnhub_world_news()
+    res = fetch_reddit_world_news()
     # print(f'\n\n\n [get_reddit_world_news] Reddit world news result:\n{res}\n\n\n')
     return res
 
+def get_finnhub_world_news(
+    curr_date: Annotated[str, "Current date in yyyy-mm-dd format"],
+    look_back_days: Annotated[int, "Number of days to look back"] = 7,
+    limit: Annotated[int, "Maximum number of articles to return"] = 5,
+) -> str:
+
+    res = fetch_finnhub_world_news()
+    # print(f'\n\n\n [get_finnhub_world_news] Finnhub world news result:\n{res}\n\n\n')
+    return res
+
+
+#indicator data
 def get_indicator(
     symbol: Annotated[str, "ticker symbol of the company"],
     indicator: Annotated[str, "technical indicator to get the analysis and report of"],
@@ -61,32 +87,28 @@ def get_indicator(
 ) -> str:
     
     res = fetch_and_choose(symbol)
-    # print(f'\n\n\n [get_indicator] Indicator result:\n{res}\n\n\n')
+    print(f'\n\n\n [get_indicator] Indicator result:\n\n\n\n')
     return res
 
+
+#social media news
 def get_bluesky_news(
     ticker: Annotated[str, "ticker symbol of the company"]
 ):
     res = fetch_bsky_stock_posts(ticker)
-    count = len(res) if res else 0
-    print(f'[get_bluesky_news] Retrieved {count} Bluesky posts for ticker: {ticker}')
-    # print(f'\n\n\n [get_bluesky_news] Bluesky news result:\n{res}\n\n\n')
+    print(f'\n\n\n [get_bluesky_news] Bluesky news result:\n\n\n\n')
     return res
 
 def get_mastodon_news(
     ticker: Annotated[str, "ticker symbol of the company"]
 ):
     res = fetch_mastodon_stock_posts(ticker)
-    count = len(res) if res else 0
-    print(f'[get_mastodon_news] Retrieved {count} Mastodon posts for ticker: {ticker}')
-    # print(f'\n\n\n [get_mastodon_news] Mastodon news result:\n{res}\n\n\n')
+    print(f'\n\n\n [get_mastodon_news] Mastodon news result:\n\n\n\n')
     return res
 
 def get_subreddit_news(
     symbol: Annotated[str, "ticker symbol of the company"]
 ):
     res = fetch_reddit_symbol_top_praw(symbol)
-    count = len(res) if res else 0
-    print(f'[get_subreddit_news] Retrieved {count} Reddit posts for ticker: {symbol}')
-    # print(f'\n\n\n [get_subreddit_news] Subreddit news result:\n{res}\n\n\n')
+    print(f'\n\n\n [get_subreddit_news] Subreddit news result:\n\n\n\n')
     return res

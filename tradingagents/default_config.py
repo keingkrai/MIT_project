@@ -3,7 +3,7 @@ import os
 DEFAULT_CONFIG = {
     "project_dir": os.path.abspath(os.path.join(os.path.dirname(__file__), ".")),
     "results_dir": os.getenv("TRADINGAGENTS_RESULTS_DIR", "./results"),
-    "data_dir": r"\TradingAgents_fail\tradingagents\dataflows\data_cache",
+    "data_dir": r"tradingagents\dataflows\data_cache",
     
     "data_cache_dir": os.path.join(
         os.path.abspath(os.path.join(os.path.dirname(__file__), ".")),
@@ -39,6 +39,7 @@ DEFAULT_CONFIG = {
         "get_stock_data": "local",
         "get_global_news": "local",
         "get_news": "local",
+        "get_social": "local",
         "get_indicators": "local",
         "get_fundamentals": "local",
     },

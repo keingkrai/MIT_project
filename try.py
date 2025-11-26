@@ -106,11 +106,11 @@ load_dotenv()
 # fetch_finnhub_world_news()
 # print(pick_fundamental_source('NVDA'))
 
-import pandas as pd
-a = finnhub_get_company_news("AAPL")
-df = pd.DataFrame(a)
-print(df)
-print(df.columns)
+# import pandas as pd
+# a = finnhub_get_company_news("AAPL")
+# df = pd.DataFrame(a)
+# print(df)
+# print(df.columns)
 
 # a = reddit_get_company_news("AAPL")
 # df = pd.DataFrame(a)
@@ -141,3 +141,8 @@ print(df.columns)
 # df_news = pd.json_normalize(news_list)
 
 # print(df_news)
+
+
+# [get_reddit_world_news, get_yfinance_world_news, get_finnhub_world_news]
+res = fetch_reddit_world_news()
+print(res)

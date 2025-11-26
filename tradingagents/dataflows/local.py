@@ -1482,7 +1482,7 @@ def fetch_reddit_world_news() -> str:
     out_path: str = "data/global_news/reddit_world_news.jsonl"
     subs: Iterable[str] = DEFAULT_SUBS
     per_sub_limit: int = 20
-    time_filter: str = "day"
+    time_filter: str = "week"
     jsonl: bool = True
     posts = fetch_world_news_today(
         subs=subs,
@@ -1845,7 +1845,7 @@ def finnhub_get_company_news( symbol: str ) -> List[Dict]:
     start_date: Optional[str] = (datetime.now(timezone.utc) - timedelta(days=30)).strftime("%Y-%m-%d")
     end_date: Optional[str] = datetime.now(timezone.utc).strftime("%Y-%m-%d")
     # runtime
-    limit: int = 100
+    limit: int = 50
     save_jsonl_path: Optional[str] = f"data/stock/{symbol}/finnhub_company_news.jsonl"
     items_fh: List[Dict] = []
     items_yf: List[Dict] = []
@@ -2005,24 +2005,135 @@ def _save_jsonl(items: List[Dict], path: str, append: bool = False):
 def yfinance_get_company_news(symbol: str) -> List[Dict]:
     """
     ดึงข่าว 'ดิบ' จาก yfinance ตามที่ได้จาก API ตรง ๆ (ไม่กรองเวลา, ไม่ลบซ้ำ, ไม่เปลี่ยนฟิลด์)
+    จำกัดรายการไม่เกิน max_items (default 50)
     - ใส่แค่ symbol อย่างเดียว
     - เซฟไฟล์อัตโนมัติไว้ที่ ./data/stock/<symbol>/:
         - yfinance_company_news_<YYYY-MM-DD>.json
         - yfinance_company_news_<YYYY-MM-DD>.jsonl
-    - คืนค่าลิสต์ข่าวแบบ raw ตาม yfinance
+    - คืนค่าลิสต์ข่าวแบบ raw ตาม yfinance (ถูกตัดให้ไม่เกิน max_items)
     """
+    max_items: int = 50
     t = yf.Ticker(symbol)
     try:
         news = t.get_news()            # บางเวอร์ชันของ yfinance
     except Exception:
         news = getattr(t, "news", []) or []
 
-    # เซฟแบบ raw ทั้งหมด
+    # coerce ให้เป็น list (ถ้าไม่ใช่)
+    if not isinstance(news, list):
+        try:
+            news = list(news)
+        except Exception:
+            news = [news]
+
+    # จำกัดจำนวนข่าวไม่เกิน max_items
+    news = news[:max_items]
+
+    # เซฟแบบ raw ทั้งหมด (ทั้ง .json และ .jsonl)
     today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
-    path = f"data/stock/{symbol}/yfinance_company_news_{today}.json"
-    _save_jsonl(news, path, append=False)
+    json_path = f"data/stock/{symbol}/yfinance_company_news_{today}.json"
+    jsonl_path = f"data/stock/{symbol}/yfinance_company_news_{today}.jsonl"
+
+    try:
+        _save_json(news, json_path)
+    except Exception:
+        # ถ้าไม่มี helper นี้ หรือเซฟไม่สำเร็จ ก็ข้าม
+        pass
+
+    try:
+        _save_jsonl(news, jsonl_path, append=False)
+    except Exception:
+        pass
 
     return news
+
+# ------------------------------ Alpha vatantage news stock -----------------------------------------#
+def alphavantage_get_company_news(
+    symbol: str
+) -> List[Dict]:
+    """
+    ดึง 'ข่าวดิบ' ของบริษัทด้วย Alpha Vantage NEWS_SENTIMENT
+    - ใส่แค่ symbol (e.g., 'AAPL')
+    - จำกัดผลลัพธ์ไม่เกิน max_items (default 50)
+    - เซฟไฟล์อัตโนมัติ: ./data/stock/<symbol>/
+        - alphavantage_company_news_<YYYY-MM-DD>.json
+        - alphavantage_company_news_<YYYY-MM-DD>.jsonl
+    - คืนค่าลิสต์ข่าวแบบ raw ตาม Alpha Vantage (ถูกตัดจำนวนรายการ)
+    หมายเหตุ:
+    - ต้องตั้งค่า ALPHAVANTAGE_API_KEY ใน env หรือส่ง api_key เข้ามา
+    - NEWS_SENTIMENT รองรับตัวกรองเวลาแบบ time_from/time_to ในรูป YYYYMMDDTHHMM
+    """
+    look_back_days: int = 7
+    max_items: int = 50
+    base_url = "https://www.alphavantage.co/query"
+    api_key = "7DJF0DNKIR9T1F9X"
+    if not api_key:
+        raise ValueError("Missing ALPHAVANTAGE_API_KEY. Set env or pass api_key param.")
+
+    # สร้างช่วงเวลา (UTC) ย้อนหลัง look_back_days วัน
+    end_dt = datetime.now(timezone.utc)
+    start_dt = end_dt - timedelta(days=look_back_days)
+    # รูปแบบเวลาตาม Alpha Vantage: YYYYMMDDTHHMM
+    tf = start_dt.strftime("%Y%m%dT%H%M")
+    tt = end_dt.strftime("%Y%m%dT%H%M")
+
+    params = {
+        "function": "NEWS_SENTIMENT",
+        "tickers": symbol.upper(),
+        "time_from": tf,
+        "time_to": tt,
+        "sort": "LATEST",        # หรือ "EARLIEST"
+        "limit": str(max(10, min(max_items, 100))),  # AV จำกัดสูงสุด ~100 ต่อคำขอ
+        "apikey": api_key,
+    }
+
+    # เรียก API พร้อม retry ง่ายๆ กันเคส 5xx/429
+    session = requests.Session()
+    items = []
+    for attempt in range(3):
+        try:
+            r = session.get(base_url, params=params, timeout=30)
+            if r.status_code in (429, 503):
+                time.sleep(2 + attempt)
+                continue
+            r.raise_for_status()
+            data = r.json() or {}
+
+            # Alpha Vantage อาจส่งฟิลด์ "Note" เมื่อติด rate limit
+            if "Note" in data:
+                # รอแล้วลองใหม่
+                time.sleep(5 + attempt * 2)
+                continue
+
+            # ข่าวอยู่ใน key "feed"
+            feed = data.get("feed", []) or []
+            if not isinstance(feed, list):
+                try:
+                    feed = list(feed)
+                except Exception:
+                    feed = [feed]
+
+            items = feed[:max_items]
+            break
+        except requests.HTTPError:
+            if attempt == 2:
+                raise
+            time.sleep(2 + attempt)
+        except Exception:
+            if attempt == 2:
+                raise
+            time.sleep(1 + attempt)
+
+    # เซฟผลลัพธ์แบบ raw
+    today = end_dt.strftime("%Y-%m-%d")
+    jsonl_path = f"data/stock/{symbol}/alphavantage_company_news_{today}.jsonl"
+
+    try:
+        _save_jsonl(items, jsonl_path, append=False)
+    except Exception:
+        pass
+
+    return items
 # ------------------------------ EDIT SOCIAL MEDIA ---------------------------------#
 # ------------------------------  BlueSky  ---------------------------------#
 from atproto import Client, models as atp_models

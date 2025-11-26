@@ -17,7 +17,8 @@ from tradingagents.dataflows.local import (
     #company news data
     yfinance_get_company_news, 
     reddit_get_company_news, 
-    finnhub_get_company_news, 
+    finnhub_get_company_news,
+    alphavantage_get_company_news,
     
     #social media posts data 
     fetch_reddit_symbol_top_praw, 
@@ -84,10 +85,10 @@ q = 'RBLX'
 # print(f)
 
 # yfinance_get_company_news(q)
-
+alphavantage_get_company_news(q)
 # ----------------------------- bluesky posts ------------
-posts = fetch_bsky_stock_posts(symbol='NVDA')
-print(posts)
+# posts = fetch_bsky_stock_posts(symbol='NVDA')
+# print(posts)
 
 #fetch_mastodon_stock_posts(symbol='RBLX')
 

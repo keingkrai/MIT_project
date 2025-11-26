@@ -21,7 +21,6 @@ def get_news(ticker, start_date, end_date) -> dict[str, str] | str:
         "sort": "LATEST",
         "limit": "50",
     }
-    
     return _make_api_request("NEWS_SENTIMENT", params)
 
 def get_insider_transactions(symbol: str) -> dict[str, str] | str:

@@ -4,6 +4,17 @@ from tradingagents.dataflows.interface import route_to_vendor
 
 from dotenv import load_dotenv
 
+from tradingagents.dataflows.alpha_vantage import (
+    get_alpha_vantage_stock,
+    get_indicator as get_alpha_vantage_indicator,
+    get_fundamentals as get_alpha_vantage_fundamentals,
+    get_balance_sheet as get_alpha_vantage_balance_sheet,
+    get_cashflow as get_alpha_vantage_cashflow,
+    get_income_statement as get_alpha_vantage_income_statement,
+    get_insider_transactions as get_alpha_vantage_insider_transactions,
+    get_news as get_alpha_vantage_news
+)
+
 from tradingagents.dataflows.local import (
     
     #fundamental data
@@ -92,4 +103,40 @@ load_dotenv()
 
 # fetch_reddit_symbol_top_praw(symbol=q)
 # fetch_finnhub_world_news()
-print(pick_fundamental_source('NVDA'))
+# print(pick_fundamental_source('NVDA'))
+
+import pandas as pd
+# a = finnhub_get_company_news("AAPL")
+# df = pd.DataFrame(a)
+# print(df)
+# print(df.columns)
+
+# a = reddit_get_company_news("AAPL")
+# print(a)
+
+# a = yfinance_get_company_news("AAPL")
+# df = pd.DataFrame(a)
+# print(len(df))
+# print(df.columns)
+# print(df['content'].get(0))
+# df2 = pd.DataFrame({df['content']})
+
+# from pandas import json_normalize
+
+# content_df = json_normalize(df['content'])
+# print(content_df)
+
+import json
+import pandas as pd
+a = get_alpha_vantage_news("AAPL", datetime(2024, 11, 26, tzinfo=timezone.utc), datetime(2025, 11, 26, tzinfo=timezone.utc))
+
+# 1) Convert JSON string to Python dict
+data = json.loads(a)
+
+# 2) Extract the list of news items
+news_list = data.get("feed", [])
+
+# 3) Convert into DataFrame (flatten nested fields automatically)
+df_news = pd.json_normalize(news_list)
+
+print(df_news)

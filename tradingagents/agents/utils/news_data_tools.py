@@ -18,6 +18,9 @@ def get_news(
     Returns:
         str: A formatted string containing news data
     """
+    print("\n\n\nDEBUG:get_news")
+    print(route_to_vendor("get_news", ticker, start_date, end_date))
+    print("\n\n\nFINISH DEBUG:get_news")
     return route_to_vendor("get_news", ticker, start_date, end_date)
 
 @tool
@@ -83,7 +86,7 @@ def get_social(
         str: A report of social media sentiment data
     """
     
-    print("\n\n\nDEBUG:get_social")
-    print(route_to_vendor("get_social", ticker))
-    print("\n\n\nFINISH DEBUG:get_social")
+    # print("\n\n\nDEBUG:get_social")
+    # print(route_to_vendor("get_social", ticker))
+    # print("\n\n\nFINISH DEBUG:get_social")
     return route_to_vendor("get_social", ticker)

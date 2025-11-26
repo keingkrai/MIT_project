@@ -86,7 +86,7 @@ load_dotenv()
 # print(test3)
 
 # ----------------------------- reddit posts news ------------
-q = 'RBLX'
+# q = 'RBLX'
 # items = reddit_get_company_news(query=q)
 
 # ----------------------------- stock y-finance news ------------
@@ -97,8 +97,8 @@ q = 'RBLX'
 # yfinance_get_company_news(q)
 
 # ----------------------------- bluesky posts ------------
-posts = fetch_bsky_stock_posts(symbol='NVDA')
-print(posts)
+# posts = fetch_bsky_stock_posts(symbol='NVDA')
+# print(posts)
 
 #fetch_mastodon_stock_posts(symbol='RBLX')
 
@@ -107,37 +107,37 @@ print(posts)
 # print(pick_fundamental_source('NVDA'))
 
 import pandas as pd
-# a = finnhub_get_company_news("AAPL")
-# df = pd.DataFrame(a)
-# print(df)
-# print(df.columns)
+a = finnhub_get_company_news("AAPL")
+df = pd.DataFrame(a)
+print(df)
+print(df.columns)
 
 # a = reddit_get_company_news("AAPL")
-# print(a)
+# df = pd.DataFrame(a)
+# print((df))
+# print(df.columns)
 
 # a = yfinance_get_company_news("AAPL")
 # df = pd.DataFrame(a)
 # print(len(df))
 # print(df.columns)
-# print(df['content'].get(0))
-# df2 = pd.DataFrame({df['content']})
 
 # from pandas import json_normalize
 
 # content_df = json_normalize(df['content'])
 # print(content_df)
 
-import json
-import pandas as pd
-a = get_alpha_vantage_news("AAPL", datetime(2024, 11, 26, tzinfo=timezone.utc), datetime(2025, 11, 26, tzinfo=timezone.utc))
+# import json
+# import pandas as pd
+# a = get_alpha_vantage_news("AAPL", datetime(2024, 11, 26, tzinfo=timezone.utc), datetime(2025, 11, 26, tzinfo=timezone.utc))
 
-# 1) Convert JSON string to Python dict
-data = json.loads(a)
+# # 1) Convert JSON string to Python dict
+# data = json.loads(a)
 
-# 2) Extract the list of news items
-news_list = data.get("feed", [])
+# # 2) Extract the list of news items
+# news_list = data.get("feed", [])
 
-# 3) Convert into DataFrame (flatten nested fields automatically)
-df_news = pd.json_normalize(news_list)
+# # 3) Convert into DataFrame (flatten nested fields automatically)
+# df_news = pd.json_normalize(news_list)
 
-print(df_news)
+# print(df_news)

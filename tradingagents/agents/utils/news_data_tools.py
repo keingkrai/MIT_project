@@ -18,9 +18,9 @@ def get_news(
     Returns:
         str: A formatted string containing news data
     """
-    print("\n\n\nDEBUG:get_news")
-    print(route_to_vendor("get_news", ticker, start_date, end_date))
-    print("\n\n\nFINISH DEBUG:get_news")
+    # print("\n\n\nDEBUG:get_news")
+    # print(route_to_vendor("get_news", ticker, start_date, end_date))
+    # print("\n\n\nFINISH DEBUG:get_news")
     return route_to_vendor("get_news", ticker, start_date, end_date)
 
 @tool

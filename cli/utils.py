@@ -4,10 +4,10 @@ from typing import List, Optional, Tuple, Dict
 from cli.models import AnalystType
 
 ANALYST_ORDER = [
-    # ("Market Analyst", AnalystType.MARKET),
+    ("Market Analyst", AnalystType.MARKET),
     ("Social Media Analyst", AnalystType.SOCIAL),
-    # ("News Analyst", AnalystType.NEWS),
-    # ("Fundamentals Analyst", AnalystType.FUNDAMENTALS),
+    ("News Analyst", AnalystType.NEWS),
+    ("Fundamentals Analyst", AnalystType.FUNDAMENTALS),
 ]
 
 
@@ -197,7 +197,7 @@ def select_research_depth() -> int:
 # Automatically select default shallow-thinking llm engine without asking.
 def select_shallow_thinking_agent(provider) -> str:
     """Automatically select default shallow-thinking LLM engine without asking."""
-    return "gemini-2.0-flash-lite"
+    return "gemini-2.0-flash"
 
 
 # def select_deep_thinking_agent(provider) -> str:
@@ -266,7 +266,7 @@ def select_shallow_thinking_agent(provider) -> str:
 # Automatically select default deep-thinking llm engine without asking.
 def select_deep_thinking_agent(provider) -> str:
     """Automatically select default deep-thinking LLM engine without asking."""
-    return "gemini-2.0-flash-lite"
+    return "gemini-2.0-flash"
 
 # def select_llm_provider() -> tuple[str, str]:
 #     """Select the OpenAI api url using interactive selection."""

@@ -13,7 +13,7 @@ def create_social_media_analyst(llm):
 
         tools = [
             get_news,
-            # get_social
+            get_social
         ]
 
         system_message = (

@@ -1,7 +1,5 @@
 from typing import Annotated
 
-from tradingagents.dataflows.core_indicator import get_core_indicator
-
 # Import from vendor-specific modules
 from .local import pick_fundamental_source, get_YFin_data, get_finnhub_news, get_finnhub_company_insider_sentiment, get_finnhub_company_insider_transactions, get_simfin_balance_sheet, get_simfin_cashflow, get_simfin_income_statements, get_reddit_global_news, get_reddit_companynews, fetch_and_choose
 from .y_finance import get_YFin_data_online, get_stock_stats_indicators_window, get_balance_sheet as get_yfinance_balance_sheet, get_cashflow as get_yfinance_cashflow, get_income_statement as get_yfinance_income_statement, get_insider_transactions as get_yfinance_insider_transactions
@@ -31,10 +29,12 @@ from .local_call import (
     #company news data
     get_finnhub_company_news, 
     get_reddit_company_news, 
-    yfinance_get_company_news,
+    get_yfinance_company_news,
     
     #globalnews data
     get_reddit_world_news,
+    get_yfinance_world_news,
+    get_finnhub_world_news,
     
     #indicators data
     get_indicator,
@@ -46,6 +46,7 @@ from .local_call import (
     )
 
 from .core_stock_price import get_stock_data
+from tradingagents.dataflows.core_indicator import get_core_indicator
 
 # Tools organized by category
 TOOLS_CATEGORIES = {
@@ -93,21 +94,21 @@ VENDOR_LIST = [
 VENDOR_METHODS = {
     # core_stock_apis
     "get_stock_data": {
-        "core_stock_price": get_stock_data,
+        #"core_stock_price": get_stock_data,
         # "alpha_vantage": get_alpha_vantage_stock,
         # "yfinance": get_YFin_data_online,
-        # "local": get_stock_data
+        #"local": get_stock_data
     },
     
     
     # technical_indicators
     "get_indicators": {
-        "core_indicator": get_core_indicator,
+        # "local": get_core_indicator,
         # "alpha_vantage": get_alpha_vantage_indicator,
         # "yfinance": get_stock_stats_indicators_window,
         
         # #more
-        # "local": get_indicator
+        "local": get_indicator,
     },
     
     
@@ -143,13 +144,13 @@ VENDOR_METHODS = {
         "google": get_google_news,
         
         #more
-        "local": [get_finnhub_company_news, get_reddit_company_news, yfinance_get_company_news],
+        "local": [get_finnhub_company_news, get_reddit_company_news, get_yfinance_company_news],
     },
     "get_global_news": {
         "openai": get_global_news_openai,
         
         #more
-        "local": get_reddit_world_news
+        "local": [get_reddit_world_news, get_yfinance_world_news, get_finnhub_world_news]
     },
     "get_insider_sentiment": {
         "local": get_finnhub_company_insider_sentiment
@@ -159,7 +160,9 @@ VENDOR_METHODS = {
         "yfinance": get_yfinance_insider_transactions,
         "local": get_finnhub_company_insider_transactions,
     },
-        "get_social": {
+    
+    #social media posts data
+    "get_social": {
         "local": [get_bluesky_news, get_mastodon_news, get_subreddit_news]
     }
 }

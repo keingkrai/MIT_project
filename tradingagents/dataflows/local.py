@@ -1151,7 +1151,7 @@ def fetch_and_choose(symbol: str):
     scores = decision["scores"]
 
     # --------------- save ---------------
-    save_dir: str = fr"data\indicators\{symbol.upper()}"
+    save_dir: str = f"data/indicators/{symbol.upper()}"
     jsonl_path: str = os.path.join(save_dir, "indicator_pick.jsonl")
     json_path:  str = os.path.join(save_dir, "indicator_pick_detail.json")
 
@@ -1303,7 +1303,7 @@ def fetch_finnhub_world_news() -> List[Dict]:
     max_pages: int = 3
     sleep_s: float = 0.6
     return_raw: bool = False
-    save_jsonl_path: Optional[str] = "./data/global_news/finnhub_world_news.jsonl"  # เช่น "./data/news/world/finnhub_general_news.slim.jsonl"
+    save_jsonl_path: Optional[str] = f"data/global_news/finnhub_world_news.jsonl"  # เช่น "./data/news/world/finnhub_general_news.slim.jsonl"
     api_key = "d49dhs1r01qshn3lpbn0d49dhs1r01qshn3lpbng"
     raw_items = fetch_finnhub_world_news_raw(
         category=category, max_pages=max_pages, sleep_s=sleep_s
@@ -1479,7 +1479,7 @@ def fetch_reddit_world_news() -> str:
     ดึง → รวม → เซฟเป็นไฟล์ (JSONL เป็นค่าเริ่มต้น)
     คืน path ของไฟล์ที่บันทึก
     """
-    out_path: str = "C:\\TradingAgents_fail\\data\\global_news\\reddit_world_news.jsonl"
+    out_path: str = "data/global_news/reddit_world_news.jsonl"
     subs: Iterable[str] = DEFAULT_SUBS
     per_sub_limit: int = 20
     time_filter: str = "day"
@@ -1623,7 +1623,7 @@ def get_world_news_yf() -> List[Dict]:
     limit: int = 50
     keywords: Optional[Iterable[str]] = None
     per_keyword: Optional[int] = None
-    save_jsonl_path: Optional[str] = "C:\\TradingAgents_fail\\data\\global_news\\yfinance_world_news.jsonl"
+    save_jsonl_path: Optional[str] = "data/global_news/yfinance_world_news.jsonl"
     start_epoch, end_epoch = _window_epochs(curr_date, look_back_days)
     kw = list(keywords) if keywords else DEFAULT_WORLD_KEYWORDS
 
@@ -1846,7 +1846,7 @@ def finnhub_get_company_news( symbol: str ) -> List[Dict]:
     end_date: Optional[str] = datetime.now(timezone.utc).strftime("%Y-%m-%d")
     # runtime
     limit: int = 100
-    save_jsonl_path: Optional[str] = "C:\\TradingAgents_fail\\data\\stock\\{symbol}\\finnhub_company_news.jsonl"
+    save_jsonl_path: Optional[str] = f"data/stock/{symbol}/finnhub_company_news.jsonl"
     items_fh: List[Dict] = []
     items_yf: List[Dict] = []
     finnhub_api_key = "d49dhs1r01qshn3lpbn0d49dhs1r01qshn3lpbng"
@@ -1917,10 +1917,10 @@ def get_token():
 def reddit_get_company_news(query: str):
     """
     ค้นใน subreddit เดียวด้วย restrict_sr + sort=top (เวอร์ชันเรียบง่าย)
-    - ถ้าไม่ส่ง save_path → จะสร้าง path อัตโนมัติ: C:\TradingAgents_fail\data\stock\<query>\reddit_search_<sub>_<YYYYMMDD>_<YYYYMMDD>.jsonl
+    - ถ้าไม่ส่ง save_path → จะสร้าง path อัตโนมัติ: data\stock\<query>\reddit_search_<sub>_<YYYYMMDD>_<YYYYMMDD>.jsonl
     - สร้างโฟลเดอร์ปลายทางให้เสมอ
     """
-    sub: str = "news",
+    sub: str = "news"
     start_dt: datetime = datetime.now(tz=timezone.utc) - timedelta(days=30)
     end_dt: datetime   = datetime.now(tz=timezone.utc)
     limit: int = 50
@@ -1937,7 +1937,7 @@ def reddit_get_company_news(query: str):
         qslug = _slug(query)
         start_str = start_dt.astimezone(timezone.utc).strftime("%Y%m%d")
         end_str   = end_dt.astimezone(timezone.utc).strftime("%Y%m%d")
-        save_path = rf"C:\TradingAgents_fail\data\stock\{qslug}\reddit_company_news_{end_str}.jsonl"
+        save_path = f"data/stock/{qslug}/reddit_company_news_{end_str}.jsonl"
 
     url = f"{REDDIT_OAUTH_BASE}/r/{sub}/search.json"
     params = {
@@ -2019,9 +2019,8 @@ def yfinance_get_company_news(symbol: str) -> List[Dict]:
 
     # เซฟแบบ raw ทั้งหมด
     today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
-    base = os.path.join(".", "data", "stock", symbol.lower())
-    jsonl_path = os.path.join(base, f"yfinance_company_news_{today}.jsonl")
-    _save_jsonl(news, jsonl_path, append=False)
+    path = f"data/stock/{symbol}/yfinance_company_news_{today}.json"
+    _save_jsonl(news, path, append=False)
 
     return news
 # ------------------------------ EDIT SOCIAL MEDIA ---------------------------------#
@@ -2095,14 +2094,7 @@ def _collect_query(
 # ============================ Public API (easy) ============================
 
 def fetch_bsky_stock_posts(
-    symbol: str,
-    *,
-    # ให้ใส่แค่ symbol ก็พอ: ที่เหลือมีค่า default ทั้งหมด
-    limit_total: int = 180,
-    handle: Optional[str] = "keingkrai.bsky.social",
-    app_password: Optional[str] = "ipki-ujyp-4a7h-ludf",
-    service: Optional[str] = None,
-    save_jsonl_path: Optional[str] = r"C:\TradingAgents_fail\data\\social\\{symbol}\\bsky_{symbol}_posts.jsonl",
+    symbol: str
 ) -> List[Dict]:
     """
     ดึงโพสต์ Bluesky ที่พูดถึงหุ้น/สัญลักษณ์:
@@ -2113,6 +2105,11 @@ def fetch_bsky_stock_posts(
     Credentials:
       - ตั้ง ENV: BSKY_HANDLE, BSKY_APP_PW (แนะนำ) หรือใส่มาทางพารามิเตอร์ก็ได้
     """
+    limit_total: int = 180
+    handle: Optional[str] = "keingkrai.bsky.social"
+    app_password: Optional[str] = "ipki-ujyp-4a7h-ludf"
+    service: Optional[str] = None
+    save_jsonl_path: Optional[str] = f"data/social/{symbol}/bsky_{symbol}_posts.jsonl"
     # ---- อ่าน credentials จาก env ถ้าไม่ส่งมา ----
     handle = handle or os.getenv("BSKY_HANDLE")
     app_password = app_password or os.getenv("BSKY_APP_PW")
@@ -2257,16 +2254,7 @@ def _search_statuses(
     time.sleep(sleep_s)
     return out
 
-def fetch_mastodon_stock_posts(
-    symbol: str,
-    *,
-    # ทั้งหมดนี้เป็นค่าเริ่มต้น/อ่านจาก ENV — ผู้ใช้ใส่แค่ symbol ก็พอ
-    instance_base_url: Optional[str] = None,
-    limit_hashtag: int = 120,
-    limit_search: int = 120,
-    app_token: Optional[str] = None,
-    save_jsonl_path: Optional[str] = r"./data/social/{symbol}/mastodon_{symbol}_posts.jsonl",
-) -> List[Dict]:
+def fetch_mastodon_stock_posts( symbol: str ) -> List[Dict]:
     """
     ดึงโพสต์ Mastodon ที่เกี่ยวกับหุ้น:
       - Hashtag timeline: #<SYMBOL>
@@ -2277,6 +2265,12 @@ def fetch_mastodon_stock_posts(
       - MASTODON_BASE_URL (เช่น https://mastodon.social)
       - MASTODON_TOKEN    (app/user token ถ้ามี จะช่วยเพิ่มโควต้า/ข้ามบางข้อจำกัด)
     """
+    # ทั้งหมดนี้เป็นค่าเริ่มต้น/อ่านจาก ENV — ผู้ใช้ใส่แค่ symbol ก็พอ
+    instance_base_url: Optional[str] = None
+    limit_hashtag: int = 120
+    limit_search: int = 120
+    app_token: Optional[str] = None
+    save_jsonl_path: Optional[str] = f"data/social/{symbol}/mastodon_{symbol}_posts.jsonl"
     instance_base_url = instance_base_url or os.getenv("MASTODON_BASE_URL", "https://mastodon.social")
     app_token = app_token or os.getenv("MASTODON_TOKEN")
 
@@ -2345,20 +2339,18 @@ def _mk_reddit():
         ratelimit_seconds=5,
     )
 
-def fetch_reddit_symbol_top_praw(
-    symbol: str,
-    timeframe: str = "week",           # "hour","day","week","month","year","all"
-    subs: Optional[List[str]] = None,  # ถ้า None ใช้ DEFAULT_SUBS
-    limit_per_sub: int = 50,
-    include_selftext: bool = False,
-    out_path: Optional[str] = r"./data/social/{symbol}/reddit_{symbol}_post.jsonl",
-) -> List[Dict]:
+def fetch_reddit_symbol_top_praw( symbol: str ) -> List[Dict]:
     """
     ค้นหาโพสต์ที่กล่าวถึง symbol (เช่น NVDA, $NVDA) ในหลาย subreddit
     - เรียงตาม top ภายใน timeframe ที่กำหนด
     - ลบซ้ำด้วย post.id
     - เซฟเป็น JSONL อัตโนมัติ (รองรับ {symbol},{timeframe} ในพาธ)
     """
+    timeframe: str = "week"           # "hour","day","week","month","year","all"
+    subs: Optional[List[str]] = None  # ถ้า None ใช้ DEFAULT_SUBS
+    limit_per_sub: int = 50
+    include_selftext: bool = False
+    out_path: Optional[str] = f"data/social/{symbol}/reddit_{symbol}_post.jsonl"
     symbol_up = symbol.upper()
     query_variants = [symbol_up, f"${symbol_up}"]
 

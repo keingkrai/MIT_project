@@ -98,7 +98,7 @@ VENDOR_METHODS = {
         #"core_stock_price": get_stock_data,
         # "alpha_vantage": get_alpha_vantage_stock,
         # "yfinance": get_YFin_data_online,
-        #"local": get_stock_data
+        "local": get_stock_data
     },
     
     
@@ -109,7 +109,7 @@ VENDOR_METHODS = {
         # "yfinance": get_stock_stats_indicators_window,
         
         # #more
-        "local": get_indicator,
+        "local": get_core_indicator,
     },
     
     

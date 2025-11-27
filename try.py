@@ -85,7 +85,7 @@ q = 'RBLX'
 # print(f)
 
 # yfinance_get_company_news(q)
-alphavantage_get_company_news(q)
+# alphavantage_get_company_news(q)
 # ----------------------------- bluesky posts ------------
 # posts = fetch_bsky_stock_posts(symbol='NVDA')
 # print(posts)
@@ -96,4 +96,4 @@ alphavantage_get_company_news(q)
 # fetch_finnhub_world_news()
 # print(pick_fundamental_source('NVDA'))
 
-# print(get_stock_data("AAPL", "2025-11-01", "2025-11-20"))
+print(get_stock_data("AAPL", "2025-11-01", "2025-11-20"))

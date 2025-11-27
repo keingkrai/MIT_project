@@ -108,10 +108,10 @@ def sent_to_telegram(report_message):
     with open("all_report_message.txt", "a") as file:
         file.write(report_message + "\n")
 
-    try:
-        requests.post(url, data=data, timeout=5)
-    except Exception as e:
-        print(f"Telegram Error: {e}")
+    # try:
+    #     requests.post(url, data=data, timeout=5)
+    # except Exception as e:
+    #     print(f"Telegram Error: {e}")
 
 # ==========================================
 # ✅ MAIN TOOL DEFINITION

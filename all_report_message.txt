@@ -13,18 +13,11 @@ TradingView Score: 446
 
 🏆 Best Source: TW
 
-📊 Indicator 'vwma' Source Comparison for AAPL:
+📊 Indicator 'macds' Source Comparison for AAPL:
 
-Yahoo Finance Score: 158
+Yahoo Finance Score: 106
 Alpha Vantage Score: 0
-TradingView Score: 158
-
-🏆 Best Source: YAHOO, TV
-📊 Indicator 'macdh' Source Comparison for AAPL:
-
-Yahoo Finance Score: 67
-Alpha Vantage Score: 0
-TradingView Score: 67
+TradingView Score: 106
 
 🏆 Best Source: YAHOO, TV
 📊 Indicator 'macd' Source Comparison for AAPL:
@@ -34,14 +27,21 @@ Alpha Vantage Score: 0
 TradingView Score: 101
 
 🏆 Best Source: YAHOO, TV
-📊 Indicator 'macds' Source Comparison for AAPL:
+📊 Indicator 'macdh' Source Comparison for AAPL:
 
-Yahoo Finance Score: 106
+Yahoo Finance Score: 67
 Alpha Vantage Score: 0
-TradingView Score: 106
+TradingView Score: 67
 
 🏆 Best Source: YAHOO, TV
 📊 Indicator 'close_50_sma' Source Comparison for AAPL:
+
+Yahoo Finance Score: 316
+Alpha Vantage Score: 316
+TradingView Score: 316
+
+🏆 Best Source: YAHOO, ALPHA, TV
+📊 Indicator 'close_10_ema' Source Comparison for AAPL:
 
 Yahoo Finance Score: 316
 Alpha Vantage Score: 316
@@ -69,3 +69,7 @@ Alpha Vantage Score: 316
 TradingView Score: 316
 
 🏆 Best Source: YAHOO, ALPHA, TV
+
+Bluesky news fetched for AAPL: 104 posts found.
+Mastodon news fetched for AAPL: 120 posts found.
+Subreddit news fetched for AAPL: 9 posts found.

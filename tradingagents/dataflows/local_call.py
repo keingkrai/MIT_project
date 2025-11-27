@@ -107,6 +107,14 @@ def get_bluesky_news(
 ):
     res = fetch_bsky_stock_posts(ticker)
     print(f'\n\n\n [get_bluesky_news] Bluesky news result:\n\n\n\n')
+
+    count = len(res)
+    report_message = f"Bluesky news fetched for {ticker}: {count} posts found."
+
+    # write text file
+    with open("all_report_message.txt", "a") as file:
+        file.write("\n" + report_message + "\n")
+
     return res
 
 def get_mastodon_news(
@@ -114,6 +122,14 @@ def get_mastodon_news(
 ):
     res = fetch_mastodon_stock_posts(ticker)
     print(f'\n\n\n [get_mastodon_news] Mastodon news result:\n\n\n\n')
+
+    count = len(res)
+    report_message = f"Mastodon news fetched for {ticker}: {count} posts found."
+
+    # write text file
+    with open("all_report_message.txt", "a") as file:
+        file.write(report_message + "\n")
+
     return res
 
 def get_subreddit_news(
@@ -121,4 +137,12 @@ def get_subreddit_news(
 ):
     res = fetch_reddit_symbol_top_praw(symbol)
     print(f'\n\n\n [get_subreddit_news] Subreddit news result:\n\n\n\n')
+
+    count = len(res)
+    report_message = f"Subreddit news fetched for {symbol}: {count} posts found."
+
+    # write text file
+    with open("all_report_message.txt", "a") as file:
+        file.write(report_message + "\n\n")
+
     return res

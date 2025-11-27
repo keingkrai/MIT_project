@@ -62,10 +62,10 @@ def sent_to_telegram(report_message, score: dict, best_source: str):
     with open("all_report_message.txt", "w") as file:
         file.write(MESSAGE + "\n\n")
 
-    try:
-        requests.post(url, data=data, timeout=5)
-    except Exception as e:
-        print(f"Telegram Error: {e}")
+    # try:
+    #     requests.post(url, data=data, timeout=5)
+    # except Exception as e:
+    #     print(f"Telegram Error: {e}")
 
 # ==========================================
 # Core Logic: Compare Providers

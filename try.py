@@ -45,6 +45,7 @@ from tradingagents.dataflows.local import (
     )
 from datetime import datetime, timezone, timedelta
 from tradingagents.dataflows.core_stock_price import get_stock_data
+from tradingagents.dataflows.local_call import get_bluesky_news
 # โหลดค่าจากไฟล์ .env
 load_dotenv()
 
@@ -107,7 +108,7 @@ load_dotenv()
 # fetch_finnhub_world_news()
 # print(pick_fundamental_source('NVDA'))
 
-# import pandas as pd
+import pandas as pd
 # a = finnhub_get_company_news("AAPL")
 # df = pd.DataFrame(a)
 # print(df)
@@ -147,7 +148,10 @@ load_dotenv()
 # print(df_news)
 # print(len(df_news))
 
-
+res = get_bluesky_news("AAPL")
+print(len(res))
+df = pd.DataFrame(res)
+print(df)
+print(df.columns)
+print(len(df))
 # [get_reddit_world_news, get_yfinance_world_news, get_finnhub_world_news]
-res = fetch_reddit_world_news()
-print(res)

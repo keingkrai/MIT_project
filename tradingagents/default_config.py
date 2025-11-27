@@ -15,10 +15,9 @@ DEFAULT_CONFIG = {
     # "quick_think_llm": "gpt-4o-mini",
     # "backend_url": "https://api.openai.com/v1",
     # LLM settings
-    "llm_provider": "typhoon",
-    "deep_think_llm": "typhoon-v2.1-12b-instruct",
-    "quick_think_llm": "typhoon-v2.1-12b-instruct",
-    "backend_url": "https://api.opentyphoon.ai/v1",
+    "llm_provider": "google",
+    "deep_think_llm": "gemini-2.0-flash",
+    "quick_think_llm": "gemini-2.0-flash",
     # Debate and discussion settings
     "max_debate_rounds": 1,
     "max_risk_discuss_rounds": 1,

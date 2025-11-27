@@ -4,6 +4,7 @@ from tradingagents.dataflows.interface import route_to_vendor
 
 from dotenv import load_dotenv
 
+<<<<<<< HEAD
 from tradingagents.dataflows.alpha_vantage import (
     get_alpha_vantage_stock,
     get_indicator as get_alpha_vantage_indicator,
@@ -14,6 +15,9 @@ from tradingagents.dataflows.alpha_vantage import (
     get_insider_transactions as get_alpha_vantage_insider_transactions,
     get_news as get_alpha_vantage_news
 )
+=======
+
+>>>>>>> main
 
 from tradingagents.dataflows.local import (
     
@@ -28,7 +32,8 @@ from tradingagents.dataflows.local import (
     #company news data
     yfinance_get_company_news, 
     reddit_get_company_news, 
-    finnhub_get_company_news, 
+    finnhub_get_company_news,
+    alphavantage_get_company_news,
     
     #social media posts data 
     fetch_reddit_symbol_top_praw, 
@@ -95,7 +100,7 @@ load_dotenv()
 # print(f)
 
 # yfinance_get_company_news(q)
-
+# alphavantage_get_company_news(q)
 # ----------------------------- bluesky posts ------------
 # posts = fetch_bsky_stock_posts(symbol='NVDA')
 # print(posts)

@@ -1,0 +1,92 @@
+{
+  "symbol": "META",
+  "chosen_source": "yfinance",
+  "scores": {
+    "yfinance": 12,
+    "finnhub": 3,
+    "alphavantage": 11
+  },
+  "completeness": {
+    "yfinance": 13,
+    "finnhub": 8,
+    "alphavantage": 16
+  },
+  "sections": {
+    "overview": {
+      "scores": {
+        "yfinance": 5,
+        "finnhub": 3,
+        "alphavantage": 4
+      },
+      "completeness": {
+        "yfinance": 6,
+        "finnhub": 8,
+        "alphavantage": 8
+      }
+    },
+    "balancesheet": {
+      "scores": {
+        "yfinance": 3,
+        "finnhub": 0,
+        "alphavantage": 3
+      },
+      "completeness": {
+        "yfinance": 3,
+        "finnhub": 0,
+        "alphavantage": 3
+      }
+    },
+    "cashflow": {
+      "scores": {
+        "yfinance": 2,
+        "finnhub": 0,
+        "alphavantage": 2
+      },
+      "completeness": {
+        "yfinance": 2,
+        "finnhub": 0,
+        "alphavantage": 3
+      }
+    },
+    "incomestatement": {
+      "scores": {
+        "yfinance": 2,
+        "finnhub": 0,
+        "alphavantage": 2
+      },
+      "completeness": {
+        "yfinance": 2,
+        "finnhub": 0,
+        "alphavantage": 2
+      }
+    }
+  },
+  "final_payload": {
+    "overview": {
+      "marketCap": 1597031453813.379,
+      "sharesOutstanding": null,
+      "peRatio": null,
+      "currency": "USD",
+      "exchange": "NMS",
+      "name": "Meta Platforms, Inc.",
+      "sector": "Communication Services",
+      "industry": "Internet Content & Information"
+    },
+    "balancesheet": {
+      "totalAssets": 276054000000.0,
+      "totalLiabilities": 93417000000.0,
+      "shareholderEquity": 182637000000.0
+    },
+    "cashflow": {
+      "operatingCashFlow": 91328000000.0,
+      "freeCashFlow": 54072000000.0,
+      "capitalExpenditures": null
+    },
+    "incomestatement": {
+      "totalRevenue": 164501000000.0,
+      "netIncome": 62360000000.0,
+      "eps": null
+    }
+  },
+  "timestamp": "2025-11-27T04:07:57.718478+00:00"
+}

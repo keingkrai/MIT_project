@@ -1,5 +1,5 @@
 from typing import Annotated
-from .local import get_world_news_yf, fetch_reddit_world_news, fetch_reddit_symbol_top_praw, fetch_mastodon_stock_posts, fetch_bsky_stock_posts, pick_fundamental_source, finnhub_get_company_news, reddit_get_company_news, yfinance_get_company_news, fetch_finnhub_world_news, fetch_and_choose
+from .local import alphavantage_get_company_news, get_world_news_yf, fetch_reddit_world_news, fetch_reddit_symbol_top_praw, fetch_mastodon_stock_posts, fetch_bsky_stock_posts, pick_fundamental_source, finnhub_get_company_news, reddit_get_company_news, yfinance_get_company_news, fetch_finnhub_world_news, fetch_and_choose
     
 #fundamental data
 def get_fundamentals_local(ticker, curr_date):
@@ -41,6 +41,16 @@ def get_yfinance_company_news(
 
     res = yfinance_get_company_news(query)
     # print(f'\n\n\n [get_yfinance_company_news] YFinance company news result:\n{res}\n\n\n')
+    return res
+
+def get_alphavantage_company_news(
+    query: Annotated[str, "Query to search with"],
+    start_date: Annotated[str, "Start date in yyyy-mm-dd format"],
+    end_date: Annotated[str, "End date in yyyy-mm-dd format"],
+) -> str:
+
+    res = alphavantage_get_company_news(query)
+    # print(f'\n\n\n [get_alphavantage_company_news] AlphaVantage company news result:\n{res}\n\n\n')
     return res
 
 

@@ -20,7 +20,7 @@ class Propagator:
     ) -> Dict[str, Any]:
         """Create the initial state for the agent graph."""
         return {
-            "messages": [("human", company_name)],
+            "messages": [("human", f"Analyze the stock for {company_name}. Start by gathering the necessary stock data and technical indicators. Then, provide a detailed market analysis report based on that data.")],
             "company_of_interest": company_name,
             "trade_date": str(trade_date),
             "investment_debate_state": InvestDebateState(

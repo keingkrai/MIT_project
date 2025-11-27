@@ -2,68 +2,68 @@
   "symbol": "RBLX",
   "chosen_source": "yfinance",
   "scores": {
-    "yfinance": 1,
-    "finnhub": 1,
-    "alphavantage": 0
+    "yfinance": 10,
+    "finnhub": 3,
+    "alphavantage": 9
   },
   "completeness": {
     "yfinance": 13,
     "finnhub": 7,
-    "alphavantage": 0
+    "alphavantage": 15
   },
   "sections": {
     "overview": {
       "scores": {
-        "yfinance": 1,
-        "finnhub": 1,
-        "alphavantage": 0
+        "yfinance": 5,
+        "finnhub": 3,
+        "alphavantage": 4
       },
       "completeness": {
         "yfinance": 6,
         "finnhub": 7,
-        "alphavantage": 0
+        "alphavantage": 7
       }
     },
     "balancesheet": {
       "scores": {
-        "yfinance": 0,
+        "yfinance": 2,
         "finnhub": 0,
-        "alphavantage": 0
+        "alphavantage": 2
       },
       "completeness": {
         "yfinance": 3,
         "finnhub": 0,
-        "alphavantage": 0
+        "alphavantage": 3
       }
     },
     "cashflow": {
       "scores": {
-        "yfinance": 0,
+        "yfinance": 1,
         "finnhub": 0,
-        "alphavantage": 0
+        "alphavantage": 1
       },
       "completeness": {
         "yfinance": 2,
         "finnhub": 0,
-        "alphavantage": 0
+        "alphavantage": 3
       }
     },
     "incomestatement": {
       "scores": {
-        "yfinance": 0,
+        "yfinance": 2,
         "finnhub": 0,
-        "alphavantage": 0
+        "alphavantage": 2
       },
       "completeness": {
         "yfinance": 2,
         "finnhub": 0,
-        "alphavantage": 0
+        "alphavantage": 2
       }
     }
   },
   "final_payload": {
     "overview": {
-      "marketCap": 63334740943.15732,
+      "marketCap": 65089554713.15732,
       "sharesOutstanding": null,
       "peRatio": null,
       "currency": "USD",
@@ -88,5 +88,5 @@
       "eps": null
     }
   },
-  "timestamp": "2025-11-25T19:30:57.108572+00:00"
+  "timestamp": "2025-11-27T03:44:21.185592+00:00"
 }

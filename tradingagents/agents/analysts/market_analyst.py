@@ -1,7 +1,9 @@
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 import time
 import json
-from tradingagents.agents.utils.agent_utils import get_stock_data, get_indicators
+# from tradingagents.agents.utils.agent_utils import get_indicators
+from tradingagents.dataflows.core_indicator import get_indicators
+from tradingagents.dataflows.core_stock_price import get_stock_data
 from tradingagents.dataflows.config import get_config
 
 

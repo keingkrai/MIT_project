@@ -12,7 +12,6 @@ def create_social_media_analyst(llm):
         company_name = state["company_of_interest"]
 
         tools = [
-            get_news,
             get_social
         ]
 

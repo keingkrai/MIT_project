@@ -30,6 +30,7 @@ from .local_call import (
     get_finnhub_company_news, 
     get_reddit_company_news, 
     get_yfinance_company_news,
+    get_alphavantage_company_news,
     
     #globalnews data
     get_reddit_world_news,
@@ -46,7 +47,7 @@ from .local_call import (
     )
 
 from .core_stock_price import get_stock_data
-from tradingagents.dataflows.core_indicator import get_core_indicator
+from tradingagents.dataflows.core_indicator import get_indicators
 
 # Tools organized by category
 TOOLS_CATEGORIES = {
@@ -97,18 +98,18 @@ VENDOR_METHODS = {
         "core_stock_price": get_stock_data,
         # "alpha_vantage": get_alpha_vantage_stock,
         # "yfinance": get_YFin_data_online,
-        #"local": get_stock_data
+        "local": get_stock_data
     },
     
     
     # technical_indicators
     "get_indicators": {
-        "core_indicator": get_core_indicator,
+        # "core_indicator": get_core_indicator,
         # "alpha_vantage": get_alpha_vantage_indicator,
         # "yfinance": get_stock_stats_indicators_window,
         
         # #more
-        # "local": get_indicator,
+        "local": get_indicators,
     },
     
     
@@ -144,7 +145,7 @@ VENDOR_METHODS = {
         "google": get_google_news,
         
         #more
-        "local": [get_finnhub_company_news, get_reddit_company_news, get_yfinance_company_news],
+        "local": [get_finnhub_company_news, get_reddit_company_news, get_yfinance_company_news, get_alphavantage_company_news],
     },
     "get_global_news": {
         "openai": get_global_news_openai,

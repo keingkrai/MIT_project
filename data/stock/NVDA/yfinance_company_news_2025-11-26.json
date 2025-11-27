@@ -1,0 +1,835 @@
+[
+  {
+    "id": "51b0a638-e6d1-4f1f-8b32-e5447ba6c70f",
+    "content": {
+      "id": "51b0a638-e6d1-4f1f-8b32-e5447ba6c70f",
+      "contentType": "STORY",
+      "title": "Nvidia says it isn't using 'circular financing' schemes. 2 famous short sellers disagree.",
+      "description": "",
+      "summary": "Jim Chanos and Michael Burry claim Nvidia is engaged in questionable vendor financing.",
+      "pubDate": "2025-11-26T10:00:21Z",
+      "displayTime": "2025-11-26T10:00:21Z",
+      "isHosted": true,
+      "bypassModal": false,
+      "previewUrl": null,
+      "thumbnail": {
+        "originalUrl": "https://s.yimg.com/os/creatr-uploaded-images/2025-07/ed9399f0-5840-11f0-bb6b-04ccd545a9b6",
+        "originalWidth": 5155,
+        "originalHeight": 3437,
+        "caption": "",
+        "resolutions": [
+          {
+            "url": "https://s.yimg.com/uu/api/res/1.2/i8NM3hcO2fpxZN.ru5Pg3w--~B/aD0zNDM3O3c9NTE1NTthcHBpZD15dGFjaHlvbg--/https://s.yimg.com/os/creatr-uploaded-images/2025-07/ed9399f0-5840-11f0-bb6b-04ccd545a9b6",
+            "width": 5155,
+            "height": 3437,
+            "tag": "original"
+          },
+          {
+            "url": "https://s.yimg.com/uu/api/res/1.2/KtOOpN0bw7bjZSpFiSj6.w--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://s.yimg.com/os/creatr-uploaded-images/2025-07/ed9399f0-5840-11f0-bb6b-04ccd545a9b6",
+            "width": 170,
+            "height": 128,
+            "tag": "170x128"
+          }
+        ]
+      },
+      "provider": {
+        "displayName": "Yahoo Finance",
+        "url": "http://finance.yahoo.com/"
+      },
+      "canonicalUrl": {
+        "url": "https://finance.yahoo.com/news/nvidia-says-it-isnt-using-circular-financing-schemes-2-famous-short-sellers-disagree-100021210.html",
+        "site": "finance",
+        "region": "US",
+        "lang": "en-US"
+      },
+      "clickThroughUrl": {
+        "url": "https://finance.yahoo.com/news/nvidia-says-it-isnt-using-circular-financing-schemes-2-famous-short-sellers-disagree-100021210.html",
+        "site": "finance",
+        "region": "US",
+        "lang": "en-US"
+      },
+      "metadata": {
+        "editorsPick": true
+      },
+      "finance": {
+        "premiumFinance": {
+          "isPremiumNews": false,
+          "isPremiumFreeNews": false
+        }
+      },
+      "storyline": {
+        "storylineItems": [
+          {
+            "content": {
+              "id": "cf3de9e4-0036-496d-b707-404f7deb425e",
+              "contentType": "STORY",
+              "isHosted": true,
+              "title": "Stock market today: Dow, S&P 500, Nasdaq futures climb as Wall Street looks to keep rallying into Thanksgiving",
+              "thumbnail": {
+                "originalUrl": "https://s.yimg.com/os/creatr-uploaded-images/2025-11/95e3ca90-ca55-11f0-99ff-c79ce8deeaff",
+                "originalWidth": 4705,
+                "originalHeight": 3137,
+                "caption": "",
+                "resolutions": null
+              },
+              "provider": {
+                "displayName": "Yahoo Finance",
+                "sourceId": "yahoofinance.com"
+              },
+              "previewUrl": null,
+              "providerContentUrl": "",
+              "canonicalUrl": {
+                "url": "https://finance.yahoo.com/news/live/stock-market-today-dow-sp-500-nasdaq-futures-climb-as-wall-street-looks-to-keep-rallying-into-thanksgiving-235318861.html"
+              },
+              "clickThroughUrl": {
+                "url": "https://finance.yahoo.com/news/live/stock-market-today-dow-sp-500-nasdaq-futures-climb-as-wall-street-looks-to-keep-rallying-into-thanksgiving-235318861.html"
+              }
+            }
+          },
+          {
+            "content": {
+              "id": "a20ff3b1-6a94-446e-9935-288333b726d0",
+              "contentType": "STORY",
+              "isHosted": true,
+              "title": "Stock market today: Dow, S&P 500, Nasdaq rally for 3rd day as Fed rate cut hopes grow, Apple and Alphabet notch records",
+              "thumbnail": {
+                "originalUrl": "https://s.yimg.com/os/creatr-images/2019-12/441224f0-2925-11ea-96ff-875256a153fc",
+                "originalWidth": 5184,
+                "originalHeight": 3456,
+                "caption": "",
+                "resolutions": null
+              },
+              "provider": {
+                "displayName": "Yahoo Finance",
+                "sourceId": "yahoofinance.com"
+              },
+              "previewUrl": null,
+              "providerContentUrl": "",
+              "canonicalUrl": {
+                "url": "https://finance.yahoo.com/news/live/stock-market-today-dow-sp-500-nasdaq-rally-for-3rd-day-as-fed-rate-cut-hopes-grow-apple-and-alphabet-notch-records-210019302.html"
+              },
+              "clickThroughUrl": {
+                "url": "https://finance.yahoo.com/news/live/stock-market-today-dow-sp-500-nasdaq-rally-for-3rd-day-as-fed-rate-cut-hopes-grow-apple-and-alphabet-notch-records-210019302.html"
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "640e9262-2a37-40bc-80a9-b45410bb88eb",
+    "content": {
+      "id": "640e9262-2a37-40bc-80a9-b45410bb88eb",
+      "contentType": "STORY",
+      "title": "Nvidia stock falls after report says Google, Meta in talks for multibillion-dollar AI chip deal",
+      "description": "",
+      "summary": "Nvidia stock fell amid a report from The Information that Google is in talks with Meta for a big chip deal.",
+      "pubDate": "2025-11-25T14:37:25Z",
+      "displayTime": "2025-11-25T21:06:16Z",
+      "isHosted": true,
+      "bypassModal": false,
+      "previewUrl": null,
+      "thumbnail": {
+        "originalUrl": "https://s.yimg.com/os/creatr-uploaded-images/2025-11/aec4e4a0-be47-11f0-a96b-41f33604345d",
+        "originalWidth": 5196,
+        "originalHeight": 3464,
+        "caption": "",
+        "resolutions": [
+          {
+            "url": "https://s.yimg.com/uu/api/res/1.2/x2fiY_EIM.fVqMFdKKRu_A--~B/aD0zNDY0O3c9NTE5NjthcHBpZD15dGFjaHlvbg--/https://s.yimg.com/os/creatr-uploaded-images/2025-11/aec4e4a0-be47-11f0-a96b-41f33604345d",
+            "width": 5196,
+            "height": 3464,
+            "tag": "original"
+          },
+          {
+            "url": "https://s.yimg.com/uu/api/res/1.2/sqhdTvMTrYo435xl4VSEaQ--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://s.yimg.com/os/creatr-uploaded-images/2025-11/aec4e4a0-be47-11f0-a96b-41f33604345d",
+            "width": 170,
+            "height": 128,
+            "tag": "170x128"
+          }
+        ]
+      },
+      "provider": {
+        "displayName": "Yahoo Finance",
+        "url": "http://finance.yahoo.com/"
+      },
+      "canonicalUrl": {
+        "url": "https://finance.yahoo.com/news/nvidia-stock-falls-after-report-says-google-meta-in-talks-for-multibillion-dollar-ai-chip-deal-143725770.html",
+        "site": "finance",
+        "region": "US",
+        "lang": "en-US"
+      },
+      "clickThroughUrl": {
+        "url": "https://finance.yahoo.com/news/nvidia-stock-falls-after-report-says-google-meta-in-talks-for-multibillion-dollar-ai-chip-deal-143725770.html",
+        "site": "finance",
+        "region": "US",
+        "lang": "en-US"
+      },
+      "metadata": {
+        "editorsPick": true
+      },
+      "finance": {
+        "premiumFinance": {
+          "isPremiumNews": false,
+          "isPremiumFreeNews": false
+        }
+      },
+      "storyline": {
+        "storylineItems": [
+          {
+            "content": {
+              "id": "b758ff73-ae14-3ce6-8c02-18252ddff855",
+              "contentType": "VIDEO",
+              "isHosted": true,
+              "title": "Nvidia falls on Google–Meta news, Coinbase & Estée Lauder downgraded",
+              "thumbnail": {
+                "originalUrl": "https://s.yimg.com/os/creatr-uploaded-images/2025-11/45364b40-ca3c-11f0-bc72-71edbd680c5b",
+                "originalWidth": 5028,
+                "originalHeight": 2831,
+                "caption": "",
+                "resolutions": null
+              },
+              "provider": {
+                "displayName": "Yahoo Finance Video",
+                "sourceId": "video.yahoofinance.com"
+              },
+              "previewUrl": null,
+              "providerContentUrl": "",
+              "canonicalUrl": {
+                "url": "https://finance.yahoo.com/video/nvidia-falls-google-meta-news-204542093.html"
+              },
+              "clickThroughUrl": {
+                "url": "https://finance.yahoo.com/video/nvidia-falls-google-meta-news-204542093.html"
+              }
+            }
+          },
+          {
+            "content": {
+              "id": "581ea27f-be05-3a22-a44e-6941a541d3e2",
+              "contentType": "VIDEO",
+              "isHosted": true,
+              "title": "Alphabet nears $4T market cap: Could stock mirror Nvidia's rise?",
+              "thumbnail": {
+                "originalUrl": "https://s.yimg.com/os/creatr-uploaded-images/2025-11/12792ed0-ca0e-11f0-b9de-09f8b75336f0",
+                "originalWidth": 4483,
+                "originalHeight": 2524,
+                "caption": "",
+                "resolutions": null
+              },
+              "provider": {
+                "displayName": "Yahoo Finance Video",
+                "sourceId": "video.yahoofinance.com"
+              },
+              "previewUrl": null,
+              "providerContentUrl": "",
+              "canonicalUrl": {
+                "url": "https://finance.yahoo.com/video/google-nears-4t-could-alphabet-145040185.html"
+              },
+              "clickThroughUrl": {
+                "url": "https://finance.yahoo.com/video/google-nears-4t-could-alphabet-145040185.html"
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "bb6d353e-e602-3aca-bc25-68ac689b56f4",
+    "content": {
+      "id": "bb6d353e-e602-3aca-bc25-68ac689b56f4",
+      "contentType": "VIDEO",
+      "title": "Google's TPU chips may give it a new leg up in AI race",
+      "description": "<p>Alphabet (<a data-i13n=\"cpos:1;pos:1\" href=\"https://finance.yahoo.com/quote/GOOG\">GOOG</a>, <a data-i13n=\"cpos:2;pos:1\" href=\"https://finance.yahoo.com/quote/GOOGL\">GOOGL</a>) stock holds onto its gains ahead of Tuesday's market close after a report from The Information said Meta Platforms (<a data-i13n=\"cpos:3;pos:1\" href=\"https://finance.yahoo.com/quote/META\">META</a>) is in talks to <a data-i13n=\"cpos:4;pos:1\" href=\"https://finance.yahoo.com/news/nvidia-stock-falls-after-report-says-google-meta-in-talks-for-multibillion-dollar-ai-chip-deal-143725770.html\">purchase billions of dollars in AI chips</a> from Google; Alphabet's market capitalization is currently <a data-i13n=\"cpos:5;pos:1\" href=\"https://finance.yahoo.com/video/google-nears-4t-could-alphabet-145040185.html\">nearing $4 trillion</a>. Shares of chip giants Nvidia (<a data-i13n=\"cpos:6;pos:1\" href=\"https://finance.yahoo.com/quote/NVDA\">NVDA</a>) and Advanced Micro Devices (<a data-i13n=\"cpos:7;pos:1\" href=\"https://finance.yahoo.com/quote/AMD\">AMD</a>) have slid in today's session on these headlines.</p>\n<p>Yahoo Finance tech editor <a data-i13n=\"cpos:8;pos:1\" href=\"https://www.yahoo.com/author/daniel-howley/\">Dan Howley</a> comes on Market Domination to illustrate the advantage this could give Alphabet in the tightening artificial intelligence race.</p>\n<p>Also catch Dan Howley further explain the difference between <a data-i13n=\"cpos:9;pos:1\" href=\"https://finance.yahoo.com/video/google-tpus-vs-nvidia-gpus-171500192.html\">Google's TPUs (Tensor Processing Units)</a> and Nvidia's GPU (Graphics Processing Units) chips.</p>\n<p>To watch more expert insights and analysis on the latest market action, check out more <a data-i13n=\"cpos:10;pos:1\" href=\"https://finance.yahoo.com/videos/series/market-domination/\">Market Domination</a>.</p>",
+      "summary": "Alphabet (GOOG, GOOGL) stock holds onto its gains ahead of Tuesday's market close after a report from The Information said Meta Platforms (META) is in talks to purchase billions of dollars in AI chips from Google; Alphabet's market capitalization is currently nearing $4 trillion. Shares of chip giants Nvidia (NVDA) and Advanced Micro Devices (AMD) have slid in today's session on these headlines. Yahoo Finance tech editor Dan Howley comes on Market Domination to illustrate the advantage this could give Alphabet in the tightening artificial intelligence race. Also catch Dan Howley further explain the difference between Google's TPUs (Tensor Processing Units) and Nvidia's GPU (Graphics Processing Units) chips. To watch more expert insights and analysis on the latest market action, check out more&nbsp;Market Domination.",
+      "pubDate": "2025-11-25T20:26:50Z",
+      "displayTime": "",
+      "isHosted": true,
+      "bypassModal": false,
+      "previewUrl": null,
+      "thumbnail": {
+        "originalUrl": "https://s.yimg.com/os/creatr-uploaded-images/2025-11/c8a461b0-ca3c-11f0-ad7e-a64391bc6734",
+        "originalWidth": 5604,
+        "originalHeight": 3155,
+        "caption": "",
+        "resolutions": [
+          {
+            "url": "https://s.yimg.com/uu/api/res/1.2/mf.oy1sm0IoQzS3ZbkWEFw--~B/aD0zMTU1O3c9NTYwNDthcHBpZD15dGFjaHlvbg--/https://s.yimg.com/os/creatr-uploaded-images/2025-11/c8a461b0-ca3c-11f0-ad7e-a64391bc6734",
+            "width": 5604,
+            "height": 3155,
+            "tag": "original"
+          },
+          {
+            "url": "https://s.yimg.com/uu/api/res/1.2/UsmZONUMwNBaS3GZdxM.7A--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://s.yimg.com/os/creatr-uploaded-images/2025-11/c8a461b0-ca3c-11f0-ad7e-a64391bc6734",
+            "width": 170,
+            "height": 128,
+            "tag": "170x128"
+          }
+        ]
+      },
+      "provider": {
+        "displayName": "Yahoo Finance Video",
+        "url": "https://finance.yahoo.com/"
+      },
+      "canonicalUrl": {
+        "url": "https://finance.yahoo.com/video/googles-tpu-chips-may-leg-202650634.html",
+        "site": "finance",
+        "region": "US",
+        "lang": "en-US"
+      },
+      "clickThroughUrl": {
+        "url": "https://finance.yahoo.com/video/googles-tpu-chips-may-leg-202650634.html",
+        "site": "finance",
+        "region": "US",
+        "lang": "en-US"
+      },
+      "metadata": {
+        "editorsPick": true
+      },
+      "finance": {
+        "premiumFinance": {
+          "isPremiumNews": false,
+          "isPremiumFreeNews": false
+        }
+      },
+      "storyline": {
+        "storylineItems": [
+          {
+            "content": {
+              "id": "b5bd960f-38aa-313a-938c-1db8dc4ea25c",
+              "contentType": "VIDEO",
+              "isHosted": true,
+              "title": "Oil prices slide amid Russia-Ukraine peace talks, US stocks rebound",
+              "thumbnail": {
+                "originalUrl": "https://s.yimg.com/os/creatr-uploaded-images/2025-11/40a276d0-ca32-11f0-b6ff-4f188b1cbeaf",
+                "originalWidth": 7000,
+                "originalHeight": 3939,
+                "caption": "",
+                "resolutions": null
+              },
+              "provider": {
+                "displayName": "Yahoo Finance Video",
+                "sourceId": "video.yahoofinance.com"
+              },
+              "previewUrl": null,
+              "providerContentUrl": "",
+              "canonicalUrl": {
+                "url": "https://finance.yahoo.com/video/oil-prices-slide-amid-russia-190944367.html"
+              },
+              "clickThroughUrl": {
+                "url": "https://finance.yahoo.com/video/oil-prices-slide-amid-russia-190944367.html"
+              }
+            }
+          },
+          {
+            "content": {
+              "id": "899facc7-0245-37bb-8aca-bfdcaa519056",
+              "contentType": "VIDEO",
+              "isHosted": true,
+              "title": "Nvidia & AMD stocks fall on Meta news, Kohl's stock skyrockets",
+              "thumbnail": {
+                "originalUrl": "https://s.yimg.com/os/creatr-uploaded-images/2025-11/84036840-ca22-11f0-9ff7-775826bf5d60",
+                "originalWidth": 5000,
+                "originalHeight": 2815,
+                "caption": "",
+                "resolutions": null
+              },
+              "provider": {
+                "displayName": "Yahoo Finance Video",
+                "sourceId": "video.yahoofinance.com"
+              },
+              "previewUrl": null,
+              "providerContentUrl": "",
+              "canonicalUrl": {
+                "url": "https://finance.yahoo.com/video/nvidia-amd-stocks-fall-meta-171830436.html"
+              },
+              "clickThroughUrl": {
+                "url": "https://finance.yahoo.com/video/nvidia-amd-stocks-fall-meta-171830436.html"
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "eed71d87-3e14-34b8-9ad8-ce7ce1500691",
+    "content": {
+      "id": "eed71d87-3e14-34b8-9ad8-ce7ce1500691",
+      "contentType": "VIDEO",
+      "title": "Google TPUs vs. Nvidia GPUs: The differences between these 2 chips",
+      "description": "<p>Nvidia (<a data-i13n=\"cpos:1;pos:1\" href=\"https://finance.yahoo.com/quote/NVDA\">NVDA</a>) stock is falling Tuesday morning after The Information reported that Meta Platforms (<a data-i13n=\"cpos:2;pos:1\" href=\"https://finance.yahoo.com/quote/META\">META</a>) is in talks with Alphabet's Google (<a data-i13n=\"cpos:3;pos:1\" href=\"https://finance.yahoo.com/quote/GOOG\">GOOG</a>, <a data-i13n=\"cpos:4;pos:1\" href=\"https://finance.yahoo.com/quote/GOOGL\">GOOGL</a>) to <a data-i13n=\"cpos:5;pos:1\" href=\"https://finance.yahoo.com/news/nvidia-stock-falls-after-report-says-google-meta-in-talks-for-multibillion-dollar-ai-chip-deal-143725770.html\">purchase billions of dollars in AI chips</a> to use in data centers.</p>\n<p>Yahoo Finance tech editor <a data-i13n=\"cpos:6;pos:1\" href=\"https://www.yahoo.com/author/daniel-howley/\">Dan Howley</a> breaks down the key differences between Nvidia's GPUs (Graphics Processing Units) and Google's TPU (Tensor Processing Units). Google's chips are noted to be Application-Specific Integrated Circuits, or ASICs</p>\n<p>To watch more expert insights and analysis on the latest market action, check out more <a data-i13n=\"cpos:7;pos:1\" href=\"https://finance.yahoo.com/videos/series/market-catalysts/\">Market Catalysts</a>.</p>",
+      "summary": "Nvidia (NVDA) stock is falling Tuesday morning after The Information reported that Meta Platforms (META) is in talks with Alphabet's Google (GOOG, GOOGL) to purchase billions of dollars in AI chips to use in data centers. Yahoo Finance tech editor Dan Howley breaks down the key differences between Nvidia's GPUs (Graphics Processing Units) and Google's TPU (Tensor Processing Units). Google's chips are noted to be Application-Specific Integrated Circuits, or ASICs To watch more expert insights and analysis on the latest market action, check out more&nbsp;Market Catalysts.",
+      "pubDate": "2025-11-25T17:15:00Z",
+      "displayTime": "",
+      "isHosted": true,
+      "bypassModal": false,
+      "previewUrl": null,
+      "thumbnail": {
+        "originalUrl": "https://s.yimg.com/os/creatr-uploaded-images/2025-11/75cd04e0-ca20-11f0-8b9d-0b996d600b74",
+        "originalWidth": 1844,
+        "originalHeight": 1038,
+        "caption": "",
+        "resolutions": [
+          {
+            "url": "https://s.yimg.com/uu/api/res/1.2/7_NEFt4pMQgARNBxCPZrzA--~B/aD0xMDM4O3c9MTg0NDthcHBpZD15dGFjaHlvbg--/https://s.yimg.com/os/creatr-uploaded-images/2025-11/75cd04e0-ca20-11f0-8b9d-0b996d600b74",
+            "width": 1844,
+            "height": 1038,
+            "tag": "original"
+          },
+          {
+            "url": "https://s.yimg.com/uu/api/res/1.2/Cre0igSYG4nPEwlxCKRNBg--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://s.yimg.com/os/creatr-uploaded-images/2025-11/75cd04e0-ca20-11f0-8b9d-0b996d600b74",
+            "width": 170,
+            "height": 128,
+            "tag": "170x128"
+          }
+        ]
+      },
+      "provider": {
+        "displayName": "Yahoo Finance Video",
+        "url": "https://finance.yahoo.com/"
+      },
+      "canonicalUrl": {
+        "url": "https://finance.yahoo.com/video/google-tpus-vs-nvidia-gpus-171500192.html",
+        "site": "finance",
+        "region": "US",
+        "lang": "en-US"
+      },
+      "clickThroughUrl": {
+        "url": "https://finance.yahoo.com/video/google-tpus-vs-nvidia-gpus-171500192.html",
+        "site": "finance",
+        "region": "US",
+        "lang": "en-US"
+      },
+      "metadata": {
+        "editorsPick": true
+      },
+      "finance": {
+        "premiumFinance": {
+          "isPremiumNews": false,
+          "isPremiumFreeNews": false
+        }
+      },
+      "storyline": {
+        "storylineItems": [
+          {
+            "content": {
+              "id": "2e8119d9-4781-30f6-b07f-aa298b4d0d19",
+              "contentType": "VIDEO",
+              "isHosted": true,
+              "title": "Retail sales, Alphabet chips for Meta, Dick's earnings: 3 Things",
+              "thumbnail": {
+                "originalUrl": "https://s.yimg.com/os/creatr-uploaded-images/2025-11/af816f90-ca08-11f0-8afa-c282885024e4",
+                "originalWidth": 7000,
+                "originalHeight": 3941,
+                "caption": "",
+                "resolutions": null
+              },
+              "provider": {
+                "displayName": "Yahoo Finance Video",
+                "sourceId": "video.yahoofinance.com"
+              },
+              "previewUrl": null,
+              "providerContentUrl": "",
+              "canonicalUrl": {
+                "url": "https://finance.yahoo.com/video/retail-sales-alphabet-chips-meta-141206404.html"
+              },
+              "clickThroughUrl": {
+                "url": "https://finance.yahoo.com/video/retail-sales-alphabet-chips-meta-141206404.html"
+              }
+            }
+          },
+          {
+            "content": {
+              "id": "5dbc03f7-82f0-3221-8276-399a77064418",
+              "contentType": "VIDEO",
+              "isHosted": true,
+              "title": "The AI stocks still rising (it's not just GOOGL)",
+              "thumbnail": {
+                "originalUrl": "https://s.yimg.com/os/creatr-uploaded-images/2025-11/214fc470-c9fd-11f0-b2f7-5345d0421f55",
+                "originalWidth": 3000,
+                "originalHeight": 1690,
+                "caption": "",
+                "resolutions": null
+              },
+              "provider": {
+                "displayName": "Yahoo Finance Video",
+                "sourceId": "video.yahoofinance.com"
+              },
+              "previewUrl": null,
+              "providerContentUrl": "",
+              "canonicalUrl": {
+                "url": "https://finance.yahoo.com/video/ai-stocks-still-rising-not-130421983.html"
+              },
+              "clickThroughUrl": {
+                "url": "https://finance.yahoo.com/video/ai-stocks-still-rising-not-130421983.html"
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "3e0a6c78-8109-312e-b52d-b34d508e408c",
+    "content": {
+      "id": "3e0a6c78-8109-312e-b52d-b34d508e408c",
+      "contentType": "VIDEO",
+      "title": "Google flexes its AI muscles",
+      "description": "<p>Shares of Alphabet (<a data-i13n=\"cpos:1;pos:1\" href=\"https://finance.yahoo.com/quote/GOOG\">GOOG</a>, <a data-i13n=\"cpos:2;pos:1\" href=\"https://finance.yahoo.com/quote/GOOGL\">GOOGL</a>) continued to rise in the premarket on a report that Meta (<a data-i13n=\"cpos:3;pos:1\" href=\"https://finance.yahoo.com/quote/META\">META</a>) is in talks to spend billions on Google's AI chips. This news saw shares of Nvidia (<a data-i13n=\"cpos:4;pos:1\" href=\"https://finance.yahoo.com/quote/NVDA\">NVDA</a>) fall before the opening bell. For more live coverage of the markets, watch the full episode of <em>Market Sunrise</em> and visit<a data-i13n=\"cpos:5;pos:1\" href=\"https://finance.yahoo.com/\"> <ins>Yahoo Finance</ins></a>.</p>",
+      "summary": "Shares of Alphabet (GOOG, GOOGL) continued to rise in the premarket on a report that Meta (META) is in talks to spend billions on Google's AI chips. This news saw shares of Nvidia (NVDA) fall before the opening bell. For more live coverage of the markets, watch the full episode of Market Sunrise and visit Yahoo Finance.",
+      "pubDate": "2025-11-25T12:59:50Z",
+      "displayTime": "",
+      "isHosted": true,
+      "bypassModal": false,
+      "previewUrl": null,
+      "thumbnail": {
+        "originalUrl": "https://s.yimg.com/os/creatr-uploaded-images/2025-11/b7d5a960-c9fc-11f0-bc5e-fb088a93072e",
+        "originalWidth": 4172,
+        "originalHeight": 2349,
+        "caption": "",
+        "resolutions": [
+          {
+            "url": "https://s.yimg.com/uu/api/res/1.2/Dmf62IYdxyX0CV_aKt77uQ--~B/aD0yMzQ5O3c9NDE3MjthcHBpZD15dGFjaHlvbg--/https://s.yimg.com/os/creatr-uploaded-images/2025-11/b7d5a960-c9fc-11f0-bc5e-fb088a93072e",
+            "width": 4172,
+            "height": 2349,
+            "tag": "original"
+          },
+          {
+            "url": "https://s.yimg.com/uu/api/res/1.2/y3t_tvL6Cc8DgvNIyVlMJw--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://s.yimg.com/os/creatr-uploaded-images/2025-11/b7d5a960-c9fc-11f0-bc5e-fb088a93072e",
+            "width": 170,
+            "height": 128,
+            "tag": "170x128"
+          }
+        ]
+      },
+      "provider": {
+        "displayName": "Yahoo Finance Video",
+        "url": "https://finance.yahoo.com/"
+      },
+      "canonicalUrl": {
+        "url": "https://finance.yahoo.com/video/google-flexes-ai-muscles-125950987.html",
+        "site": "finance",
+        "region": "US",
+        "lang": "en-US"
+      },
+      "clickThroughUrl": {
+        "url": "https://finance.yahoo.com/video/google-flexes-ai-muscles-125950987.html",
+        "site": "finance",
+        "region": "US",
+        "lang": "en-US"
+      },
+      "metadata": {
+        "editorsPick": true
+      },
+      "finance": {
+        "premiumFinance": {
+          "isPremiumNews": false,
+          "isPremiumFreeNews": false
+        }
+      },
+      "storyline": null
+    }
+  },
+  {
+    "id": "84470f5f-d88b-3872-8e92-3b58e4004557",
+    "content": {
+      "id": "84470f5f-d88b-3872-8e92-3b58e4004557",
+      "contentType": "STORY",
+      "title": "‘Fomo’ is driving ‘stretched’ US tech valuations, ECB warns",
+      "description": "",
+      "summary": "Valuations of US tech stocks such as Nvidia, Alphabet, Microsoft and Meta have become “stretched” as investors are driven by “fears of missing...",
+      "pubDate": "2025-11-26T09:59:57Z",
+      "displayTime": "2025-11-26T09:59:57Z",
+      "isHosted": true,
+      "bypassModal": false,
+      "previewUrl": null,
+      "thumbnail": {
+        "originalUrl": "https://s.yimg.com/os/creatr-uploaded-images/2025-11/b29ebd10-c592-11f0-b8f5-b47ab9691ff0",
+        "originalWidth": 8640,
+        "originalHeight": 5760,
+        "caption": "",
+        "resolutions": [
+          {
+            "url": "https://s.yimg.com/uu/api/res/1.2/VWvnzABFOvdSJ_X_yVW04Q--~B/aD01NzYwO3c9ODY0MDthcHBpZD15dGFjaHlvbg--/https://s.yimg.com/os/creatr-uploaded-images/2025-11/b29ebd10-c592-11f0-b8f5-b47ab9691ff0",
+            "width": 8640,
+            "height": 5760,
+            "tag": "original"
+          },
+          {
+            "url": "https://s.yimg.com/uu/api/res/1.2/rXB1qhl7jnCogyymrrNNBg--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://s.yimg.com/os/creatr-uploaded-images/2025-11/b29ebd10-c592-11f0-b8f5-b47ab9691ff0",
+            "width": 170,
+            "height": 128,
+            "tag": "170x128"
+          }
+        ]
+      },
+      "provider": {
+        "displayName": "Financial Times",
+        "url": "https://www.ft.com/"
+      },
+      "canonicalUrl": {
+        "url": "https://finance.yahoo.com/news/fomo-feeding-us-tech-stock-090008210.html",
+        "site": "finance",
+        "region": "US",
+        "lang": "en-US"
+      },
+      "clickThroughUrl": {
+        "url": "https://finance.yahoo.com/news/fomo-feeding-us-tech-stock-090008210.html",
+        "site": "finance",
+        "region": "US",
+        "lang": "en-US"
+      },
+      "metadata": {
+        "editorsPick": false
+      },
+      "finance": {
+        "premiumFinance": {
+          "isPremiumNews": true,
+          "isPremiumFreeNews": false
+        }
+      },
+      "storyline": null
+    }
+  },
+  {
+    "id": "58cb9091-77f3-375a-8e73-7732fdcef5fe",
+    "content": {
+      "id": "58cb9091-77f3-375a-8e73-7732fdcef5fe",
+      "contentType": "STORY",
+      "title": "Dow Jones Futures Rise With Market Above Key Level; What To Do Now",
+      "description": "",
+      "summary": "The major indexes broke above their 50-day moving averages, despite Nvidia and AMD woes. Here's what to do now.",
+      "pubDate": "2025-11-26T09:40:02Z",
+      "displayTime": "2025-11-26T09:40:02Z",
+      "isHosted": false,
+      "bypassModal": false,
+      "previewUrl": "https://finance.yahoo.com/m/58cb9091-77f3-375a-8e73-7732fdcef5fe/dow-jones-futures-rise-with.html",
+      "thumbnail": {
+        "originalUrl": "https://media.zenfs.com/en/ibd.com/f021784d27de0fd0895a7bb0933ee082",
+        "originalWidth": 945,
+        "originalHeight": 533,
+        "caption": "",
+        "resolutions": [
+          {
+            "url": "https://s.yimg.com/uu/api/res/1.2/7.q5ljiWi1pQAvspMfRDvg--~B/aD01MzM7dz05NDU7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/ibd.com/f021784d27de0fd0895a7bb0933ee082",
+            "width": 945,
+            "height": 533,
+            "tag": "original"
+          },
+          {
+            "url": "https://s.yimg.com/uu/api/res/1.2/8pwVWWNWloIoSx0zge9z6A--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/ibd.com/f021784d27de0fd0895a7bb0933ee082",
+            "width": 170,
+            "height": 128,
+            "tag": "170x128"
+          }
+        ]
+      },
+      "provider": {
+        "displayName": "Investor's Business Daily",
+        "url": "http://www.investors.com/"
+      },
+      "canonicalUrl": {
+        "url": "https://www.investors.com/market-trend/stock-market-today/dow-jones-futures-stock-market-reclaims-key-level-nvidia/?src=A00220&yptr=yahoo",
+        "site": "finance",
+        "region": "US",
+        "lang": "en-US"
+      },
+      "clickThroughUrl": null,
+      "metadata": {
+        "editorsPick": false
+      },
+      "finance": {
+        "premiumFinance": {
+          "isPremiumNews": false,
+          "isPremiumFreeNews": false
+        }
+      },
+      "storyline": null
+    }
+  },
+  {
+    "id": "5545475a-cfca-343b-adec-85f499647eb2",
+    "content": {
+      "id": "5545475a-cfca-343b-adec-85f499647eb2",
+      "contentType": "STORY",
+      "title": "ECB warns on stretched AI valuations and sovereign debt risks",
+      "description": "",
+      "summary": "Heightened market exuberance around artificial intelligence and eye-popping levels of government debt could pose risks to eurozone financial stability, the European Central Bank warned Wednesday.High levels of government debt could further undermine financial stability, the ECB said, warning that this could result in swings in the value of the euro and the cost of eurozone government debt.",
+      "pubDate": "2025-11-26T09:33:37Z",
+      "displayTime": "2025-11-26T09:33:37Z",
+      "isHosted": true,
+      "bypassModal": false,
+      "previewUrl": null,
+      "thumbnail": {
+        "originalUrl": "https://media.zenfs.com/en/afp.com/09267c19b8bc51286e190ac51970798b",
+        "originalWidth": 768,
+        "originalHeight": 513,
+        "caption": "What if AI valuations are too high, the ECB wonders (STR)",
+        "resolutions": [
+          {
+            "url": "https://s.yimg.com/uu/api/res/1.2/P.C.5ZNzdbOhnbDOInCY8Q--~B/aD01MTM7dz03Njg7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/afp.com/09267c19b8bc51286e190ac51970798b",
+            "width": 768,
+            "height": 513,
+            "tag": "original"
+          },
+          {
+            "url": "https://s.yimg.com/uu/api/res/1.2/C03yC86ecMVLR9cMykHSDA--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/afp.com/09267c19b8bc51286e190ac51970798b",
+            "width": 170,
+            "height": 128,
+            "tag": "170x128"
+          }
+        ]
+      },
+      "provider": {
+        "displayName": "AFP",
+        "url": "http://www.afp.com/"
+      },
+      "canonicalUrl": {
+        "url": "https://finance.yahoo.com/news/ecb-warns-stretched-ai-valuations-093337124.html",
+        "site": "finance",
+        "region": "US",
+        "lang": "en-US"
+      },
+      "clickThroughUrl": {
+        "url": "https://finance.yahoo.com/news/ecb-warns-stretched-ai-valuations-093337124.html",
+        "site": "finance",
+        "region": "US",
+        "lang": "en-US"
+      },
+      "metadata": {
+        "editorsPick": false
+      },
+      "finance": {
+        "premiumFinance": {
+          "isPremiumNews": false,
+          "isPremiumFreeNews": false
+        }
+      },
+      "storyline": null
+    }
+  },
+  {
+    "id": "00207244-fc75-3504-a2a9-0b1faa3466d1",
+    "content": {
+      "id": "00207244-fc75-3504-a2a9-0b1faa3466d1",
+      "contentType": "STORY",
+      "title": "The Best AI ETF Could Surge 200% by 2030: Is It in Your Portfolio?",
+      "description": "",
+      "summary": "This rookie ETF could be a multiyear winner if analyst Dan Ives is right in his assessments of how the AI trend will play out.",
+      "pubDate": "2025-11-26T09:30:00Z",
+      "displayTime": "2025-11-26T09:30:00Z",
+      "isHosted": true,
+      "bypassModal": false,
+      "previewUrl": null,
+      "thumbnail": {
+        "originalUrl": "https://media.zenfs.com/en/motleyfool.com/60860687d4dc70cdb21bad2610225f98",
+        "originalWidth": 309,
+        "originalHeight": 163,
+        "caption": "A humanoid robot walking among servers.",
+        "resolutions": [
+          {
+            "url": "https://s.yimg.com/uu/api/res/1.2/LzTXuKpzuZ9IwVAJdDU_8Q--~B/aD0xNjM7dz0zMDk7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/motleyfool.com/60860687d4dc70cdb21bad2610225f98",
+            "width": 309,
+            "height": 163,
+            "tag": "original"
+          },
+          {
+            "url": "https://s.yimg.com/uu/api/res/1.2/L.KsjCnwGjbaAIrgQ..UZw--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/motleyfool.com/60860687d4dc70cdb21bad2610225f98",
+            "width": 170,
+            "height": 128,
+            "tag": "170x128"
+          }
+        ]
+      },
+      "provider": {
+        "displayName": "Motley Fool",
+        "url": "http://www.fool.com/"
+      },
+      "canonicalUrl": {
+        "url": "https://www.fool.com/investing/2025/11/26/best-ai-etf-surge-200-by-2030-portfolio-ives/",
+        "site": "finance",
+        "region": "US",
+        "lang": "en-US"
+      },
+      "clickThroughUrl": {
+        "url": "https://finance.yahoo.com/news/best-ai-etf-could-surge-093000573.html",
+        "site": "finance",
+        "region": "US",
+        "lang": "en-US"
+      },
+      "metadata": {
+        "editorsPick": false
+      },
+      "finance": {
+        "premiumFinance": {
+          "isPremiumNews": false,
+          "isPremiumFreeNews": false
+        }
+      },
+      "storyline": null
+    }
+  },
+  {
+    "id": "90b8d563-1964-36a3-9004-3dee04a5ac7a",
+    "content": {
+      "id": "90b8d563-1964-36a3-9004-3dee04a5ac7a",
+      "contentType": "STORY",
+      "title": "Should You Buy Advanced Micro Devices (AMD) Stock After Its 23% Drop?",
+      "description": "",
+      "summary": "Advanced Micro Devices has become one of Nvidia's biggest rivals in the market for data center chips.",
+      "pubDate": "2025-11-26T09:13:00Z",
+      "displayTime": "2025-11-26T09:13:00Z",
+      "isHosted": true,
+      "bypassModal": false,
+      "previewUrl": null,
+      "thumbnail": {
+        "originalUrl": "https://media.zenfs.com/en/motleyfool.com/5e2dd012aede7158149228e09ed6b092",
+        "originalWidth": 1400,
+        "originalHeight": 840,
+        "caption": "The front of Advanced Micro Devices' headquarters, with the AMD logo at the top of the building.",
+        "resolutions": [
+          {
+            "url": "https://s.yimg.com/uu/api/res/1.2/VD0XMWBHE_gDIb0Fvc1kPA--~B/aD04NDA7dz0xNDAwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/motleyfool.com/5e2dd012aede7158149228e09ed6b092",
+            "width": 1400,
+            "height": 840,
+            "tag": "original"
+          },
+          {
+            "url": "https://s.yimg.com/uu/api/res/1.2/gL_qBSc7k3n9se.wk_GD_w--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/motleyfool.com/5e2dd012aede7158149228e09ed6b092",
+            "width": 170,
+            "height": 128,
+            "tag": "170x128"
+          }
+        ]
+      },
+      "provider": {
+        "displayName": "Motley Fool",
+        "url": "http://www.fool.com/"
+      },
+      "canonicalUrl": {
+        "url": "https://www.fool.com/investing/2025/11/26/should-buy-advanced-micro-devices-stock-23-drop/",
+        "site": "finance",
+        "region": "US",
+        "lang": "en-US"
+      },
+      "clickThroughUrl": {
+        "url": "https://finance.yahoo.com/news/buy-advanced-micro-devices-amd-091300495.html",
+        "site": "finance",
+        "region": "US",
+        "lang": "en-US"
+      },
+      "metadata": {
+        "editorsPick": false
+      },
+      "finance": {
+        "premiumFinance": {
+          "isPremiumNews": false,
+          "isPremiumFreeNews": false
+        }
+      },
+      "storyline": null
+    }
+  }
+]

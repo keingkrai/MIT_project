@@ -1,0 +1,78 @@
+{
+  "symbol": "MSFT",
+  "timestamp": "2025-11-27T03:49:40.774572+00:00",
+  "raw": {
+    "yfinance": {
+      "overview": {
+        "marketCap": 3608802277004.5,
+        "sharesOutstanding": null,
+        "peRatio": null,
+        "currency": "USD",
+        "exchange": "NMS",
+        "name": "Microsoft Corporation",
+        "sector": "Technology",
+        "industry": "Software - Infrastructure"
+      },
+      "balancesheet": {
+        "totalAssets": 619003000000.0,
+        "totalLiabilities": 275524000000.0,
+        "shareholderEquity": 343479000000.0
+      },
+      "cashflow": {
+        "operatingCashFlow": 136162000000.0,
+        "freeCashFlow": 71611000000.0,
+        "capitalExpenditures": null
+      },
+      "incomestatement": {
+        "totalRevenue": 281724000000.0,
+        "netIncome": 101832000000.0,
+        "eps": null
+      }
+    },
+    "finnhub": {
+      "overview": {
+        "name": "Microsoft Corp",
+        "currency": "USD",
+        "exchange": "NASDAQ NMS - GLOBAL MARKET",
+        "sector": "Technology",
+        "industry": "Technology",
+        "marketCap": 3608419173926439.5,
+        "sharesOutstanding": 7432.38,
+        "peRatio": 33.7918
+      },
+      "balancesheet": {
+        "totalAssets": null,
+        "totalLiabilities": null,
+        "shareholderEquity": null
+      },
+      "cashflow": {
+        "operatingCashFlow": null,
+        "freeCashFlow": null,
+        "capitalExpenditures": null
+      },
+      "incomestatement": {
+        "totalRevenue": null,
+        "netIncome": null,
+        "eps": null
+      }
+    },
+    "alphavantage": {
+      "overview": {},
+      "balancesheet": {
+        "totalAssets": null,
+        "totalLiabilities": null,
+        "shareholderEquity": null
+      },
+      "cashflow": {
+        "operatingCashFlow": null,
+        "freeCashFlow": null,
+        "capitalExpenditures": null
+      },
+      "incomestatement": {
+        "totalRevenue": null,
+        "netIncome": null,
+        "eps": null
+      }
+    }
+  }
+}

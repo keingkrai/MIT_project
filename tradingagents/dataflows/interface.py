@@ -47,7 +47,7 @@ from .local_call import (
     )
 
 from .core_stock_price import get_stock_data
-from tradingagents.dataflows.core_indicator import get_core_indicator
+from tradingagents.dataflows.core_indicator import get_indicators
 
 # Tools organized by category
 TOOLS_CATEGORIES = {
@@ -109,7 +109,7 @@ VENDOR_METHODS = {
         # "yfinance": get_stock_stats_indicators_window,
         
         # #more
-        "local": get_core_indicator,
+        "local": get_indicators,
     },
     
     

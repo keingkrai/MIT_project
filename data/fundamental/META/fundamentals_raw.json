@@ -1,0 +1,87 @@
+{
+  "symbol": "META",
+  "timestamp": "2025-11-27T04:07:57.718478+00:00",
+  "raw": {
+    "yfinance": {
+      "overview": {
+        "marketCap": 1597031453813.379,
+        "sharesOutstanding": null,
+        "peRatio": null,
+        "currency": "USD",
+        "exchange": "NMS",
+        "name": "Meta Platforms, Inc.",
+        "sector": "Communication Services",
+        "industry": "Internet Content & Information"
+      },
+      "balancesheet": {
+        "totalAssets": 276054000000.0,
+        "totalLiabilities": 93417000000.0,
+        "shareholderEquity": 182637000000.0
+      },
+      "cashflow": {
+        "operatingCashFlow": 91328000000.0,
+        "freeCashFlow": 54072000000.0,
+        "capitalExpenditures": null
+      },
+      "incomestatement": {
+        "totalRevenue": 164501000000.0,
+        "netIncome": 62360000000.0,
+        "eps": null
+      }
+    },
+    "finnhub": {
+      "overview": {
+        "name": "Meta Platforms Inc",
+        "currency": "USD",
+        "exchange": "NASDAQ NMS - GLOBAL MARKET",
+        "sector": "Media",
+        "industry": "Media",
+        "marketCap": 1597031348229845.8,
+        "sharesOutstanding": 2520.53,
+        "peRatio": 27.399
+      },
+      "balancesheet": {
+        "totalAssets": null,
+        "totalLiabilities": null,
+        "shareholderEquity": null
+      },
+      "cashflow": {
+        "operatingCashFlow": null,
+        "freeCashFlow": null,
+        "capitalExpenditures": null
+      },
+      "incomestatement": {
+        "totalRevenue": null,
+        "netIncome": null,
+        "eps": null
+      }
+    },
+    "alphavantage": {
+      "overview": {
+        "name": "Meta Platforms Inc.",
+        "currency": "USD",
+        "exchange": "NASDAQ",
+        "sector": "COMMUNICATION SERVICES",
+        "industry": "INTERNET CONTENT & INFORMATION",
+        "marketCap": 1603609952000.0,
+        "sharesOutstanding": 2177889000.0,
+        "peRatio": 28.16
+      },
+      "balancesheet": {
+        "totalAssets": 276054000000.0,
+        "totalLiabilities": 93417000000.0,
+        "shareholderEquity": 182637000000.0
+      },
+      "cashflow": {
+        "operatingCashFlow": 91328000000.0,
+        "freeCashFlow": 54072000000.0,
+        "capitalExpenditures": 37256000000.0
+      },
+      "incomestatement": {
+        "totalRevenue": 164501000000.0,
+        "netIncome": 62360000000.0,
+        "eps": null
+      }
+    }
+  }
+}

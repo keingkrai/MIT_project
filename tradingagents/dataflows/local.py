@@ -1861,6 +1861,7 @@ def finnhub_get_company_news( symbol: str ) -> List[Dict]:
             items_fh = []
 
     merged = merge_company_news(items_fh, items_yf, limit=limit)
+    reportmessage = f"Fetched {len(merged)} news items for {symbol} from Finnhub and yfinance."
 
     # ถ้าผู้เรียกส่ง save_jsonl_path ให้เติม {symbol} แล้วสร้างไดเรกทอรีถ้ายังไม่มี
     if save_jsonl_path:
@@ -1871,6 +1872,8 @@ def finnhub_get_company_news( symbol: str ) -> List[Dict]:
         dirpath = os.path.dirname(path) or "."
         os.makedirs(dirpath, exist_ok=True)
         save_jsonl(merged, path, append=False)
+    
+    send_to_telegram(reportmessage)
 
     return merged
 

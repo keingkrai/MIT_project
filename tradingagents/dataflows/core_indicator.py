@@ -103,6 +103,11 @@ def sent_to_telegram(report_message):
         "chat_id": CHAT_ID,
         "text": report_message
     }
+
+    # write text file
+    with open("all_report_message.txt", "a") as file:
+        file.write(report_message + "\n")
+
     try:
         requests.post(url, data=data, timeout=5)
     except Exception as e:

@@ -58,6 +58,10 @@ def sent_to_telegram(report_message, score: dict, best_source: str):
         "text": MESSAGE
     }
 
+    # write text file
+    with open("all_report_message.txt", "w") as file:
+        file.write(MESSAGE + "\n\n")
+
     try:
         requests.post(url, data=data, timeout=5)
     except Exception as e:

@@ -86,7 +86,7 @@ def get_social(
         str: A report of social media sentiment data
     """
     
-    # print("\n\n\nDEBUG:get_social")
-    # print(route_to_vendor("get_social", ticker))
-    # print("\n\n\nFINISH DEBUG:get_social")
+    print("\n\n\nDEBUG:get_social")
+    print(route_to_vendor("get_social", ticker))
+    print("\n\n\nFINISH DEBUG:get_social")
     return route_to_vendor("get_social", ticker)

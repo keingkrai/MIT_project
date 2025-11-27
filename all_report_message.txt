@@ -1,0 +1,71 @@
+Stock Data Source Comparison Result:
+
+===== TOTAL RECORDS CHECK =====
+YFinance:      227
+TwelveData:    227
+TradingView:   227
+
+
+===== SIMILARITY SCORE =====
+YFinance Score: 51
+TwelveData Score: 447
+TradingView Score: 446
+
+🏆 Best Source: TW
+
+📊 Indicator 'vwma' Source Comparison for AAPL:
+
+Yahoo Finance Score: 158
+Alpha Vantage Score: 0
+TradingView Score: 158
+
+🏆 Best Source: YAHOO, TV
+📊 Indicator 'macdh' Source Comparison for AAPL:
+
+Yahoo Finance Score: 67
+Alpha Vantage Score: 0
+TradingView Score: 67
+
+🏆 Best Source: YAHOO, TV
+📊 Indicator 'macd' Source Comparison for AAPL:
+
+Yahoo Finance Score: 101
+Alpha Vantage Score: 0
+TradingView Score: 101
+
+🏆 Best Source: YAHOO, TV
+📊 Indicator 'macds' Source Comparison for AAPL:
+
+Yahoo Finance Score: 106
+Alpha Vantage Score: 0
+TradingView Score: 106
+
+🏆 Best Source: YAHOO, TV
+📊 Indicator 'close_50_sma' Source Comparison for AAPL:
+
+Yahoo Finance Score: 316
+Alpha Vantage Score: 316
+TradingView Score: 316
+
+🏆 Best Source: YAHOO, ALPHA, TV
+📊 Indicator 'rsi' Source Comparison for AAPL:
+
+Yahoo Finance Score: 316
+Alpha Vantage Score: 316
+TradingView Score: 316
+
+🏆 Best Source: YAHOO, ALPHA, TV
+📊 Indicator 'close_200_sma' Source Comparison for AAPL:
+
+Yahoo Finance Score: 315
+Alpha Vantage Score: 315
+TradingView Score: 314
+
+🏆 Best Source: YAHOO, ALPHA
+📊 Indicator 'atr' Source Comparison for AAPL:
+
+Yahoo Finance Score: 316
+Alpha Vantage Score: 316
+TradingView Score: 316
+
+🏆 Best Source: YAHOO, ALPHA, TV

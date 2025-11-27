@@ -4,7 +4,6 @@ from tradingagents.dataflows.interface import route_to_vendor
 
 from dotenv import load_dotenv
 
-<<<<<<< HEAD
 from tradingagents.dataflows.alpha_vantage import (
     get_alpha_vantage_stock,
     get_indicator as get_alpha_vantage_indicator,
@@ -15,9 +14,6 @@ from tradingagents.dataflows.alpha_vantage import (
     get_insider_transactions as get_alpha_vantage_insider_transactions,
     get_news as get_alpha_vantage_news
 )
-=======
-
->>>>>>> main
 
 from tradingagents.dataflows.local import (
     
@@ -116,16 +112,19 @@ load_dotenv()
 # df = pd.DataFrame(a)
 # print(df)
 # print(df.columns)
+# print(len(df))
 
 # a = reddit_get_company_news("AAPL")
 # df = pd.DataFrame(a)
 # print((df))
 # print(df.columns)
+# print(len(df))
 
 # a = yfinance_get_company_news("AAPL")
 # df = pd.DataFrame(a)
 # print(len(df))
 # print(df.columns)
+# print(len(df))
 
 # from pandas import json_normalize
 
@@ -146,6 +145,7 @@ load_dotenv()
 # df_news = pd.json_normalize(news_list)
 
 # print(df_news)
+# print(len(df_news))
 
 
 # [get_reddit_world_news, get_yfinance_world_news, get_finnhub_world_news]

@@ -1872,8 +1872,6 @@ def finnhub_get_company_news( symbol: str ) -> List[Dict]:
         dirpath = os.path.dirname(path) or "."
         os.makedirs(dirpath, exist_ok=True)
         save_jsonl(merged, path, append=False)
-    
-    send_to_telegram(reportmessage)
 
     return merged
 

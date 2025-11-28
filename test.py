@@ -5,10 +5,6 @@ import sys
 # ---------------------------------------------------------
 # 1. ✅ แก้ปัญหา OpenAI Key Error (ต้องใส่ก่อนเรียก Graph)
 # ---------------------------------------------------------
-# ถ้าใช้ Local LLM (Ollama/LM Studio) ให้ใส่ Key อะไรก็ได้
-# ถ้าใช้ OpenAI จริง ให้ใส่ Key จริงของคุณแทน
-if "GOOGLE_API_KEY" not in os.environ:
-    os.environ["GOOGLE_API_KEY"] = "AIzaSyAqJrVRc6fSJGEQi20mEVNFhtZ0sATX5Lk"
 
 # Import Graph (ต้องทำหลังจากตั้ง Env Var แล้ว)
 try:

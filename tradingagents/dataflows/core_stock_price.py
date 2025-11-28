@@ -44,7 +44,7 @@ def sent_to_telegram(report_message, score: dict, best_source: str):
     if not TOKEN or not CHAT_ID:
         return
 
-    MESSAGE = (f"Stock Data Source Comparison Result:\n\n"
+    MESSAGE = (f"🏷️ Stock Data Source Comparison Result:\n\n"
                f"{report_message}\n"
                f"===== SIMILARITY SCORE =====\n"
                f"YFinance Score: {score.get('yf', 0)}\n"
@@ -59,7 +59,7 @@ def sent_to_telegram(report_message, score: dict, best_source: str):
     }
 
     # write text file
-    with open("all_report_message.txt", "w") as file:
+    with open("all_report_message.txt", "w", encoding='utf-8') as file:
         file.write(MESSAGE + "\n\n")
 
     # try:
@@ -76,37 +76,37 @@ def compare_stock_providers(symbol, start_date, end_date):
 
     # Dictionary เก็บข้อมูลดิบของแต่ละเจ้า
     raw_data = {
-        "yf": {"header": "", "csv": "", "count": 0},
-        "tw": {"header": "", "csv": "", "count": 0},
-        "tv": {"header": "", "csv": "", "count": 0},
+        "yfinance": {"header": "", "csv": "", "count": 0},
+        "twelvedata": {"header": "", "csv": "", "count": 0},
+        "tradingview": {"header": "", "csv": "", "count": 0},
     }
 
     # --- 1. Call Each Provider (Safely) ---
     # YFinance
     try:
         h, c = get_YFin_data_online(symbol, start_date, end_date)
-        raw_data["yf"] = {"header": h, "csv": c, "count": extract_record_count(h)}
+        raw_data["yfinance"] = {"header": h, "csv": c, "count": extract_record_count(h)}
     except Exception as e:
         print(f"⚠️ YFinance Failed: {e}")
 
     # TwelveData
     try:
         h, c = get_twelvedata_stock(symbol, start_date, end_date)
-        raw_data["tw"] = {"header": h, "csv": c, "count": extract_record_count(h)}
+        raw_data["twelvedata"] = {"header": h, "csv": c, "count": extract_record_count(h)}
     except Exception as e:
         print(f"⚠️ TwelveData Failed: {e}")
 
     # TradingView
     try:
         h, c = get_TV_data_online(symbol, start_date, end_date)
-        raw_data["tv"] = {"header": h, "csv": c, "count": extract_record_count(h)}
+        raw_data["tradingview"] = {"header": h, "csv": c, "count": extract_record_count(h)}
     except Exception as e:
         print(f"⚠️ TradingView Failed: {e}")
 
     # --- 2. Convert to DataFrames & Pre-process ---
-    df_yf = to_df(raw_data["yf"]["csv"])
-    df_tw = to_df(raw_data["tw"]["csv"])
-    df_tv = to_df(raw_data["tv"]["csv"])
+    df_yf = to_df(raw_data["yfinance"]["csv"])
+    df_tw = to_df(raw_data["twelvedata"]["csv"])
+    df_tv = to_df(raw_data["tradingview"]["csv"])
 
     # Standardize Date column for merging
     if not df_yf.empty: df_yf["Date"] = pd.to_datetime(df_yf["Date"])
@@ -115,9 +115,9 @@ def compare_stock_providers(symbol, start_date, end_date):
 
     # --- 3. Report Message & Initial Check ---
     report_message = "===== TOTAL RECORDS CHECK =====\n"
-    report_message += f"YFinance:      {raw_data['yf']['count']}\n"
-    report_message += f"TwelveData:    {raw_data['tw']['count']}\n"
-    report_message += f"TradingView:   {raw_data['tv']['count']}\n\n"
+    report_message += f"YFinance:      {raw_data['yfinance']['count']}\n"
+    report_message += f"TwelveData:    {raw_data['twelvedata']['count']}\n"
+    report_message += f"TradingView:   {raw_data['tradingview']['count']}\n\n"
 
     print(report_message)
 
@@ -126,7 +126,7 @@ def compare_stock_providers(symbol, start_date, end_date):
         return f"# Error: No data found for {symbol} from any source.\n", ""
 
     # --- 4. Scoring for Similarity ---
-    score = {"yf": 0, "tw": 0, "tv": 0}
+    score = {"yfinance": 0, "twelvedata": 0, "tradingview": 0}
     compare_cols = ["Open", "Close"] # เปรียบเทียบแค่ Open/Close เพื่อความเร็ว
 
     # Helper function to compare two dataframes
@@ -148,16 +148,16 @@ def compare_stock_providers(symbol, start_date, end_date):
 
     # Execute comparisons
     s_yf_tw = calculate_match(df_yf, df_tw, "_yf", "_tw")
-    score["yf"] += s_yf_tw
-    score["tw"] += s_yf_tw
+    score["yfinance"] += s_yf_tw
+    score["twelvedata"] += s_yf_tw
 
     s_yf_tv = calculate_match(df_yf, df_tv, "_yf", "_tv")
-    score["yf"] += s_yf_tv
-    score["tv"] += s_yf_tv
+    score["yfinance"] += s_yf_tv
+    score["tradingview"] += s_yf_tv
 
     s_tw_tv = calculate_match(df_tw, df_tv, "_tw", "_tv")
-    score["tw"] += s_tw_tv
-    score["tv"] += s_tw_tv
+    score["twelvedata"] += s_tw_tv
+    score["tradingview"] += s_tw_tv
 
     print("\n===== SIMILARITY SCORE =====")
     print(score)

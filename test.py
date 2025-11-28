@@ -1,21 +1,20 @@
 import os
 import json
 import sys
+from dotenv import load_dotenv
+import sys
 
-# ---------------------------------------------------------
-# 1. ✅ แก้ปัญหา OpenAI Key Error (ต้องใส่ก่อนเรียก Graph)
-# ---------------------------------------------------------
-# ถ้าใช้ Local LLM (Ollama/LM Studio) ให้ใส่ Key อะไรก็ได้
-# ถ้าใช้ OpenAI จริง ให้ใส่ Key จริงของคุณแทน
-if "GOOGLE_API_KEY" not in os.environ:
-    os.environ["GOOGLE_API_KEY"] = "AIzaSyAqJrVRc6fSJGEQi20mEVNFhtZ0sATX5Lk"
+# Change standard output encoding to UTF-8
+sys.stdout.reconfigure(encoding='utf-8')
+print("\U0001f3c6 Trading Agents System Starting... \U0001f3c6")
+
+load_dotenv()
 
 # Import Graph (ต้องทำหลังจากตั้ง Env Var แล้ว)
 try:
     from tradingagents.graph.trading_graph import TradingAgentsGraph
 except ImportError as e:
     print(f"❌ Import Error: {e}")
-    print("ตรวจสอบว่าคุณรันคำสั่งนี้ที่ Root Directory ของโปรเจกต์ (C:\\MIT_project)")
     sys.exit(1)
 
 # ---------------------------------------------------------

@@ -1,31 +1,31 @@
 [
   {
-    "id": "479bc333-2177-4625-9de2-adf9b6b0d016",
+    "id": "564e3814-0e07-3933-beef-04603ecb3e53",
     "content": {
-      "id": "479bc333-2177-4625-9de2-adf9b6b0d016",
+      "id": "564e3814-0e07-3933-beef-04603ecb3e53",
       "contentType": "STORY",
-      "title": "Tech analyst Dan Ives flags 10 stocks to own, insists there's no AI bubble",
+      "title": "3 Stocks That Turned $1,000 into $1 Million (or More)",
       "description": "",
-      "summary": "The AI revolution is still in its early innings. Wedbush analyst Dan Ives argues that investors are misreading one of the most significant technology build-outs since the dawn of the internet.",
-      "pubDate": "2025-11-26T18:02:37Z",
-      "displayTime": "2025-11-27T06:32:55Z",
+      "summary": "You just need to pick the right stock out of a field of many.",
+      "pubDate": "2025-11-28T08:32:00Z",
+      "displayTime": "2025-11-28T08:32:00Z",
       "isHosted": true,
       "bypassModal": false,
       "previewUrl": null,
       "thumbnail": {
-        "originalUrl": "https://s.yimg.com/os/creatr-uploaded-images/2025-11/096dce60-cae8-11f0-b6ad-0a1313fff5c4",
-        "originalWidth": 5760,
-        "originalHeight": 3840,
-        "caption": "",
+        "originalUrl": "https://media.zenfs.com/en/motleyfool.com/95e15d04233b91e7d33143ea737b24fb",
+        "originalWidth": 1400,
+        "originalHeight": 933,
+        "caption": "Person throwing paper money into the air. ",
         "resolutions": [
           {
-            "url": "https://s.yimg.com/uu/api/res/1.2/RCDNRqvnf.GelqSGJdAszg--~B/aD0zODQwO3c9NTc2MDthcHBpZD15dGFjaHlvbg--/https://s.yimg.com/os/creatr-uploaded-images/2025-11/096dce60-cae8-11f0-b6ad-0a1313fff5c4",
-            "width": 5760,
-            "height": 3840,
+            "url": "https://s.yimg.com/uu/api/res/1.2/ay0Fx.ZKF5CfI46h3LBpKw--~B/aD05MzM7dz0xNDAwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/motleyfool.com/95e15d04233b91e7d33143ea737b24fb",
+            "width": 1400,
+            "height": 933,
             "tag": "original"
           },
           {
-            "url": "https://s.yimg.com/uu/api/res/1.2/Sqf.p2C0HOWeetvJVc0pzw--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://s.yimg.com/os/creatr-uploaded-images/2025-11/096dce60-cae8-11f0-b6ad-0a1313fff5c4",
+            "url": "https://s.yimg.com/uu/api/res/1.2/6qUTB6GG.7F8Ef9iyE.oMw--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/motleyfool.com/95e15d04233b91e7d33143ea737b24fb",
             "width": 170,
             "height": 128,
             "tag": "170x128"
@@ -33,23 +33,79 @@
         ]
       },
       "provider": {
-        "displayName": "Yahoo Finance",
-        "url": "http://finance.yahoo.com/"
+        "displayName": "Motley Fool",
+        "url": "http://www.fool.com/"
       },
       "canonicalUrl": {
-        "url": "https://finance.yahoo.com/news/tech-analyst-dan-ives-flags-10-stocks-to-own-insists-theres-no-ai-bubble-180237596.html",
+        "url": "https://www.fool.com/investing/2025/11/28/3-stocks-that-turned-1000-into-1-million-or-more/",
         "site": "finance",
         "region": "US",
         "lang": "en-US"
       },
       "clickThroughUrl": {
-        "url": "https://finance.yahoo.com/news/tech-analyst-dan-ives-flags-10-stocks-to-own-insists-theres-no-ai-bubble-180237596.html",
+        "url": "https://finance.yahoo.com/news/3-stocks-turned-1-000-083200541.html",
         "site": "finance",
         "region": "US",
         "lang": "en-US"
       },
       "metadata": {
-        "editorsPick": true
+        "editorsPick": false
+      },
+      "finance": {
+        "premiumFinance": {
+          "isPremiumNews": false,
+          "isPremiumFreeNews": false
+        }
+      },
+      "storyline": null
+    }
+  },
+  {
+    "id": "399346e4-2a09-3346-85a3-e3389db5fe83",
+    "content": {
+      "id": "399346e4-2a09-3346-85a3-e3389db5fe83",
+      "contentType": "STORY",
+      "title": "TPUs Take AI Trade By Storm. What to Know About Google’s AI Chip.",
+      "description": "",
+      "summary": "Google’s TPU chips are catching up in AI workloads, but software is what keeps Nvidia on top—at least for now.",
+      "pubDate": "2025-11-28T07:30:00Z",
+      "displayTime": "2025-11-28T07:30:00Z",
+      "isHosted": false,
+      "bypassModal": false,
+      "previewUrl": "https://finance.yahoo.com/m/399346e4-2a09-3346-85a3-e3389db5fe83/tpus-take-ai-trade-by-storm-.html",
+      "thumbnail": {
+        "originalUrl": "https://media.zenfs.com/en/Barrons.com/1542667a8d8d243a8bda05a0d3c59e92",
+        "originalWidth": 1280,
+        "originalHeight": 640,
+        "caption": "",
+        "resolutions": [
+          {
+            "url": "https://s.yimg.com/uu/api/res/1.2/2jfht.CHtuusYjRXWR7MsQ--~B/aD02NDA7dz0xMjgwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/Barrons.com/1542667a8d8d243a8bda05a0d3c59e92",
+            "width": 1280,
+            "height": 640,
+            "tag": "original"
+          },
+          {
+            "url": "https://s.yimg.com/uu/api/res/1.2/osr.Ya6azrMVrVfjvsMFZQ--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/Barrons.com/1542667a8d8d243a8bda05a0d3c59e92",
+            "width": 170,
+            "height": 128,
+            "tag": "170x128"
+          }
+        ]
+      },
+      "provider": {
+        "displayName": "Barrons.com",
+        "url": "http://www.barrons.com/"
+      },
+      "canonicalUrl": {
+        "url": "https://www.barrons.com/articles/google-tpu-vs-nvidia-gpu-ai-stocks-93dc908f?siteid=yhoof2&yptr=yahoo",
+        "site": "finance",
+        "region": "US",
+        "lang": "en-US"
+      },
+      "clickThroughUrl": null,
+      "metadata": {
+        "editorsPick": false
       },
       "finance": {
         "premiumFinance": {
@@ -532,67 +588,6 @@
       },
       "clickThroughUrl": {
         "url": "https://finance.yahoo.com/news/alphabet-outshine-nvidia-mag-7-140000806.html",
-        "site": "finance",
-        "region": "US",
-        "lang": "en-US"
-      },
-      "metadata": {
-        "editorsPick": false
-      },
-      "finance": {
-        "premiumFinance": {
-          "isPremiumNews": false,
-          "isPremiumFreeNews": false
-        }
-      },
-      "storyline": null
-    }
-  },
-  {
-    "id": "f2540228-9f0f-40e9-84fd-b43dfd8be120",
-    "content": {
-      "id": "f2540228-9f0f-40e9-84fd-b43dfd8be120",
-      "contentType": "STORY",
-      "title": "What Rachel Reeves’ budget means for crypto investors in the UK",
-      "description": "",
-      "summary": "For crypto investors, any impact from the UK budget is indirect, coming over time through broader changes to income tax and capital gains rules.",
-      "pubDate": "2025-11-27T13:53:59Z",
-      "displayTime": "2025-11-27T13:53:59Z",
-      "isHosted": true,
-      "bypassModal": false,
-      "previewUrl": null,
-      "thumbnail": {
-        "originalUrl": "https://s.yimg.com/os/creatr-uploaded-images/2025-11/d9254ba0-cb8e-11f0-a0f2-d2db97b9718a",
-        "originalWidth": 5049,
-        "originalHeight": 3366,
-        "caption": "",
-        "resolutions": [
-          {
-            "url": "https://s.yimg.com/uu/api/res/1.2/soc3lmpp1Sd0kjLxn7uKJA--~B/aD0zMzY2O3c9NTA0OTthcHBpZD15dGFjaHlvbg--/https://s.yimg.com/os/creatr-uploaded-images/2025-11/d9254ba0-cb8e-11f0-a0f2-d2db97b9718a",
-            "width": 5049,
-            "height": 3366,
-            "tag": "original"
-          },
-          {
-            "url": "https://s.yimg.com/uu/api/res/1.2/ienCrx61IQUsoX3fdjVcbg--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://s.yimg.com/os/creatr-uploaded-images/2025-11/d9254ba0-cb8e-11f0-a0f2-d2db97b9718a",
-            "width": 170,
-            "height": 128,
-            "tag": "170x128"
-          }
-        ]
-      },
-      "provider": {
-        "displayName": "Yahoo Finance UK",
-        "url": "http://uk.finance.yahoo.com/"
-      },
-      "canonicalUrl": {
-        "url": "https://uk.finance.yahoo.com/news/rachel-reeves-budget-crypto-bitcoin-135359017.html",
-        "site": "finance",
-        "region": "GB",
-        "lang": "en-GB"
-      },
-      "clickThroughUrl": {
-        "url": "https://finance.yahoo.com/news/rachel-reeves-budget-crypto-bitcoin-135359017.html",
         "site": "finance",
         "region": "US",
         "lang": "en-US"

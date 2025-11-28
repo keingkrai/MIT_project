@@ -105,7 +105,7 @@ def sent_to_telegram(report_message):
     }
 
     # write text file
-    with open("all_report_message.txt", "a") as file:
+    with open("all_report_message.txt", "a", encoding='utf-8') as file:
         file.write(report_message + "\n")
 
     # try:

@@ -1861,11 +1861,11 @@ def finnhub_get_company_news( symbol: str ) -> List[Dict]:
             items_fh = []
 
     merged = merge_company_news(items_fh, items_yf, limit=limit)
-    reportmessage = f"News :\n" \
+    reportmessage = f"📰 News :\n" \
                     f"Fetched {len(merged)} news items for {symbol} from Finnhub." 
 
     # write text file
-    with open("all_report_message.txt", "a") as file:
+    with open("all_report_message.txt", "a", encoding='utf-8') as file:
         file.write(reportmessage + "\n")
 
     # ถ้าผู้เรียกส่ง save_jsonl_path ให้เติม {symbol} แล้วสร้างไดเรกทอรีถ้ายังไม่มี
@@ -3051,12 +3051,12 @@ def pick_fundamental_source(symbol: str) -> Dict:
     #         chosen_source=result["chosen_source"]
     #     )
         
-    print(f"\n\n\nFundamental data for {symbol} saved. Chosen source: {result['chosen_source']}\n\n\n")
+    print(f"\n\n\n📜 Fundamental data for {symbol}. Chosen source: {result['chosen_source']}\n\n\n")
 
-    report_message = f"Fundamental data for {symbol} saved. Chosen source: {result['chosen_source']}"
+    report_message = f"📜 Fundamental data for {symbol}. Chosen source: {result['chosen_source']}"
 
     # write text file
-    with open("all_report_message.txt", "a") as file:
+    with open("all_report_message.txt", "a", encoding='utf-8') as file:
         file.write(report_message + "\n")
 
     return result

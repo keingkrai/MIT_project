@@ -109,7 +109,8 @@ def get_bluesky_news(
     print(f'\n\n\n [get_bluesky_news] Bluesky news result:\n\n\n\n')
 
     count = len(res)
-    report_message = f"Bluesky news fetched for {ticker}: {count} posts found."
+    report_message = f"Social Media News: \n" \
+                     f"Bluesky news fetched for {ticker}: {count} posts found."
 
     # write text file
     with open("all_report_message.txt", "a") as file:

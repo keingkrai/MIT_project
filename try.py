@@ -148,10 +148,14 @@ import pandas as pd
 # print(df_news)
 # print(len(df_news))
 
-res = get_bluesky_news("AAPL")
-print(len(res))
-df = pd.DataFrame(res)
-print(df)
-print(df.columns)
-print(len(df))
+# res = get_bluesky_news("AAPL")
+# print(len(res))
+# df = pd.DataFrame(res)
+# print(df)
+# print(df.columns)
+# print(len(df))
 # [get_reddit_world_news, get_yfinance_world_news, get_finnhub_world_news]
+
+
+# a = pick_fundamental_source("A")
+# print(a)

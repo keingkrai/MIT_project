@@ -1,17 +1,20 @@
 import os
 import json
 import sys
+from dotenv import load_dotenv
+import sys
 
-# ---------------------------------------------------------
-# 1. ✅ แก้ปัญหา OpenAI Key Error (ต้องใส่ก่อนเรียก Graph)
-# ---------------------------------------------------------
+# Change standard output encoding to UTF-8
+sys.stdout.reconfigure(encoding='utf-8')
+print("\U0001f3c6 Trading Agents System Starting... \U0001f3c6")
+
+load_dotenv()
 
 # Import Graph (ต้องทำหลังจากตั้ง Env Var แล้ว)
 try:
     from tradingagents.graph.trading_graph import TradingAgentsGraph
 except ImportError as e:
     print(f"❌ Import Error: {e}")
-    print("ตรวจสอบว่าคุณรันคำสั่งนี้ที่ Root Directory ของโปรเจกต์ (C:\\MIT_project)")
     sys.exit(1)
 
 # ---------------------------------------------------------

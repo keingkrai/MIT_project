@@ -1861,6 +1861,12 @@ def finnhub_get_company_news( symbol: str ) -> List[Dict]:
             items_fh = []
 
     merged = merge_company_news(items_fh, items_yf, limit=limit)
+    reportmessage = f"📰 News :\n" \
+                    f"Fetched {len(merged)} news items for {symbol} from Finnhub." 
+
+    # write text file
+    with open("all_report_message.txt", "a", encoding='utf-8') as file:
+        file.write(reportmessage + "\n")
 
     # ถ้าผู้เรียกส่ง save_jsonl_path ให้เติม {symbol} แล้วสร้างไดเรกทอรีถ้ายังไม่มี
     if save_jsonl_path:
@@ -1982,6 +1988,13 @@ def reddit_get_company_news(query: str):
         save_jsonl(out, save_path, append=False)
 
     print(f"Fetched {len(out)} posts from r/{sub} for query='{query}' -> {save_path}")
+
+    # write text file
+    reportmessage = f"Fetched {len(out)} news items for {query} from Reddit."
+
+    with open("all_report_message.txt", "a") as file:
+        file.write(reportmessage + "\n")
+
     return out
 
 # ------------------------------ news stock yfinance -----------------------------------------#
@@ -2044,6 +2057,11 @@ def yfinance_get_company_news(symbol: str) -> List[Dict]:
         _save_jsonl(news, jsonl_path, append=False)
     except Exception:
         pass
+
+    # write text file
+    reportmessage = f"Fetched {len(news)} news items for {symbol} from YFinance."
+    with open("all_report_message.txt", "a") as file:
+        file.write(reportmessage + "\n")
 
     return news
 
@@ -2132,6 +2150,11 @@ def alphavantage_get_company_news(
         _save_jsonl(items, jsonl_path, append=False)
     except Exception:
         pass
+
+    # write text file
+    reportmessage = f"Fetched {len(items)} news items for {symbol} from Alpha Vantage."
+    with open("all_report_message.txt", "a") as file:
+        file.write(reportmessage + "\n")
 
     return items
 # ------------------------------ EDIT SOCIAL MEDIA ---------------------------------#
@@ -2531,9 +2554,9 @@ ALPHAVANTAGE_API_KEY = os.getenv("ALPHAVANTAGE_API_KEY", "7DJF0DNKIR9T1F9X")
 REQUEST_TIMEOUT      = float(os.getenv("REQ_TIMEOUT", "30"))
 
 # เส้นทางบันทึกผล (รองรับ {symbol})
-DEFAULT_JSONL_PATH = r"data\fundamental\{symbol}\fundamentals_choice.jsonl"
-DEFAULT_JSON_PATH  = r"data\fundamental\{symbol}\fundamentals_choice.json"
-DEFAULT_RAW_JSON   = r"data\fundamental\{symbol}\fundamentals_raw.json"
+DEFAULT_JSONL_PATH = r"data/fundamental/{symbol}/fundamentals_choice.jsonl"
+DEFAULT_JSON_PATH  = r"data/fundamental/{symbol}/fundamentals_choice.json"
+DEFAULT_RAW_JSON   = r"data/fundamental/{symbol}/fundamentals_raw.json"
 # =========================
 # สคีมาฟิลด์ที่ “พยายามเทียบ” ระหว่าง 3 แหล่ง
 # =========================
@@ -2916,6 +2939,17 @@ def fetch_all_fundamentals(symbol: str) -> Dict:
     f = fetch_finnhub(symbol) if FINNHUB_API_KEY else {"overview":{}, "balancesheet":{}, "cashflow":{}, "incomestatement":{}}
     time.sleep(0.4)
     a = fetch_alphavantage(symbol) if ALPHAVANTAGE_API_KEY else {"overview":{}, "balancesheet":{}, "cashflow":{}, "incomestatement":{}}
+
+    # write text file
+    report_message = f"\nFetched fundamentals for {symbol}:\n"
+    # count each source
+    report_message += f"- YFinance: {sum(1 for sec in y.values() if any(v is not None for v in sec.values()))} fields fetched\n"
+    report_message += f"- Finnhub: {sum(1 for sec in f.values() if any(v is not None for v in sec.values()))} fields fetched\n"
+    report_message += f"- AlphaVantage: {sum(1 for sec in a.values() if any(v is not None for v in sec.values()))} fields fetched"
+
+    with open("all_report_message.txt", "a") as file:
+        file.write(report_message + "\n")
+
     return {"symbol": symbol, "raw": {"yfinance": y, "finnhub": f, "alphavantage": a}}
 
 def decide_single_source(fetched: Dict) -> Dict:
@@ -2973,8 +3007,8 @@ def sent_fundamental_to_telegram(report_message, score: dict, chosen_source: str
         "text": MESSAGE
     }
     
-    resp = requests.post(url, data=data)
-    print(resp.json())
+    # resp = requests.post(url, data=data)
+    # print(resp.json())
 
 def pick_fundamental_source(symbol: str) -> Dict:
     """จ่ายแค่ symbol → ได้ผลลัพธ์ (แหล่งเดียวที่เลือก) และบันทึก JSONL/JSON ตาม path ที่กำหนดไว้แล้ว"""
@@ -3010,13 +3044,19 @@ def pick_fundamental_source(symbol: str) -> Dict:
         save_jsonl_line(to_line, jsonl_path, append=True)
     
     # ส่งผลการเปรียบเทียบไปยัง Telegram (ถ้ามีการตั้งค่า)
-    if os.getenv("TELEGRAM_TOKEN") and os.getenv("TELEGRAM_CHAT_ID"):
-        sent_fundamental_to_telegram(
-            report_message=f"Fundamental data for {symbol} has been processed.",
-            score=result["scores"],
-            chosen_source=result["chosen_source"]
-        )
+    # if os.getenv("TELEGRAM_TOKEN") and os.getenv("TELEGRAM_CHAT_ID"):
+    #     sent_fundamental_to_telegram(
+    #         report_message=f"Fundamental data for {symbol} has been processed.",
+    #         score=result["scores"],
+    #         chosen_source=result["chosen_source"]
+    #     )
         
-    print(f"\n\n\nFundamental data for {symbol} saved. Chosen source: {result['chosen_source']}\n\n\n")
+    print(f"\n\n\n📜 Fundamental data for {symbol}. Chosen source: {result['chosen_source']}\n\n\n")
+
+    report_message = f"📜 Fundamental data for {symbol}. Chosen source: {result['chosen_source']}"
+
+    # write text file
+    with open("all_report_message.txt", "a", encoding='utf-8') as file:
+        file.write(report_message + "\n")
 
     return result

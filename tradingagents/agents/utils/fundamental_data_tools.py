@@ -17,9 +17,9 @@ def get_fundamentals(
     Returns:
         str: A formatted report containing comprehensive fundamental data
     """
-    print("\n\n\nDEBUG:get_fundamentals")
-    print(route_to_vendor("get_fundamentals", ticker, curr_date))
-    print("\n\n\nFINISH DEBUG:get_fundamentals")
+    # print("\n\n\nDEBUG:get_fundamentals")
+    # print(route_to_vendor("get_fundamentals", ticker, curr_date))
+    # print("\n\n\nFINISH DEBUG:get_fundamentals")
     return route_to_vendor("get_fundamentals", ticker, curr_date)
 
 
@@ -77,7 +77,7 @@ def get_income_statement(
     Returns:
         str: A formatted report containing income statement data
     """
-    print("\n\n\nDEBUG:get_fundamentals")
-    print(route_to_vendor("get_fundamentals", ticker, curr_date))
-    print("\n\n\nFINISH DEBUG:get_fundamentals")
+    # print("\n\n\nDEBUG:get_fundamentals")
+    # print(route_to_vendor("get_fundamentals", ticker, curr_date))
+    # print("\n\n\nFINISH DEBUG:get_fundamentals")
     return route_to_vendor("get_income_statement", ticker, freq, curr_date)

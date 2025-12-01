@@ -1,0 +1,87 @@
+{
+  "symbol": "A",
+  "timestamp": "2025-11-28T05:51:53.319795+00:00",
+  "raw": {
+    "yfinance": {
+      "overview": {
+        "marketCap": 43763959686.08057,
+        "sharesOutstanding": null,
+        "peRatio": null,
+        "currency": "USD",
+        "exchange": "NYQ",
+        "name": "Agilent Technologies, Inc.",
+        "sector": "Healthcare",
+        "industry": "Diagnostics & Research"
+      },
+      "balancesheet": {
+        "totalAssets": 11846000000.0,
+        "totalLiabilities": 5948000000.0,
+        "shareholderEquity": 5898000000.0
+      },
+      "cashflow": {
+        "operatingCashFlow": 1751000000.0,
+        "freeCashFlow": 1373000000.0,
+        "capitalExpenditures": null
+      },
+      "incomestatement": {
+        "totalRevenue": 6510000000.0,
+        "netIncome": 1289000000.0,
+        "eps": null
+      }
+    },
+    "finnhub": {
+      "overview": {
+        "name": "Agilent Technologies Inc",
+        "currency": "USD",
+        "exchange": "NEW YORK STOCK EXCHANGE, INC.",
+        "sector": "Life Sciences Tools & Services",
+        "industry": "Life Sciences Tools & Services",
+        "marketCap": 43763959569999.99,
+        "sharesOutstanding": 283.5,
+        "peRatio": 35.8721
+      },
+      "balancesheet": {
+        "totalAssets": null,
+        "totalLiabilities": null,
+        "shareholderEquity": null
+      },
+      "cashflow": {
+        "operatingCashFlow": null,
+        "freeCashFlow": null,
+        "capitalExpenditures": null
+      },
+      "incomestatement": {
+        "totalRevenue": null,
+        "netIncome": null,
+        "eps": null
+      }
+    },
+    "alphavantage": {
+      "overview": {
+        "name": "Agilent Technologies Inc",
+        "currency": "USD",
+        "exchange": "NYSE",
+        "sector": "HEALTHCARE",
+        "industry": "DIAGNOSTICS & RESEARCH",
+        "marketCap": 43763958000.0,
+        "sharesOutstanding": 283054000.0,
+        "peRatio": 33.78
+      },
+      "balancesheet": {
+        "totalAssets": 12727000000.0,
+        "totalLiabilities": 5986000000.0,
+        "shareholderEquity": 6741000000.0
+      },
+      "cashflow": {
+        "operatingCashFlow": 1559000000.0,
+        "freeCashFlow": 1559000000.0,
+        "capitalExpenditures": 0.0
+      },
+      "incomestatement": {
+        "totalRevenue": 1861000000.0,
+        "netIncome": 434000000.0,
+        "eps": null
+      }
+    }
+  }
+}

@@ -1,27 +1,27 @@
 {
-  "symbol": "AAPL",
-  "chosen_source": "yfinance",
+  "symbol": "A",
+  "chosen_source": "alphavantage",
   "scores": {
-    "yfinance": 2,
-    "finnhub": 2,
-    "alphavantage": 0
+    "yfinance": 6,
+    "finnhub": 5,
+    "alphavantage": 7
   },
   "completeness": {
     "yfinance": 13,
     "finnhub": 8,
-    "alphavantage": 0
+    "alphavantage": 16
   },
   "sections": {
     "overview": {
       "scores": {
-        "yfinance": 2,
-        "finnhub": 2,
-        "alphavantage": 0
+        "yfinance": 6,
+        "finnhub": 5,
+        "alphavantage": 7
       },
       "completeness": {
         "yfinance": 6,
         "finnhub": 8,
-        "alphavantage": 0
+        "alphavantage": 8
       }
     },
     "balancesheet": {
@@ -33,7 +33,7 @@
       "completeness": {
         "yfinance": 3,
         "finnhub": 0,
-        "alphavantage": 0
+        "alphavantage": 3
       }
     },
     "cashflow": {
@@ -45,7 +45,7 @@
       "completeness": {
         "yfinance": 2,
         "finnhub": 0,
-        "alphavantage": 0
+        "alphavantage": 3
       }
     },
     "incomestatement": {
@@ -57,36 +57,36 @@
       "completeness": {
         "yfinance": 2,
         "finnhub": 0,
-        "alphavantage": 0
+        "alphavantage": 2
       }
     }
   },
   "final_payload": {
     "overview": {
-      "marketCap": 4118950063342.8955,
-      "sharesOutstanding": null,
-      "peRatio": null,
+      "name": "Agilent Technologies Inc",
       "currency": "USD",
-      "exchange": "NMS",
-      "name": "Apple Inc.",
-      "sector": "Technology",
-      "industry": "Consumer Electronics"
+      "exchange": "NYSE",
+      "sector": "HEALTHCARE",
+      "industry": "DIAGNOSTICS & RESEARCH",
+      "marketCap": 43763958000.0,
+      "sharesOutstanding": 283054000.0,
+      "peRatio": 33.78
     },
     "balancesheet": {
-      "totalAssets": 359241000000.0,
-      "totalLiabilities": 285508000000.0,
-      "shareholderEquity": 73733000000.0
+      "totalAssets": 12727000000.0,
+      "totalLiabilities": 5986000000.0,
+      "shareholderEquity": 6741000000.0
     },
     "cashflow": {
-      "operatingCashFlow": 111482000000.0,
-      "freeCashFlow": 98767000000.0,
-      "capitalExpenditures": null
+      "operatingCashFlow": 1559000000.0,
+      "freeCashFlow": 1559000000.0,
+      "capitalExpenditures": 0.0
     },
     "incomestatement": {
-      "totalRevenue": 416161000000.0,
-      "netIncome": 112010000000.0,
+      "totalRevenue": 1861000000.0,
+      "netIncome": 434000000.0,
       "eps": null
     }
   },
-  "timestamp": "2025-11-28T09:03:31.538592+00:00"
+  "timestamp": "2025-11-28T05:51:53.319795+00:00"
 }

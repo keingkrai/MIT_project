@@ -837,6 +837,108 @@
     }
   }
 
+  function summarizeReport(reportText) {
+    if (!reportText) return "";
+    
+    // Split by section headers (lines that look like headers)
+    const lines = reportText.split("\n");
+    const summary = [];
+    let currentSection = null;
+    let currentContent = [];
+    
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i].trim();
+      if (!line) continue;
+      
+      // Detect section headers (titles like "Market Analysis", "Social Sentiment", etc.)
+      const isHeader = (
+        (line.match(/^[A-Z][A-Za-z\s]+$/) && line.length < 80 && !line.includes(".") && !line.includes(",")) ||
+        line.match(/^#{1,6}\s/) ||
+        (line.endsWith(":") && line.length < 60)
+      );
+      
+      if (isHeader && !line.startsWith("•") && !line.startsWith("-") && !line.startsWith("*")) {
+        // Save previous section
+        if (currentSection) {
+          summary.push(currentSection);
+          const keyPoints = extractKeyPoints(currentContent.join(" "));
+          if (keyPoints.length > 0) {
+            summary.push(...keyPoints);
+          }
+          summary.push(""); // Add spacing
+        }
+        currentSection = line.replace(/^#+\s*/, "").replace(":", "");
+        currentContent = [];
+      } else if (currentSection) {
+        currentContent.push(line);
+      } else {
+        // Content before first section
+        currentContent.push(line);
+      }
+    }
+    
+    // Add last section
+    if (currentSection) {
+      summary.push(currentSection);
+      const keyPoints = extractKeyPoints(currentContent.join(" "));
+      if (keyPoints.length > 0) {
+        summary.push(...keyPoints);
+      }
+    } else if (currentContent.length > 0) {
+      // No sections found, just summarize the content
+      const keyPoints = extractKeyPoints(currentContent.join(" "));
+      summary.push(...keyPoints);
+    }
+    
+    // Add recommendation if available
+    const decision = elements.summaryDecision.textContent;
+    if (decision && decision !== "Awaiting run" && decision !== "—") {
+      summary.push("");
+      summary.push(`RECOMMENDATION: ${decision}`);
+    }
+    
+    return summary.join("\n");
+  }
+  
+  function extractKeyPoints(text) {
+    const keyPoints = [];
+    
+    // Extract bullet points first (most important)
+    const bulletMatches = text.match(/[-*•·]\s*([^\n]+)/g);
+    if (bulletMatches) {
+      bulletMatches.slice(0, 3).forEach(match => {
+        const point = match.replace(/^[-*•·]\s*/, "• ").trim();
+        if (point.length > 10 && point.length < 200) {
+          keyPoints.push(point);
+        }
+      });
+    }
+    
+    // If no bullets, extract first 2-3 key sentences
+    if (keyPoints.length === 0) {
+      const sentences = text.split(/[.!?]+/).filter(s => {
+        const trimmed = s.trim();
+        return trimmed.length > 30 && trimmed.length < 250;
+      });
+      
+      // Prioritize sentences with key terms
+      const importantTerms = ["buy", "sell", "hold", "recommend", "price", "target", "risk", "opportunity", "trend", "analysis"];
+      const scoredSentences = sentences.map(s => {
+        const lower = s.toLowerCase();
+        const score = importantTerms.reduce((acc, term) => acc + (lower.includes(term) ? 1 : 0), 0);
+        return { text: s.trim(), score };
+      }).sort((a, b) => b.score - a.score);
+      
+      scoredSentences.slice(0, 2).forEach(item => {
+        if (item.text) {
+          keyPoints.push(item.text + ".");
+        }
+      });
+    }
+    
+    return keyPoints;
+  }
+
   function downloadReportAsPdf() {
     if (!state.reportPlainText) return;
     if (!window.jspdf || !window.jspdf.jsPDF) return;
@@ -847,12 +949,8 @@
     const margin = 40;
     const maxWidth = pageWidth - (margin * 2);
     const lineHeight = 14;
-    const maxLinesPerPage = Math.floor((pageHeight - (margin * 2)) / lineHeight);
     
-    // Split text into lines that fit the page width
-    const lines = doc.splitTextToSize(state.reportPlainText, maxWidth);
-    
-    let yPosition = margin + 20; // Start position with small top margin
+    let yPosition = margin + 20;
     
     // Add header
     doc.setFontSize(16);
@@ -867,14 +965,27 @@
     
     // Add separator line
     doc.line(margin, yPosition, pageWidth - margin, yPosition);
+    yPosition += 25;
+    
+    // Add "Current Report" section header
+    doc.setFontSize(14);
+    doc.setFont(undefined, "bold");
+    doc.text("Current Report", margin, yPosition);
     yPosition += 20;
+    
+    // Generate summarized report
+    const summarizedReport = summarizeReport(state.reportPlainText);
     
     // Set font for body text
     doc.setFontSize(10);
+    doc.setFont(undefined, "normal");
+    
+    // Split summarized text into lines
+    const summaryLines = doc.splitTextToSize(summarizedReport, maxWidth);
     
     // Process each line
-    for (let i = 0; i < lines.length; i++) {
-      const line = lines[i];
+    for (let i = 0; i < summaryLines.length; i++) {
+      const line = summaryLines[i];
       
       // Check if we need a new page
       if (yPosition > pageHeight - margin - lineHeight) {
@@ -882,16 +993,29 @@
         yPosition = margin;
       }
       
-      // Handle section headers (lines starting with ### or ##)
-      if (line.trim().startsWith("###") || line.trim().startsWith("##")) {
-        yPosition += 10; // Add spacing before section header
+      // Handle section headers (uppercase lines ending with colon or all caps)
+      if (line.trim().match(/^[A-Z][A-Z\s:]+$/) && line.trim().length < 80) {
+        yPosition += 5; // Add spacing before section header
+        if (yPosition > pageHeight - margin - lineHeight) {
+          doc.addPage();
+          yPosition = margin;
+        }
+        doc.setFontSize(11);
+        doc.setFont(undefined, "bold");
+        doc.text(line.trim(), margin, yPosition);
+        doc.setFontSize(10);
+        doc.setFont(undefined, "normal");
+        yPosition += lineHeight + 3;
+      } else if (line.trim().startsWith("RECOMMENDATION:")) {
+        // Highlight recommendation
+        yPosition += 10;
         if (yPosition > pageHeight - margin - lineHeight) {
           doc.addPage();
           yPosition = margin;
         }
         doc.setFontSize(12);
         doc.setFont(undefined, "bold");
-        doc.text(line.replace(/^#+\s*/, ""), margin, yPosition);
+        doc.text(line.trim(), margin, yPosition);
         doc.setFontSize(10);
         doc.setFont(undefined, "normal");
         yPosition += lineHeight + 5;

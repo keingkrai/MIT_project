@@ -1,0 +1,2 @@
+"""TradingAgents FastAPI backend package."""
+

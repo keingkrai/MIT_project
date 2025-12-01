@@ -134,7 +134,8 @@ class FinancialSituationMemory:
 
         # ส่วนของ ChromaDB ยังคงเดิม
         self.chroma_client = chromadb.Client(Settings(allow_reset=True))
-        self.situation_collection = self.chroma_client.create_collection(name=name)
+        # self.situation_collection = self.chroma_client.create_collection(name=name)
+        self.situation_collection = self.chroma_client.get_or_create_collection(name=name)
 
     def get_embedding(self, text):
         """Get embedding for a text using a local SentenceTransformer model"""

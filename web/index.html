@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TradingAgents • Generate</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="logo">
+          <div class="logo-mark">
+            <span class="pulse"></span>
+            <span class="pulse"></span>
+            <span class="pulse"></span>
+          </div>
+          <div>
+            <p class="logo-title">TradingAgents</p>
+            <p class="logo-subtitle">LLM Trading Lab</p>
+          </div>
+        </div>
+        <nav class="sidebar-nav">
+          <button class="nav-link" data-nav="home">
+            <span class="icon">🏠</span>
+            <span>Home</span>
+          </button>
+          <button class="nav-link active" data-nav="generate">
+            <span class="icon">🌐</span>
+            <span>Generate</span>
+          </button>
+          <button class="nav-link" data-nav="contact">
+            <span class="icon">📬</span>
+            <span>Contact</span>
+          </button>
+          <button class="nav-link" data-nav="docs">
+            <span class="icon">📄</span>
+            <span>View Docs</span>
+          </button>
+        </nav>
+        <div class="theme-toggle">
+          <span>Dark mode</span>
+          <label class="switch">
+            <input type="checkbox" checked />
+            <span class="slider"></span>
+          </label>
+        </div>
+        
+        <div class="debug-panel">
+          <div class="debug-header">
+            <span class="icon">🐛</span>
+            <span>Debug Panel</span>
+            <button class="debug-toggle" id="debug-toggle" title="Toggle debug panel">
+              <span>▼</span>
+            </button>
+          </div>
+          <div class="debug-content" id="debug-content">
+            <div class="debug-section">
+              <div class="debug-label">WebSocket Status</div>
+              <div class="debug-value" id="debug-ws-status">
+                <span class="status-indicator disconnected"></span>
+                <span>Disconnected</span>
+              </div>
+            </div>
+            <div class="debug-section">
+              <div class="debug-label">Connection URL</div>
+              <div class="debug-value" id="debug-ws-url">—</div>
+            </div>
+            <div class="debug-section">
+              <div class="debug-label">Messages Received</div>
+              <div class="debug-value" id="debug-msg-count">0</div>
+            </div>
+            <div class="debug-section">
+              <div class="debug-label">Last Update</div>
+              <div class="debug-value" id="debug-last-update">—</div>
+            </div>
+            <div class="debug-section">
+              <div class="debug-label">Last Message Type</div>
+              <div class="debug-value" id="debug-last-type">—</div>
+            </div>
+            <div class="debug-section">
+              <div class="debug-label">Errors</div>
+              <div class="debug-value" id="debug-error-count">0</div>
+            </div>
+            <div class="debug-section full-width">
+              <div class="debug-label">Recent Messages</div>
+              <div class="debug-log" id="debug-log">
+                <div class="debug-log-empty">No messages yet</div>
+              </div>
+            </div>
+            <div class="debug-actions">
+              <button class="debug-btn" id="debug-clear">Clear Log</button>
+              <button class="debug-btn" id="debug-copy">Copy Log</button>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <main class="main">
+        <header class="main-header">
+          <div>
+            <p class="eyebrow">Trading workflow</p>
+            <h1>Generate</h1>
+          </div>
+          <div class="header-controls">
+            <label class="select">
+              <span>Symbol</span>
+              <select id="symbol-frequency">
+                <option value="Daily" selected>Daily</option>
+                <option value="Weekly">Weekly</option>
+                <option value="Monthly">Monthly</option>
+              </select>
+            </label>
+            <label class="input">
+              <span>Date</span>
+              <input type="date" id="header-date" />
+            </label>
+            <button id="generate-btn" class="primary">Generate</button>
+          </div>
+        </header>
+
+        <section class="step-grid">
+          <article class="step-card" data-step="1">
+            <header>
+              <p>Step 1</p>
+              <h2>Ticker Symbol</h2>
+            </header>
+            <label class="input">
+              <span>Select (ex. SPY)</span>
+              <input
+                type="text"
+                id="ticker-input"
+                list="ticker-suggestions"
+                autocomplete="off"
+                placeholder="SPY"
+              />
+              <datalist id="ticker-suggestions">
+                <option value="SPY"></option>
+                <option value="NVDA"></option>
+                <option value="AAPL"></option>
+                <option value="TSLA"></option>
+                <option value="MSFT"></option>
+              </datalist>
+            </label>
+          </article>
+
+          <article class="step-card" data-step="2">
+            <header>
+              <p>Step 2</p>
+              <h2>Analysis Date</h2>
+            </header>
+            <label class="input">
+              <span>YYYY-MM-DD</span>
+              <input type="date" id="analysis-date" />
+            </label>
+          </article>
+
+          <article class="step-card" data-step="3">
+            <header>
+              <p>Step 3</p>
+              <h2>Analyst Team</h2>
+            </header>
+            <div class="chip-grid" id="analyst-grid"></div>
+          </article>
+
+          <article class="step-card" data-step="4">
+            <header>
+              <p>Step 4</p>
+              <h2>Research Depth</h2>
+            </header>
+            <div class="depth-options" id="depth-options"></div>
+          </article>
+
+          <article class="step-card" data-step="5">
+            <header>
+              <p>Step 5</p>
+              <h2>Google Backend</h2>
+            </header>
+            <label class="select full">
+              <span>Provider</span>
+              <select id="llm-provider"></select>
+            </label>
+            <div class="endpoint">
+              <span>Endpoint</span>
+              <code id="backend-url"></code>
+            </div>
+          </article>
+
+          <article class="step-card" data-step="6">
+            <header>
+              <p>Step 6</p>
+              <h2>Thinking Agents</h2>
+            </header>
+            <label class="select full">
+              <span>Quick thinking</span>
+              <select id="shallow-agent"></select>
+            </label>
+            <label class="select full">
+              <span>Deep thinking</span>
+              <select id="deep-agent"></select>
+            </label>
+          </article>
+        </section>
+
+        <section class="teams-grid">
+          <article class="team-card" data-team="analyst">
+            <header>
+              <div>
+                <p>Analyst team</p>
+                <span>Market • News • Social • Fundamentals</span>
+              </div>
+              <div class="progress-ring" data-progress="0">
+                <span>0%</span>
+              </div>
+            </header>
+            <ul class="team-list"></ul>
+          </article>
+
+          <article class="team-card" data-team="research">
+            <header>
+              <div>
+                <p>Research team</p>
+                <span>Bull • Bear • Manager</span>
+              </div>
+              <div class="progress-ring" data-progress="0">
+                <span>0%</span>
+              </div>
+            </header>
+            <ul class="team-list"></ul>
+          </article>
+
+          <article class="team-card" data-team="trader">
+            <header>
+              <div>
+                <p>Trader team</p>
+                <span>Execution</span>
+              </div>
+              <div class="progress-ring" data-progress="0">
+                <span>0%</span>
+              </div>
+            </header>
+            <ul class="team-list"></ul>
+          </article>
+
+          <article class="team-card" data-team="risk">
+            <header>
+              <div>
+                <p>Risk & Portfolio</p>
+                <span>Risky • Neutral • Safe • Manager</span>
+              </div>
+              <div class="progress-ring" data-progress="0">
+                <span>0%</span>
+              </div>
+            </header>
+            <ul class="team-list"></ul>
+          </article>
+        </section>
+
+        <section class="report-panel">
+          <header>
+            <div>
+              <p>Current Report</p>
+              <small>Live updates from TradingAgents graph</small>
+            </div>
+            <div class="report-actions">
+              <button id="copy-report">Copy report</button>
+              <button id="download-report" class="ghost">Download PDF</button>
+            </div>
+          </header>
+          <article id="report-content">
+            <p>Run the pipeline to load the latest markdown report.</p>
+          </article>
+        </section>
+
+        <section class="summary-panel">
+          <div>
+            <p>Summary</p>
+            <div class="summary-grid">
+              <div><span>Symbol</span><strong id="summary-symbol">—</strong></div>
+              <div><span>Date</span><strong id="summary-date">—</strong></div>
+              <div>
+                <span>Research depth</span
+                ><strong id="summary-depth">—</strong>
+              </div>
+            </div>
+          </div>
+          <div class="recommendation">
+            <span>Recommendation</span>
+            <strong id="summary-decision">Awaiting run</strong>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
+

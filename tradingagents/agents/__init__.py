@@ -27,6 +27,9 @@ from .summarize.risk_mgmt.conservative_sum import create_summarizer_conservative
 from .summarize.risk_mgmt.aggresive_sum import create_summarizer_aggressive
 from .summarize.risk_mgmt.neutral_sum import create_summarizer_neutral
 
+from .summarize.managers.research_manager import create_summarizer_research_manager
+from .summarize.managers.risk_manager import create_summarizer_risk_manager
+
 __all__ = [
     "FinancialSituationMemory",
     "AgentState",
@@ -52,4 +55,6 @@ __all__ = [
     "create_summarizer_conservative",
     "create_summarizer_aggressive",
     "create_summarizer_neutral",
+    "create_summarizer_research_manager",
+    "create_summarizer_risk_manager",
 ]

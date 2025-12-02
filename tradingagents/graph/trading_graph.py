@@ -200,6 +200,8 @@ class TradingAgentsGraph:
             sum_cons = create_summarizer_conservative()
             sum_aggr = create_summarizer_aggressive()
             sum_neut = create_summarizer_neutral()
+            sum_investment_plan = create_summarizer_research_manager()
+            sum_risk_plan = create_summarizer_risk_manager()
             
             update_dict_fund = summarizer_func(final_state)
             update_dict_market = sum_market(final_state)
@@ -208,6 +210,8 @@ class TradingAgentsGraph:
             update_dict_cons = sum_cons(final_state)
             update_dict_aggr = sum_aggr(final_state)
             update_dict_neut = sum_neut(final_state)
+            update_dict_investment_plan = sum_investment_plan(final_state)
+            update_dict_risk_plan = sum_risk_plan(final_state)
             
             
             # --- อัปเดต Fundamental ---
@@ -265,6 +269,22 @@ class TradingAgentsGraph:
                 print("✅ Neutral Summary Updated!")
             else:
                 print("⚠️ Neutral Summary returned empty.")
+
+            # --- อัปเดต Investment Plan ---
+            if update_dict_investment_plan:
+                final_state.update(update_dict_investment_plan)
+                self.curr_state.update(update_dict_investment_plan)
+                print("✅ Investment Plan Summary Updated!")
+            else:
+                print("⚠️ Investment Plan Summary returned empty.")
+            
+            # --- อัปเดต Risk Plan ---
+            if update_dict_risk_plan:
+                final_state.update(update_dict_risk_plan)
+                self.curr_state.update(update_dict_risk_plan)
+                print("✅ Risk Plan Summary Updated!")
+            else:
+                print("⚠️ Risk Plan Summary returned empty.")
                 
         except Exception as e:
             print(f"❌ Failed to summarize: {e}")

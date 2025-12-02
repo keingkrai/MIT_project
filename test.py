@@ -73,6 +73,12 @@ def main():
 
         sum_neut = final_state.get("Summarize_neutral_report")
         neut = final_state.get("risk_debate_state").get("neutral_history")
+
+        sum_investment_plan = final_state.get("Summarize_investment_plan_report")
+        investment_plan = final_state.get("investment_plan")
+
+        sum_risk_plan = final_state.get("Summarize_risk_plan_report")
+        risk_plan = final_state.get("final_trade_decision")
         
         with open("./sum_funda.txt", 'w', encoding='utf-8') as f:
             f.write(str(sum_finda))
@@ -109,6 +115,24 @@ def main():
 
         with open("./full_aggressive.txt", 'w', encoding='utf-8') as f:
             f.write(str(aggr))
+
+        with open("./sum_neutral.txt", 'w', encoding='utf-8') as f:
+            f.write(str(sum_neut))
+        
+        with open("./full_neutral.txt", 'w', encoding='utf-8') as f:
+            f.write(str(neut))
+        
+        with open("./sum_investment_plan.txt", 'w', encoding='utf-8') as f:
+            f.write(str(sum_investment_plan))
+        
+        with open("./full_investment_plan.txt", 'w', encoding='utf-8') as f:
+            f.write(str(investment_plan))
+        
+        with open("./sum_risk_plan.txt", 'w', encoding='utf-8') as f:
+            f.write(str(sum_risk_plan))
+        
+        with open("./full_risk_plan.txt", 'w', encoding='utf-8') as f:
+            f.write(str(risk_plan))
         
         print_section("Long fundament", final_state.get("fundamentals_report"))
         print_section("Short fundament", final_state.get("Summarize_fundamentals_report"))

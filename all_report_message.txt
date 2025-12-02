@@ -19,17 +19,17 @@ Alpha Vantage Score: 0
 TradingView Score: 115
 🏆 Best Source: YAHOO, TV
 
-📊 Indicator 'macds' Source Comparison for AAPL:
-Yahoo Finance Score: 0
+📊 Indicator 'macdh' Source Comparison for AAPL:
+Yahoo Finance Score: 76
 Alpha Vantage Score: 0
-TradingView Score: 0
-🏆 Best Source: YAHOO
+TradingView Score: 76
+🏆 Best Source: YAHOO, TV
 
-📊 Indicator 'close_10_ema' Source Comparison for AAPL:
-Yahoo Finance Score: 346
-Alpha Vantage Score: 346
-TradingView Score: 346
-🏆 Best Source: YAHOO, ALPHA, TV
+📊 Indicator 'macds' Source Comparison for AAPL:
+Yahoo Finance Score: 120
+Alpha Vantage Score: 0
+TradingView Score: 120
+🏆 Best Source: YAHOO, TV
 
 📊 Indicator 'atr' Source Comparison for AAPL:
 Yahoo Finance Score: 346
@@ -43,6 +43,12 @@ Alpha Vantage Score: 340
 TradingView Score: 334
 🏆 Best Source: YAHOO, ALPHA
 
+📊 Indicator 'close_10_ema' Source Comparison for AAPL:
+Yahoo Finance Score: 346
+Alpha Vantage Score: 346
+TradingView Score: 346
+🏆 Best Source: YAHOO, ALPHA, TV
+
 📊 Indicator 'rsi' Source Comparison for AAPL:
 Yahoo Finance Score: 346
 Alpha Vantage Score: 346
@@ -50,12 +56,6 @@ TradingView Score: 346
 🏆 Best Source: YAHOO, ALPHA, TV
 
 📊 Indicator 'close_50_sma' Source Comparison for AAPL:
-Yahoo Finance Score: 346
-Alpha Vantage Score: 346
-TradingView Score: 346
-🏆 Best Source: YAHOO, ALPHA, TV
-
-📊 Indicator 'boll' Source Comparison for AAPL:
 Yahoo Finance Score: 346
 Alpha Vantage Score: 346
 TradingView Score: 346
@@ -71,16 +71,16 @@ Subreddit news fetched for AAPL: 9 posts found.
 Fetched 50 news items for AAPL from Finnhub.
 Fetched 3 news items for AAPL from Reddit.
 Fetched 10 news items for AAPL from YFinance.
-Fetched 50 news items for AAPL from Alpha Vantage.
+Fetched 0 news items for AAPL from Alpha Vantage.
 
 🌏 Global News: 
 Reddit global news have : 40 posts.
-Yfinance global news have : 48 posts.
-Finnhub global news have : 297 posts.
+Yfinance global news have : 47 posts.
+Finnhub global news have : 299 posts.
 
 
 Fetched fundamentals for AAPL:
 - YFinance: 4 fields fetched
 - Finnhub: 1 fields fetched
-- AlphaVantage: 1 fields fetched
-📜 Fundamental data for AAPL. Chosen source: alphavantage
+- AlphaVantage: 0 fields fetched
+📜 Fundamental data for AAPL. Chosen source: yfinance

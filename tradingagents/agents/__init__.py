@@ -18,6 +18,8 @@ from .managers.research_manager import create_research_manager
 from .managers.risk_manager import create_risk_manager
 
 from .trader.trader import create_trader
+from .summarize.fundamentals_sum import create_summarizer_fundamental
+from .summarize.market_sum import create_summarizer_market
 
 __all__ = [
     "FinancialSituationMemory",
@@ -37,4 +39,6 @@ __all__ = [
     "create_safe_debator",
     "create_social_media_analyst",
     "create_trader",
+    "create_summarizer_fundamental",
+    "create_summarizer_market"
 ]

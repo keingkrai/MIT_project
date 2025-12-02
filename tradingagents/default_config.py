@@ -15,10 +15,9 @@ DEFAULT_CONFIG = {
     # "quick_think_llm": "gpt-4o-mini",
     # "backend_url": "https://api.openai.com/v1",
     # LLM settings
-    "llm_provider": "typhoon",
-    "deep_think_llm": "typhoon-v2.1-12b-instruct",
-    "quick_think_llm": "typhoon-v2.1-12b-instruct",
-    "backend_url": "https://api.opentyphoon.ai/v1",
+    "llm_provider": "google",
+    "deep_think_llm": "gemini-2.0-flash",
+    "quick_think_llm": "gemini-2.0-flash-lite",
     # Debate and discussion settings
     "max_debate_rounds": 1,
     "max_risk_discuss_rounds": 1,
@@ -27,7 +26,7 @@ DEFAULT_CONFIG = {
     # Category-level configuration (default for all tools in category)
     "data_vendors": {
         "core_stock_apis": "core_stock_price",       # Options: yfinance, alpha_vantage, local
-        "technical_indicators": "yfinance",  # Options: yfinance, alpha_vantage, local
+        "technical_indicators": "core_indicator",  # Options: yfinance, alpha_vantage, local
         "fundamental_data": "alpha_vantage", # Options: openai, alpha_vantage, local
         "news_data": "alpha_vantage",        # Options: openai, alpha_vantage, google, local
     },

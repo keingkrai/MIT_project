@@ -103,10 +103,15 @@ def sent_to_telegram(report_message):
         "chat_id": CHAT_ID,
         "text": report_message
     }
-    try:
-        requests.post(url, data=data, timeout=5)
-    except Exception as e:
-        print(f"Telegram Error: {e}")
+
+    # write text file
+    with open("all_report_message.txt", "a", encoding='utf-8') as file:
+        file.write(report_message + "\n")
+
+    # try:
+    #     requests.post(url, data=data, timeout=5)
+    # except Exception as e:
+    #     print(f"Telegram Error: {e}")
 
 # ==========================================
 # ✅ MAIN TOOL DEFINITION
@@ -169,11 +174,11 @@ def get_indicators(
 
     # 3. Send Report to Telegram (Optional)
     report_message = (
-        f"📊 Indicator '{indicator}' Source Comparison for {symbol}:\n\n"
+        f"📊 Indicator '{indicator}' Source Comparison for {symbol}:\n"
         f"Yahoo Finance Score: {scores.get('yahoo', 0)}\n"
         f"Alpha Vantage Score: {scores.get('alpha', 0)}\n"
-        f"TradingView Score: {scores.get('tv', 0)}\n\n"
-        f"🏆 Best Source: {', '.join([s.upper() for s in best_sources])}"
+        f"TradingView Score: {scores.get('tv', 0)}\n"
+        f"🏆 Best Source: {', '.join([s.upper() for s in best_sources])}\n"
     )
     sent_to_telegram(report_message)
 

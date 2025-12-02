@@ -1,5 +1,7 @@
+import os
 from typing import Optional
 import datetime
+import requests
 import typer
 from pathlib import Path
 from functools import wraps
@@ -748,6 +750,27 @@ def extract_content_string(content):
         return ' '.join(text_parts)
     else:
         return str(content)
+    
+# def sent_to_telegram(message: str):
+#     """Send a message to Telegram if configured."""
+#     TELEGRAM_TOKEN = os.getenv("TELEGRAM_TOKEN")
+#     TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID")
+
+#     if TELEGRAM_TOKEN and TELEGRAM_CHAT_ID:
+#         url = f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendMessage"
+#         payload = {
+#             "chat_id": TELEGRAM_CHAT_ID,
+#             "text": message,
+#             "parse_mode": "Markdown",
+#         }
+#         try:
+#             response = requests.post(url, data=payload, timeout=10)
+#             response.raise_for_status()
+#             console.print("[green]Report sent to Telegram successfully![/green]")
+#         except requests.RequestException as e:
+#             console.print(f"[red]Failed to send report to Telegram: {e}[/red]")
+#     else:
+#         console.print("[yellow]Telegram not configured. Skipping sending report.[/yellow]")
 
 async def run_analysis_via_api(selections, layout):
     """Run analysis via FastAPI WebSocket backend."""
@@ -1248,6 +1271,11 @@ def run_analysis():
         display_complete_report(final_state)
 
         update_display(layout)
+
+        # # read text and send to telegram
+        # with open("all_report_message.txt", "r", encoding="utf-8") as f:
+        #     report_messages = f.read()
+        #     sent_to_telegram(report_messages)
 
 
 @app.command()

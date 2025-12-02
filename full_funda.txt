@@ -1,0 +1,51 @@
+Here's a comprehensive report on Apple Inc.'s (AAPL) fundamental data, based on the provided information.
+
+**Company Profile:**
+
+*   **Name:** Apple Inc.
+*   **Industry:** Consumer Electronics
+*   **Sector:** Technology
+*   **Exchange:** NMS (NASDAQ)
+*   **Currency:** USD
+
+**Key Financial Data (from YFinance, which has the most complete data):**
+
+*   **Market Cap:** $4,179,424,833,750
+*   **Total Revenue:** $416,161,000,000
+*   **Net Income:** $112,010,000,000
+*   **Total Assets:** $359,241,000,000
+*   **Total Liabilities:** $285,508,000,000
+*   **Shareholder Equity:** $73,733,000,000
+*   **Operating Cash Flow:** $111,482,000,000
+*   **Free Cash Flow:** $98,767,000,000
+
+**Financial Highlights and Analysis:**
+
+*   **Revenue and Profitability:** Apple's total revenue is substantial, exceeding $416 billion, and the company demonstrates strong profitability with a net income of over $112 billion.
+*   **Balance Sheet:** The company has a significant asset base ($359 billion), but also a substantial amount of liabilities ($285 billion). The shareholder equity is $73.7 billion.
+*   **Cash Flow:** Apple generates strong cash flow from its operations, with an operating cash flow of over $111 billion. The free cash flow, which is what's available to the company after capital expenditures, is also very strong at nearly $99 billion.
+*   **Market Capitalization:** Apple has a massive market capitalization, indicating significant investor confidence.
+*   **P/E Ratio:** The P/E ratio is not available in the returned data.
+
+**Data Source Considerations:**
+
+*   The primary source of data is YFinance, which has the most complete data for this request. Finnhub provides some data, but less than YFinance.
+
+**Summary Table:**
+
+| Metric                | Value                | Unit      |
+| --------------------- | -------------------- | --------- |
+| Market Cap            | 4,179,424,833,750    | USD       |
+| Total Revenue         | 416,161,000,000      | USD       |
+| Net Income            | 112,010,000,000      | USD       |
+| Total Assets          | 359,241,000,000      | USD       |
+| Total Liabilities     | 285,508,000,000      | USD       |
+| Shareholder Equity    | 73,733,000,000       | USD       |
+| Operating Cash Flow   | 111,482,000,000      | USD       |
+| Free Cash Flow        | 98,767,000,000       | USD       |
+| Industry              | Consumer Electronics |           |
+| Sector                | Technology           |           |
+| Exchange              | NMS                  |           |
+| Currency              | USD                  |           |
+
+**Disclaimer:** This report is based on the available data and should not be considered financial advice.

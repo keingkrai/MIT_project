@@ -695,6 +695,37 @@ button.report-length-option {
 .report-actions {
   display: flex;
   gap: 12px;
+  align-items: center;
+}
+
+.report-length-toggle {
+  display: flex;
+  gap: 4px;
+  background: var(--bg-soft);
+  border-radius: 999px;
+  padding: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.report-view-btn {
+  border-radius: 999px;
+  padding: 6px 16px;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 0.875rem;
+  transition: all 0.2s ease;
+}
+
+.report-view-btn.active {
+  background: var(--accent);
+  color: var(--bg-primary);
+  font-weight: 500;
+}
+
+.report-view-btn:hover:not(.active) {
+  color: var(--text-primary);
 }
 
 .report-actions button {

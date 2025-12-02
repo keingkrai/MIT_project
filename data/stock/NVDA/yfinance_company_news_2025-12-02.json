@@ -354,6 +354,67 @@
     }
   },
   {
+    "id": "c5af840a-8960-3f66-978c-f428041dd9c4",
+    "content": {
+      "id": "c5af840a-8960-3f66-978c-f428041dd9c4",
+      "contentType": "STORY",
+      "title": "BofA Positive on Trane Technologies (TT)",
+      "description": "",
+      "summary": "Trane Technologies plc (NYSE:TT) is one of the best industrial stocks to buy. On November 14, BofA elevated the price target on Trane from $490 to $550, while upgrading the stock from Neutral to Buy. The upgrade follows the company’s skillful handling of the slowing residential demand in H2 2025 and the possible upside next […]",
+      "pubDate": "2025-12-02T06:27:38Z",
+      "displayTime": "2025-12-02T06:27:38Z",
+      "isHosted": true,
+      "bypassModal": false,
+      "previewUrl": null,
+      "thumbnail": {
+        "originalUrl": "https://media.zenfs.com/en/insidermonkey.com/787e028c1009a805a44c994105dc5246",
+        "originalWidth": 1920,
+        "originalHeight": 1280,
+        "caption": "BofA Positive on Trane Technologies (TT)",
+        "resolutions": [
+          {
+            "url": "https://s.yimg.com/uu/api/res/1.2/AiTHFkIIOLJcPB9Svg0rrw--~B/aD0xMjgwO3c9MTkyMDthcHBpZD15dGFjaHlvbg--/https://media.zenfs.com/en/insidermonkey.com/787e028c1009a805a44c994105dc5246",
+            "width": 1920,
+            "height": 1280,
+            "tag": "original"
+          },
+          {
+            "url": "https://s.yimg.com/uu/api/res/1.2/rbKgxbbgZHBZ43wZ_VurSw--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/insidermonkey.com/787e028c1009a805a44c994105dc5246",
+            "width": 170,
+            "height": 128,
+            "tag": "170x128"
+          }
+        ]
+      },
+      "provider": {
+        "displayName": "Insider Monkey",
+        "url": "http://www.insidermonkey.com"
+      },
+      "canonicalUrl": {
+        "url": "https://finance.yahoo.com/news/bofa-positive-trane-technologies-tt-062738277.html",
+        "site": "finance",
+        "region": "US",
+        "lang": "en-US"
+      },
+      "clickThroughUrl": {
+        "url": "https://finance.yahoo.com/news/bofa-positive-trane-technologies-tt-062738277.html",
+        "site": "finance",
+        "region": "US",
+        "lang": "en-US"
+      },
+      "metadata": {
+        "editorsPick": false
+      },
+      "finance": {
+        "premiumFinance": {
+          "isPremiumNews": false,
+          "isPremiumFreeNews": false
+        }
+      },
+      "storyline": null
+    }
+  },
+  {
     "id": "a1b6ee95-a05f-3938-9b54-80ab13d9227f",
     "content": {
       "id": "a1b6ee95-a05f-3938-9b54-80ab13d9227f",
@@ -702,67 +763,6 @@
         "lang": "en-US"
       },
       "clickThroughUrl": null,
-      "metadata": {
-        "editorsPick": false
-      },
-      "finance": {
-        "premiumFinance": {
-          "isPremiumNews": false,
-          "isPremiumFreeNews": false
-        }
-      },
-      "storyline": null
-    }
-  },
-  {
-    "id": "6b731ec3-fa24-3a1a-92a7-466e5ca14894",
-    "content": {
-      "id": "6b731ec3-fa24-3a1a-92a7-466e5ca14894",
-      "contentType": "STORY",
-      "title": "Could This AI Infrastructure Stock Become the Nvidia of the 2030s?",
-      "description": "",
-      "summary": "Astera Labs has exciting growth and is profitable, despite stratospheric valuations.",
-      "pubDate": "2025-12-02T02:30:00Z",
-      "displayTime": "2025-12-02T02:30:00Z",
-      "isHosted": true,
-      "bypassModal": false,
-      "previewUrl": null,
-      "thumbnail": {
-        "originalUrl": "https://media.zenfs.com/en/motleyfool.com/52e86d40178a08c9c39b9c8fe7b33dc2",
-        "originalWidth": 1200,
-        "originalHeight": 927,
-        "caption": "Server racks with a technician. ",
-        "resolutions": [
-          {
-            "url": "https://s.yimg.com/uu/api/res/1.2/vkBZ155jfUP7yJZ7a0TSvQ--~B/aD05Mjc7dz0xMjAwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/motleyfool.com/52e86d40178a08c9c39b9c8fe7b33dc2",
-            "width": 1200,
-            "height": 927,
-            "tag": "original"
-          },
-          {
-            "url": "https://s.yimg.com/uu/api/res/1.2/EJWe8iKay_mt6m5VSomd1w--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/motleyfool.com/52e86d40178a08c9c39b9c8fe7b33dc2",
-            "width": 170,
-            "height": 128,
-            "tag": "170x128"
-          }
-        ]
-      },
-      "provider": {
-        "displayName": "Motley Fool",
-        "url": "http://www.fool.com/"
-      },
-      "canonicalUrl": {
-        "url": "https://www.fool.com/investing/2025/12/01/could-this-ai-infrastructure-stock-become-the-nvid/",
-        "site": "finance",
-        "region": "US",
-        "lang": "en-US"
-      },
-      "clickThroughUrl": {
-        "url": "https://finance.yahoo.com/news/could-ai-infrastructure-stock-become-023000402.html",
-        "site": "finance",
-        "region": "US",
-        "lang": "en-US"
-      },
       "metadata": {
         "editorsPick": false
       },

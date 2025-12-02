@@ -113,6 +113,9 @@
     summaryDate: document.getElementById("summary-date"),
     summaryDecision: document.getElementById("summary-decision"),
     recommendationCard: document.querySelector(".recommendation"),
+    // Report length options
+    reportLengthShort: document.getElementById("report-length-short"),
+    reportLengthLong: document.getElementById("report-length-long"),
     // Navigation elements
     navLinks: document.querySelectorAll(".nav-link"),
     pageGenerate: document.getElementById("page-generate"),
@@ -132,6 +135,7 @@
   const state = {
     ticker: "SPY",
     analysisDate: toISODate(),
+    reportLength: "long", // Default to long report
     // Hardcoded defaults - not displayed in UI
     analysts: new Set(analystsData.map((item) => item.value)), // All analysts selected by default
     researchDepth: researchDepthOptions[1].value, // Auto/Medium depth (value: 3) - not displayed
@@ -141,6 +145,7 @@
     deepModel: deepAgents.google[0][1], // Hardcoded to Gemini 2.0 Flash-Lite - not displayed
     isRunning: false,
     reportPlainText: "",
+    reportSections: [], // Store all report sections for length switching
     wsConnection: null, // Store WebSocket connection for stopping
     shouldStop: false, // Kill switch flag to stop processing messages
   };
@@ -367,6 +372,31 @@
       updateSummary();
     });
 
+    // Report length selection
+    if (elements.reportLengthShort) {
+      elements.reportLengthShort.addEventListener("click", () => {
+        state.reportLength = "short";
+        elements.reportLengthShort.classList.add("active");
+        elements.reportLengthLong.classList.remove("active");
+        // Re-render report with new length
+        if (state.reportSections && state.reportSections.length > 0) {
+          renderReportSections(state.reportSections);
+        }
+      });
+    }
+
+    if (elements.reportLengthLong) {
+      elements.reportLengthLong.addEventListener("click", () => {
+        state.reportLength = "long";
+        elements.reportLengthLong.classList.add("active");
+        elements.reportLengthShort.classList.remove("active");
+        // Re-render report with new length
+        if (state.reportSections && state.reportSections.length > 0) {
+          renderReportSections(state.reportSections);
+        }
+      });
+    }
+
     elements.generateBtn.addEventListener("click", runPipeline);
     elements.copyBtn.addEventListener("click", copyReportToClipboard);
     elements.downloadBtn.addEventListener("click", downloadReportAsPdf);
@@ -481,6 +511,7 @@
     // Clear previous reports
     elements.reportContent.innerHTML = "<p>Starting analysis...</p>";
     state.reportPlainText = "";
+    state.reportSections = [];
     
     // Determine WebSocket URL
     // If running from file:// or different port, default to localhost:8000
@@ -515,8 +546,8 @@
         "Portfolio Manager": ["risk", "Portfolio Manager"],
       };
       
-      // Store report sections
-      const reportSections = [];
+      // Reset report sections
+      state.reportSections = [];
       
       ws.onopen = () => {
         console.log("WebSocket connected");
@@ -528,6 +559,7 @@
           request: {
             ticker: state.ticker,
             analysis_date: state.analysisDate,
+            report_length: state.reportLength,
             analysts: Array.from(state.analysts),
             research_depth: state.researchDepth,
             llm_provider: state.llmProvider,
@@ -583,7 +615,7 @@
             
           case "report":
             // Add or update report section
-            const existingIndex = reportSections.findIndex(s => s.key === data.section);
+            const existingIndex = state.reportSections.findIndex(s => s.key === data.section);
             const reportSection = {
               key: data.section,
               label: data.label,
@@ -591,13 +623,13 @@
             };
             
             if (existingIndex >= 0) {
-              reportSections[existingIndex] = reportSection;
+              state.reportSections[existingIndex] = reportSection;
             } else {
-              reportSections.push(reportSection);
+              state.reportSections.push(reportSection);
             }
             
             // Render all reports
-            renderReportSections(reportSections);
+            renderReportSections(state.reportSections);
             break;
             
           case "complete":
@@ -632,6 +664,8 @@
               });
               
               if (finalSections.length > 0) {
+                // Update state with final sections
+                state.reportSections = finalSections;
                 renderReportSections(finalSections);
               }
             }
@@ -641,7 +675,7 @@
               setRecommendation(data.decision);
             } else {
               // Try to extract from final report
-              const finalSection = reportSections.find(s => s.key === "final_trade_decision");
+              const finalSection = state.reportSections.find(s => s.key === "final");
               if (finalSection) {
                 const decision = extractDecision(finalSection.text);
                 setRecommendation(decision);
@@ -753,18 +787,82 @@
   function renderReportSections(sections) {
     elements.reportContent.innerHTML = "";
     const fullText = [];
+    
     sections.forEach((section) => {
       const wrapper = document.createElement("div");
       wrapper.className = "report-block";
       const heading = document.createElement("h3");
       heading.textContent = section.label;
       wrapper.appendChild(heading);
-      const body = convertMarkdownToDom(section.text);
+      
+      // Apply length filtering based on state.reportLength
+      let displayText = section.text;
+      if (state.reportLength === "short") {
+        // For short reports, summarize each section
+        displayText = summarizeSection(section.text);
+      }
+      
+      const body = convertMarkdownToDom(displayText);
       wrapper.appendChild(body);
       elements.reportContent.appendChild(wrapper);
+      
+      // Store full text for PDF (will be filtered there too)
       fullText.push(`${section.label}\n${section.text}`);
     });
+    
     state.reportPlainText = fullText.join("\n\n");
+  }
+  
+  function summarizeSection(text) {
+    if (!text) return "";
+    
+    const lines = text.split("\n");
+    const summary = [];
+    let currentSection = null;
+    let currentContent = [];
+    
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i].trim();
+      if (!line) continue;
+      
+      // Detect section headers
+      const isHeader = (
+        (line.match(/^[A-Z][A-Za-z\s]+$/) && line.length < 80 && !line.includes(".") && !line.includes(",")) ||
+        line.match(/^#{1,6}\s/) ||
+        (line.endsWith(":") && line.length < 60)
+      );
+      
+      if (isHeader && !line.startsWith("•") && !line.startsWith("-") && !line.startsWith("*")) {
+        if (currentSection) {
+          summary.push(currentSection);
+          const keyPoints = extractKeyPoints(currentContent.join(" "));
+          if (keyPoints.length > 0) {
+            summary.push(...keyPoints.slice(0, 3)); // Limit to 3 key points per section
+            summary.push("");
+          }
+        }
+        currentSection = line.replace(/^#+\s*/, "").replace(":", "");
+        currentContent = [];
+      } else if (currentSection) {
+        currentContent.push(line);
+      } else {
+        currentContent.push(line);
+      }
+    }
+    
+    // Add last section
+    if (currentSection) {
+      summary.push(currentSection);
+      const keyPoints = extractKeyPoints(currentContent.join(" "));
+      if (keyPoints.length > 0) {
+        summary.push(...keyPoints.slice(0, 3));
+      }
+    } else if (currentContent.length > 0) {
+      const keyPoints = extractKeyPoints(currentContent.join(" "));
+      summary.push(...keyPoints.slice(0, 3));
+    }
+    
+    return summary.join("\n");
   }
 
   function convertMarkdownToDom(markdownText) {
@@ -972,22 +1070,27 @@
     // Add "Current Report" section header
     doc.setFontSize(14);
     doc.setFont(undefined, "bold");
-    doc.text("Current Report", margin, yPosition);
+    doc.text(`Current Report (${state.reportLength === "short" ? "Short" : "Long"} Format)`, margin, yPosition);
     yPosition += 20;
     
-    // Generate summarized report
-    const summarizedReport = summarizeReport(state.reportPlainText);
+    // Generate report based on length setting
+    let reportForPdf;
+    if (state.reportLength === "short") {
+      reportForPdf = summarizeReport(state.reportPlainText);
+    } else {
+      reportForPdf = state.reportPlainText;
+    }
     
     // Set font for body text
     doc.setFontSize(10);
     doc.setFont(undefined, "normal");
     
-    // Split summarized text into lines
-    const summaryLines = doc.splitTextToSize(summarizedReport, maxWidth);
+    // Split report text into lines
+    const reportLines = doc.splitTextToSize(reportForPdf, maxWidth);
     
     // Process each line
-    for (let i = 0; i < summaryLines.length; i++) {
-      const line = summaryLines[i];
+    for (let i = 0; i < reportLines.length; i++) {
+      const line = reportLines[i];
       
       // Check if we need a new page
       if (yPosition > pageHeight - margin - lineHeight) {

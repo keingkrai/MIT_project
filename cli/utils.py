@@ -311,3 +311,30 @@ def select_llm_provider() -> tuple[str, str]:
     display_name = "Google"
     url = "https://generativelanguage.googleapis.com/v1"
     return display_name, url
+
+def select_execution_mode() -> str:
+    """Select execution mode: 'direct' (local) or 'api' (via FastAPI backend)."""
+    from rich.console import Console
+    console = Console()
+    
+    mode = questionary.select(
+        "Select execution mode:",
+        choices=[
+            questionary.Choice("Direct - Run analysis locally", value="direct"),
+            questionary.Choice("API - Connect to FastAPI backend (requires server running)", value="api"),
+        ],
+        default="direct",
+        style=questionary.Style(
+            [
+                ("selected", "fg:cyan noinherit"),
+                ("highlighted", "fg:cyan noinherit"),
+                ("pointer", "fg:cyan noinherit"),
+            ]
+        ),
+    ).ask()
+    
+    if not mode:
+        console.print("\n[yellow]No mode selected, defaulting to 'direct'[/yellow]")
+        return "direct"
+    
+    return mode

@@ -132,58 +132,6 @@ body {
   color: var(--text-muted);
 }
 
-.debug-panel {
-  margin-top: 24px;
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
-  padding-top: 16px;
-  font-size: 0.85rem;
-}
-
-.debug-header {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: var(--text-muted);
-  font-weight: 500;
-  margin-bottom: 12px;
-  cursor: pointer;
-  user-select: none;
-}
-
-.debug-header:hover {
-  color: var(--text-primary);
-}
-
-.debug-toggle {
-  margin-left: auto;
-  background: transparent;
-  border: none;
-  color: var(--text-muted);
-  cursor: pointer;
-  padding: 4px;
-  font-size: 0.75rem;
-  transition: transform 0.2s ease, color 0.2s ease;
-}
-
-.debug-toggle:hover {
-  color: var(--text-primary);
-}
-
-.debug-panel.collapsed .debug-toggle span {
-  transform: rotate(-90deg);
-}
-
-.debug-panel.collapsed .debug-content {
-  display: none;
-}
-
-.debug-content {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  max-height: 600px;
-  overflow-y: auto;
-}
 
 .debug-content::-webkit-scrollbar {
   width: 4px;
@@ -387,6 +335,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: 32px;
+  position: relative;
 }
 
 .main-header {
@@ -456,6 +405,15 @@ body {
 .primary:not(:disabled):hover {
   transform: translateY(-1px);
   box-shadow: 0 10px 25px rgba(45, 244, 198, 0.35);
+}
+
+.primary.stop {
+  background: var(--danger);
+  color: #fff;
+}
+
+.primary.stop:not(:disabled):hover {
+  box-shadow: 0 10px 25px rgba(255, 77, 109, 0.35);
 }
 
 .step-grid {
@@ -825,6 +783,45 @@ button.depth-option {
   .theme-toggle {
     width: 100%;
   }
+}
+
+.page-content {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  width: 100%;
+}
+
+.page-content[style*="display: none"],
+.page-content.hidden {
+  display: none !important;
+}
+
+.debug-page-content {
+  background: var(--bg-panel);
+  border-radius: var(--card-radius);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.debug-page-content .debug-section {
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.debug-page-content .debug-section:last-child {
+  border-bottom: none;
+}
+
+.debug-page-content .debug-section.full-width {
+  margin-top: 0;
+}
+
+.debug-page-content .debug-log {
+  max-height: 600px;
 }
 
 @media (max-width: 720px) {

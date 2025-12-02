@@ -105,47 +105,44 @@
     tickerInput: document.getElementById("ticker-input"),
     analysisDate: document.getElementById("analysis-date"),
     headerDate: document.getElementById("header-date"),
-    analystGrid: document.getElementById("analyst-grid"),
-    depthOptions: document.getElementById("depth-options"),
-    providerSelect: document.getElementById("llm-provider"),
-    backendUrl: document.getElementById("backend-url"),
-    shallowSelect: document.getElementById("shallow-agent"),
-    deepSelect: document.getElementById("deep-agent"),
     generateBtn: document.getElementById("generate-btn"),
     reportContent: document.getElementById("report-content"),
     copyBtn: document.getElementById("copy-report"),
     downloadBtn: document.getElementById("download-report"),
     summarySymbol: document.getElementById("summary-symbol"),
     summaryDate: document.getElementById("summary-date"),
-    summaryDepth: document.getElementById("summary-depth"),
     summaryDecision: document.getElementById("summary-decision"),
     recommendationCard: document.querySelector(".recommendation"),
-    // Debug panel elements
-    debugToggle: document.getElementById("debug-toggle"),
-    debugContent: document.getElementById("debug-content"),
-    debugPanel: document.querySelector(".debug-panel"),
-    debugWsStatus: document.getElementById("debug-ws-status"),
-    debugWsUrl: document.getElementById("debug-ws-url"),
-    debugMsgCount: document.getElementById("debug-msg-count"),
-    debugLastUpdate: document.getElementById("debug-last-update"),
-    debugLastType: document.getElementById("debug-last-type"),
-    debugErrorCount: document.getElementById("debug-error-count"),
-    debugLog: document.getElementById("debug-log"),
-    debugClear: document.getElementById("debug-clear"),
-    debugCopy: document.getElementById("debug-copy"),
+    // Navigation elements
+    navLinks: document.querySelectorAll(".nav-link"),
+    pageGenerate: document.getElementById("page-generate"),
+    pageDebug: document.getElementById("page-debug"),
+    // Debug page elements
+    debugWsStatusPage: document.getElementById("debug-ws-status-page"),
+    debugWsUrlPage: document.getElementById("debug-ws-url-page"),
+    debugMsgCountPage: document.getElementById("debug-msg-count-page"),
+    debugLastUpdatePage: document.getElementById("debug-last-update-page"),
+    debugLastTypePage: document.getElementById("debug-last-type-page"),
+    debugErrorCountPage: document.getElementById("debug-error-count-page"),
+    debugLogPage: document.getElementById("debug-log-page"),
+    debugClearPage: document.getElementById("debug-clear-page"),
+    debugCopyPage: document.getElementById("debug-copy-page"),
   };
 
   const state = {
     ticker: "SPY",
     analysisDate: toISODate(),
-    analysts: new Set(analystsData.map((item) => item.value)),
-    researchDepth: researchDepthOptions[1].value,
-    llmProvider: "google",
-    backendUrl: "https://generativelanguage.googleapis.com/v1",
-    shallowModel: shallowAgents.google[0][1],
-    deepModel: deepAgents.google[0][1],
+    // Hardcoded defaults - not displayed in UI
+    analysts: new Set(analystsData.map((item) => item.value)), // All analysts selected by default
+    researchDepth: researchDepthOptions[1].value, // Auto/Medium depth (value: 3) - not displayed
+    llmProvider: "google", // Hardcoded to Google - not displayed
+    backendUrl: "https://generativelanguage.googleapis.com/v1", // Hardcoded to Google Gemini endpoint - not displayed
+    shallowModel: shallowAgents.google[0][1], // Hardcoded to Gemini 2.0 Flash-Lite - not displayed
+    deepModel: deepAgents.google[0][1], // Hardcoded to Gemini 2.0 Flash-Lite - not displayed
     isRunning: false,
     reportPlainText: "",
+    wsConnection: null, // Store WebSocket connection for stopping
+    shouldStop: false, // Kill switch flag to stop processing messages
   };
   let teamState = deepClone(teamTemplate);
   
@@ -165,34 +162,30 @@
 
   function init() {
     hydrateDates();
-    renderAnalysts();
-    renderDepthOptions();
-    renderProviders();
-    populateAgentSelects();
     renderAllTeamCards();
     updateSummary();
     setRecommendation("Awaiting run");
-    initDebugPanel();
+    initNavigation();
     bindEvents();
+    updateDebugDisplay();
+    // Start on generate page
+    navigateTo("generate");
   }
   
-  function initDebugPanel() {
-    // Toggle debug panel
-    if (elements.debugToggle) {
-      elements.debugToggle.addEventListener("click", () => {
-        elements.debugPanel.classList.toggle("collapsed");
-        const toggleSpan = elements.debugToggle.querySelector("span");
-        if (elements.debugPanel.classList.contains("collapsed")) {
-          toggleSpan.textContent = "▶";
-        } else {
-          toggleSpan.textContent = "▼";
+  function initNavigation() {
+    // Set up navigation handlers
+    elements.navLinks.forEach(link => {
+      link.addEventListener("click", () => {
+        const navTarget = link.getAttribute("data-nav");
+        if (navTarget) {
+          navigateTo(navTarget);
         }
       });
-    }
+    });
     
-    // Clear log button
-    if (elements.debugClear) {
-      elements.debugClear.addEventListener("click", () => {
+    // Initialize debug page handlers
+    if (elements.debugClearPage) {
+      elements.debugClearPage.addEventListener("click", () => {
         debugState.logEntries = [];
         debugState.messageCount = 0;
         debugState.errorCount = 0;
@@ -200,32 +193,54 @@
       });
     }
     
-    // Copy log button
-    if (elements.debugCopy) {
-      elements.debugCopy.addEventListener("click", async () => {
+    if (elements.debugCopyPage) {
+      elements.debugCopyPage.addEventListener("click", async () => {
         const logText = debugState.logEntries
           .map(entry => `[${entry.time}] [${entry.type}] ${entry.content}`)
           .join("\n");
         try {
           await navigator.clipboard.writeText(logText);
-          elements.debugCopy.textContent = "Copied!";
+          elements.debugCopyPage.textContent = "Copied!";
           setTimeout(() => {
-            elements.debugCopy.textContent = "Copy Log";
+            elements.debugCopyPage.textContent = "Copy Log";
           }, 2000);
         } catch (error) {
           console.error("Failed to copy log:", error);
         }
       });
     }
+  }
+  
+  function navigateTo(page) {
+    // Update active nav link
+    elements.navLinks.forEach(link => {
+      if (link.getAttribute("data-nav") === page) {
+        link.classList.add("active");
+      } else {
+        link.classList.remove("active");
+      }
+    });
     
-    updateDebugDisplay();
+    // Show/hide pages
+    if (page === "generate") {
+      if (elements.pageGenerate) elements.pageGenerate.style.display = "flex";
+      if (elements.pageDebug) elements.pageDebug.style.display = "none";
+    } else if (page === "debug") {
+      if (elements.pageGenerate) elements.pageGenerate.style.display = "none";
+      if (elements.pageDebug) elements.pageDebug.style.display = "flex";
+    } else if (page === "home" || page === "contact" || page === "docs") {
+      // For now, just show generate page for other nav items
+      if (elements.pageGenerate) elements.pageGenerate.style.display = "flex";
+      if (elements.pageDebug) elements.pageDebug.style.display = "none";
+    }
   }
   
   function updateDebugDisplay() {
-    // Update WebSocket status
-    if (elements.debugWsStatus) {
-      const statusIndicator = elements.debugWsStatus.querySelector(".status-indicator");
-      const statusText = elements.debugWsStatus.querySelector("span:last-child");
+    // Helper function to update status indicator
+    const updateStatusIndicator = (container) => {
+      if (!container) return;
+      const statusIndicator = container.querySelector(".status-indicator");
+      const statusText = container.querySelector("span:last-child");
       
       if (debugState.wsConnected) {
         statusIndicator.className = "status-indicator connected";
@@ -237,43 +252,42 @@
         statusIndicator.className = "status-indicator disconnected";
         statusText.textContent = "Disconnected";
       }
+    };
+    
+    // Update debug page
+    updateStatusIndicator(elements.debugWsStatusPage);
+    
+    if (elements.debugWsUrlPage) {
+      elements.debugWsUrlPage.textContent = debugState.wsUrl || "—";
     }
     
-    // Update URL
-    if (elements.debugWsUrl) {
-      elements.debugWsUrl.textContent = debugState.wsUrl || "—";
+    if (elements.debugMsgCountPage) {
+      elements.debugMsgCountPage.textContent = debugState.messageCount;
     }
     
-    // Update counts
-    if (elements.debugMsgCount) {
-      elements.debugMsgCount.textContent = debugState.messageCount;
+    if (elements.debugErrorCountPage) {
+      elements.debugErrorCountPage.textContent = debugState.errorCount;
     }
     
-    if (elements.debugErrorCount) {
-      elements.debugErrorCount.textContent = debugState.errorCount;
-    }
-    
-    // Update last update time
-    if (elements.debugLastUpdate) {
+    if (elements.debugLastUpdatePage) {
       if (debugState.lastUpdate) {
         const time = new Date(debugState.lastUpdate).toLocaleTimeString();
-        elements.debugLastUpdate.textContent = time;
+        elements.debugLastUpdatePage.textContent = time;
       } else {
-        elements.debugLastUpdate.textContent = "—";
+        elements.debugLastUpdatePage.textContent = "—";
       }
     }
     
-    // Update last type
-    if (elements.debugLastType) {
-      elements.debugLastType.textContent = debugState.lastType || "—";
+    if (elements.debugLastTypePage) {
+      elements.debugLastTypePage.textContent = debugState.lastType || "—";
     }
     
     // Update log display
-    if (elements.debugLog) {
+    if (elements.debugLogPage) {
       if (debugState.logEntries.length === 0) {
-        elements.debugLog.innerHTML = '<div class="debug-log-empty">No messages yet</div>';
+        elements.debugLogPage.innerHTML = '<div class="debug-log-empty">No messages yet</div>';
       } else {
-        elements.debugLog.innerHTML = debugState.logEntries
+        elements.debugLogPage.innerHTML = debugState.logEntries
           .slice(-debugState.maxLogEntries)
           .map(entry => {
             const entryClass = entry.type === "error" ? "error" : 
@@ -288,7 +302,7 @@
           })
           .join("");
         // Scroll to bottom
-        elements.debugLog.scrollTop = elements.debugLog.scrollHeight;
+        elements.debugLogPage.scrollTop = elements.debugLogPage.scrollHeight;
       }
     }
   }
@@ -331,85 +345,6 @@
     elements.headerDate.value = today;
   }
 
-  function renderAnalysts() {
-    elements.analystGrid.innerHTML = "";
-    analystsData.forEach((analyst) => {
-      const chip = document.createElement("button");
-      chip.type = "button";
-      chip.className = `chip ${
-        state.analysts.has(analyst.value) ? "selected" : ""
-      }`;
-      chip.textContent = analyst.label;
-      chip.dataset.value = analyst.value;
-      chip.addEventListener("click", () => toggleAnalyst(analyst.value));
-      elements.analystGrid.appendChild(chip);
-    });
-  }
-
-  function renderDepthOptions() {
-    elements.depthOptions.innerHTML = "";
-    researchDepthOptions.forEach((option) => {
-      const button = document.createElement("button");
-      button.type = "button";
-      button.className = `depth-option ${
-        option.value === state.researchDepth ? "active" : ""
-      }`;
-      button.innerHTML = `<strong>${option.label}</strong><span>${option.helper}</span>`;
-      button.addEventListener("click", () => {
-        state.researchDepth = option.value;
-        renderDepthOptions();
-        updateSummary();
-      });
-      elements.depthOptions.appendChild(button);
-    });
-  }
-
-  function renderProviders() {
-    elements.providerSelect.innerHTML = "";
-    llmProviders.forEach((provider) => {
-      const option = document.createElement("option");
-      option.value = provider.id;
-      option.textContent = provider.label;
-      if (provider.id === state.llmProvider) {
-        option.selected = true;
-      }
-      elements.providerSelect.appendChild(option);
-    });
-    elements.backendUrl.textContent = state.backendUrl;
-  }
-
-  function populateAgentSelects() {
-    populateAgentSelect(
-      elements.shallowSelect,
-      shallowAgents[state.llmProvider],
-      state.shallowModel,
-      (value) => {
-        state.shallowModel = value;
-      }
-    );
-    populateAgentSelect(
-      elements.deepSelect,
-      deepAgents[state.llmProvider],
-      state.deepModel,
-      (value) => {
-        state.deepModel = value;
-      }
-    );
-  }
-
-  function populateAgentSelect(selectElement, options, selectedValue, onChange) {
-    selectElement.innerHTML = "";
-    options.forEach(([label, value]) => {
-      const option = document.createElement("option");
-      option.value = value;
-      option.textContent = label;
-      if (value === selectedValue) {
-        option.selected = true;
-      }
-      selectElement.appendChild(option);
-    });
-    selectElement.onchange = (event) => onChange(event.target.value);
-  }
 
   function bindEvents() {
     elements.tickerInput.addEventListener("input", (event) => {
@@ -432,35 +367,11 @@
       updateSummary();
     });
 
-    elements.providerSelect.addEventListener("change", (event) => {
-      const providerId = event.target.value;
-      state.llmProvider = providerId;
-      const provider = llmProviders.find((item) => item.id === providerId);
-      state.backendUrl = provider ? provider.url : "";
-      elements.backendUrl.textContent = state.backendUrl;
-      state.shallowModel = shallowAgents[providerId][0][1];
-      state.deepModel = deepAgents[providerId][0][1];
-      populateAgentSelects();
-      updateSummary();
-    });
-
     elements.generateBtn.addEventListener("click", runPipeline);
     elements.copyBtn.addEventListener("click", copyReportToClipboard);
     elements.downloadBtn.addEventListener("click", downloadReportAsPdf);
   }
 
-  function toggleAnalyst(analystValue) {
-    if (state.analysts.has(analystValue) && state.analysts.size === 1) {
-      return;
-    }
-    if (state.analysts.has(analystValue)) {
-      state.analysts.delete(analystValue);
-    } else {
-      state.analysts.add(analystValue);
-    }
-    renderAnalysts();
-    updateSummary();
-  }
 
   function renderAllTeamCards() {
     Object.keys(teamState).forEach(renderTeamCard);
@@ -502,17 +413,68 @@
   function updateSummary() {
     elements.summarySymbol.textContent = state.ticker;
     elements.summaryDate.textContent = state.analysisDate;
-    const depth = researchDepthOptions.find(
-      (option) => option.value === state.researchDepth
-    );
-    elements.summaryDepth.textContent = depth ? depth.label : "—";
+    // Research depth is auto-set and not displayed in UI
+  }
+
+  function stopPipeline() {
+    // Kill switch - stop everything immediately
+    state.shouldStop = true;
+    
+    // Send stop signal to backend if connection is open
+    if (state.wsConnection && state.wsConnection.readyState === WebSocket.OPEN) {
+      try {
+        state.wsConnection.send(JSON.stringify({ action: "stop_analysis" }));
+      } catch (e) {
+        console.log("Could not send stop signal:", e);
+      }
+    }
+    
+    // Close WebSocket connection immediately
+    if (state.wsConnection) {
+      try {
+        state.wsConnection.onmessage = null; // Stop processing messages
+        state.wsConnection.onerror = null;
+        state.wsConnection.onclose = null;
+        state.wsConnection.close();
+      } catch (e) {
+        console.log("Error closing connection:", e);
+      }
+      state.wsConnection = null;
+    }
+    
+    // Reset all agent statuses to pending
+    teamState = deepClone(teamTemplate);
+    renderAllTeamCards();
+    
+    // Reset state
+    state.isRunning = false;
+    state.shouldStop = false;
+    
+    // Update UI
+    elements.generateBtn.disabled = false;
+    elements.generateBtn.textContent = "Generate";
+    elements.generateBtn.classList.remove("stop");
+    elements.reportContent.innerHTML = "<p style='color: var(--danger); font-weight: 600;'>⚠️ Analysis stopped by user. All processes terminated.</p>";
+    setRecommendation("Awaiting run");
+    
+    // Update debug panel
+    updateDebugWsStatus(false);
+    addDebugLog("system", "Analysis stopped by user - kill switch activated", false);
   }
 
   async function runPipeline() {
-    if (state.isRunning) return;
+    // If already running, activate kill switch
+    if (state.isRunning) {
+      stopPipeline();
+      return;
+    }
+    
+    // Reset stop flag
+    state.shouldStop = false;
     state.isRunning = true;
-    elements.generateBtn.disabled = true;
-    elements.generateBtn.textContent = "Running…";
+    elements.generateBtn.disabled = false;
+    elements.generateBtn.textContent = "Stop";
+    elements.generateBtn.classList.add("stop");
     teamState = deepClone(teamTemplate);
     renderAllTeamCards();
     
@@ -535,6 +497,7 @@
     
     try {
       const ws = new WebSocket(wsUrl);
+      state.wsConnection = ws;
       
       // Map backend agent names to frontend team structure
       const agentToTeamMap = {
@@ -578,8 +541,18 @@
       };
       
       ws.onmessage = (event) => {
+        // Kill switch check - stop processing if stop was requested
+        if (state.shouldStop) {
+          return;
+        }
+        
         const message = JSON.parse(event.data);
         const { type, data } = message;
+        
+        // Kill switch check again after parsing
+        if (state.shouldStop) {
+          return;
+        }
         
         // Debug logging
         addDebugLog(type, JSON.stringify(data).substring(0, 200), type === "error");
@@ -628,6 +601,10 @@
             break;
             
           case "complete":
+            // Don't process completion if kill switch is active
+            if (state.shouldStop) {
+              return;
+            }
             // Analysis complete
             console.log("Analysis complete:", data.decision);
             
@@ -681,12 +658,20 @@
             });
             
             ws.close();
+            state.wsConnection = null;
+            state.shouldStop = false;
             break;
             
           case "error":
+            // Don't process errors if kill switch is active
+            if (state.shouldStop) {
+              return;
+            }
             console.error("Error:", data.message);
             elements.reportContent.innerHTML = `<p style="color: var(--danger)">Error: ${data.message}</p>`;
             ws.close();
+            state.wsConnection = null;
+            state.shouldStop = false;
             break;
             
           case "pong":
@@ -696,30 +681,47 @@
       };
       
       ws.onerror = (error) => {
+        // Don't process errors if kill switch is active
+        if (state.shouldStop) {
+          return;
+        }
         console.error("WebSocket error:", error);
         updateDebugWsStatus(false);
         addDebugLog("error", `WebSocket error: ${error.message || "Connection failed"}`, true);
         elements.reportContent.innerHTML = `<p style="color: var(--danger)">Connection error. Make sure the FastAPI backend is running on port 8000.</p>`;
         state.isRunning = false;
+        state.shouldStop = false;
+        state.wsConnection = null;
         elements.generateBtn.disabled = false;
         elements.generateBtn.textContent = "Generate";
+        elements.generateBtn.classList.remove("stop");
       };
       
       ws.onclose = () => {
+        // Don't process close events if kill switch is active (already handled)
+        if (state.shouldStop) {
+          return;
+        }
         console.log("WebSocket closed");
         updateDebugWsStatus(false);
         addDebugLog("system", "WebSocket connection closed", false);
         state.isRunning = false;
+        state.shouldStop = false;
+        state.wsConnection = null;
         elements.generateBtn.disabled = false;
         elements.generateBtn.textContent = "Generate";
+        elements.generateBtn.classList.remove("stop");
       };
       
     } catch (error) {
       console.error("Error starting analysis:", error);
       elements.reportContent.innerHTML = `<p style="color: var(--danger)">Error: ${error.message}</p>`;
       state.isRunning = false;
+      state.shouldStop = false;
+      state.wsConnection = null;
       elements.generateBtn.disabled = false;
       elements.generateBtn.textContent = "Generate";
+      elements.generateBtn.classList.remove("stop");
     }
   }
 

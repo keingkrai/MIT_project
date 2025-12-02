@@ -540,6 +540,13 @@ async def websocket_endpoint(websocket: WebSocket):
             active_connections.remove(websocket)
 
 
+@app.get("/.well-known/appspecific/com.chrome.devtools.json")
+async def chrome_devtools_config():
+    """Handle Chrome DevTools configuration request."""
+    # Return empty JSON to satisfy Chrome DevTools
+    return {}
+
+
 @app.get("/api/health")
 async def health_check():
     """Health check endpoint."""

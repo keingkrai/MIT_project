@@ -1,76 +1,76 @@
 {
   "symbol": "NVDA",
-  "chosen_source": "alphavantage",
+  "chosen_source": "yfinance",
   "scores": {
-    "yfinance": 13,
-    "finnhub": 4,
-    "alphavantage": 13
+    "yfinance": 3,
+    "finnhub": 3,
+    "alphavantage": 0
   },
   "completeness": {
     "yfinance": 13,
     "finnhub": 8,
-    "alphavantage": 16
+    "alphavantage": 0
   },
   "sections": {
     "overview": {
       "scores": {
-        "yfinance": 6,
-        "finnhub": 4,
-        "alphavantage": 6
+        "yfinance": 3,
+        "finnhub": 3,
+        "alphavantage": 0
       },
       "completeness": {
         "yfinance": 6,
         "finnhub": 8,
-        "alphavantage": 8
+        "alphavantage": 0
       }
     },
     "balancesheet": {
       "scores": {
-        "yfinance": 3,
+        "yfinance": 0,
         "finnhub": 0,
-        "alphavantage": 3
+        "alphavantage": 0
       },
       "completeness": {
         "yfinance": 3,
         "finnhub": 0,
-        "alphavantage": 3
+        "alphavantage": 0
       }
     },
     "cashflow": {
       "scores": {
-        "yfinance": 2,
+        "yfinance": 0,
         "finnhub": 0,
-        "alphavantage": 2
+        "alphavantage": 0
       },
       "completeness": {
         "yfinance": 2,
         "finnhub": 0,
-        "alphavantage": 3
+        "alphavantage": 0
       }
     },
     "incomestatement": {
       "scores": {
-        "yfinance": 2,
+        "yfinance": 0,
         "finnhub": 0,
-        "alphavantage": 2
+        "alphavantage": 0
       },
       "completeness": {
         "yfinance": 2,
         "finnhub": 0,
-        "alphavantage": 2
+        "alphavantage": 0
       }
     }
   },
   "final_payload": {
     "overview": {
-      "name": "NVIDIA Corporation",
+      "marketCap": 4372955555496.216,
+      "sharesOutstanding": null,
+      "peRatio": null,
       "currency": "USD",
-      "exchange": "NASDAQ",
-      "sector": "TECHNOLOGY",
-      "industry": "SEMICONDUCTORS",
-      "marketCap": 4451948560000.0,
-      "sharesOutstanding": 24347000000.0,
-      "peRatio": 45.3
+      "exchange": "NMS",
+      "name": "NVIDIA Corporation",
+      "sector": "Technology",
+      "industry": "Semiconductors"
     },
     "balancesheet": {
       "totalAssets": 111601000000.0,
@@ -80,7 +80,7 @@
     "cashflow": {
       "operatingCashFlow": 64089000000.0,
       "freeCashFlow": 60853000000.0,
-      "capitalExpenditures": 3236000000.0
+      "capitalExpenditures": null
     },
     "incomestatement": {
       "totalRevenue": 130497000000.0,
@@ -88,5 +88,5 @@
       "eps": null
     }
   },
-  "timestamp": "2025-11-25T17:07:30.801500+00:00"
+  "timestamp": "2025-12-02T06:00:12.550222+00:00"
 }

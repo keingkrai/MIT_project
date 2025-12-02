@@ -5,6 +5,9 @@ from pathlib import Path
 from functools import wraps
 from rich.console import Console
 from dotenv import load_dotenv
+import json
+import asyncio
+import websockets
 
 # Load environment variables from .env file
 load_dotenv()
@@ -484,6 +487,16 @@ def get_user_selections():
     selected_shallow_thinker = select_shallow_thinking_agent(selected_llm_provider)
     selected_deep_thinker = select_deep_thinking_agent(selected_llm_provider)
 
+    # Step 7: Execution mode
+    console.print(
+        create_question_box(
+            "Step 7: Execution Mode",
+            "Select execution mode: 'direct' (local) or 'api' (via FastAPI backend)",
+            "direct"
+        )
+    )
+    execution_mode = select_execution_mode()
+
     return {
         "ticker": selected_ticker,
         "analysis_date": analysis_date,
@@ -493,6 +506,7 @@ def get_user_selections():
         "backend_url": backend_url,
         "shallow_thinker": selected_shallow_thinker,
         "deep_thinker": selected_deep_thinker,
+        "execution_mode": execution_mode,
     }
 
 
@@ -735,9 +749,145 @@ def extract_content_string(content):
     else:
         return str(content)
 
+async def run_analysis_via_api(selections, layout):
+    """Run analysis via FastAPI WebSocket backend."""
+    import websockets
+    
+    # Determine WebSocket URL
+    api_url = "ws://localhost:8000/ws"
+    
+    try:
+        console.print(f"[cyan]Connecting to FastAPI backend at {api_url}...[/cyan]")
+        
+        async with websockets.connect(api_url) as websocket:
+            console.print("[green]Connected to FastAPI backend[/green]")
+            
+            # Prepare request
+            request = {
+                "action": "start_analysis",
+                "request": {
+                    "ticker": selections["ticker"],
+                    "analysis_date": selections["analysis_date"],
+                    "analysts": [analyst.value for analyst in selections["analysts"]],
+                    "research_depth": selections["research_depth"],
+                    "llm_provider": selections["llm_provider"],
+                    "backend_url": selections["backend_url"],
+                    "shallow_thinker": selections["shallow_thinker"],
+                    "deep_thinker": selections["deep_thinker"],
+                }
+            }
+            
+            # Send analysis request
+            await websocket.send(json.dumps(request))
+            message_buffer.add_message("System", f"Sent analysis request for {selections['ticker']}")
+            update_display(layout)
+            
+            # Backend uses same agent names as CLI, so direct mapping
+            valid_agents = {
+                "Market Analyst", "Social Analyst", "News Analyst", "Fundamentals Analyst",
+                "Bull Researcher", "Bear Researcher", "Research Manager",
+                "Trader",
+                "Risky Analyst", "Neutral Analyst", "Safe Analyst", "Portfolio Manager"
+            }
+            
+            # Listen for messages
+            while True:
+                try:
+                    message = await asyncio.wait_for(websocket.recv(), timeout=300.0)
+                    data = json.loads(message)
+                    msg_type = data.get("type")
+                    msg_data = data.get("data", {})
+                    
+                    if msg_type == "status":
+                        # Update agent statuses
+                        if "agents" in msg_data:
+                            for agent_name, status in msg_data["agents"].items():
+                                if agent_name in valid_agents:
+                                    message_buffer.update_agent_status(agent_name, status)
+                        update_display(layout)
+                    
+                    elif msg_type == "message":
+                        message_buffer.add_message(msg_data.get("type", "Message"), msg_data.get("content", ""))
+                        update_display(layout)
+                    
+                    elif msg_type == "tool_call":
+                        message_buffer.add_tool_call(msg_data.get("name", "unknown"), msg_data.get("args", {}))
+                        update_display(layout)
+                    
+                    elif msg_type == "report":
+                        # Update report section (API sends section names directly like "market_report")
+                        section_key = msg_data.get("section")
+                        if section_key in message_buffer.report_sections:
+                            message_buffer.update_report_section(section_key, msg_data.get("content", ""))
+                        update_display(layout)
+                    
+                    elif msg_type == "complete":
+                        # Analysis complete
+                        final_state = msg_data.get("final_state", {})
+                        
+                        # Update final report sections
+                        for section_key, content in final_state.items():
+                            if content:
+                                message_buffer.update_report_section(section_key, content)
+                        
+                        # Mark all agents as completed
+                        for agent_name in valid_agents:
+                            message_buffer.update_agent_status(agent_name, "completed")
+                        
+                        message_buffer.add_message(
+                            "Analysis", f"Completed analysis for {selections['analysis_date']}"
+                        )
+                        
+                        # Display complete report
+                        display_complete_report(final_state)
+                        update_display(layout)
+                        break
+                    
+                    elif msg_type == "error":
+                        console.print(f"[red]Error: {msg_data.get('message', 'Unknown error')}[/red]")
+                        message_buffer.add_message("Error", msg_data.get("message", "Unknown error"))
+                        update_display(layout)
+                        break
+                    
+                except asyncio.TimeoutError:
+                    console.print("[yellow]No message received for 5 minutes, continuing to wait...[/yellow]")
+                    continue
+                    
+    except websockets.exceptions.ConnectionClosed:
+        console.print("[red]Connection to FastAPI backend closed[/red]")
+        message_buffer.add_message("Error", "Connection to FastAPI backend closed")
+        update_display(layout)
+    except Exception as e:
+        console.print(f"[red]Error connecting to FastAPI backend: {e}[/red]")
+        console.print("[yellow]Make sure the FastAPI server is running: python start_api.py[/yellow]")
+        message_buffer.add_message("Error", f"Connection error: {str(e)}")
+        update_display(layout)
+
+
 def run_analysis():
     # First get all user selections
     selections = get_user_selections()
+    
+    # Check execution mode
+    if selections.get("execution_mode") == "api":
+        # Run via API
+        layout = create_layout()
+        with Live(layout, refresh_per_second=4) as live:
+            update_display(layout)
+            
+            # Reset agent statuses
+            for agent in message_buffer.agent_status:
+                message_buffer.update_agent_status(agent, "pending")
+            
+            # Reset report sections
+            for section in message_buffer.report_sections:
+                message_buffer.report_sections[section] = None
+            message_buffer.current_report = None
+            message_buffer.final_report = None
+            
+            # Run async WebSocket client
+            asyncio.run(run_analysis_via_api(selections, layout))
+        return
 
     # Create config with selected research depth
     config = DEFAULT_CONFIG.copy()

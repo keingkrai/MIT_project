@@ -190,7 +190,84 @@ class TradingAgentsGraph:
 
         # Store current state for reflection
         self.curr_state = final_state
+        
+        print("📝 Summarizing Reports with Typhoon...")
+        try:
+            summarizer_func = create_summarizer_fundamental()
+            sum_market = create_summarizer_market()
+            sum_social = create_summarizer_social()
+            sum_news = create_summarizer_news()
+            sum_cons = create_summarizer_conservative()
+            sum_aggr = create_summarizer_aggressive()
+            sum_neut = create_summarizer_neutral()
+            
+            update_dict_fund = summarizer_func(final_state)
+            update_dict_market = sum_market(final_state)
+            update_dict_social = sum_social(final_state)
+            update_dict_news = sum_news(final_state)
+            update_dict_cons = sum_cons(final_state)
+            update_dict_aggr = sum_aggr(final_state)
+            update_dict_neut = sum_neut(final_state)
+            
+            
+            # --- อัปเดต Fundamental ---
+            if update_dict_fund:
+                final_state.update(update_dict_fund)
+                self.curr_state.update(update_dict_fund)
+                print("✅ Fundamental Summary Updated!")
+            else:
+                print("⚠️ Fundamental Summary returned empty.")
 
+            # --- อัปเดต Market ---
+            if update_dict_market:
+                final_state.update(update_dict_market)
+                self.curr_state.update(update_dict_market)
+                print("✅ Market Summary Updated!")
+            else:
+                print("⚠️ Market Summary returned empty.")
+
+            # --- อัปเดต Social ---
+            if update_dict_social:
+                final_state.update(update_dict_social)
+                self.curr_state.update(update_dict_social)
+                print("✅ Social Summary Updated!")
+            else:
+                print("⚠️ Social Summary returned empty.")
+
+            # --- อัปเดต News ---
+            if update_dict_news:
+                final_state.update(update_dict_news)
+                self.curr_state.update(update_dict_news)
+                print("✅ News Summary Updated!")
+            else:
+                print("⚠️ News Summary returned empty.")
+
+            # --- อัปเดต Conservative ---
+            if update_dict_cons:
+                final_state.update(update_dict_cons)
+                self.curr_state.update(update_dict_cons)
+                print("✅ Conservative Summary Updated!")
+            else:
+                print("⚠️ Conservative Summary returned empty.")
+            
+            # --- อัปเดต Aggressive ---
+            if update_dict_aggr:
+                final_state.update(update_dict_aggr)
+                self.curr_state.update(update_dict_aggr)
+                print("✅ Aggressive Summary Updated!")
+            else:
+                print("⚠️ Aggressive Summary returned empty.")
+
+            # --- อัปเดต Neutral ---
+            if update_dict_neut:
+                final_state.update(update_dict_neut)
+                self.curr_state.update(update_dict_neut)
+                print("✅ Neutral Summary Updated!")
+            else:
+                print("⚠️ Neutral Summary returned empty.")
+                
+        except Exception as e:
+            print(f"❌ Failed to summarize: {e}")
         # Log state
         self._log_state(trade_date, final_state)
 

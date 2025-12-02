@@ -18,6 +18,14 @@ from .managers.research_manager import create_research_manager
 from .managers.risk_manager import create_risk_manager
 
 from .trader.trader import create_trader
+from .summarize.analysts.fundamentals_sum import create_summarizer_fundamental
+from .summarize.analysts.market_sum import create_summarizer_market
+from .summarize.analysts.social_sum import create_summarizer_social
+from .summarize.analysts.news_sum import create_summarizer_news
+
+from .summarize.risk_mgmt.conservative_sum import create_summarizer_conservative
+from .summarize.risk_mgmt.aggresive_sum import create_summarizer_aggressive
+from .summarize.risk_mgmt.neutral_sum import create_summarizer_neutral
 
 __all__ = [
     "FinancialSituationMemory",
@@ -37,4 +45,11 @@ __all__ = [
     "create_safe_debator",
     "create_social_media_analyst",
     "create_trader",
+    "create_summarizer_fundamental",
+    "create_summarizer_market",
+    "create_summarizer_social",
+    "create_summarizer_news",
+    "create_summarizer_conservative",
+    "create_summarizer_aggressive",
+    "create_summarizer_neutral",
 ]

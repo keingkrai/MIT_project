@@ -1,0 +1,46 @@
+Here's a fundamental analysis report for Apple Inc. (AAPL) based on the provided data.
+
+**Company Overview:**
+
+*   **Name:** Apple Inc.
+*   **Ticker:** AAPL
+*   **Industry:** Consumer Electronics
+*   **Sector:** Technology
+*   **Exchange:** NASDAQ
+*   **Market Cap:** Approximately \$4.14 Trillion (based on Alphavantage data), \$4.18 Trillion (based on Finnhub data), and \$4.20 Trillion (based on Yfinance data). Note the significant difference in market cap reported by Finnhub, which may be an error.
+*   **Shares Outstanding:** Approximately 14.78 billion (Alphavantage and Finnhub). Yfinance does not provide this information.
+*   **P/E Ratio:** 37.33 (Alphavantage), 36.91 (Finnhub). Yfinance does not provide this information.
+
+**Financial Highlights (Based on Yfinance data, which provides the most complete data):**
+
+*   **Total Revenue:** \$416.16 billion
+*   **Net Income:** \$112.01 billion
+*   **Operating Cash Flow:** \$111.48 billion
+*   **Free Cash Flow:** \$98.77 billion
+*   **Total Assets:** \$359.24 billion
+*   **Total Liabilities:** \$285.51 billion
+*   **Shareholder Equity:** \$73.73 billion
+
+**Key Observations and Insights:**
+
+*   **Market Capitalization:** Apple has a massive market capitalization, indicating its significant size and influence in the technology sector.
+*   **Profitability:** The company is highly profitable, with a substantial net income.
+*   **Cash Flow:** Apple generates significant cash flow from its operations, suggesting strong financial health and the ability to invest in growth, pay dividends, or repurchase shares. The free cash flow is also very strong.
+*   **Valuation:** The P/E ratio suggests that the stock is trading at a relatively high multiple of its earnings. Investors may be willing to pay a premium for Apple's growth potential and brand value.
+*   **Balance Sheet:** While the total assets are substantial, the total liabilities are also high. However, the shareholder equity is positive, and the company appears to be solvent.
+*   **Data Completeness:** The data sources have varying levels of completeness. Yfinance provides the most comprehensive financial data in this instance.
+
+**Fundamental Data Summary Table:**
+
+| Metric                | Value                | Source      |
+| --------------------- | -------------------- | ----------- |
+| Market Cap            | \$4.14T - \$4.20T      | Various     |
+| P/E Ratio             | 36.91 - 37.33        | Alphavantage, Finnhub |
+| Total Revenue         | \$416.16B            | Yfinance    |
+| Net Income            | \$112.01B            | Yfinance    |
+| Operating Cash Flow   | \$111.48B            | Yfinance    |
+| Free Cash Flow        | \$98.77B             | Yfinance    |
+| Total Assets          | \$359.24B            | Yfinance    |
+| Total Liabilities     | \$285.51B            | Yfinance    |
+| Shareholder Equity    | \$73.73B             | Yfinance    |
+| Shares Outstanding    | ~14.78B             | Alphavantage, Finnhub    |

@@ -13,35 +13,17 @@ TradingView Score: 0
 
 🏆 Best Source: TWELVEDATA
 
-📊 Indicator 'macd' Source Comparison for AAPL:
-Yahoo Finance Score: 115
-Alpha Vantage Score: 0
-TradingView Score: 115
-🏆 Best Source: YAHOO, TV
-
-📊 Indicator 'macdh' Source Comparison for AAPL:
-Yahoo Finance Score: 76
-Alpha Vantage Score: 0
-TradingView Score: 76
-🏆 Best Source: YAHOO, TV
-
 📊 Indicator 'macds' Source Comparison for AAPL:
 Yahoo Finance Score: 120
 Alpha Vantage Score: 0
 TradingView Score: 120
 🏆 Best Source: YAHOO, TV
 
-📊 Indicator 'atr' Source Comparison for AAPL:
-Yahoo Finance Score: 346
-Alpha Vantage Score: 346
-TradingView Score: 346
-🏆 Best Source: YAHOO, ALPHA, TV
-
-📊 Indicator 'close_200_sma' Source Comparison for AAPL:
-Yahoo Finance Score: 340
-Alpha Vantage Score: 340
-TradingView Score: 334
-🏆 Best Source: YAHOO, ALPHA
+📊 Indicator 'macd' Source Comparison for AAPL:
+Yahoo Finance Score: 0
+Alpha Vantage Score: 0
+TradingView Score: 0
+🏆 Best Source: YAHOO
 
 📊 Indicator 'close_10_ema' Source Comparison for AAPL:
 Yahoo Finance Score: 346
@@ -49,7 +31,19 @@ Alpha Vantage Score: 346
 TradingView Score: 346
 🏆 Best Source: YAHOO, ALPHA, TV
 
-📊 Indicator 'rsi' Source Comparison for AAPL:
+📊 Indicator 'atr' Source Comparison for AAPL:
+Yahoo Finance Score: 173
+Alpha Vantage Score: 173
+TradingView Score: 0
+🏆 Best Source: YAHOO, ALPHA
+
+📊 Indicator 'close_200_sma' Source Comparison for AAPL:
+Yahoo Finance Score: 340
+Alpha Vantage Score: 340
+TradingView Score: 334
+🏆 Best Source: YAHOO, ALPHA
+
+📊 Indicator 'boll' Source Comparison for AAPL:
 Yahoo Finance Score: 346
 Alpha Vantage Score: 346
 TradingView Score: 346
@@ -61,9 +55,15 @@ Alpha Vantage Score: 346
 TradingView Score: 346
 🏆 Best Source: YAHOO, ALPHA, TV
 
+📊 Indicator 'rsi' Source Comparison for AAPL:
+Yahoo Finance Score: 346
+Alpha Vantage Score: 346
+TradingView Score: 346
+🏆 Best Source: YAHOO, ALPHA, TV
+
 
 🌐 Social Media News: 
-Bluesky news fetched for AAPL: 106 posts found.
+Bluesky news fetched for AAPL: 108 posts found.
 Mastodon news fetched for AAPL: 120 posts found.
 Subreddit news fetched for AAPL: 9 posts found.
 

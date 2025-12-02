@@ -34,7 +34,6 @@
     google: [
       ["Gemini 2.0 Flash-Lite • low latency", "gemini-2.0-flash-lite"],
       ["Gemini 2.0 Flash • next-gen speed", "gemini-2.0-flash"],
-      ["Gemini 2.5 Flash • adaptive", "gemini-2.5-flash-preview-05-20"],
     ],
   };
 
@@ -42,8 +41,6 @@
     google: [
       ["Gemini 2.0 Flash-Lite", "gemini-2.0-flash-lite"],
       ["Gemini 2.0 Flash", "gemini-2.0-flash"],
-      ["Gemini 2.5 Flash", "gemini-2.5-flash-preview-05-20"],
-      ["Gemini 2.5 Pro", "gemini-2.5-pro-preview-06-05"],
     ],
   };
 
@@ -104,13 +101,9 @@
   const elements = {
     tickerInput: document.getElementById("ticker-input"),
     analysisDate: document.getElementById("analysis-date"),
-    headerDate: document.getElementById("header-date"),
-    analystGrid: document.getElementById("analyst-grid"),
-    depthOptions: document.getElementById("depth-options"),
-    providerSelect: document.getElementById("llm-provider"),
-    backendUrl: document.getElementById("backend-url"),
-    shallowSelect: document.getElementById("shallow-agent"),
-    deepSelect: document.getElementById("deep-agent"),
+    // Elements ที่ถูกลบออก (ไม่ต้องเรียกใช้แล้ว)
+    // analystGrid, depthOptions, providerSelect, backendUrl...
+    
     generateBtn: document.getElementById("generate-btn"),
     reportContent: document.getElementById("report-content"),
     copyBtn: document.getElementById("copy-report"),
@@ -120,6 +113,7 @@
     summaryDepth: document.getElementById("summary-depth"),
     summaryDecision: document.getElementById("summary-decision"),
     recommendationCard: document.querySelector(".recommendation"),
+    
     // Debug panel elements
     debugToggle: document.getElementById("debug-toggle"),
     debugContent: document.getElementById("debug-content"),
@@ -138,10 +132,14 @@
   const state = {
     ticker: "SPY",
     analysisDate: toISODate(),
+    // ค่า Default: ใช้ Analyst ครบทุกคน
     analysts: new Set(analystsData.map((item) => item.value)),
+    // ค่า Default: Research Depth แบบ Medium (3)
     researchDepth: researchDepthOptions[1].value,
+    // ค่า Default: Provider Google
     llmProvider: "google",
     backendUrl: "https://generativelanguage.googleapis.com/v1",
+    // ค่า Default Model: Gemini Flash Lite
     shallowModel: shallowAgents.google[0][1],
     deepModel: deepAgents.google[0][1],
     isRunning: false,
@@ -165,10 +163,12 @@
 
   function init() {
     hydrateDates();
-    renderAnalysts();
-    renderDepthOptions();
-    renderProviders();
-    populateAgentSelects();
+    // ส่วน UI ที่ถูกซ่อน ไม่ต้อง Render แล้ว
+    // renderAnalysts();
+    // renderDepthOptions();
+    // renderProviders();
+    // populateAgentSelects();
+    
     renderAllTeamCards();
     updateSummary();
     setRecommendation("Awaiting run");
@@ -176,8 +176,8 @@
     bindEvents();
   }
   
+  // ... (ฟังก์ชัน initDebugPanel และ updateDebugDisplay คงเดิม) ...
   function initDebugPanel() {
-    // Toggle debug panel
     if (elements.debugToggle) {
       elements.debugToggle.addEventListener("click", () => {
         elements.debugPanel.classList.toggle("collapsed");
@@ -189,8 +189,6 @@
         }
       });
     }
-    
-    // Clear log button
     if (elements.debugClear) {
       elements.debugClear.addEventListener("click", () => {
         debugState.logEntries = [];
@@ -199,8 +197,6 @@
         updateDebugDisplay();
       });
     }
-    
-    // Copy log button
     if (elements.debugCopy) {
       elements.debugCopy.addEventListener("click", async () => {
         const logText = debugState.logEntries
@@ -217,16 +213,13 @@
         }
       });
     }
-    
     updateDebugDisplay();
   }
-  
+
   function updateDebugDisplay() {
-    // Update WebSocket status
     if (elements.debugWsStatus) {
       const statusIndicator = elements.debugWsStatus.querySelector(".status-indicator");
       const statusText = elements.debugWsStatus.querySelector("span:last-child");
-      
       if (debugState.wsConnected) {
         statusIndicator.className = "status-indicator connected";
         statusText.textContent = "Connected";
@@ -238,22 +231,9 @@
         statusText.textContent = "Disconnected";
       }
     }
-    
-    // Update URL
-    if (elements.debugWsUrl) {
-      elements.debugWsUrl.textContent = debugState.wsUrl || "—";
-    }
-    
-    // Update counts
-    if (elements.debugMsgCount) {
-      elements.debugMsgCount.textContent = debugState.messageCount;
-    }
-    
-    if (elements.debugErrorCount) {
-      elements.debugErrorCount.textContent = debugState.errorCount;
-    }
-    
-    // Update last update time
+    if (elements.debugWsUrl) elements.debugWsUrl.textContent = debugState.wsUrl || "—";
+    if (elements.debugMsgCount) elements.debugMsgCount.textContent = debugState.messageCount;
+    if (elements.debugErrorCount) elements.debugErrorCount.textContent = debugState.errorCount;
     if (elements.debugLastUpdate) {
       if (debugState.lastUpdate) {
         const time = new Date(debugState.lastUpdate).toLocaleTimeString();
@@ -262,13 +242,7 @@
         elements.debugLastUpdate.textContent = "—";
       }
     }
-    
-    // Update last type
-    if (elements.debugLastType) {
-      elements.debugLastType.textContent = debugState.lastType || "—";
-    }
-    
-    // Update log display
+    if (elements.debugLastType) elements.debugLastType.textContent = debugState.lastType || "—";
     if (elements.debugLog) {
       if (debugState.logEntries.length === 0) {
         elements.debugLog.innerHTML = '<div class="debug-log-empty">No messages yet</div>';
@@ -287,129 +261,39 @@
             `;
           })
           .join("");
-        // Scroll to bottom
         elements.debugLog.scrollTop = elements.debugLog.scrollHeight;
       }
     }
   }
-  
+
   function addDebugLog(type, content, isError = false) {
     const time = new Date().toLocaleTimeString();
-    debugState.logEntries.push({
-      time,
-      type,
-      content: String(content),
-    });
-    
-    // Keep only last N entries
-    if (debugState.logEntries.length > debugState.maxLogEntries) {
-      debugState.logEntries.shift();
-    }
-    
+    debugState.logEntries.push({ time, type, content: String(content) });
+    if (debugState.logEntries.length > debugState.maxLogEntries) debugState.logEntries.shift();
     debugState.messageCount++;
     debugState.lastUpdate = new Date().toISOString();
     debugState.lastType = type;
-    
-    if (isError) {
-      debugState.errorCount++;
-    }
-    
+    if (isError) debugState.errorCount++;
     updateDebugDisplay();
   }
-  
+
   function updateDebugWsStatus(connected, url = "") {
     debugState.wsConnected = connected;
-    if (url) {
-      debugState.wsUrl = url;
-    }
+    if (url) debugState.wsUrl = url;
     updateDebugDisplay();
   }
 
   function hydrateDates() {
     const today = toISODate();
     elements.analysisDate.value = today;
-    elements.headerDate.value = today;
   }
 
-  function renderAnalysts() {
-    elements.analystGrid.innerHTML = "";
-    analystsData.forEach((analyst) => {
-      const chip = document.createElement("button");
-      chip.type = "button";
-      chip.className = `chip ${
-        state.analysts.has(analyst.value) ? "selected" : ""
-      }`;
-      chip.textContent = analyst.label;
-      chip.dataset.value = analyst.value;
-      chip.addEventListener("click", () => toggleAnalyst(analyst.value));
-      elements.analystGrid.appendChild(chip);
-    });
-  }
-
-  function renderDepthOptions() {
-    elements.depthOptions.innerHTML = "";
-    researchDepthOptions.forEach((option) => {
-      const button = document.createElement("button");
-      button.type = "button";
-      button.className = `depth-option ${
-        option.value === state.researchDepth ? "active" : ""
-      }`;
-      button.innerHTML = `<strong>${option.label}</strong><span>${option.helper}</span>`;
-      button.addEventListener("click", () => {
-        state.researchDepth = option.value;
-        renderDepthOptions();
-        updateSummary();
-      });
-      elements.depthOptions.appendChild(button);
-    });
-  }
-
-  function renderProviders() {
-    elements.providerSelect.innerHTML = "";
-    llmProviders.forEach((provider) => {
-      const option = document.createElement("option");
-      option.value = provider.id;
-      option.textContent = provider.label;
-      if (provider.id === state.llmProvider) {
-        option.selected = true;
-      }
-      elements.providerSelect.appendChild(option);
-    });
-    elements.backendUrl.textContent = state.backendUrl;
-  }
-
-  function populateAgentSelects() {
-    populateAgentSelect(
-      elements.shallowSelect,
-      shallowAgents[state.llmProvider],
-      state.shallowModel,
-      (value) => {
-        state.shallowModel = value;
-      }
-    );
-    populateAgentSelect(
-      elements.deepSelect,
-      deepAgents[state.llmProvider],
-      state.deepModel,
-      (value) => {
-        state.deepModel = value;
-      }
-    );
-  }
-
-  function populateAgentSelect(selectElement, options, selectedValue, onChange) {
-    selectElement.innerHTML = "";
-    options.forEach(([label, value]) => {
-      const option = document.createElement("option");
-      option.value = value;
-      option.textContent = label;
-      if (value === selectedValue) {
-        option.selected = true;
-      }
-      selectElement.appendChild(option);
-    });
-    selectElement.onchange = (event) => onChange(event.target.value);
-  }
+  // ฟังก์ชัน render ที่ไม่ได้ใช้แล้ว (ลบออกหรือเก็บไว้ก็ได้ แต่ห้ามเรียกใช้)
+  function renderAnalysts() { /* ... */ }
+  function renderDepthOptions() { /* ... */ }
+  function renderProviders() { /* ... */ }
+  function populateAgentSelects() { /* ... */ }
+  function populateAgentSelect(selectElement, options, selectedValue, onChange) { /* ... */ }
 
   function bindEvents() {
     elements.tickerInput.addEventListener("input", (event) => {
@@ -421,28 +305,11 @@
     elements.analysisDate.addEventListener("change", (event) => {
       const value = event.target.value || toISODate();
       state.analysisDate = value;
-      elements.headerDate.value = value;
-      updateSummary();
-    });
-
-    elements.headerDate.addEventListener("change", (event) => {
-      const value = event.target.value || toISODate();
-      state.analysisDate = value;
       elements.analysisDate.value = value;
       updateSummary();
     });
 
-    elements.providerSelect.addEventListener("change", (event) => {
-      const providerId = event.target.value;
-      state.llmProvider = providerId;
-      const provider = llmProviders.find((item) => item.id === providerId);
-      state.backendUrl = provider ? provider.url : "";
-      elements.backendUrl.textContent = state.backendUrl;
-      state.shallowModel = shallowAgents[providerId][0][1];
-      state.deepModel = deepAgents[providerId][0][1];
-      populateAgentSelects();
-      updateSummary();
-    });
+    // ลบ Event Listener ของ Provider Select
 
     elements.generateBtn.addEventListener("click", runPipeline);
     elements.copyBtn.addEventListener("click", copyReportToClipboard);
@@ -450,15 +317,13 @@
   }
 
   function toggleAnalyst(analystValue) {
-    if (state.analysts.has(analystValue) && state.analysts.size === 1) {
-      return;
-    }
+    // ฟังก์ชันนี้ไม่ได้ใช้แล้วผ่าน UI แต่ Logic ยังเก็บไว้ได้ถ้าต้องการ
+    if (state.analysts.has(analystValue) && state.analysts.size === 1) return;
     if (state.analysts.has(analystValue)) {
       state.analysts.delete(analystValue);
     } else {
       state.analysts.add(analystValue);
     }
-    renderAnalysts();
     updateSummary();
   }
 
@@ -484,9 +349,7 @@
       list.appendChild(li);
     });
     const completed =
-      (members.filter((member) => member.status === "completed").length /
-        members.length) *
-      100;
+      (members.filter((member) => member.status === "completed").length / members.length) * 100;
     updateProgressRing(card, Math.round(completed));
   }
 
@@ -500,12 +363,12 @@
   }
 
   function updateSummary() {
-    elements.summarySymbol.textContent = state.ticker;
-    elements.summaryDate.textContent = state.analysisDate;
+    if (elements.summarySymbol) elements.summarySymbol.textContent = state.ticker;
+    if (elements.summaryDate) elements.summaryDate.textContent = state.analysisDate;
     const depth = researchDepthOptions.find(
       (option) => option.value === state.researchDepth
     );
-    elements.summaryDepth.textContent = depth ? depth.label : "—";
+    if (elements.summaryDepth) elements.summaryDepth.textContent = depth ? depth.label : "—";
   }
 
   async function runPipeline() {
@@ -516,15 +379,11 @@
     teamState = deepClone(teamTemplate);
     renderAllTeamCards();
     
-    // Clear previous reports
     elements.reportContent.innerHTML = "<p>Starting analysis...</p>";
     state.reportPlainText = "";
     
-    // Determine WebSocket URL
-    // If running from file:// or different port, default to localhost:8000
     let wsUrl;
     if (window.location.protocol === "file:" || window.location.hostname === "") {
-      // Running from file system, use localhost
       wsUrl = "ws://localhost:8000/ws";
     } else {
       const wsProtocol = window.location.protocol === "https:" ? "wss:" : "ws:";
@@ -536,7 +395,6 @@
     try {
       const ws = new WebSocket(wsUrl);
       
-      // Map backend agent names to frontend team structure
       const agentToTeamMap = {
         "Market Analyst": ["analyst", "Market Analyst"],
         "Social Analyst": ["analyst", "Social Media Analyst"],
@@ -552,14 +410,12 @@
         "Portfolio Manager": ["risk", "Portfolio Manager"],
       };
       
-      // Store report sections
       const reportSections = [];
       
       ws.onopen = () => {
         console.log("WebSocket connected");
         updateDebugWsStatus(true, wsUrl);
         addDebugLog("system", "WebSocket connected", false);
-        // Send analysis request
         const request = {
           action: "start_analysis",
           request: {
@@ -581,12 +437,10 @@
         const message = JSON.parse(event.data);
         const { type, data } = message;
         
-        // Debug logging
         addDebugLog(type, JSON.stringify(data).substring(0, 200), type === "error");
         
         switch (type) {
           case "status":
-            // Update agent statuses
             if (data.agents) {
               Object.entries(data.agents).forEach(([agentName, status]) => {
                 const mapping = agentToTeamMap[agentName];
@@ -599,39 +453,30 @@
             break;
             
           case "message":
-            // Could add to a messages log if needed
             console.log(`[${data.type}] ${data.content.substring(0, 100)}...`);
             break;
             
           case "tool_call":
-            // Could display tool calls if needed
             console.log(`Tool: ${data.name}`);
             break;
             
           case "report":
-            // Add or update report section
             const existingIndex = reportSections.findIndex(s => s.key === data.section);
             const reportSection = {
               key: data.section,
               label: data.label,
               text: data.content,
             };
-            
             if (existingIndex >= 0) {
               reportSections[existingIndex] = reportSection;
             } else {
               reportSections.push(reportSection);
             }
-            
-            // Render all reports
             renderReportSections(reportSections);
             break;
             
           case "complete":
-            // Analysis complete
             console.log("Analysis complete:", data.decision);
-            
-            // Update final reports if provided
             if (data.final_state) {
               const finalSections = [];
               const sectionMap = {
@@ -643,7 +488,6 @@
                 trader_investment_plan: { key: "trader", label: "Trader Investment Plan" },
                 final_trade_decision: { key: "final", label: "Portfolio Management Decision" },
               };
-              
               Object.entries(data.final_state).forEach(([key, content]) => {
                 if (content && sectionMap[key]) {
                   finalSections.push({
@@ -653,25 +497,19 @@
                   });
                 }
               });
-              
               if (finalSections.length > 0) {
                 renderReportSections(finalSections);
               }
             }
-            
-            // Extract and set recommendation
             if (data.decision) {
               setRecommendation(data.decision);
             } else {
-              // Try to extract from final report
               const finalSection = reportSections.find(s => s.key === "final_trade_decision");
               if (finalSection) {
                 const decision = extractDecision(finalSection.text);
                 setRecommendation(decision);
               }
             }
-            
-            // Mark all agents as completed
             Object.keys(agentToTeamMap).forEach(agentName => {
               const mapping = agentToTeamMap[agentName];
               if (mapping) {
@@ -679,7 +517,6 @@
                 updateAgentStatus(teamKey, frontendName, "completed");
               }
             });
-            
             ws.close();
             break;
             
@@ -688,10 +525,7 @@
             elements.reportContent.innerHTML = `<p style="color: var(--danger)">Error: ${data.message}</p>`;
             ws.close();
             break;
-            
-          case "pong":
-            // Keep-alive response
-            break;
+          case "pong": break;
         }
       };
       
@@ -732,22 +566,8 @@
     renderTeamCard(teamKey);
   }
 
-  async function loadSampleReports() {
-    const promises = reportSources.map(async (section) => {
-      try {
-        const response = await fetch(section.path);
-        if (!response.ok) {
-          throw new Error(`Failed to fetch ${section.label}`);
-        }
-        const text = await response.text();
-        return { ...section, text };
-      } catch (error) {
-        return { ...section, text: `Error loading ${section.label}: ${error.message}` };
-      }
-    });
-    return Promise.all(promises);
-  }
-
+  // ... (ฟังก์ชัน helper อื่นๆ คงเดิม: renderReportSections, convertMarkdownToDom, formatInlineMarkdown, escapeHtml, extractDecision, setRecommendation, copyReportToClipboard, summarizeReport, extractKeyPoints, downloadReportAsPdf, wait, deepClone, toISODate) ...
+  
   function renderReportSections(sections) {
     elements.reportContent.innerHTML = "";
     const fullText = [];
@@ -783,9 +603,7 @@
           fragment.appendChild(listEl);
         }
         const li = document.createElement("li");
-        li.innerHTML = formatInlineMarkdown(
-          trimmed.replace(/^[-*]\s*/, "")
-        );
+        li.innerHTML = formatInlineMarkdown(trimmed.replace(/^[-*]\s*/, ""));
         listEl.appendChild(li);
       } else {
         listEl = null;
@@ -802,16 +620,11 @@
   }
 
   function escapeHtml(text) {
-    return text
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;");
+    return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
   }
 
   function extractDecision(markdownText) {
-    const match = markdownText.match(
-      /(BUY|SELL|HOLD|REDUCE|MONITOR|RE-EVALUATE)/i
-    );
+    const match = markdownText.match(/(BUY|SELL|HOLD|REDUCE|MONITOR|RE-EVALUATE)/i);
     return match ? match[0].toUpperCase() : "REVIEW";
   }
 
@@ -839,8 +652,6 @@
 
   function summarizeReport(reportText) {
     if (!reportText) return "";
-    
-    // Split by section headers (lines that look like headers)
     const lines = reportText.split("\n");
     const summary = [];
     let currentSection = null;
@@ -849,35 +660,28 @@
     for (let i = 0; i < lines.length; i++) {
       const line = lines[i].trim();
       if (!line) continue;
-      
-      // Detect section headers (titles like "Market Analysis", "Social Sentiment", etc.)
       const isHeader = (
         (line.match(/^[A-Z][A-Za-z\s]+$/) && line.length < 80 && !line.includes(".") && !line.includes(",")) ||
         line.match(/^#{1,6}\s/) ||
         (line.endsWith(":") && line.length < 60)
       );
-      
       if (isHeader && !line.startsWith("•") && !line.startsWith("-") && !line.startsWith("*")) {
-        // Save previous section
         if (currentSection) {
           summary.push(currentSection);
           const keyPoints = extractKeyPoints(currentContent.join(" "));
           if (keyPoints.length > 0) {
             summary.push(...keyPoints);
           }
-          summary.push(""); // Add spacing
+          summary.push("");
         }
         currentSection = line.replace(/^#+\s*/, "").replace(":", "");
         currentContent = [];
       } else if (currentSection) {
         currentContent.push(line);
       } else {
-        // Content before first section
         currentContent.push(line);
       }
     }
-    
-    // Add last section
     if (currentSection) {
       summary.push(currentSection);
       const keyPoints = extractKeyPoints(currentContent.join(" "));
@@ -885,25 +689,19 @@
         summary.push(...keyPoints);
       }
     } else if (currentContent.length > 0) {
-      // No sections found, just summarize the content
       const keyPoints = extractKeyPoints(currentContent.join(" "));
       summary.push(...keyPoints);
     }
-    
-    // Add recommendation if available
     const decision = elements.summaryDecision.textContent;
     if (decision && decision !== "Awaiting run" && decision !== "—") {
       summary.push("");
       summary.push(`RECOMMENDATION: ${decision}`);
     }
-    
     return summary.join("\n");
   }
   
   function extractKeyPoints(text) {
     const keyPoints = [];
-    
-    // Extract bullet points first (most important)
     const bulletMatches = text.match(/[-*•·]\s*([^\n]+)/g);
     if (bulletMatches) {
       bulletMatches.slice(0, 3).forEach(match => {
@@ -913,29 +711,23 @@
         }
       });
     }
-    
-    // If no bullets, extract first 2-3 key sentences
     if (keyPoints.length === 0) {
       const sentences = text.split(/[.!?]+/).filter(s => {
         const trimmed = s.trim();
         return trimmed.length > 30 && trimmed.length < 250;
       });
-      
-      // Prioritize sentences with key terms
       const importantTerms = ["buy", "sell", "hold", "recommend", "price", "target", "risk", "opportunity", "trend", "analysis"];
       const scoredSentences = sentences.map(s => {
         const lower = s.toLowerCase();
         const score = importantTerms.reduce((acc, term) => acc + (lower.includes(term) ? 1 : 0), 0);
         return { text: s.trim(), score };
       }).sort((a, b) => b.score - a.score);
-      
       scoredSentences.slice(0, 2).forEach(item => {
         if (item.text) {
           keyPoints.push(item.text + ".");
         }
       });
     }
-    
     return keyPoints;
   }
 
@@ -952,7 +744,6 @@
     
     let yPosition = margin + 20;
     
-    // Add header
     doc.setFontSize(16);
     doc.setFont(undefined, "bold");
     doc.text(`TradingAgents Report: ${state.ticker}`, margin, yPosition);
@@ -963,39 +754,29 @@
     doc.text(`Analysis Date: ${state.analysisDate}`, margin, yPosition);
     yPosition += 30;
     
-    // Add separator line
     doc.line(margin, yPosition, pageWidth - margin, yPosition);
     yPosition += 25;
     
-    // Add "Current Report" section header
     doc.setFontSize(14);
     doc.setFont(undefined, "bold");
     doc.text("Current Report", margin, yPosition);
     yPosition += 20;
     
-    // Generate summarized report
     const summarizedReport = summarizeReport(state.reportPlainText);
     
-    // Set font for body text
     doc.setFontSize(10);
     doc.setFont(undefined, "normal");
     
-    // Split summarized text into lines
     const summaryLines = doc.splitTextToSize(summarizedReport, maxWidth);
     
-    // Process each line
     for (let i = 0; i < summaryLines.length; i++) {
       const line = summaryLines[i];
-      
-      // Check if we need a new page
       if (yPosition > pageHeight - margin - lineHeight) {
         doc.addPage();
         yPosition = margin;
       }
-      
-      // Handle section headers (uppercase lines ending with colon or all caps)
       if (line.trim().match(/^[A-Z][A-Z\s:]+$/) && line.trim().length < 80) {
-        yPosition += 5; // Add spacing before section header
+        yPosition += 5;
         if (yPosition > pageHeight - margin - lineHeight) {
           doc.addPage();
           yPosition = margin;
@@ -1007,7 +788,6 @@
         doc.setFont(undefined, "normal");
         yPosition += lineHeight + 3;
       } else if (line.trim().startsWith("RECOMMENDATION:")) {
-        // Highlight recommendation
         yPosition += 10;
         if (yPosition > pageHeight - margin - lineHeight) {
           doc.addPage();
@@ -1020,13 +800,11 @@
         doc.setFont(undefined, "normal");
         yPosition += lineHeight + 5;
       } else {
-        // Regular text
         doc.text(line, margin, yPosition);
         yPosition += lineHeight;
       }
     }
     
-    // Add footer with page numbers
     const totalPages = doc.internal.pages.length - 1;
     for (let i = 1; i <= totalPages; i++) {
       doc.setPage(i);
@@ -1038,7 +816,6 @@
         { align: "center" }
       );
     }
-    
     doc.save(`TradingAgents-${state.ticker}-${state.analysisDate}.pdf`);
   }
 
@@ -1054,4 +831,3 @@
     return new Date().toISOString().split("T")[0];
   }
 })();
-

@@ -109,18 +109,6 @@
             <h1>Generate</h1>
           </div>
           <div class="header-controls">
-            <label class="select">
-              <span>Symbol</span>
-              <select id="symbol-frequency">
-                <option value="Daily" selected>Daily</option>
-                <option value="Weekly">Weekly</option>
-                <option value="Monthly">Monthly</option>
-              </select>
-            </label>
-            <label class="input">
-              <span>Date</span>
-              <input type="date" id="header-date" />
-            </label>
             <button id="generate-btn" class="primary">Generate</button>
           </div>
         </header>
@@ -161,52 +149,7 @@
             </label>
           </article>
 
-          <article class="step-card" data-step="3">
-            <header>
-              <p>Step 3</p>
-              <h2>Analyst Team</h2>
-            </header>
-            <div class="chip-grid" id="analyst-grid"></div>
-          </article>
-
-          <article class="step-card" data-step="4">
-            <header>
-              <p>Step 4</p>
-              <h2>Research Depth</h2>
-            </header>
-            <div class="depth-options" id="depth-options"></div>
-          </article>
-
-          <article class="step-card" data-step="5">
-            <header>
-              <p>Step 5</p>
-              <h2>Google Backend</h2>
-            </header>
-            <label class="select full">
-              <span>Provider</span>
-              <select id="llm-provider"></select>
-            </label>
-            <div class="endpoint">
-              <span>Endpoint</span>
-              <code id="backend-url"></code>
-            </div>
-          </article>
-
-          <article class="step-card" data-step="6">
-            <header>
-              <p>Step 6</p>
-              <h2>Thinking Agents</h2>
-            </header>
-            <label class="select full">
-              <span>Quick thinking</span>
-              <select id="shallow-agent"></select>
-            </label>
-            <label class="select full">
-              <span>Deep thinking</span>
-              <select id="deep-agent"></select>
-            </label>
-          </article>
-        </section>
+          </section>
 
         <section class="teams-grid">
           <article class="team-card" data-team="analyst">
@@ -302,4 +245,3 @@
     <script src="script.js"></script>
   </body>
 </html>
-

@@ -190,7 +190,34 @@ class TradingAgentsGraph:
 
         # Store current state for reflection
         self.curr_state = final_state
+        
+        print("📝 Summarizing Reports with Typhoon...")
+        try:
+            summarizer_func = create_summarizer_fundamental()
+            sum_market = create_summarizer_market()
+            
+            update_dict_fund = summarizer_func(final_state)
+            update_dict_market = sum_market(final_state)
+            
+            
+            # --- อัปเดต Fundamental ---
+            if update_dict_fund:
+                final_state.update(update_dict_fund)
+                self.curr_state.update(update_dict_fund)
+                print("✅ Fundamental Summary Updated!")
+            else:
+                print("⚠️ Fundamental Summary returned empty.")
 
+            # --- อัปเดต Market ---
+            if update_dict_market:
+                final_state.update(update_dict_market)
+                self.curr_state.update(update_dict_market)
+                print("✅ Market Summary Updated!")
+            else:
+                print("⚠️ Market Summary returned empty.")
+                
+        except Exception as e:
+            print(f"❌ Failed to summarize: {e}")
         # Log state
         self._log_state(trade_date, final_state)
 

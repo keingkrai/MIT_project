@@ -1,9 +1,9 @@
 🏷️ Stock Data Source Comparison Result:
 
 ===== TOTAL RECORDS CHECK =====
-YFinance:      269
-TwelveData:    269
-TradingView:   269
+YFinance:      253
+TwelveData:    0
+TradingView:   253
 
 
 ===== SIMILARITY SCORE =====
@@ -11,76 +11,94 @@ YFinance Score: 0
 TwelveData Score: 0
 TradingView Score: 0
 
-🏆 Best Source: TRADINGVIEW
+🏆 Best Source: YFINANCE
 
-📊 Indicator 'macd' Source Comparison for NVDA:
-Yahoo Finance Score: 180
+📊 Indicator 'macd' Source Comparison for TSLA:
+Yahoo Finance Score: 0
 Alpha Vantage Score: 0
-TradingView Score: 180
-🏆 Best Source: YAHOO, TV
+TradingView Score: 0
+🏆 Best Source: YAHOO
 
-📊 Indicator 'macds' Source Comparison for NVDA:
-Yahoo Finance Score: 182
-Alpha Vantage Score: 0
-TradingView Score: 182
-🏆 Best Source: YAHOO, TV
-
-📊 Indicator 'macdh' Source Comparison for NVDA:
-Yahoo Finance Score: 179
-Alpha Vantage Score: 0
-TradingView Score: 179
-🏆 Best Source: YAHOO, TV
-
-📊 Indicator 'atr' Source Comparison for NVDA:
-Yahoo Finance Score: 372
-Alpha Vantage Score: 372
-TradingView Score: 372
+📊 Indicator 'close_10_ema' Source Comparison for TSLA:
+Yahoo Finance Score: 348
+Alpha Vantage Score: 348
+TradingView Score: 348
 🏆 Best Source: YAHOO, ALPHA, TV
 
-📊 Indicator 'close_10_ema' Source Comparison for NVDA:
-Yahoo Finance Score: 372
-Alpha Vantage Score: 372
-TradingView Score: 372
-🏆 Best Source: YAHOO, ALPHA, TV
-
-📊 Indicator 'close_200_sma' Source Comparison for NVDA:
-Yahoo Finance Score: 370
-Alpha Vantage Score: 370
-TradingView Score: 368
+📊 Indicator 'close_200_sma' Source Comparison for TSLA:
+Yahoo Finance Score: 174
+Alpha Vantage Score: 174
+TradingView Score: 0
 🏆 Best Source: YAHOO, ALPHA
 
-📊 Indicator 'close_50_sma' Source Comparison for NVDA:
-Yahoo Finance Score: 372
-Alpha Vantage Score: 372
-TradingView Score: 372
+📊 Indicator 'boll_lb' Source Comparison for TSLA:
+Yahoo Finance Score: 174
+Alpha Vantage Score: 174
+TradingView Score: 0
+🏆 Best Source: YAHOO, ALPHA
+
+📊 Indicator 'boll_ub' Source Comparison for TSLA:
+Yahoo Finance Score: 174
+Alpha Vantage Score: 174
+TradingView Score: 0
+🏆 Best Source: YAHOO, ALPHA
+
+📊 Indicator 'rsi' Source Comparison for TSLA:
+Yahoo Finance Score: 348
+Alpha Vantage Score: 348
+TradingView Score: 348
 🏆 Best Source: YAHOO, ALPHA, TV
 
-📊 Indicator 'rsi' Source Comparison for NVDA:
-Yahoo Finance Score: 372
-Alpha Vantage Score: 372
-TradingView Score: 372
+📊 Indicator 'macds' Source Comparison for TSLA:
+Yahoo Finance Score: 174
+Alpha Vantage Score: 0
+TradingView Score: 174
+🏆 Best Source: YAHOO, TV
+
+📊 Indicator 'macdh' Source Comparison for TSLA:
+Yahoo Finance Score: 174
+Alpha Vantage Score: 0
+TradingView Score: 174
+🏆 Best Source: YAHOO, TV
+
+📊 Indicator 'close_50_sma' Source Comparison for TSLA:
+Yahoo Finance Score: 348
+Alpha Vantage Score: 348
+TradingView Score: 348
 🏆 Best Source: YAHOO, ALPHA, TV
+
+📊 Indicator 'boll' Source Comparison for TSLA:
+Yahoo Finance Score: 348
+Alpha Vantage Score: 348
+TradingView Score: 348
+🏆 Best Source: YAHOO, ALPHA, TV
+
+📊 Indicator 'atr' Source Comparison for TSLA:
+Yahoo Finance Score: 348
+Alpha Vantage Score: 348
+TradingView Score: 348
+🏆 Best Source: YAHOO, ALPHA, TV
+
+📊 Indicator 'vwma' Source Comparison for TSLA:
+Yahoo Finance Score: 0
+Alpha Vantage Score: 0
+TradingView Score: 0
+🏆 Best Source: YAHOO
 
 
 🌐 Social Media News: 
-Bluesky news fetched for NVDA: 110 posts found.
-Mastodon news fetched for NVDA: 120 posts found.
-Subreddit news fetched for NVDA: 25 posts found.
+Bluesky news fetched for TSLA: 113 posts found.
+Mastodon news fetched for TSLA: 120 posts found.
+Subreddit news fetched for TSLA: 7 posts found.
 
 📰 News :
-Fetched 50 news items for NVDA from Finnhub.
-Fetched 0 news items for NVDA from Reddit.
-Fetched 10 news items for NVDA from YFinance.
-Fetched 0 news items for NVDA from Alpha Vantage.
+Fetched 50 news items for TSLA from Finnhub.
+Fetched 2 news items for TSLA from Reddit.
+Fetched 10 news items for TSLA from YFinance.
+Fetched 0 news items for TSLA from Alpha Vantage.
 
-🌏 Global News: 
-Reddit global news have : 40 posts.
-Yfinance global news have : 48 posts.
-Finnhub global news have : 229 posts.
-
-
-Fetched fundamentals for NVDA:
+Fetched fundamentals for TSLA:
 - YFinance: 4 fields fetched
 - Finnhub: 1 fields fetched
 - AlphaVantage: 0 fields fetched
-📜 Fundamental data for NVDA. Chosen source: yfinance
+📜 Fundamental data for TSLA. Chosen source: yfinance

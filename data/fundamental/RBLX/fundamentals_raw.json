@@ -1,10 +1,10 @@
 {
   "symbol": "RBLX",
-  "timestamp": "2025-11-27T03:44:21.185592+00:00",
+  "timestamp": "2025-12-02T05:05:19.190664+00:00",
   "raw": {
     "yfinance": {
       "overview": {
-        "marketCap": 65089554713.15732,
+        "marketCap": 65833594037.951996,
         "sharesOutstanding": null,
         "peRatio": null,
         "currency": "USD",
@@ -36,7 +36,7 @@
         "exchange": "NEW YORK STOCK EXCHANGE, INC.",
         "sector": "Media",
         "industry": "Media",
-        "marketCap": 65089508881000.125,
+        "marketCap": 65833548796719.234,
         "sharesOutstanding": 701.93,
         "peRatio": null
       },
@@ -57,29 +57,20 @@
       }
     },
     "alphavantage": {
-      "overview": {
-        "name": "Roblox Corp",
-        "currency": "USD",
-        "exchange": "NYSE",
-        "sector": "COMMUNICATION SERVICES",
-        "industry": "ELECTRONIC GAMING & MULTIMEDIA",
-        "marketCap": 63924355000.0,
-        "sharesOutstanding": 654855000.0,
-        "peRatio": null
-      },
+      "overview": {},
       "balancesheet": {
-        "totalAssets": 7175003000.0,
-        "totalLiabilities": 6966349000.0,
-        "shareholderEquity": 221446000.0
+        "totalAssets": null,
+        "totalLiabilities": null,
+        "shareholderEquity": null
       },
       "cashflow": {
-        "operatingCashFlow": 822316000.0,
-        "freeCashFlow": 642670000.0,
-        "capitalExpenditures": 179646000.0
+        "operatingCashFlow": null,
+        "freeCashFlow": null,
+        "capitalExpenditures": null
       },
       "incomestatement": {
-        "totalRevenue": 3601979000.0,
-        "netIncome": -935384000.0,
+        "totalRevenue": null,
+        "netIncome": null,
         "eps": null
       }
     }

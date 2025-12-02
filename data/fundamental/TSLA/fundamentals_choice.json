@@ -1,5 +1,5 @@
 {
-  "symbol": "RBLX",
+  "symbol": "TSLA",
   "chosen_source": "yfinance",
   "scores": {
     "yfinance": 2,
@@ -8,7 +8,7 @@
   },
   "completeness": {
     "yfinance": 13,
-    "finnhub": 7,
+    "finnhub": 8,
     "alphavantage": 0
   },
   "sections": {
@@ -20,7 +20,7 @@
       },
       "completeness": {
         "yfinance": 6,
-        "finnhub": 7,
+        "finnhub": 8,
         "alphavantage": 0
       }
     },
@@ -63,30 +63,30 @@
   },
   "final_payload": {
     "overview": {
-      "marketCap": 65833594037.951996,
+      "marketCap": 1430567905211.434,
       "sharesOutstanding": null,
       "peRatio": null,
       "currency": "USD",
-      "exchange": "NYQ",
-      "name": "Roblox Corporation",
-      "sector": "Communication Services",
-      "industry": "Electronic Gaming & Multimedia"
+      "exchange": "NMS",
+      "name": "Tesla, Inc.",
+      "sector": "Consumer Cyclical",
+      "industry": "Auto Manufacturers"
     },
     "balancesheet": {
-      "totalAssets": 7175003000.0,
-      "totalLiabilities": 6966349000.0,
-      "shareholderEquity": 208654000.0
+      "totalAssets": 122070000000.0,
+      "totalLiabilities": 48390000000.0,
+      "shareholderEquity": 73680000000.0
     },
     "cashflow": {
-      "operatingCashFlow": 822316000.0,
-      "freeCashFlow": 641300000.0,
+      "operatingCashFlow": 14923000000.0,
+      "freeCashFlow": 3581000000.0,
       "capitalExpenditures": null
     },
     "incomestatement": {
-      "totalRevenue": 3601979000.0,
-      "netIncome": -935384000.0,
+      "totalRevenue": 97690000000.0,
+      "netIncome": 7130000000.0,
       "eps": null
     }
   },
-  "timestamp": "2025-12-02T05:05:19.190664+00:00"
+  "timestamp": "2025-12-02T06:58:03.273798+00:00"
 }

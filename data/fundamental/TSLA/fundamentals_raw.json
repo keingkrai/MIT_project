@@ -1,44 +1,44 @@
 {
-  "symbol": "AAPL",
-  "timestamp": "2025-12-02T04:57:51.257109+00:00",
+  "symbol": "TSLA",
+  "timestamp": "2025-12-02T06:58:03.273798+00:00",
   "raw": {
     "yfinance": {
       "overview": {
-        "marketCap": 4201314499578.5522,
+        "marketCap": 1430567905211.434,
         "sharesOutstanding": null,
         "peRatio": null,
         "currency": "USD",
         "exchange": "NMS",
-        "name": "Apple Inc.",
-        "sector": "Technology",
-        "industry": "Consumer Electronics"
+        "name": "Tesla, Inc.",
+        "sector": "Consumer Cyclical",
+        "industry": "Auto Manufacturers"
       },
       "balancesheet": {
-        "totalAssets": 359241000000.0,
-        "totalLiabilities": 285508000000.0,
-        "shareholderEquity": 73733000000.0
+        "totalAssets": 122070000000.0,
+        "totalLiabilities": 48390000000.0,
+        "shareholderEquity": 73680000000.0
       },
       "cashflow": {
-        "operatingCashFlow": 111482000000.0,
-        "freeCashFlow": 98767000000.0,
+        "operatingCashFlow": 14923000000.0,
+        "freeCashFlow": 3581000000.0,
         "capitalExpenditures": null
       },
       "incomestatement": {
-        "totalRevenue": 416161000000.0,
-        "netIncome": 112010000000.0,
+        "totalRevenue": 97690000000.0,
+        "netIncome": 7130000000.0,
         "eps": null
       }
     },
     "finnhub": {
       "overview": {
-        "name": "Apple Inc",
+        "name": "Tesla Inc",
         "currency": "USD",
         "exchange": "NASDAQ NMS - GLOBAL MARKET",
-        "sector": "Technology",
-        "industry": "Technology",
-        "marketCap": 4183185495370577.5,
-        "sharesOutstanding": 14776.35,
-        "peRatio": 36.9096
+        "sector": "Automobiles",
+        "industry": "Automobiles",
+        "marketCap": 1430567973814807.2,
+        "sharesOutstanding": 3325.82,
+        "peRatio": 271.5581
       },
       "balancesheet": {
         "totalAssets": null,

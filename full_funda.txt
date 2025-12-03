@@ -1,48 +1,51 @@
 Here's a fundamental analysis report for Apple Inc. (AAPL) based on the provided data:
 
-**Company Overview:**
+**Company Profile:**
 
 *   **Name:** Apple Inc.
-*   **Ticker:** AAPL
 *   **Industry:** Consumer Electronics
 *   **Sector:** Technology
-*   **Exchange:** NMS (NASDAQ NMS - GLOBAL MARKET)
-*   **Market Cap:** Approximately $4.2 Trillion (Varies slightly between sources).
+*   **Exchange:** NASDAQ
 
-**Financial Highlights:**
+**Key Financial Highlights:**
 
-*   **Revenue:** $416.161 Billion (based on the income statement)
-*   **Net Income:** $112.01 Billion
-*   **Operating Cash Flow:** $111.482 Billion
-*   **Free Cash Flow:** $98.767 Billion
-*   **Total Assets:** $359.241 Billion
-*   **Total Liabilities:** $285.508 Billion
-*   **Shareholder Equity:** $73.733 Billion
+*   **Market Capitalization:** \$4.20 Trillion (based on Alphavantage data) - indicating a very large and established company.
+*   **Revenue:** \$416.16 Billion - demonstrating substantial sales volume.
+*   **Net Income:** \$112.01 Billion - reflecting strong profitability.
+*   **Free Cash Flow:** \$98.77 Billion - suggesting a healthy ability to generate cash.
+*   **Price-to-Earnings (P/E) Ratio:** 37.9 - which may indicate that the stock is fairly valued.
 
-**Key Observations and Potential Insights:**
+**Financial Position:**
 
-*   **Profitability:** Apple is highly profitable, with a substantial net income. The company generates significant cash flow from its operations, which further supports its financial strength.
-*   **Financial Health:** The company's total assets exceed its total liabilities, indicating a healthy balance sheet. However, the shareholder equity appears relatively low compared to the market capitalization, which might be due to share buybacks.
-*   **Valuation:** The P/E ratio is not available from the primary source (yfinance), but a secondary source (finnhub) indicates a P/E ratio of 36.91. This suggests that the stock might be fully valued or even overvalued, depending on growth expectations.
+*   **Total Assets:** \$359.24 Billion
+*   **Total Liabilities:** \$285.51 Billion
+*   **Shareholder Equity:** \$73.73 Billion - Suggests a relatively leveraged position.
 
-**Data Source Reliability:**
+**Cash Flow Analysis:**
 
-*   The report pulls data from multiple sources: yfinance, finnhub, and alphavantage.
-*   The completeness scores indicate that yfinance provides the most comprehensive data, followed by finnhub. Alphavantage has the least amount of data.
-*   The data is current as of December 2, 2025.
+*   **Operating Cash Flow:** \$111.48 Billion - Demonstrates strong operational efficiency in generating cash.
+*   **Capital Expenditures:** \$12.72 Billion - Shows investment in the company's future.
+
+**Key Observations and Insights:**
+
+*   **Profitability:** Apple is highly profitable, with a substantial net income.
+*   **Cash Generation:** The company generates significant free cash flow and operating cash flow, indicating financial strength and flexibility.
+*   **Valuation:** The P/E ratio suggests that the stock might be fairly valued relative to its earnings.
+*   **Market Cap:** The company has a massive market capitalization, reflecting its dominant position in the consumer electronics market.
+*   **Data Completeness:** The data is relatively complete, with information from multiple sources.
 
 **Summary Table:**
 
-| Metric                  | Value                  | Unit        | Source     |
-| :---------------------- | :--------------------- | :---------- | :--------- |
-| Revenue                 | 416.161                | Billion     | yfinance   |
-| Net Income              | 112.01                 | Billion     | yfinance   |
-| Operating Cash Flow     | 111.482                | Billion     | yfinance   |
-| Free Cash Flow          | 98.767                 | Billion     | yfinance   |
-| Total Assets            | 359.241                | Billion     | yfinance   |
-| Total Liabilities       | 285.508                | Billion     | yfinance   |
-| Shareholder Equity      | 73.733                 | Billion     | yfinance   |
-| Market Cap              | 4.201 Trillion (approx.) | USD         | yfinance   |
-| P/E Ratio               | 36.91                  |             | finnhub    |
-
-**Disclaimer:** This report is based on the provided data and does not constitute financial advice. Investment decisions should be made after thorough research and consultation with a financial advisor.
+| Metric                  | Value             | Unit          |
+| :---------------------- | :---------------- | :------------ |
+| Market Cap              | 4,201,314,517,000 | USD           |
+| Total Revenue           | 416,161,000,000   | USD           |
+| Net Income              | 112,010,000,000   | USD           |
+| Free Cash Flow          | 98,767,000,000    | USD           |
+| P/E Ratio               | 37.9              |               |
+| Total Assets            | 359,241,000,000   | USD           |
+| Total Liabilities       | 285,508,000,000   | USD           |
+| Shareholder Equity      | 73,733,000,000    | USD           |
+| Operating Cash Flow     | 111,482,000,000   | USD           |
+| Capital Expenditures    | 12,715,000,000    | USD           |
+| Shares Outstanding      | 14,776,353,000    | Shares        |

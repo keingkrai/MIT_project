@@ -77,7 +77,7 @@ def main():
         sum_investment_plan = final_state.get("Summarize_investment_plan_report")
         investment_plan = final_state.get("investment_plan")
 
-        sum_risk_plan = final_state.get("Summarize_risk_plan_report")
+        sum_risk_plan = final_state.get("Summarize_final_trade_decision_report")
         risk_plan = final_state.get("final_trade_decision")
         
         with open("./sum_funda.txt", 'w', encoding='utf-8') as f:
@@ -136,8 +136,6 @@ def main():
         
         print_section("Long fundament", final_state.get("fundamentals_report"))
         print_section("Short fundament", final_state.get("Summarize_fundamentals_report"))
-        
-        
         
         # print_section("📊 Market Analyst Report", final_state.get("market_report"))
 

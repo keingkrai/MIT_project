@@ -1,10 +1,10 @@
 {
   "symbol": "AAPL",
-  "timestamp": "2025-12-02T08:06:31.742144+00:00",
+  "timestamp": "2025-12-03T04:35:37.226839+00:00",
   "raw": {
     "yfinance": {
       "overview": {
-        "marketCap": 4201314499578.5522,
+        "marketCap": 4247171250331.421,
         "sharesOutstanding": null,
         "peRatio": null,
         "currency": "USD",
@@ -36,9 +36,9 @@
         "exchange": "NASDAQ NMS - GLOBAL MARKET",
         "sector": "Technology",
         "industry": "Technology",
-        "marketCap": 4183185495370577.5,
+        "marketCap": 4228844424326086.5,
         "sharesOutstanding": 14776.35,
-        "peRatio": 36.9096
+        "peRatio": 37.7463
       },
       "balancesheet": {
         "totalAssets": null,
@@ -57,20 +57,29 @@
       }
     },
     "alphavantage": {
-      "overview": {},
+      "overview": {
+        "name": "Apple Inc",
+        "currency": "USD",
+        "exchange": "NASDAQ",
+        "sector": "TECHNOLOGY",
+        "industry": "CONSUMER ELECTRONICS",
+        "marketCap": 4201314517000.0,
+        "sharesOutstanding": 14776353000.0,
+        "peRatio": 37.9
+      },
       "balancesheet": {
-        "totalAssets": null,
-        "totalLiabilities": null,
-        "shareholderEquity": null
+        "totalAssets": 359241000000.0,
+        "totalLiabilities": 285508000000.0,
+        "shareholderEquity": 73733000000.0
       },
       "cashflow": {
-        "operatingCashFlow": null,
-        "freeCashFlow": null,
-        "capitalExpenditures": null
+        "operatingCashFlow": 111482000000.0,
+        "freeCashFlow": 98767000000.0,
+        "capitalExpenditures": 12715000000.0
       },
       "incomestatement": {
-        "totalRevenue": null,
-        "netIncome": null,
+        "totalRevenue": 416161000000.0,
+        "netIncome": 112010000000.0,
         "eps": null
       }
     }

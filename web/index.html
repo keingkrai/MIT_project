@@ -66,6 +66,18 @@
               <h1>Generate</h1>
             </div>
             <div class="header-controls">
+              <label class="select">
+                <span>Symbol</span>
+                <select id="symbol-frequency">
+                  <option value="Daily" selected>Daily</option>
+                  <option value="Weekly">Weekly</option>
+                  <option value="Monthly">Monthly</option>
+                </select>
+              </label>
+              <label class="input">
+                <span>Date</span>
+                <input type="date" id="header-date" />
+              </label>
               <button id="generate-btn" class="primary">Generate</button>
             </div>
           </header>
@@ -185,10 +197,6 @@
                 <small>Live updates from TradingAgents graph</small>
               </div>
               <div class="report-actions">
-                <div class="report-length-toggle">
-                  <button id="report-view-short" class="report-view-btn">Short</button>
-                  <button id="report-view-long" class="report-view-btn active">Long</button>
-                </div>
                 <button id="copy-report">Copy report</button>
                 <button id="download-report" class="ghost">Download PDF</button>
               </div>

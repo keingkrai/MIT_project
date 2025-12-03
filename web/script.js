@@ -104,6 +104,7 @@
   const elements = {
     tickerInput: document.getElementById("ticker-input"),
     analysisDate: document.getElementById("analysis-date"),
+    headerDate: document.getElementById("header-date"),
     generateBtn: document.getElementById("generate-btn"),
     reportContent: document.getElementById("report-content"),
     copyBtn: document.getElementById("copy-report"),
@@ -115,8 +116,6 @@
     // Report length options
     reportLengthShort: document.getElementById("report-length-short"),
     reportLengthLong: document.getElementById("report-length-long"),
-    reportViewShort: document.getElementById("report-view-short"),
-    reportViewLong: document.getElementById("report-view-long"),
     // Navigation elements
     navLinks: document.querySelectorAll(".nav-link"),
     pageGenerate: document.getElementById("page-generate"),
@@ -171,25 +170,11 @@
     renderAllTeamCards();
     updateSummary();
     setRecommendation("Awaiting run");
-    syncReportViewButtons();
     initNavigation();
     bindEvents();
     updateDebugDisplay();
     // Start on generate page
     navigateTo("generate");
-  }
-
-  function syncReportViewButtons() {
-    // Sync report view buttons with current state
-    if (elements.reportViewShort && elements.reportViewLong) {
-      if (state.reportLength === "short") {
-        elements.reportViewShort.classList.add("active");
-        elements.reportViewLong.classList.remove("active");
-      } else {
-        elements.reportViewLong.classList.add("active");
-        elements.reportViewShort.classList.remove("active");
-      }
-    }
   }
   
   function initNavigation() {
@@ -362,6 +347,7 @@
   function hydrateDates() {
     const today = toISODate();
     elements.analysisDate.value = today;
+    elements.headerDate.value = today;
   }
 
 
@@ -375,20 +361,23 @@
     elements.analysisDate.addEventListener("change", (event) => {
       const value = event.target.value || toISODate();
       state.analysisDate = value;
+      elements.headerDate.value = value;
       updateSummary();
     });
 
-    // Report length selection (Step 3)
+    elements.headerDate.addEventListener("change", (event) => {
+      const value = event.target.value || toISODate();
+      state.analysisDate = value;
+      elements.analysisDate.value = value;
+      updateSummary();
+    });
+
+    // Report length selection
     if (elements.reportLengthShort) {
       elements.reportLengthShort.addEventListener("click", () => {
         state.reportLength = "short";
         elements.reportLengthShort.classList.add("active");
         elements.reportLengthLong.classList.remove("active");
-        // Sync with report view buttons
-        if (elements.reportViewShort) {
-          elements.reportViewShort.classList.add("active");
-          elements.reportViewLong.classList.remove("active");
-        }
         // Re-render report with new length
         if (state.reportSections && state.reportSections.length > 0) {
           renderReportSections(state.reportSections);
@@ -401,46 +390,6 @@
         state.reportLength = "long";
         elements.reportLengthLong.classList.add("active");
         elements.reportLengthShort.classList.remove("active");
-        // Sync with report view buttons
-        if (elements.reportViewLong) {
-          elements.reportViewLong.classList.add("active");
-          elements.reportViewShort.classList.remove("active");
-        }
-        // Re-render report with new length
-        if (state.reportSections && state.reportSections.length > 0) {
-          renderReportSections(state.reportSections);
-        }
-      });
-    }
-
-    // Report view toggle buttons (Current Report section)
-    if (elements.reportViewShort) {
-      elements.reportViewShort.addEventListener("click", () => {
-        state.reportLength = "short";
-        elements.reportViewShort.classList.add("active");
-        elements.reportViewLong.classList.remove("active");
-        // Sync with Step 3 buttons
-        if (elements.reportLengthShort) {
-          elements.reportLengthShort.classList.add("active");
-          elements.reportLengthLong.classList.remove("active");
-        }
-        // Re-render report with new length
-        if (state.reportSections && state.reportSections.length > 0) {
-          renderReportSections(state.reportSections);
-        }
-      });
-    }
-
-    if (elements.reportViewLong) {
-      elements.reportViewLong.addEventListener("click", () => {
-        state.reportLength = "long";
-        elements.reportViewLong.classList.add("active");
-        elements.reportViewShort.classList.remove("active");
-        // Sync with Step 3 buttons
-        if (elements.reportLengthLong) {
-          elements.reportLengthLong.classList.add("active");
-          elements.reportLengthShort.classList.remove("active");
-        }
         // Re-render report with new length
         if (state.reportSections && state.reportSections.length > 0) {
           renderReportSections(state.reportSections);

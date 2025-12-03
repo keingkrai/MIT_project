@@ -118,6 +118,109 @@
     }
   },
   {
+    "id": "29579d3f-d22f-3fff-928f-d4fdd5af3662",
+    "content": {
+      "id": "29579d3f-d22f-3fff-928f-d4fdd5af3662",
+      "contentType": "STORY",
+      "title": "Market Chatter: Apple Said to Resist India Order to Preinstall State Phone-Tracking App",
+      "description": "",
+      "summary": "Apple (AAPL) plans to oppose a directive to preload the state-run Sanchar Saathi app due to security",
+      "pubDate": "2025-12-02T08:44:24Z",
+      "displayTime": "2025-12-02T08:44:24Z",
+      "isHosted": true,
+      "bypassModal": false,
+      "previewUrl": null,
+      "thumbnail": null,
+      "provider": {
+        "displayName": "MT Newswires",
+        "url": "https://www.mtnewswires.com/"
+      },
+      "canonicalUrl": {
+        "url": "https://finance.yahoo.com/news/market-chatter-apple-said-resist-084424766.html",
+        "site": "finance",
+        "region": "US",
+        "lang": "en-US"
+      },
+      "clickThroughUrl": {
+        "url": "https://finance.yahoo.com/news/market-chatter-apple-said-resist-084424766.html",
+        "site": "finance",
+        "region": "US",
+        "lang": "en-US"
+      },
+      "metadata": {
+        "editorsPick": false
+      },
+      "finance": {
+        "premiumFinance": {
+          "isPremiumNews": true,
+          "isPremiumFreeNews": false
+        }
+      },
+      "storyline": null
+    }
+  },
+  {
+    "id": "b113706e-0713-4ae9-ae40-851a2bba8eb5",
+    "content": {
+      "id": "b113706e-0713-4ae9-ae40-851a2bba8eb5",
+      "contentType": "STORY",
+      "title": "FTSE 100 LIVE: London stocks slip as Bank of England flags AI-driven valuation risks",
+      "description": "",
+      "summary": "Stocks slip for second day in downbeat start to December.",
+      "pubDate": "2025-12-02T08:31:38Z",
+      "displayTime": "2025-12-02T09:03:35Z",
+      "isHosted": true,
+      "bypassModal": false,
+      "previewUrl": null,
+      "thumbnail": {
+        "originalUrl": "https://s.yimg.com/os/creatr-uploaded-images/2023-12/a9b165a0-aa13-11ee-bfee-0df02465d0be",
+        "originalWidth": 3000,
+        "originalHeight": 1888,
+        "caption": "",
+        "resolutions": [
+          {
+            "url": "https://s.yimg.com/uu/api/res/1.2/vmfV2GLcON7OnB5pux8i3A--~B/aD0xODg4O3c9MzAwMDthcHBpZD15dGFjaHlvbg--/https://s.yimg.com/os/creatr-uploaded-images/2023-12/a9b165a0-aa13-11ee-bfee-0df02465d0be",
+            "width": 3000,
+            "height": 1888,
+            "tag": "original"
+          },
+          {
+            "url": "https://s.yimg.com/uu/api/res/1.2/dFJBUV.Hg80mvbF4iEebtg--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://s.yimg.com/os/creatr-uploaded-images/2023-12/a9b165a0-aa13-11ee-bfee-0df02465d0be",
+            "width": 170,
+            "height": 128,
+            "tag": "170x128"
+          }
+        ]
+      },
+      "provider": {
+        "displayName": "Yahoo Finance UK",
+        "url": "http://uk.finance.yahoo.com/"
+      },
+      "canonicalUrl": {
+        "url": "https://uk.finance.yahoo.com/news/ftse-100-live-stock-markets-wall-street-083138252.html",
+        "site": "finance",
+        "region": "GB",
+        "lang": "en-GB"
+      },
+      "clickThroughUrl": {
+        "url": "https://finance.yahoo.com/news/live/ftse-100-live-stock-markets-wall-street-083138252.html",
+        "site": "finance",
+        "region": "US",
+        "lang": "en-US"
+      },
+      "metadata": {
+        "editorsPick": false
+      },
+      "finance": {
+        "premiumFinance": {
+          "isPremiumNews": false,
+          "isPremiumFreeNews": false
+        }
+      },
+      "storyline": null
+    }
+  },
+  {
     "id": "6bbc5d24-94c7-4b5e-a51b-5813a317e52b",
     "content": {
       "id": "6bbc5d24-94c7-4b5e-a51b-5813a317e52b",
@@ -517,128 +620,6 @@
         "lang": "en-US"
       },
       "clickThroughUrl": null,
-      "metadata": {
-        "editorsPick": false
-      },
-      "finance": {
-        "premiumFinance": {
-          "isPremiumNews": false,
-          "isPremiumFreeNews": false
-        }
-      },
-      "storyline": null
-    }
-  },
-  {
-    "id": "bd6aabe2-561c-3cd8-ba25-8db64060a306",
-    "content": {
-      "id": "bd6aabe2-561c-3cd8-ba25-8db64060a306",
-      "contentType": "STORY",
-      "title": "Siri-us setback: Apple’s AI chief steps down as company lags behind rivals",
-      "description": "",
-      "summary": "Amar Subramanya will replace John Giannandrea after firm has struggled to catch up with AI rollouts by competitors",
-      "pubDate": "2025-12-02T00:51:31Z",
-      "displayTime": "2025-12-02T00:51:31Z",
-      "isHosted": true,
-      "bypassModal": false,
-      "previewUrl": null,
-      "thumbnail": {
-        "originalUrl": "https://media.zenfs.com/en/the_guardian_765/a973be6f733b3207102658864d25a303",
-        "originalWidth": 1000,
-        "originalHeight": 800,
-        "caption": "",
-        "resolutions": [
-          {
-            "url": "https://s.yimg.com/uu/api/res/1.2/x6RWtMMmUDJ6RrQFHldQXA--~B/aD04MDA7dz0xMDAwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/the_guardian_765/a973be6f733b3207102658864d25a303",
-            "width": 1000,
-            "height": 800,
-            "tag": "original"
-          },
-          {
-            "url": "https://s.yimg.com/uu/api/res/1.2/1Jm5lgMMw3vRgXxsx502gg--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/the_guardian_765/a973be6f733b3207102658864d25a303",
-            "width": 170,
-            "height": 128,
-            "tag": "170x128"
-          }
-        ]
-      },
-      "provider": {
-        "displayName": "The Guardian",
-        "url": "https://www.theguardian.com/international"
-      },
-      "canonicalUrl": {
-        "url": "https://finance.yahoo.com/news/apple-ai-chief-steps-down-005131182.html",
-        "site": "finance",
-        "region": "US",
-        "lang": "en-US"
-      },
-      "clickThroughUrl": {
-        "url": "https://finance.yahoo.com/news/apple-ai-chief-steps-down-005131182.html",
-        "site": "finance",
-        "region": "US",
-        "lang": "en-US"
-      },
-      "metadata": {
-        "editorsPick": false
-      },
-      "finance": {
-        "premiumFinance": {
-          "isPremiumNews": false,
-          "isPremiumFreeNews": false
-        }
-      },
-      "storyline": null
-    }
-  },
-  {
-    "id": "35296eb2-fcda-39c0-a181-afb7a2fe93d1",
-    "content": {
-      "id": "35296eb2-fcda-39c0-a181-afb7a2fe93d1",
-      "contentType": "STORY",
-      "title": "The Dealmaking 3 – Paramount Lands UEFA Media Rights, Sony & ATP Media’s Strategic Partnership, Apple Adds MLS",
-      "description": "",
-      "summary": "This week of The Dealmaking 3 with “The Sports Professor” Rick Horrow features Paramount Skydance Corp. (Nasdaq: PSKY) landing a UEFA media rights deal in top Euro markets like the UK and Germany for the 2030-2031 seasons for $11.5 billion, Sony Group Corporation (NYSE: SONY) and ATP Media launching a multi year strategic partnership to […] The post The Dealmaking 3 – Paramount Lands UEFA Media Rights, Sony & ATP Media’s Strategic Partnership, Apple Adds MLS appeared first on CorpGov.",
-      "pubDate": "2025-12-02T00:14:43Z",
-      "displayTime": "2025-12-02T00:14:43Z",
-      "isHosted": true,
-      "bypassModal": false,
-      "previewUrl": null,
-      "thumbnail": {
-        "originalUrl": "https://media.zenfs.com/en/corpgov_com_597/4b4117d0dd6aa9b76da0a3cfc736566b",
-        "originalWidth": 2210,
-        "originalHeight": 1598,
-        "caption": "",
-        "resolutions": [
-          {
-            "url": "https://s.yimg.com/uu/api/res/1.2/EhYwtbbbAYLnY3vgX7Jn_A--~B/aD0xNTk4O3c9MjIxMDthcHBpZD15dGFjaHlvbg--/https://media.zenfs.com/en/corpgov_com_597/4b4117d0dd6aa9b76da0a3cfc736566b",
-            "width": 2210,
-            "height": 1598,
-            "tag": "original"
-          },
-          {
-            "url": "https://s.yimg.com/uu/api/res/1.2/NZjv1a3RnO28.I65cYehhg--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/corpgov_com_597/4b4117d0dd6aa9b76da0a3cfc736566b",
-            "width": 170,
-            "height": 128,
-            "tag": "170x128"
-          }
-        ]
-      },
-      "provider": {
-        "displayName": "CorpGov.com",
-        "url": "http://corpgov.com/"
-      },
-      "canonicalUrl": {
-        "url": "https://finance.yahoo.com/news/dealmaking-3-paramount-lands-uefa-001443956.html",
-        "site": "finance",
-        "region": "US",
-        "lang": "en-US"
-      },
-      "clickThroughUrl": {
-        "url": "https://finance.yahoo.com/news/dealmaking-3-paramount-lands-uefa-001443956.html",
-        "site": "finance",
-        "region": "US",
-        "lang": "en-US"
-      },
       "metadata": {
         "editorsPick": false
       },

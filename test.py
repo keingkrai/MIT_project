@@ -80,6 +80,15 @@ def main():
         sum_risk_plan = final_state.get("Summarize_final_trade_decision_report")
         risk_plan = final_state.get("final_trade_decision")
         
+        sum_bull = final_state.get("bull_researcher_summarizer")
+        bull = final_state.get("investment_debate_state").get("bull_history")
+        
+        sum_bear = final_state.get("bear_researcher_summarizer")
+        bear = final_state.get("investment_debate_state").get("bear_history")
+        
+        sum_trader = final_state.get("trader_summarizer")
+        trader = final_state.get("trader_investment_plan")
+        
         with open("./sum_funda.txt", 'w', encoding='utf-8') as f:
             f.write(str(sum_finda))
             
@@ -133,6 +142,24 @@ def main():
         
         with open("./full_risk_plan.txt", 'w', encoding='utf-8') as f:
             f.write(str(risk_plan))
+            
+        with open("./sum_bull.txt", 'w', encoding='utf-8') as f:
+            f.write(str(sum_bull))
+            
+        with open("./full_bull.txt", 'w', encoding='utf-8') as f:
+            f.write(str(bull))
+            
+        with open("./sum_bear.txt", 'w', encoding='utf-8') as f:
+            f.write(str(sum_bear))
+            
+        with open("./full_bear.txt", 'w', encoding='utf-8') as f:
+            f.write(str(bear))
+            
+        with open("./sum_trader.txt", 'w', encoding='utf-8') as f:
+            f.write(str(sum_trader))
+            
+        with open("./full_trader.txt", 'w', encoding='utf-8') as f:
+            f.write(str(trader))
         
         print_section("Long fundament", final_state.get("fundamentals_report"))
         print_section("Short fundament", final_state.get("Summarize_fundamentals_report"))

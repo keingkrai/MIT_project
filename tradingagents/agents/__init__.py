@@ -30,6 +30,11 @@ from .summarize.risk_mgmt.neutral_sum import create_summarizer_neutral
 from .summarize.managers.research_manager import create_summarizer_research_manager
 from .summarize.managers.risk_manager import create_summarizer_risk_manager
 
+from .summarize.researchers.bull_re import create_summarizer_bull_researcher
+from .summarize.researchers.bear_re import create_summarizer_bear_researcher
+
+from .summarize.trader.trader import create_summarizer_trader
+
 __all__ = [
     "FinancialSituationMemory",
     "AgentState",
@@ -57,4 +62,7 @@ __all__ = [
     "create_summarizer_neutral",
     "create_summarizer_research_manager",
     "create_summarizer_risk_manager",
+    "create_summarizer_bull_researcher",
+    "create_summarizer_bear_researcher",
+    "create_summarizer_trader"
 ]

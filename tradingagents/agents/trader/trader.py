@@ -21,18 +21,52 @@ def create_trader(llm, memory):
                 past_memory_str += rec["recommendation"] + "\n\n"
         else:
             past_memory_str = "No past memories found."
+            
+        system_msg = (
+            "You are a Senior Head Trader responsible for the final execution decision. "
+            "Your job is to audit the proposed plan against raw intelligence reports. "
+            "INSTRUCTIONS "
+            "1. Write using ONLY plain text. Do not use asterisks, hashes, or dashes. Use numbering like 1, 2, 3. "
+            "2. Do NOT use abbreviations. Use full terms (e.g., write Stop Loss instead of SL, Take Profit instead of TP, Moving Average instead of MA). "
+            "3. Be decisive. Issue a final execution order."
+        )
 
-        context = {
-            "role": "user",
-            "content": f"Based on a comprehensive analysis by a team of analysts, here is an investment plan tailored for {company_name}. This plan incorporates insights from current technical market trends, macroeconomic indicators, and social media sentiment. Use this plan as a foundation for evaluating your next trading decision.\n\nProposed Investment Plan: {investment_plan}\n\nLeverage these insights to make an informed and strategic decision.",
-        }
+        user_content = f"""
+        Review the Intelligence Reports and the Proposed Plan to make your decision for {company_name}.
 
+        RAW INTELLIGENCE REPORTS
+        Market Technicals: {market_research_report}
+        Sentiment: {sentiment_report}
+        News: {news_report}
+        Fundamentals: {fundamentals_report}
+
+        PROPOSED PLAN FROM ANALYSTS
+        {investment_plan}
+
+        PAST REFLECTIONS
+        {past_memory_str}
+
+        REQUIRED OUTPUT FORMAT
+        Section 1 Plan Validation
+        Do you agree with the proposed plan? Explain why or why not based on the raw intelligence.
+
+        Section 2 Memory Application
+        Explain how past lessons influenced this specific decision.
+
+        Section 3 Final Decision
+        Clearly state BUY, SELL, or HOLD.
+
+        Section 4 Execution Details
+        Specify the Position Size, Entry Price, and Stop Loss using full terms.
+
+        ENDING
+        You MUST conclude with exactly: FINAL TRANSACTION PROPOSAL BUY HOLD SELL
+        (Select ONLY ONE word after PROPOSAL).
+        """
+        
         messages = [
-            {
-                "role": "system",
-                "content": f"""You are a trading agent analyzing market data to make investment decisions. Based on your analysis, provide a specific recommendation to buy, sell, or hold. End with a firm decision and always conclude your response with 'FINAL TRANSACTION PROPOSAL: **BUY/HOLD/SELL**' to confirm your recommendation. Do not forget to utilize lessons from past decisions to learn from your mistakes. Here is some reflections from similar situatiosn you traded in and the lessons learned: {past_memory_str}""",
-            },
-            context,
+            {"role": "system", "content": system_msg},
+            {"role": "user", "content": user_content},
         ]
 
         result = llm.invoke(messages)

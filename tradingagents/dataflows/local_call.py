@@ -35,7 +35,7 @@ def get_fundamentals_local(ticker, curr_date):
         
     res = pick_fundamental_source(ticker)
     
-    # print(f'\n\n\n [get_fundamentals_local] Chosen fundamental data source result:\n{res}\n\n\n')
+    print(f'\n\n\n [get_fundamentals_local] Chosen fundamental data source result:\n{res}\n\n\n')
     
     # read text and send to telegram
     with open("all_report_message.txt", "r", encoding="utf-8") as f:

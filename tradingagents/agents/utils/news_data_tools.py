@@ -9,14 +9,8 @@ def get_news(
     end_date: Annotated[str, "End date in yyyy-mm-dd format"],
 ) -> str:
     """
-    Retrieve news data for a given ticker symbol.
-    Uses the configured news_data vendor.
-    Args:
-        ticker (str): Ticker symbol
-        start_date (str): Start date in yyyy-mm-dd format
-        end_date (str): End date in yyyy-mm-dd format
-    Returns:
-        str: A formatted string containing news data
+    Retrieves company-specific news and headlines.
+    Useful for analyzing sentiment, earnings reports, and major events.
     """
     # print("\n\n\nDEBUG:get_news")
     # print(route_to_vendor("get_news", ticker, start_date, end_date))

@@ -21,28 +21,47 @@ def create_bull_researcher(llm, memory):
         past_memory_str = ""
         for i, rec in enumerate(past_memories, 1):
             past_memory_str += rec["recommendation"] + "\n\n"
+            
+        system_message = (
+            "You are a Senior Bullish Equity Researcher. Your goal is to identify growth potential, competitive advantages, and reasons to BUY. "
+            "You must critically debate against the Bearish analyst. "
+            "INSTRUCTIONS "
+            "1. Write using ONLY plain text. Do not use asterisks, hashes, or dashes. "
+            "2. Do NOT use abbreviations. Use full terms (e.g., Price to Earnings Ratio, Compound Annual Growth Rate). "
+            "3. Be persuasive. Focus on upside potential."
+        )
+        
+        user_message = f"""
+        Review the data and the debate history to formulate your Bullish argument.
 
-        prompt = f"""You are a Bull Analyst advocating for investing in the stock. Your task is to build a strong, evidence-based case emphasizing growth potential, competitive advantages, and positive market indicators. Leverage the provided research and data to address concerns and counter bearish arguments effectively.
+        RAW INTELLIGENCE
+        Market Technicals: {market_research_report}
+        Sentiment: {sentiment_report}
+        News: {news_report}
+        Fundamentals: {fundamentals_report}
 
-Key points to focus on:
-- Growth Potential: Highlight the company's market opportunities, revenue projections, and scalability.
-- Competitive Advantages: Emphasize factors like unique products, strong branding, or dominant market positioning.
-- Positive Indicators: Use financial health, industry trends, and recent positive news as evidence.
-- Bear Counterpoints: Critically analyze the bear argument with specific data and sound reasoning, addressing concerns thoroughly and showing why the bull perspective holds stronger merit.
-- Engagement: Present your argument in a conversational style, engaging directly with the bear analyst's points and debating effectively rather than just listing data.
+        DEBATE CONTEXT
+        History: {history}
+        Last Bear Argument: {current_response}
 
-Resources available:
-Market research report: {market_research_report}
-Social media sentiment report: {sentiment_report}
-Latest world affairs news: {news_report}
-Company fundamentals report: {fundamentals_report}
-Conversation history of the debate: {history}
-Last bear argument: {current_response}
-Reflections from similar situations and lessons learned: {past_memory_str}
-Use this information to deliver a compelling bull argument, refute the bear's concerns, and engage in a dynamic debate that demonstrates the strengths of the bull position. You must also address reflections and learn from lessons and mistakes you made in the past.
-"""
+        PAST MISTAKES TO AVOID
+        {past_memory_str}
 
-        response = llm.invoke(prompt)
+        REQUIRED OUTPUT FORMAT
+        Section 1 Direct Rebuttal
+        Directly counter the last point made by the Bear analyst. Explain why their concern is exaggerated or incorrect.
+
+        Section 2 Key Growth Drivers
+        Highlight specific catalysts (Earnings, Products, or Technical Breakouts) that support a price increase.
+
+        Section 3 Bullish Conclusion
+        State clearly why the stock is a strong investment opportunity right now.
+        """
+
+        response = llm.invoke([
+            {"role": "system", "content": system_message},
+            {"role": "user", "content": user_message}
+        ])
 
         argument = f"Bull Analyst: {response.content}"
 

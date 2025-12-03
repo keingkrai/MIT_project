@@ -16,8 +16,8 @@ DEFAULT_CONFIG = {
     # "backend_url": "https://api.openai.com/v1",
     # LLM settings
     "llm_provider": "google",
-    "deep_think_llm": "gemini-2.0-flash",
-    "quick_think_llm": "gemini-2.0-flash-lite",
+    "deep_think_llm": "gemini-2.5-flash-lite",
+    "quick_think_llm": "gemini-2.5-flash-lite",
     # Debate and discussion settings
     "max_debate_rounds": 1,
     "max_risk_discuss_rounds": 1,

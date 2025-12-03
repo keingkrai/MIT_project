@@ -21,30 +21,47 @@ def create_bear_researcher(llm, memory):
         past_memory_str = ""
         for i, rec in enumerate(past_memories, 1):
             past_memory_str += rec["recommendation"] + "\n\n"
+            
+        system_message = (
+            "You are a Senior Bearish Equity Researcher. Your goal is to identify risks, overvaluation, and reasons to SELL. "
+            "You must critically debate against the Bullish analyst. "
+            "INSTRUCTIONS: "
+            "1. Write using ONLY plain text. Do not use asterisks, hashes, or dashes. "
+            "2. Do NOT use abbreviations. Use full terms (e.g., Price to Earnings Ratio, Moving Average Convergence Divergence). "
+            "3. Be skeptical. Focus on downside protection."
+        )
 
-        prompt = f"""You are a Bear Analyst making the case against investing in the stock. Your goal is to present a well-reasoned argument emphasizing risks, challenges, and negative indicators. Leverage the provided research and data to highlight potential downsides and counter bullish arguments effectively.
+        user_message = f"""
+        Review the data and the debate history to formulate your Bearish argument.
 
-Key points to focus on:
+        RAW INTELLIGENCE
+        Market Technicals: {market_research_report}
+        Sentiment: {sentiment_report}
+        News: {news_report}
+        Fundamentals: {fundamentals_report}
 
-- Risks and Challenges: Highlight factors like market saturation, financial instability, or macroeconomic threats that could hinder the stock's performance.
-- Competitive Weaknesses: Emphasize vulnerabilities such as weaker market positioning, declining innovation, or threats from competitors.
-- Negative Indicators: Use evidence from financial data, market trends, or recent adverse news to support your position.
-- Bull Counterpoints: Critically analyze the bull argument with specific data and sound reasoning, exposing weaknesses or over-optimistic assumptions.
-- Engagement: Present your argument in a conversational style, directly engaging with the bull analyst's points and debating effectively rather than simply listing facts.
+        DEBATE CONTEXT
+        History: {history}
+        Last Bull Argument: {current_response}
 
-Resources available:
+        PAST MISTAKES TO AVOID
+        {past_memory_str}
 
-Market research report: {market_research_report}
-Social media sentiment report: {sentiment_report}
-Latest world affairs news: {news_report}
-Company fundamentals report: {fundamentals_report}
-Conversation history of the debate: {history}
-Last bull argument: {current_response}
-Reflections from similar situations and lessons learned: {past_memory_str}
-Use this information to deliver a compelling bear argument, refute the bull's claims, and engage in a dynamic debate that demonstrates the risks and weaknesses of investing in the stock. You must also address reflections and learn from lessons and mistakes you made in the past.
-"""
+        REQUIRED OUTPUT FORMAT
+        Section 1 Direct Rebuttal
+        Directly counter the last point made by the Bull analyst. Point out flaws in their logic or data.
 
-        response = llm.invoke(prompt)
+        Section 2 Key Risk Factors
+        Highlight specific risks (Financial, Technical, or Macroeconomic) that threaten the stock price.
+
+        Section 3 Bearish Conclusion
+        State clearly why the stock should be sold or avoided.
+        """
+
+        response = llm.invoke([
+            {"role": "system", "content": system_message},
+            {"role": "user", "content": user_message}
+        ])
 
         argument = f"Bear Analyst: {response.content}"
 

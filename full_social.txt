@@ -1,0 +1,34 @@
+{
+    "sentiment_score": 75,
+    "sentiment_verdict": "Bullish",
+    "social_volume_analysis": "Social media discussion volume for AAPL appears to be high and consistently positive, with a notable increase in mentions related to institutional options trading and significant price movements. The period shows a strong focus on Apple's stock performance, with multiple mentions of new all-time highs and price targets.",
+    "dominant_narrative": "The primary narrative driving retail investors is Apple's continued strength and potential for further upside, fueled by robust iPhone sales, strategic advancements in artificial intelligence, and significant institutional interest, particularly in options trading.",
+    "top_discussion_topics": [
+        {
+            "topic": "Institutional Options Trading and Urgency",
+            "sentiment_impact": "Positive",
+            "detailed_analysis": "A significant portion of the discussion revolves around 'high urgency' options trading by institutions, with substantial volumes noted for AAPL. This indicates strong institutional conviction and potential price movement, which is perceived positively by retail investors."
+        },
+        {
+            "topic": "All-Time Highs and Price Targets",
+            "sentiment_impact": "Positive",
+            "detailed_analysis": "Multiple posts highlight Apple reaching new all-time highs and discuss price targets. This reinforces a bullish sentiment, suggesting that investors believe the stock has significant room for growth and is performing exceptionally well."
+        },
+        {
+            "topic": "Apple Intelligence and AI Strategy",
+            "sentiment_impact": "Positive",
+            "detailed_analysis": "Discussions mention Apple's AI strategy, particularly 'Apple Intelligence,' and its integration into devices. This narrative suggests that Apple is actively competing in the AI space, which is a key growth driver for technology stocks."
+        },
+        {
+            "topic": "iPhone 17 Sales and Product Cycle",
+            "sentiment_impact": "Positive",
+            "detailed_analysis": "The strong performance and sales of the iPhone 17 are frequently cited as a key driver for Apple's stock. This indicates that the product cycle remains a critical factor influencing investor sentiment and expectations for future revenue."
+        },
+        {
+            "topic": "Executive Departures and Leadership Changes",
+            "sentiment_impact": "Neutral to Slightly Negative",
+            "detailed_analysis": "There are mentions of key design executives leaving Apple for Meta. While this could introduce some uncertainty, the overall sentiment remains largely positive, suggesting that these departures are not significantly impacting the stock's bullish momentum."
+        }
+    ],
+    "retail_psychology_assessment": "Retail investors exhibit a strong sense of optimism and conviction, largely driven by Apple's consistent stock performance, positive news flow around new product cycles and AI integration, and significant institutional backing. The focus on 'all-time highs' and increasing price targets suggests a prevailing 'Fear Of Missing Out' (FOMO) among some investors, encouraging participation in the upward trend."
+}

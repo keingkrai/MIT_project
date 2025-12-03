@@ -497,9 +497,33 @@ if WEB_DIR.exists():
 
 @app.get("/")
 async def root():
-    """Redirect to web interface."""
+    """Serve the web interface at root."""
+    if WEB_DIR.exists():
+        index_path = WEB_DIR / "index.html"
+        if index_path.exists():
+            return FileResponse(str(index_path))
     from fastapi.responses import RedirectResponse
     return RedirectResponse(url="/web/")
+
+
+@app.get("/styles.css")
+async def serve_styles():
+    """Serve CSS file at root level."""
+    if WEB_DIR.exists():
+        css_path = WEB_DIR / "styles.css"
+        if css_path.exists():
+            return FileResponse(str(css_path), media_type="text/css")
+    raise HTTPException(status_code=404, detail="CSS file not found")
+
+
+@app.get("/script.js")
+async def serve_script():
+    """Serve JavaScript file at root level."""
+    if WEB_DIR.exists():
+        js_path = WEB_DIR / "script.js"
+        if js_path.exists():
+            return FileResponse(str(js_path), media_type="application/javascript")
+    raise HTTPException(status_code=404, detail="JavaScript file not found")
 
 
 @app.websocket("/ws")

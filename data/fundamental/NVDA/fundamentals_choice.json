@@ -63,7 +63,7 @@
   },
   "final_payload": {
     "overview": {
-      "marketCap": 4372955555496.216,
+      "marketCap": 4410385463180.542,
       "sharesOutstanding": null,
       "peRatio": null,
       "currency": "USD",
@@ -88,5 +88,5 @@
       "eps": null
     }
   },
-  "timestamp": "2025-12-02T06:51:25.662843+00:00"
+  "timestamp": "2025-12-03T02:13:10.928530+00:00"
 }

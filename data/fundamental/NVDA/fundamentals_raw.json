@@ -1,10 +1,10 @@
 {
   "symbol": "NVDA",
-  "timestamp": "2025-12-02T06:51:25.662843+00:00",
+  "timestamp": "2025-12-03T02:13:10.928530+00:00",
   "raw": {
     "yfinance": {
       "overview": {
-        "marketCap": 4372955555496.216,
+        "marketCap": 4410385463180.542,
         "sharesOutstanding": null,
         "peRatio": null,
         "currency": "USD",
@@ -36,9 +36,9 @@
         "exchange": "NASDAQ NMS - GLOBAL MARKET",
         "sector": "Semiconductors",
         "industry": "Semiconductors",
-        "marketCap": 4372055999999999.0,
+        "marketCap": 4409477955124152.0,
         "sharesOutstanding": 24300.0,
-        "peRatio": 43.3587
+        "peRatio": 44.074
       },
       "balancesheet": {
         "totalAssets": null,

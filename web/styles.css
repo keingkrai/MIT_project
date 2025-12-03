@@ -711,6 +711,16 @@ button.report-length-option {
   color: var(--accent);
 }
 
+.report-actions button.report-view-btn.active {
+  background: rgba(45, 244, 198, 0.12);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.report-actions button.report-view-btn:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
 #report-content {
   background: #090d17;
   border-radius: 16px;

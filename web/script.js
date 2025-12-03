@@ -109,6 +109,8 @@
     reportContent: document.getElementById("report-content"),
     copyBtn: document.getElementById("copy-report"),
     downloadBtn: document.getElementById("download-report"),
+    viewShortBtn: document.getElementById("view-short"),
+    viewLongBtn: document.getElementById("view-long"),
     summarySymbol: document.getElementById("summary-symbol"),
     summaryDate: document.getElementById("summary-date"),
     summaryDecision: document.getElementById("summary-decision"),
@@ -146,6 +148,7 @@
     isRunning: false,
     reportPlainText: "",
     reportSections: [], // Store all report sections for length switching
+    reportView: "long", // Current view mode: "short" or "long"
     wsConnection: null, // Store WebSocket connection for stopping
     shouldStop: false, // Kill switch flag to stop processing messages
   };
@@ -163,9 +166,27 @@
     maxLogEntries: 50,
   };
 
-  init();
+  // Wait for DOM to be ready before initializing
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
 
   function init() {
+    // Ensure critical elements exist before proceeding
+    if (!elements.tickerInput || !elements.analysisDate || !elements.headerDate) {
+      console.error('Critical DOM elements not found. Make sure HTML is loaded.');
+      return;
+    }
+    
+    // Check if generate button exists
+    if (!elements.generateBtn) {
+      console.error('Generate button not found! Check if element with id="generate-btn" exists.');
+      return;
+    }
+    
+    console.log('Initializing TradingAgents web interface...');
     hydrateDates();
     renderAllTeamCards();
     updateSummary();
@@ -173,8 +194,16 @@
     initNavigation();
     bindEvents();
     updateDebugDisplay();
+    // Initialize report view buttons (default to long view)
+    if (elements.viewLongBtn) {
+      elements.viewLongBtn.classList.add("active");
+    }
+    if (elements.viewShortBtn) {
+      elements.viewShortBtn.classList.remove("active");
+    }
     // Start on generate page
     navigateTo("generate");
+    console.log('Initialization complete. Generate button ready.');
   }
   
   function initNavigation() {
@@ -346,31 +375,37 @@
 
   function hydrateDates() {
     const today = toISODate();
-    elements.analysisDate.value = today;
-    elements.headerDate.value = today;
+    if (elements.analysisDate) elements.analysisDate.value = today;
+    if (elements.headerDate) elements.headerDate.value = today;
   }
 
 
   function bindEvents() {
-    elements.tickerInput.addEventListener("input", (event) => {
-      const ticker = event.target.value.trim().toUpperCase();
-      state.ticker = ticker || "SPY";
-      updateSummary();
-    });
+    if (elements.tickerInput) {
+      elements.tickerInput.addEventListener("input", (event) => {
+        const ticker = event.target.value.trim().toUpperCase();
+        state.ticker = ticker || "SPY";
+        updateSummary();
+      });
+    }
 
-    elements.analysisDate.addEventListener("change", (event) => {
-      const value = event.target.value || toISODate();
-      state.analysisDate = value;
-      elements.headerDate.value = value;
-      updateSummary();
-    });
+    if (elements.analysisDate) {
+      elements.analysisDate.addEventListener("change", (event) => {
+        const value = event.target.value || toISODate();
+        state.analysisDate = value;
+        if (elements.headerDate) elements.headerDate.value = value;
+        updateSummary();
+      });
+    }
 
-    elements.headerDate.addEventListener("change", (event) => {
-      const value = event.target.value || toISODate();
-      state.analysisDate = value;
-      elements.analysisDate.value = value;
-      updateSummary();
-    });
+    if (elements.headerDate) {
+      elements.headerDate.addEventListener("change", (event) => {
+        const value = event.target.value || toISODate();
+        state.analysisDate = value;
+        if (elements.analysisDate) elements.analysisDate.value = value;
+        updateSummary();
+      });
+    }
 
     // Report length selection
     if (elements.reportLengthShort) {
@@ -397,9 +432,45 @@
       });
     }
 
-    elements.generateBtn.addEventListener("click", runPipeline);
-    elements.copyBtn.addEventListener("click", copyReportToClipboard);
-    elements.downloadBtn.addEventListener("click", downloadReportAsPdf);
+    if (elements.generateBtn) {
+      elements.generateBtn.addEventListener("click", () => {
+        console.log('Generate button clicked!');
+        runPipeline();
+      });
+    } else {
+      console.error('Generate button element not found when binding events!');
+    }
+    if (elements.copyBtn) {
+      elements.copyBtn.addEventListener("click", copyReportToClipboard);
+    }
+    if (elements.downloadBtn) {
+      elements.downloadBtn.addEventListener("click", downloadReportAsPdf);
+    }
+
+    // Report view toggle buttons (Short/Long in report panel)
+    if (elements.viewShortBtn) {
+      elements.viewShortBtn.addEventListener("click", () => {
+        state.reportView = "short";
+        elements.viewShortBtn.classList.add("active");
+        elements.viewLongBtn.classList.remove("active");
+        // Re-render report with short view
+        if (state.reportSections && state.reportSections.length > 0) {
+          renderReportSections(state.reportSections);
+        }
+      });
+    }
+
+    if (elements.viewLongBtn) {
+      elements.viewLongBtn.addEventListener("click", () => {
+        state.reportView = "long";
+        elements.viewLongBtn.classList.add("active");
+        elements.viewShortBtn.classList.remove("active");
+        // Re-render report with long view
+        if (state.reportSections && state.reportSections.length > 0) {
+          renderReportSections(state.reportSections);
+        }
+      });
+    }
   }
 
 
@@ -412,6 +483,7 @@
     if (!card) return;
     const members = teamState[teamKey];
     const list = card.querySelector(".team-list");
+    if (!list) return; // Guard against missing .team-list element
     list.innerHTML = "";
     members.forEach((member) => {
       const li = document.createElement("li");
@@ -441,8 +513,8 @@
   }
 
   function updateSummary() {
-    elements.summarySymbol.textContent = state.ticker;
-    elements.summaryDate.textContent = state.analysisDate;
+    if (elements.summarySymbol) elements.summarySymbol.textContent = state.ticker;
+    if (elements.summaryDate) elements.summaryDate.textContent = state.analysisDate;
     // Research depth is auto-set and not displayed in UI
   }
 
@@ -493,8 +565,11 @@
   }
 
   async function runPipeline() {
+    console.log('runPipeline() called');
+    
     // If already running, activate kill switch
     if (state.isRunning) {
+      console.log('Pipeline already running, stopping...');
       stopPipeline();
       return;
     }
@@ -502,6 +577,13 @@
     // Reset stop flag
     state.shouldStop = false;
     state.isRunning = true;
+    
+    if (!elements.generateBtn) {
+      console.error('Generate button not found! Cannot update UI.');
+      state.isRunning = false;
+      return;
+    }
+    
     elements.generateBtn.disabled = false;
     elements.generateBtn.textContent = "Stop";
     elements.generateBtn.classList.add("stop");
@@ -509,7 +591,9 @@
     renderAllTeamCards();
     
     // Clear previous reports
-    elements.reportContent.innerHTML = "<p>Starting analysis...</p>";
+    if (elements.reportContent) {
+      elements.reportContent.innerHTML = "<p>Starting analysis...</p>";
+    }
     state.reportPlainText = "";
     state.reportSections = [];
     
@@ -525,6 +609,8 @@
       const wsPort = window.location.port || (window.location.protocol === "https:" ? "443" : "8000");
       wsUrl = `${wsProtocol}//${wsHost}:${wsPort}/ws`;
     }
+    
+    console.log(`Attempting to connect to WebSocket: ${wsUrl}`);
     
     try {
       const ws = new WebSocket(wsUrl);
@@ -550,7 +636,7 @@
       state.reportSections = [];
       
       ws.onopen = () => {
-        console.log("WebSocket connected");
+        console.log("WebSocket connected successfully!");
         updateDebugWsStatus(true, wsUrl);
         addDebugLog("system", "WebSocket connected", false);
         // Send analysis request
@@ -568,6 +654,7 @@
             deep_thinker: state.deepModel,
           }
         };
+        console.log("Sending analysis request:", request);
         ws.send(JSON.stringify(request));
         addDebugLog("request", `Starting analysis for ${state.ticker}`, false);
       };
@@ -720,15 +807,25 @@
           return;
         }
         console.error("WebSocket error:", error);
+        console.error("Error details:", {
+          type: error.type,
+          target: error.target,
+          readyState: ws.readyState,
+          url: wsUrl
+        });
         updateDebugWsStatus(false);
         addDebugLog("error", `WebSocket error: ${error.message || "Connection failed"}`, true);
-        elements.reportContent.innerHTML = `<p style="color: var(--danger)">Connection error. Make sure the FastAPI backend is running on port 8000.</p>`;
+        if (elements.reportContent) {
+          elements.reportContent.innerHTML = `<p style="color: var(--danger)">❌ Connection error. Make sure the FastAPI backend is running on port 8000.<br><br>Attempted URL: ${wsUrl}</p>`;
+        }
         state.isRunning = false;
         state.shouldStop = false;
         state.wsConnection = null;
-        elements.generateBtn.disabled = false;
-        elements.generateBtn.textContent = "Generate";
-        elements.generateBtn.classList.remove("stop");
+        if (elements.generateBtn) {
+          elements.generateBtn.disabled = false;
+          elements.generateBtn.textContent = "Generate";
+          elements.generateBtn.classList.remove("stop");
+        }
       };
       
       ws.onclose = () => {
@@ -749,13 +846,18 @@
       
     } catch (error) {
       console.error("Error starting analysis:", error);
-      elements.reportContent.innerHTML = `<p style="color: var(--danger)">Error: ${error.message}</p>`;
+      console.error("Error stack:", error.stack);
+      if (elements.reportContent) {
+        elements.reportContent.innerHTML = `<p style="color: var(--danger)">❌ Error: ${error.message}<br><br>Check the browser console for more details.</p>`;
+      }
       state.isRunning = false;
       state.shouldStop = false;
       state.wsConnection = null;
-      elements.generateBtn.disabled = false;
-      elements.generateBtn.textContent = "Generate";
-      elements.generateBtn.classList.remove("stop");
+      if (elements.generateBtn) {
+        elements.generateBtn.disabled = false;
+        elements.generateBtn.textContent = "Generate";
+        elements.generateBtn.classList.remove("stop");
+      }
     }
   }
 
@@ -785,6 +887,7 @@
   }
 
   function renderReportSections(sections) {
+    if (!elements.reportContent) return;
     elements.reportContent.innerHTML = "";
     const fullText = [];
     
@@ -795,10 +898,10 @@
       heading.textContent = section.label;
       wrapper.appendChild(heading);
       
-      // Apply length filtering based on state.reportLength
+      // Apply view filtering based on state.reportView (for display toggle)
       let displayText = section.text;
-      if (state.reportLength === "short") {
-        // For short reports, summarize each section
+      if (state.reportView === "short") {
+        // For short view, summarize each section
         displayText = summarizeSection(section.text);
       }
       
@@ -916,6 +1019,7 @@
   }
 
   function setRecommendation(decision) {
+    if (!elements.summaryDecision || !elements.recommendationCard) return;
     elements.summaryDecision.textContent = decision;
     const normalized = decision.toLowerCase();
     let variant = "neutral";

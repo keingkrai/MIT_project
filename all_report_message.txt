@@ -3,21 +3,21 @@
 ===== TOTAL RECORDS CHECK =====
 YFinance:      249
 TwelveData:    249
-TradingView:   249
+TradingView:   0
 
 
 ===== SIMILARITY SCORE =====
-YFinance Score: 55
-TwelveData Score: 492
-TradingView Score: 491
+YFinance Score: 28
+TwelveData Score: 28
+TradingView Score: 0
 
-🏆 Best Source: TWELVEDATA
+🏆 Best Source: YFINANCE
 
 📊 Indicator 'vwma' Source Comparison for AAPL:
-Yahoo Finance Score: 20
+Yahoo Finance Score: 0
 Alpha Vantage Score: 0
-TradingView Score: 20
-🏆 Best Source: YAHOO, TV
+TradingView Score: 0
+🏆 Best Source: YAHOO
 
 📊 Indicator 'macdh' Source Comparison for AAPL:
 Yahoo Finance Score: 4
@@ -31,41 +31,11 @@ Alpha Vantage Score: 0
 TradingView Score: 9
 🏆 Best Source: YAHOO, TV
 
-📊 Indicator 'boll_lb' Source Comparison for AAPL:
-Yahoo Finance Score: 20
-Alpha Vantage Score: 20
-TradingView Score: 0
-🏆 Best Source: YAHOO, ALPHA
-
 📊 Indicator 'macds' Source Comparison for AAPL:
 Yahoo Finance Score: 12
 Alpha Vantage Score: 0
 TradingView Score: 12
 🏆 Best Source: YAHOO, TV
-
-📊 Indicator 'boll' Source Comparison for AAPL:
-Yahoo Finance Score: 20
-Alpha Vantage Score: 20
-TradingView Score: 0
-🏆 Best Source: YAHOO, ALPHA
-
-📊 Indicator 'boll_ub' Source Comparison for AAPL:
-Yahoo Finance Score: 20
-Alpha Vantage Score: 20
-TradingView Score: 0
-🏆 Best Source: YAHOO, ALPHA
-
-📊 Indicator 'atr' Source Comparison for AAPL:
-Yahoo Finance Score: 40
-Alpha Vantage Score: 40
-TradingView Score: 40
-🏆 Best Source: YAHOO, ALPHA, TV
-
-📊 Indicator 'close_50_sma' Source Comparison for AAPL:
-Yahoo Finance Score: 40
-Alpha Vantage Score: 40
-TradingView Score: 40
-🏆 Best Source: YAHOO, ALPHA, TV
 
 📊 Indicator 'close_200_sma' Source Comparison for AAPL:
 Yahoo Finance Score: 20
@@ -73,13 +43,43 @@ Alpha Vantage Score: 20
 TradingView Score: 0
 🏆 Best Source: YAHOO, ALPHA
 
-📊 Indicator 'rsi' Source Comparison for AAPL:
+📊 Indicator 'boll_lb' Source Comparison for AAPL:
+Yahoo Finance Score: 20
+Alpha Vantage Score: 20
+TradingView Score: 0
+🏆 Best Source: YAHOO, ALPHA
+
+📊 Indicator 'close_50_sma' Source Comparison for AAPL:
 Yahoo Finance Score: 40
 Alpha Vantage Score: 40
 TradingView Score: 40
 🏆 Best Source: YAHOO, ALPHA, TV
 
 📊 Indicator 'close_10_ema' Source Comparison for AAPL:
+Yahoo Finance Score: 40
+Alpha Vantage Score: 40
+TradingView Score: 40
+🏆 Best Source: YAHOO, ALPHA, TV
+
+📊 Indicator 'boll_ub' Source Comparison for AAPL:
+Yahoo Finance Score: 40
+Alpha Vantage Score: 40
+TradingView Score: 40
+🏆 Best Source: YAHOO, ALPHA, TV
+
+📊 Indicator 'rsi' Source Comparison for AAPL:
+Yahoo Finance Score: 40
+Alpha Vantage Score: 40
+TradingView Score: 40
+🏆 Best Source: YAHOO, ALPHA, TV
+
+📊 Indicator 'atr' Source Comparison for AAPL:
+Yahoo Finance Score: 40
+Alpha Vantage Score: 40
+TradingView Score: 40
+🏆 Best Source: YAHOO, ALPHA, TV
+
+📊 Indicator 'boll' Source Comparison for AAPL:
 Yahoo Finance Score: 40
 Alpha Vantage Score: 40
 TradingView Score: 40

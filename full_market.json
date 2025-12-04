@@ -16,94 +16,96 @@
         "vwma"
     ],
     "market_overview": {
-        "trend_direction": "Bullish",
-        "momentum_state": "Strong Momentum",
-        "volatility_level": "Moderate",
-        "volume_condition": "Neutral"
+        "trend_direction": "Neutral",
+        "momentum_state": "Neutral",
+        "volatility_level": "Average",
+        "volume_condition": "Average"
     },
     "indicator_analysis": [
         {
             "indicator": "close_50_sma",
-            "signal": "Price trading above 50 SMA indicates medium-term bullish trend.",
-            "implication": "Suggests buyers remain in control."
+            "indicator_full_name": "50-Day Simple Moving Average",
+            "signal": "Neutral",
+            "implication": "Price near 50-SMA suggests a lack of clear short-term trend."
         },
         {
             "indicator": "close_200_sma",
-            "signal": "Price trading above 200 SMA indicates long-term bullish trend.",
-            "implication": "Suggests a sustained uptrend."
+            "indicator_full_name": "200-Day Simple Moving Average",
+            "signal": "Neutral",
+            "implication": "Price near 200-SMA suggests a lack of clear long-term trend."
         },
         {
             "indicator": "close_10_ema",
-            "signal": "Price is above 10 EMA, indicating a short-term bullish trend.",
-            "implication": "Suggests positive short-term momentum."
+            "indicator_full_name": "10-Day Exponential Moving Average",
+            "signal": "Neutral",
+            "implication": "Price near 10-EMA suggests a lack of clear short-term trend."
         },
         {
             "indicator": "macd",
-            "signal": "MACD is positive and rising, indicating bullish momentum.",
-            "implication": "Suggests increasing buying pressure."
+            "indicator_full_name": "MACD",
+            "signal": "Neutral",
+            "implication": "MACD near zero suggests weak momentum."
         },
         {
             "indicator": "macds",
-            "signal": "MACD signal line is positive and rising.",
-            "implication": "Supports the bullish trend."
+            "indicator_full_name": "MACD Signal",
+            "signal": "Neutral",
+            "implication": "MACD signal line near MACD suggests consolidation."
         },
         {
             "indicator": "macdh",
-            "signal": "MACD histogram is positive and decreasing, suggesting weakening bullish momentum.",
-            "implication": "Potential for a consolidation or pullback."
+            "indicator_full_name": "MACD Histogram",
+            "signal": "Neutral",
+            "implication": "MACD histogram near zero suggests weak momentum."
         },
         {
             "indicator": "rsi",
-            "signal": "RSI is in overbought territory, but not yet indicating a reversal.",
-            "implication": "Suggests the stock may be due for a pullback."
+            "indicator_full_name": "Relative Strength Index",
+            "signal": "Neutral",
+            "implication": "RSI around 50 indicates neutral momentum."
         },
         {
             "indicator": "boll",
-            "signal": "Price is trading near the upper Bollinger Band.",
-            "implication": "Suggests potential for a pullback."
+            "indicator_full_name": "Bollinger Band Middle Band",
+            "signal": "Neutral",
+            "implication": "Price around the middle Bollinger Band suggests average volatility."
         },
         {
             "indicator": "boll_ub",
-            "signal": "Price is approaching the upper Bollinger Band.",
-            "implication": "Suggests potential for a pullback."
+            "indicator_full_name": "Bollinger Band Upper Band",
+            "signal": "Neutral",
+            "implication": "Price not near upper band implies average volatility."
         },
         {
             "indicator": "boll_lb",
-            "signal": "Price is far above the lower Bollinger Band.",
-            "implication": "Indicates strong bullish momentum."
+            "indicator_full_name": "Bollinger Band Lower Band",
+            "signal": "Neutral",
+            "implication": "Price not near lower band implies average volatility."
         },
         {
             "indicator": "atr",
-            "signal": "ATR is at a moderate level.",
-            "implication": "Suggests moderate volatility."
+            "indicator_full_name": "Average True Range",
+            "signal": "Neutral",
+            "implication": "ATR indicates the average volatility of the stock."
         },
         {
             "indicator": "vwma",
-            "signal": "Price is trading above VWMA, indicating bullish volume support.",
-            "implication": "Suggests buyers are active."
+            "indicator_full_name": "Volume Weighted Moving Average",
+            "signal": "Neutral",
+            "implication": "Price near VWMA suggests price is in equilibrium with volume."
         }
     ],
     "price_action_summary": {
-        "recent_high_low": "Price is near recent highs.",
-        "support_levels": [
-            "260",
-            "255"
-        ],
-        "resistance_levels": [
-            "280",
-            "285"
-        ],
-        "short_term_behavior": "Price is consolidating near recent highs."
+        "recent_high_low": "Neutral",
+        "support_levels": [],
+        "resistance_levels": [],
+        "short_term_behavior": "Sideways"
     },
     "market_sentiment": {
-        "sentiment_score": 72,
-        "sentiment_label": "Bullish"
+        "sentiment_score": 0,
+        "sentiment_label": "Neutral"
     },
-    "key_risks": [
-        "RSI indicates overbought conditions.",
-        "MACD Histogram shows weakening momentum.",
-        "Potential for a pullback due to proximity to upper Bollinger Band."
-    ],
-    "short_term_outlook": "Bullish continuation is likely if the price remains above the 10-day EMA and the 50-day SMA. However, a short-term pullback is possible due to overbought conditions.",
-    "confidence_score": 0.8
+    "key_risks": [],
+    "short_term_outlook": "Sideways movement expected.",
+    "confidence_score": 0.5
 }

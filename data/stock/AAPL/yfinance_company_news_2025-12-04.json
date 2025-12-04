@@ -236,6 +236,128 @@
     }
   },
   {
+    "id": "5491ef83-cde0-4cac-86b4-596a350c8497",
+    "content": {
+      "id": "5491ef83-cde0-4cac-86b4-596a350c8497",
+      "contentType": "STORY",
+      "title": "Most popular stocks and funds investors bought in November",
+      "description": "",
+      "summary": "Stock markets pulled back in November, as worries about an AI bubble persisted.",
+      "pubDate": "2025-12-04T06:00:10Z",
+      "displayTime": "2025-12-04T06:00:10Z",
+      "isHosted": true,
+      "bypassModal": false,
+      "previewUrl": null,
+      "thumbnail": {
+        "originalUrl": "https://s.yimg.com/os/creatr-uploaded-images/2025-12/6a9349f0-d064-11f0-bceb-b37db317308d",
+        "originalWidth": 8256,
+        "originalHeight": 5504,
+        "caption": "",
+        "resolutions": [
+          {
+            "url": "https://s.yimg.com/uu/api/res/1.2/ZrydL0418LuKzMql1la6.g--~B/aD01NTA0O3c9ODI1NjthcHBpZD15dGFjaHlvbg--/https://s.yimg.com/os/creatr-uploaded-images/2025-12/6a9349f0-d064-11f0-bceb-b37db317308d",
+            "width": 8256,
+            "height": 5504,
+            "tag": "original"
+          },
+          {
+            "url": "https://s.yimg.com/uu/api/res/1.2/VuqCLbbKuL3MY.zqr7Ha1w--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://s.yimg.com/os/creatr-uploaded-images/2025-12/6a9349f0-d064-11f0-bceb-b37db317308d",
+            "width": 170,
+            "height": 128,
+            "tag": "170x128"
+          }
+        ]
+      },
+      "provider": {
+        "displayName": "Yahoo Finance UK",
+        "url": "http://uk.finance.yahoo.com/"
+      },
+      "canonicalUrl": {
+        "url": "https://uk.finance.yahoo.com/news/most-popular-stocks-funds-investing-november-060010194.html",
+        "site": "finance",
+        "region": "GB",
+        "lang": "en-GB"
+      },
+      "clickThroughUrl": {
+        "url": "https://finance.yahoo.com/news/most-popular-stocks-funds-investing-november-060010194.html",
+        "site": "finance",
+        "region": "US",
+        "lang": "en-US"
+      },
+      "metadata": {
+        "editorsPick": false
+      },
+      "finance": {
+        "premiumFinance": {
+          "isPremiumNews": false,
+          "isPremiumFreeNews": false
+        }
+      },
+      "storyline": null
+    }
+  },
+  {
+    "id": "acc8f922-dbc5-4350-b1e1-22185f9ece73",
+    "content": {
+      "id": "acc8f922-dbc5-4350-b1e1-22185f9ece73",
+      "contentType": "STORY",
+      "title": "How to navigate an end-of-year performance review with minimal stress",
+      "description": "",
+      "summary": "Why do these annual meetings cause us so much stress, and what can we do to make them a bit less anxiety-inducing?",
+      "pubDate": "2025-12-04T06:00:00Z",
+      "displayTime": "2025-12-04T06:00:00Z",
+      "isHosted": true,
+      "bypassModal": false,
+      "previewUrl": null,
+      "thumbnail": {
+        "originalUrl": "https://s.yimg.com/uu/api/res/1.2/A5sZwtvRw69T.nfGJJ.0ig--~B/aD0yMTYwO3c9NDA5NjthcHBpZD15dGFjaHlvbg--/https://d29szjachogqwa.cloudfront.net/images/2025-12/576a44f7-30f0-4126-929d-10e30a66da6d",
+        "originalWidth": 4096,
+        "originalHeight": 2160,
+        "caption": "",
+        "resolutions": [
+          {
+            "url": "https://s.yimg.com/uu/api/res/1.2/A5sZwtvRw69T.nfGJJ.0ig--~B/aD0yMTYwO3c9NDA5NjthcHBpZD15dGFjaHlvbg--/https://d29szjachogqwa.cloudfront.net/images/2025-12/576a44f7-30f0-4126-929d-10e30a66da6d",
+            "width": 4096,
+            "height": 2160,
+            "tag": "original"
+          },
+          {
+            "url": "https://s.yimg.com/uu/api/res/1.2/4.ieV91KzdBv.bK0RZ2XXg--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://d29szjachogqwa.cloudfront.net/images/2025-12/576a44f7-30f0-4126-929d-10e30a66da6d",
+            "width": 170,
+            "height": 128,
+            "tag": "170x128"
+          }
+        ]
+      },
+      "provider": {
+        "displayName": "Yahoo Finance UK",
+        "url": "http://uk.finance.yahoo.com/"
+      },
+      "canonicalUrl": {
+        "url": "https://uk.finance.yahoo.com/news/how-to-navigate-end-of-year-performance-review-work-060000502.html",
+        "site": "finance",
+        "region": "GB",
+        "lang": "en-GB"
+      },
+      "clickThroughUrl": {
+        "url": "https://finance.yahoo.com/news/how-to-navigate-end-of-year-performance-review-work-060000502.html",
+        "site": "finance",
+        "region": "US",
+        "lang": "en-US"
+      },
+      "metadata": {
+        "editorsPick": false
+      },
+      "finance": {
+        "premiumFinance": {
+          "isPremiumNews": false,
+          "isPremiumFreeNews": false
+        }
+      },
+      "storyline": null
+    }
+  },
+  {
     "id": "a9f22160-bd63-3a66-b3f7-e8d11d535be7",
     "content": {
       "id": "a9f22160-bd63-3a66-b3f7-e8d11d535be7",
@@ -579,128 +701,6 @@
         "lang": "en-US"
       },
       "clickThroughUrl": null,
-      "metadata": {
-        "editorsPick": false
-      },
-      "finance": {
-        "premiumFinance": {
-          "isPremiumNews": false,
-          "isPremiumFreeNews": false
-        }
-      },
-      "storyline": null
-    }
-  },
-  {
-    "id": "012da731-e0ff-3922-a14f-5bda52abc87e",
-    "content": {
-      "id": "012da731-e0ff-3922-a14f-5bda52abc87e",
-      "contentType": "STORY",
-      "title": "AI Valuations Rich, But Strong Earnings a Plus: ETFs in Focus",
-      "description": "",
-      "summary": "AI stocks stay elevated as FOMO drives momentum, but strong earnings ease bubble worries. Here's why risks remain -- and the ETFs best positioned to benefit.",
-      "pubDate": "2025-12-03T18:00:00Z",
-      "displayTime": "2025-12-03T18:00:00Z",
-      "isHosted": true,
-      "bypassModal": false,
-      "previewUrl": null,
-      "thumbnail": {
-        "originalUrl": "https://media.zenfs.com/en/zacks.com/d5ecc6aa12bbd6de2379f25697818f57",
-        "originalWidth": 620,
-        "originalHeight": 414,
-        "caption": "",
-        "resolutions": [
-          {
-            "url": "https://s.yimg.com/uu/api/res/1.2/MeidiD3rjobiYhTPppN3hw--~B/aD00MTQ7dz02MjA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/zacks.com/d5ecc6aa12bbd6de2379f25697818f57",
-            "width": 620,
-            "height": 414,
-            "tag": "original"
-          },
-          {
-            "url": "https://s.yimg.com/uu/api/res/1.2/BTpzDuNZlQw.dAzssbX5nA--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/zacks.com/d5ecc6aa12bbd6de2379f25697818f57",
-            "width": 170,
-            "height": 128,
-            "tag": "170x128"
-          }
-        ]
-      },
-      "provider": {
-        "displayName": "Zacks",
-        "url": "http://www.zacks.com/"
-      },
-      "canonicalUrl": {
-        "url": "https://finance.yahoo.com/news/ai-valuations-rich-strong-earnings-180000953.html",
-        "site": "finance",
-        "region": "US",
-        "lang": "en-US"
-      },
-      "clickThroughUrl": {
-        "url": "https://finance.yahoo.com/news/ai-valuations-rich-strong-earnings-180000953.html",
-        "site": "finance",
-        "region": "US",
-        "lang": "en-US"
-      },
-      "metadata": {
-        "editorsPick": false
-      },
-      "finance": {
-        "premiumFinance": {
-          "isPremiumNews": false,
-          "isPremiumFreeNews": false
-        }
-      },
-      "storyline": null
-    }
-  },
-  {
-    "id": "3aa10e84-d787-38eb-94ec-63af4eb8f7d8",
-    "content": {
-      "id": "3aa10e84-d787-38eb-94ec-63af4eb8f7d8",
-      "contentType": "STORY",
-      "title": "When Others Are Greedy: How to Implement Buffett’s Playbook in Your Own Personal Portfolio",
-      "description": "",
-      "summary": "Many investors may wonder if Warren Buffett is an alien from another planet, someone with a time machine or a crystal ball, or has found a way to conjure up some black magic to dominate the markets for such a long period of time. He’s known as the “Oracle of Omaha” for a reason, with ... When Others Are Greedy: How to Implement Buffett’s Playbook in Your Own Personal Portfolio",
-      "pubDate": "2025-12-03T17:53:49Z",
-      "displayTime": "2025-12-03T17:53:49Z",
-      "isHosted": true,
-      "bypassModal": false,
-      "previewUrl": null,
-      "thumbnail": {
-        "originalUrl": "https://media.zenfs.com/en/24_7_wall_st__718/036453f007fb0a2249137024358aa1df",
-        "originalWidth": 600,
-        "originalHeight": 449,
-        "caption": "",
-        "resolutions": [
-          {
-            "url": "https://s.yimg.com/uu/api/res/1.2/6fyp.babj0XQ3E9YgNJsGg--~B/aD00NDk7dz02MDA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/24_7_wall_st__718/036453f007fb0a2249137024358aa1df",
-            "width": 600,
-            "height": 449,
-            "tag": "original"
-          },
-          {
-            "url": "https://s.yimg.com/uu/api/res/1.2/l6EAgXIWrSr3MAJFqHfGGg--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/24_7_wall_st__718/036453f007fb0a2249137024358aa1df",
-            "width": 170,
-            "height": 128,
-            "tag": "170x128"
-          }
-        ]
-      },
-      "provider": {
-        "displayName": "24/7 Wall St.",
-        "url": "https://247wallst.com/"
-      },
-      "canonicalUrl": {
-        "url": "https://247wallst.com/investing/2025/12/03/when-others-are-greedy-how-to-implement-buffetts-playbook-in-your-own-personal-portfolio/",
-        "site": "finance",
-        "region": "US",
-        "lang": "en-US"
-      },
-      "clickThroughUrl": {
-        "url": "https://finance.yahoo.com/news/others-greedy-implement-buffett-playbook-175349424.html",
-        "site": "finance",
-        "region": "US",
-        "lang": "en-US"
-      },
       "metadata": {
         "editorsPick": false
       },

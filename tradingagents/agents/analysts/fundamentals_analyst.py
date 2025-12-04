@@ -1,9 +1,9 @@
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 import time
 import json
-import re # <--- ต้องมี
+import re
 
-# Import tools
+# Import tools (ตรวจสอบ path ของคุณให้ถูกต้อง)
 from tradingagents.agents.utils.agent_utils import get_fundamentals, get_balance_sheet, get_cashflow, get_income_statement
 
 def create_fundamentals_analyst(llm):
@@ -15,34 +15,40 @@ def create_fundamentals_analyst(llm):
             get_fundamentals
         ]
 
-        # --- Prompt ---
         system_message = (
-            """Act as a Senior Fundamental Analyst. Analyze the financial health of the company and output the result strictly in **JSON format**.
+            f"""Act as a Senior Fundamental Analyst. Analyze the financial health of **{ticker}**.
 
-    **INSTRUCTIONS:**
-    1. Use `get_fundamentals` and other tools to gather data.
-    2. **OUTPUT FORMAT:** You must return a valid JSON object with the exact keys listed below. 
-    3. **NO MARKDOWN:** Do not wrap the output in markdown code blocks. Just return the raw JSON string.
-    4. **CONTENT RULES:** Use full names for metrics (e.g., "Price to Earnings Ratio" not "P/E").
+    **CRITICAL INSTRUCTION:**
+    - You **DO NOT** have current financial data in your internal knowledge.
+    - You **MUST CALL** `get_fundamentals` immediately.
+    - **Do not** generate any report without calling the tool. If you do not call the tool, you fail.
 
-    **Output JSON ONLY.**
-    
-    **JSON STRUCTURE:**
-    {
-        "executive_summary": "String",
-        "valuation_status": "String",
-        "financial_health_score": 0,
-        "comprehensive_metrics": {
+    **YOUR MANDATORY WORKFLOW:**
+    1. **Step 1:** Invoke `get_fundamentals`.
+    2. **Step 2:** Wait for tool output.
+    3. **Step 3:** Output the result strictly in **JSON format**.
+
+    **STRICT FORMATTING RULES:**
+    - **Output JSON ONLY:** Return a raw JSON object. Do not wrap it in markdown.
+    - **NO ABBREVIATIONS:** Write out every financial term in full (e.g., Price to Earnings Ratio).
+    - **No Special Characters:** Avoid *, #, - inside values.
+
+    **REQUIRED JSON STRUCTURE:**
+    {{
+        "executive_summary": "String: A detailed paragraph summarizing the company's business model and financial health.",
+        "valuation_status": "String: A definitive statement on valuation (e.g., Undervalued / Overvalued).",
+        "financial_health_score": "Number: 0-100",
+        "comprehensive_metrics": {{
             "revenue_growth_year_over_year": "String",
             "net_profit_margin": "String",
             "price_to_earnings_ratio": "String",
             "debt_to_equity_ratio": "String",
             "return_on_equity": "String",
             "free_cash_flow_status": "String"
-        },
+        }},
         "key_strengths_analysis": [ "String" ],
         "key_risks_analysis": [ "String" ]
-    }
+    }}
     """
         )
 
@@ -57,32 +63,31 @@ def create_fundamentals_analyst(llm):
             ]
         )
 
-        prompt = prompt.partial(system_message=system_message)
-        prompt = prompt.partial(tool_names=", ".join([tool.name for tool in tools]))
-        prompt = prompt.partial(current_date=current_date)
-        prompt = prompt.partial(ticker=ticker)
+        prompt = prompt.partial(
+            system_message=system_message,
+            tool_names=", ".join([tool.name for tool in tools]),
+            current_date=current_date,
+            ticker=ticker
+        )
 
         chain = prompt | llm.bind_tools(tools)
 
+        # เรียก Chain (ส่งเป็น dict แก้บั๊ก langchain)
         result = chain.invoke({"messages": state["messages"]})
 
         report_content = ""
         
-        # --- ✅ Improved JSON Parsing Logic with Debug ---
+        # --- ⚡ JSON Parsing Logic ---
         if not result.tool_calls:
             raw_content = result.content
             
-            # แปลง List เป็น String (กันเหนียว)
+            # Clean list to string
             if isinstance(raw_content, list):
                 raw_content = " ".join([str(item) for item in raw_content])
-            if raw_content is None:
-                raw_content = ""
-
-            # 🚨 DEBUG: ปริ้นท์ออกมาดูเลยว่า AI ส่งอะไรมา
-            # print(f"\n🔍 DEBUG FUNDAMENTAL RAW:\n{raw_content}\n{'='*30}")
+            if raw_content is None: raw_content = ""
 
             try:
-                # ใช้ Regex หา JSON Object {...}
+                # Regex Extraction (หาปีกกาคู่แรกและสุดท้าย)
                 match = re.search(r"\{[\s\S]*\}", raw_content)
                 
                 if match:
@@ -91,12 +96,13 @@ def create_fundamentals_analyst(llm):
                     report_content = json.dumps(parsed_json, indent=4, ensure_ascii=False)
                 else:
                     print("⚠️ Fundamental Analyst: No JSON object found via Regex.")
-                    # สร้าง JSON หลอกๆ กันโปรแกรมพัง
-                    report_content = json.dumps({
-                        "error": "Parsing Failed", 
-                        "raw_content": raw_content[:500]
-                    })
-                
+                    # Fallback: สร้าง JSON เปล่าๆ เพื่อไม่ให้โปรแกรมพัง
+                    fallback_json = {
+                        "error": "No JSON found",
+                        "raw_content": raw_content[:200]
+                    }
+                    report_content = json.dumps(fallback_json)
+
             except Exception as e:
                 print(f"⚠️ Fundamental Analyst: Parsing Error ({e}). Saving raw text.")
                 report_content = raw_content

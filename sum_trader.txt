@@ -1,0 +1,18 @@
+Okay, here's the execution setup based on the provided trading plan, formatted as requested:
+
+### 1. Trade Setup (The Action)
+- **Strategy:** Neutral Hold
+- **Action:** WAIT
+- **Timeframe:** Medium-Term (Based on the lack of immediate action and neutral outlook)
+
+### 2. Key Levels (The Numbers)
+- **Entry Zone:** N/A (Existing position being held)
+- **Stop Loss:** N/A (Existing position being held)
+- **Target/Take Profit:** N/A (No active target; monitoring for changes in sentiment)
+
+### 3. Position Sizing
+- **Proposed Size:** Maintain Current Position
+- **Risk Rationale:** The overall outlook is neutral, and a swift exit isn't warranted. Maintaining the current position reflects this cautious approach.
+
+### 4. Trader's Note
+- Monitor news flow regarding the potential trade ban and Apple's performance in its services sector and new markets. Be prepared to re-evaluate the position if the outlook shifts significantly.

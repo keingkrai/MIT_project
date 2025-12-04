@@ -160,9 +160,17 @@ def main():
             
         with open("./full_trader.txt", 'w', encoding='utf-8') as f:
             f.write(str(trader))
+            
+        investment = final_state.get("investment_debate_state")
+        risk = final_state.get("risk_debate_state")
+    
         
-        print_section("Long fundament", final_state.get("fundamentals_report"))
-        print_section("Short fundament", final_state.get("Summarize_fundamentals_report"))
+        # เขียนให้เป็น JSON สวยๆ (pretty)
+        with open("./investment.json", "w", encoding="utf-8") as f:
+            json.dump(investment, f, ensure_ascii=False, indent=4)
+
+        with open("./risk.json", "w", encoding="utf-8") as f:
+            json.dump(risk, f, ensure_ascii=False, indent=4)
         
         # print_section("📊 Market Analyst Report", final_state.get("market_report"))
 

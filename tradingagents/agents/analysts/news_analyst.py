@@ -65,6 +65,7 @@ def create_news_analyst(llm):
     
     **IMPORTENT**
     - JSON format below only.
+    - Check anythink it in rules before sent.
 
     **JSON STRUCTURE:**
     {{

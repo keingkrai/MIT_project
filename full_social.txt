@@ -1,0 +1,19 @@
+{
+    "sentiment_score": "55",
+    "sentiment_verdict": "Neutral",
+    "social_volume_analysis": "Social media discussions around AAPL are moderate. While not exceptionally high, there is consistent engagement, indicating sustained interest from retail investors.",
+    "dominant_narrative": "The dominant narrative around AAPL centers on anticipation for upcoming product releases and speculation regarding the impact of broader economic trends on consumer spending.",
+    "top_discussion_topics": [
+        {
+            "topic": "New Product Speculation",
+            "sentiment_impact": "Positive",
+            "detailed_analysis": "Enthusiasm surrounds rumors of innovative features and potential market disruption, driving positive sentiment."
+        },
+        {
+            "topic": "Economic Headwinds",
+            "sentiment_impact": "Negative",
+            "detailed_analysis": "Concerns about inflation and potential recessionary impacts temper enthusiasm, leading to discussions about potential sales slowdown."
+        }
+    ],
+    "retail_psychology_assessment": "Retail investors exhibit a mix of excitement and caution. There is a general optimism about AAPL's long-term prospects, but short-term anxieties related to the macroeconomic environment are evident."
+}

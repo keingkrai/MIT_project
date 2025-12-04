@@ -1,0 +1,19 @@
+{
+    "executive_summary": "Analyzing Apple (AAPL) requires a comprehensive look at its business model, which centers on designing, developing, and selling consumer electronics, software, and services. Its financial health hinges on product innovation, ecosystem stickiness, and effective capital allocation. We will evaluate key metrics to determine its overall financial standing.",
+    "valuation_status": "Requires comprehensive metric analysis to determine valuation status.",
+    "financial_health_score": "Requires financial data to calculate score.",
+    "comprehensive_metrics": {
+        "revenue_growth_year_over_year": "To be determined",
+        "net_profit_margin": "To be determined",
+        "price_to_earnings_ratio": "To be determined",
+        "debt_to_equity_ratio": "To be determined",
+        "return_on_equity": "To be determined",
+        "free_cash_flow_status": "To be determined"
+    },
+    "key_strengths_analysis": [
+        "Requires financial data to determine strengths."
+    ],
+    "key_risks_analysis": [
+        "Requires financial data to determine risks."
+    ]
+}

@@ -1,0 +1,87 @@
+🏷️ Stock Data Source Comparison Result:
+
+===== TOTAL RECORDS CHECK =====
+YFinance:      249
+TwelveData:    249
+TradingView:   249
+
+
+===== SIMILARITY SCORE =====
+YFinance Score: 55
+TwelveData Score: 492
+TradingView Score: 491
+
+🏆 Best Source: TWELVEDATA
+
+📊 Indicator 'vwma' Source Comparison for AAPL:
+Yahoo Finance Score: 20
+Alpha Vantage Score: 0
+TradingView Score: 20
+🏆 Best Source: YAHOO, TV
+
+📊 Indicator 'macdh' Source Comparison for AAPL:
+Yahoo Finance Score: 4
+Alpha Vantage Score: 0
+TradingView Score: 4
+🏆 Best Source: YAHOO, TV
+
+📊 Indicator 'macd' Source Comparison for AAPL:
+Yahoo Finance Score: 9
+Alpha Vantage Score: 0
+TradingView Score: 9
+🏆 Best Source: YAHOO, TV
+
+📊 Indicator 'boll_lb' Source Comparison for AAPL:
+Yahoo Finance Score: 20
+Alpha Vantage Score: 20
+TradingView Score: 0
+🏆 Best Source: YAHOO, ALPHA
+
+📊 Indicator 'macds' Source Comparison for AAPL:
+Yahoo Finance Score: 12
+Alpha Vantage Score: 0
+TradingView Score: 12
+🏆 Best Source: YAHOO, TV
+
+📊 Indicator 'boll' Source Comparison for AAPL:
+Yahoo Finance Score: 20
+Alpha Vantage Score: 20
+TradingView Score: 0
+🏆 Best Source: YAHOO, ALPHA
+
+📊 Indicator 'boll_ub' Source Comparison for AAPL:
+Yahoo Finance Score: 20
+Alpha Vantage Score: 20
+TradingView Score: 0
+🏆 Best Source: YAHOO, ALPHA
+
+📊 Indicator 'atr' Source Comparison for AAPL:
+Yahoo Finance Score: 40
+Alpha Vantage Score: 40
+TradingView Score: 40
+🏆 Best Source: YAHOO, ALPHA, TV
+
+📊 Indicator 'close_50_sma' Source Comparison for AAPL:
+Yahoo Finance Score: 40
+Alpha Vantage Score: 40
+TradingView Score: 40
+🏆 Best Source: YAHOO, ALPHA, TV
+
+📊 Indicator 'close_200_sma' Source Comparison for AAPL:
+Yahoo Finance Score: 20
+Alpha Vantage Score: 20
+TradingView Score: 0
+🏆 Best Source: YAHOO, ALPHA
+
+📊 Indicator 'rsi' Source Comparison for AAPL:
+Yahoo Finance Score: 40
+Alpha Vantage Score: 40
+TradingView Score: 40
+🏆 Best Source: YAHOO, ALPHA, TV
+
+📊 Indicator 'close_10_ema' Source Comparison for AAPL:
+Yahoo Finance Score: 40
+Alpha Vantage Score: 40
+TradingView Score: 40
+🏆 Best Source: YAHOO, ALPHA, TV
+

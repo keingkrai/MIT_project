@@ -1,0 +1,109 @@
+{
+    "ticker": "AAPL",
+    "date": "2025-11-30",
+    "selected_indicators": [
+        "close_50_sma",
+        "close_200_sma",
+        "close_10_ema",
+        "macd",
+        "macds",
+        "macdh",
+        "rsi",
+        "boll",
+        "boll_ub",
+        "boll_lb",
+        "atr",
+        "vwma"
+    ],
+    "market_overview": {
+        "trend_direction": "Bullish",
+        "momentum_state": "Strong Momentum",
+        "volatility_level": "Moderate",
+        "volume_condition": "Neutral"
+    },
+    "indicator_analysis": [
+        {
+            "indicator": "close_50_sma",
+            "signal": "Price trading above 50 SMA indicates medium-term bullish trend.",
+            "implication": "Suggests buyers remain in control."
+        },
+        {
+            "indicator": "close_200_sma",
+            "signal": "Price trading above 200 SMA indicates long-term bullish trend.",
+            "implication": "Suggests a sustained uptrend."
+        },
+        {
+            "indicator": "close_10_ema",
+            "signal": "Price is above 10 EMA, indicating a short-term bullish trend.",
+            "implication": "Suggests positive short-term momentum."
+        },
+        {
+            "indicator": "macd",
+            "signal": "MACD is positive and rising, indicating bullish momentum.",
+            "implication": "Suggests increasing buying pressure."
+        },
+        {
+            "indicator": "macds",
+            "signal": "MACD signal line is positive and rising.",
+            "implication": "Supports the bullish trend."
+        },
+        {
+            "indicator": "macdh",
+            "signal": "MACD histogram is positive and decreasing, suggesting weakening bullish momentum.",
+            "implication": "Potential for a consolidation or pullback."
+        },
+        {
+            "indicator": "rsi",
+            "signal": "RSI is in overbought territory, but not yet indicating a reversal.",
+            "implication": "Suggests the stock may be due for a pullback."
+        },
+        {
+            "indicator": "boll",
+            "signal": "Price is trading near the upper Bollinger Band.",
+            "implication": "Suggests potential for a pullback."
+        },
+        {
+            "indicator": "boll_ub",
+            "signal": "Price is approaching the upper Bollinger Band.",
+            "implication": "Suggests potential for a pullback."
+        },
+        {
+            "indicator": "boll_lb",
+            "signal": "Price is far above the lower Bollinger Band.",
+            "implication": "Indicates strong bullish momentum."
+        },
+        {
+            "indicator": "atr",
+            "signal": "ATR is at a moderate level.",
+            "implication": "Suggests moderate volatility."
+        },
+        {
+            "indicator": "vwma",
+            "signal": "Price is trading above VWMA, indicating bullish volume support.",
+            "implication": "Suggests buyers are active."
+        }
+    ],
+    "price_action_summary": {
+        "recent_high_low": "Price is near recent highs.",
+        "support_levels": [
+            "260",
+            "255"
+        ],
+        "resistance_levels": [
+            "280",
+            "285"
+        ],
+        "short_term_behavior": "Price is consolidating near recent highs."
+    },
+    "market_sentiment": {
+        "sentiment_score": 72,
+        "sentiment_label": "Bullish"
+    },
+    "key_risks": [
+        "RSI indicates overbought conditions.",
+        "MACD Histogram shows weakening momentum.",
+        "Potential for a pullback due to proximity to upper Bollinger Band."
+    ],
+    "short_term_outlook": "Bullish continuation is likely if the price remains above the 10-day EMA and the 50-day SMA. However, a short-term pullback is possible due to overbought conditions.",
+    "confidence_score": 0.8
+}

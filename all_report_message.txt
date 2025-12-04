@@ -1,9 +1,9 @@
 🏷️ Stock Data Source Comparison Result:
 
 ===== TOTAL RECORDS CHECK =====
-YFinance:      249
-TwelveData:    249
-TradingView:   0
+YFinance:      251
+TwelveData:    251
+TradingView:   252
 
 
 ===== SIMILARITY SCORE =====
@@ -11,25 +11,7 @@ YFinance Score: 0
 TwelveData Score: 0
 TradingView Score: 0
 
-🏆 Best Source: YFINANCE
-
-📊 Indicator 'atr' Source Comparison for AAPL:
-Yahoo Finance Score: 18
-Alpha Vantage Score: 18
-TradingView Score: 18
-🏆 Best Source: YAHOO, ALPHA, TV
-
-📊 Indicator 'rsi' Source Comparison for AAPL:
-Yahoo Finance Score: 18
-Alpha Vantage Score: 18
-TradingView Score: 18
-🏆 Best Source: YAHOO, ALPHA, TV
-
-
-🌐 Social Media News: 
-Bluesky news fetched for AAPL: 110 posts found.
-Mastodon news fetched for AAPL: 120 posts found.
-Subreddit news fetched for AAPL: 10 posts found.
+🏆 Best Source: TRADINGVIEW
 
 📰 News :
 Fetched 50 news items for AAPL from Finnhub.
@@ -39,7 +21,7 @@ Fetched 50 news items for AAPL from Alpha Vantage.
 
 🌏 Global News: 
 Reddit global news have : 40 posts.
-Yfinance global news have : 49 posts.
+Yfinance global news have : 50 posts.
 Finnhub global news have : 300 posts.
 
 

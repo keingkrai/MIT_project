@@ -23,7 +23,7 @@ def create_market_analyst(llm):
         tools = [get_stock_data, get_indicators]
 
         system_message = (
-            f"""Act as a Senior Technical Market Strategist. Conduct a deep-dive technical analysis of {ticker} and output the result strictly in **JSON format**.
+            """Act as a Senior Technical Market Strategist. Conduct a deep-dive technical analysis of {ticker} and output the result strictly in **JSON format**.
 
     **DATA PARAMETERS:**
     - Start Date: {start_date}
@@ -37,7 +37,7 @@ def create_market_analyst(llm):
     **STRICT FORMATTING RULES:**
     - **NO ABBREVIATIONS:** Use full names in JSON Keys and Values.
     - **DETAIL:** Provide full sentences explaining the significance of the data.
-    - **Output JSON ONLY.**
+    - **Output JSON ONLY DON'T HAVE ANYTHING ELSE.**
 
     **JSON STRUCTURE:**
     {{

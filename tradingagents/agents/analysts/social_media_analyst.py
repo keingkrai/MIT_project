@@ -24,13 +24,13 @@ def create_social_media_analyst(llm):
 
         # --- 2. Force-Tool JSON System Prompt ---
         system_message = (
-            f"""Act as a Senior Social Media & Sentiment Analyst. Gauge the market pulse for **{ticker}** from **{start_date} to {current_date}** and output strictly in **JSON format**.
+            """Act as a Senior Social Media & Sentiment Analyst. Gauge the market pulse for **{ticker}** from **{start_date} to {current_date}** and output strictly in **JSON format**.
 
     **CRITICAL INSTRUCTION:**
     - You **DO NOT** have real-time sentiment data.
     - You **MUST CALL** `get_social` IMMEDIATELY.
     - **Do not** hallucinate sentiment. If you do not call the tools, you fail.
-    - **OUTPUT JSON ONLY.**
+    - **Output JSON ONLY DON'T HAVE ANYTHING ELSE.**
 
     **YOUR WORKFLOW:**
     1. **Step 1:** Call `get_social` (start_date='{start_date}', end_date='{current_date}').
@@ -41,7 +41,7 @@ def create_social_media_analyst(llm):
     - **NO ABBREVIATIONS / SLANG:** You MUST use formal full terms.
       - Forbidden: FOMO, FUD, ATH, YTD, HODL, BTFD, OP.
       - Required: Fear Of Missing Out, Fear Uncertainty and Doubt, All Time High, Year To Date, Hold On for Dear Life, Buy The Dip, Original Poster.
-    - **OUTPUT JSON ONLY.**
+    - **Output JSON ONLY DON'T HAVE ANYTHING ELSE.**
 
     **JSON STRUCTURE:**
     {{

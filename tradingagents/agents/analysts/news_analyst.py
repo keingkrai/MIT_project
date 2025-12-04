@@ -8,6 +8,27 @@ import re
 from tradingagents.agents.utils.agent_utils import get_news, get_global_news
 from tradingagents.dataflows.config import get_config
 
+def extract_first_json(text):
+    """
+    Extract the first valid JSON object from text by counting braces.
+    """
+    text = text.strip()
+    start_index = text.find('{')
+    if start_index == -1:
+        return None
+    
+    count = 0
+    for i, char in enumerate(text[start_index:], start=start_index):
+        if char == '{':
+            count += 1
+        elif char == '}':
+            count -= 1
+        
+        if count == 0:
+            return text[start_index : i + 1]
+    
+    return None
+
 def create_news_analyst(llm):
     def news_analyst_node(state):
         current_date = state["trade_date"]
@@ -33,14 +54,14 @@ def create_news_analyst(llm):
     - **Output JSON ONLY.**
 
     **YOUR MANDATORY WORKFLOW:**
-    1. **Step 1:** Invoke `get_global_news(curr_date='{current_date}', look_back_days=7, limit=5)`.
-    2. **Step 2:** Invoke `get_news(query='{ticker}', start_date='{start_date}', end_date='{current_date}')`.
+    1. **Step 1:** Invoke call `get_global_news(curr_date='{current_date}', look_back_days=7, limit=5)`.
+    2. **Step 2:** Invoke call `get_news(query='{ticker}', start_date='{start_date}', end_date='{current_date}')`.
     3. **Step 3:** Wait for tool outputs.
     4. **Step 4:** Synthesize the data into the required JSON format.
 
     **STRICT FORMATTING RULES:**
     - **NO ABBREVIATIONS:** Use full names (e.g., Federal Reserve, Year over Year).
-    - **Output JSON ONLY.**
+    - **Output JSON ONLY DON'T HAVE ANYTHING ELSE.**
     
     **IMPORTENT**
     - JSON format below only.
@@ -92,11 +113,25 @@ def create_news_analyst(llm):
         
 
         chain = prompt | llm.bind_tools(tools)
+        
+        result = None # ประกาศตัวแปรรอไว้ก่อน
 
-        # Call Chain (Send as dict)
-        result = chain.invoke({"messages": state["messages"]})
+        try:
+            print("🚀 Invoking News Analyst Chain...")
+            result = chain.invoke({"messages": state["messages"]})
+            print("✅ Chain invocation succeeded")
+            
+        except Exception as e:
+            print(f"❌ Chain invocation failed: {e}")
+            # ถ้าพังตรงนี้ ต้อง return ค่าว่าง หรือ error message กลับไปเลย
+            # ไม่งั้นโค้ดบรรทัดล่างจะพังตามไปด้วย
+            return {
+                "messages": state["messages"], # คืนค่าเดิม
+                "news_report": f"Error during analysis: {e}"
+            }
 
         report_content = ""
+    
         
         # --- 3. JSON Parsing Logic ---
         if not result.tool_calls:
@@ -107,6 +142,8 @@ def create_news_analyst(llm):
                 raw_content = " ".join([str(item) for item in raw_content])
             if raw_content is None:
                 raw_content = ""
+                  
+            print("this result :", raw_content)
 
             try:
                 # 2. ใช้ Regex ค้นหา JSON Object {...} ที่แท้จริง

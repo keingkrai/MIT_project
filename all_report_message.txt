@@ -1,32 +1,87 @@
 🏷️ Stock Data Source Comparison Result:
 
 ===== TOTAL RECORDS CHECK =====
-YFinance:      251
-TwelveData:    251
-TradingView:   252
+YFinance:      249
+TwelveData:    249
+TradingView:   249
 
 
 ===== SIMILARITY SCORE =====
-YFinance Score: 0
-TwelveData Score: 0
+YFinance Score: 55
+TwelveData Score: 492
+TradingView Score: 491
+
+🏆 Best Source: TWELVEDATA
+
+📊 Indicator 'vwma' Source Comparison for AAPL:
+Yahoo Finance Score: 20
+Alpha Vantage Score: 0
+TradingView Score: 20
+🏆 Best Source: YAHOO, TV
+
+📊 Indicator 'macdh' Source Comparison for AAPL:
+Yahoo Finance Score: 4
+Alpha Vantage Score: 0
+TradingView Score: 4
+🏆 Best Source: YAHOO, TV
+
+📊 Indicator 'macd' Source Comparison for AAPL:
+Yahoo Finance Score: 9
+Alpha Vantage Score: 0
+TradingView Score: 9
+🏆 Best Source: YAHOO, TV
+
+📊 Indicator 'boll_lb' Source Comparison for AAPL:
+Yahoo Finance Score: 20
+Alpha Vantage Score: 20
 TradingView Score: 0
+🏆 Best Source: YAHOO, ALPHA
 
-🏆 Best Source: TRADINGVIEW
+📊 Indicator 'macds' Source Comparison for AAPL:
+Yahoo Finance Score: 12
+Alpha Vantage Score: 0
+TradingView Score: 12
+🏆 Best Source: YAHOO, TV
 
-📰 News :
-Fetched 50 news items for AAPL from Finnhub.
-Fetched 3 news items for AAPL from Reddit.
-Fetched 10 news items for AAPL from YFinance.
-Fetched 50 news items for AAPL from Alpha Vantage.
+📊 Indicator 'boll' Source Comparison for AAPL:
+Yahoo Finance Score: 20
+Alpha Vantage Score: 20
+TradingView Score: 0
+🏆 Best Source: YAHOO, ALPHA
 
-🌏 Global News: 
-Reddit global news have : 40 posts.
-Yfinance global news have : 50 posts.
-Finnhub global news have : 300 posts.
+📊 Indicator 'boll_ub' Source Comparison for AAPL:
+Yahoo Finance Score: 20
+Alpha Vantage Score: 20
+TradingView Score: 0
+🏆 Best Source: YAHOO, ALPHA
 
+📊 Indicator 'atr' Source Comparison for AAPL:
+Yahoo Finance Score: 40
+Alpha Vantage Score: 40
+TradingView Score: 40
+🏆 Best Source: YAHOO, ALPHA, TV
 
-Fetched fundamentals for AAPL:
-- YFinance: 4 fields fetched
-- Finnhub: 1 fields fetched
-- AlphaVantage: 4 fields fetched
-📜 Fundamental data for AAPL. Chosen source: alphavantage
+📊 Indicator 'close_50_sma' Source Comparison for AAPL:
+Yahoo Finance Score: 40
+Alpha Vantage Score: 40
+TradingView Score: 40
+🏆 Best Source: YAHOO, ALPHA, TV
+
+📊 Indicator 'close_200_sma' Source Comparison for AAPL:
+Yahoo Finance Score: 20
+Alpha Vantage Score: 20
+TradingView Score: 0
+🏆 Best Source: YAHOO, ALPHA
+
+📊 Indicator 'rsi' Source Comparison for AAPL:
+Yahoo Finance Score: 40
+Alpha Vantage Score: 40
+TradingView Score: 40
+🏆 Best Source: YAHOO, ALPHA, TV
+
+📊 Indicator 'close_10_ema' Source Comparison for AAPL:
+Yahoo Finance Score: 40
+Alpha Vantage Score: 40
+TradingView Score: 40
+🏆 Best Source: YAHOO, ALPHA, TV
+

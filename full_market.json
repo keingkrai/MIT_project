@@ -1,24 +1,109 @@
 {
-    "primary_trend_assessment": {
-        "direction": "Bullish",
-        "strength_description": "The stock price has shown an overall upward trajectory over the past year, indicating a prevailing bullish sentiment. Recent price action suggests continued positive momentum, with prices generally trading above key moving averages, although some consolidation may be observed."
-    },
-    "critical_price_levels": {
-        "immediate_support_level": "Approximately \\$265.00, based on recent lows and areas where buying interest has previously emerged.",
-        "immediate_resistance_level": "Approximately \\$279.00, representing a recent high and a level where selling pressure has been encountered."
-    },
-    "technical_signals_analysis": [
-        "The MACD indicator shows positive values and a recent upward trend, suggesting bullish momentum is present, although it has recently started to decline slightly, which could indicate a potential slowdown.",
-        "The RSI is currently in the upper range, indicating that the stock is neither overbought nor oversold, but it has been trending upwards, suggesting strong buying interest.",
-        "Average True Range (ATR) indicates moderate volatility, suggesting that price swings are within typical historical ranges, which can be favorable for sustained trends.",
-        "Volume Weighted Moving Average (VWMA) is trending upwards, confirming the bullish price action and suggesting that higher prices are supported by significant trading volume."
+    "ticker": "AAPL",
+    "date": "2025-11-30",
+    "selected_indicators": [
+        "close_50_sma",
+        "close_200_sma",
+        "close_10_ema",
+        "macd",
+        "macds",
+        "macdh",
+        "rsi",
+        "boll",
+        "boll_ub",
+        "boll_lb",
+        "atr",
+        "vwma"
     ],
-    "specific_indicators_analysis": {
-        "moving_averages_status": "Simple Moving Averages (SMA) data was not available for the requested period. However, the Volume Weighted Moving Average (VWMA) is trending upwards, suggesting that recent prices, weighted by volume, are higher than previous periods, reinforcing a bullish outlook.",
-        "relative_strength_index_assessment": "The Relative Strength Index (RSI) is trading around 68.40 as of November 28, 2025, which is in the upper range but not yet in overbought territory (typically above 70). This suggests strong positive momentum and considerable buying interest without indicating an immediate reversal is imminent.",
-        "moving_average_convergence_divergence_status": "The Moving Average Convergence Divergence (MACD) line is above the signal line and showing positive values, with the most recent value on November 28, 2025, being 4.20. This indicates a bullish trend, although the values have been slightly decreasing in the last few trading days, which warrants monitoring for potential trend exhaustion.",
-        "bollinger_bands_analysis": "Bollinger Bands data was not available for the requested period. Therefore, an analysis of price interaction with the bands, such as breakouts or mean reversion, cannot be provided.",
-        "average_true_range_volatility": "The Average True Range (ATR) is around 5.44 on November 28, 2025. This indicates a moderate level of volatility. The recent trend in ATR shows a slight decrease, suggesting that the magnitude of price swings may be narrowing, which could precede a period of consolidation or a continuation of the current trend with less choppiness.",
-        "volume_weighted_moving_average_status": "The Volume Weighted Moving Average (VWMA) for the last 20 days, ending on November 28, 2025, is approximately \\$272.33 and is trending upwards. This indicates that the average price, considering trading volume, has been increasing, which confirms the strength of the recent bullish price action and suggests that the upward movement is well-supported by market participants."
-    }
+    "market_overview": {
+        "trend_direction": "Bullish",
+        "momentum_state": "Strong Momentum",
+        "volatility_level": "Moderate",
+        "volume_condition": "Neutral"
+    },
+    "indicator_analysis": [
+        {
+            "indicator": "close_50_sma",
+            "signal": "Price trading above 50 SMA indicates medium-term bullish trend.",
+            "implication": "Suggests buyers remain in control."
+        },
+        {
+            "indicator": "close_200_sma",
+            "signal": "Price trading above 200 SMA indicates long-term bullish trend.",
+            "implication": "Suggests a sustained uptrend."
+        },
+        {
+            "indicator": "close_10_ema",
+            "signal": "Price is above 10 EMA, indicating a short-term bullish trend.",
+            "implication": "Suggests positive short-term momentum."
+        },
+        {
+            "indicator": "macd",
+            "signal": "MACD is positive and rising, indicating bullish momentum.",
+            "implication": "Suggests increasing buying pressure."
+        },
+        {
+            "indicator": "macds",
+            "signal": "MACD signal line is positive and rising.",
+            "implication": "Supports the bullish trend."
+        },
+        {
+            "indicator": "macdh",
+            "signal": "MACD histogram is positive and decreasing, suggesting weakening bullish momentum.",
+            "implication": "Potential for a consolidation or pullback."
+        },
+        {
+            "indicator": "rsi",
+            "signal": "RSI is in overbought territory, but not yet indicating a reversal.",
+            "implication": "Suggests the stock may be due for a pullback."
+        },
+        {
+            "indicator": "boll",
+            "signal": "Price is trading near the upper Bollinger Band.",
+            "implication": "Suggests potential for a pullback."
+        },
+        {
+            "indicator": "boll_ub",
+            "signal": "Price is approaching the upper Bollinger Band.",
+            "implication": "Suggests potential for a pullback."
+        },
+        {
+            "indicator": "boll_lb",
+            "signal": "Price is far above the lower Bollinger Band.",
+            "implication": "Indicates strong bullish momentum."
+        },
+        {
+            "indicator": "atr",
+            "signal": "ATR is at a moderate level.",
+            "implication": "Suggests moderate volatility."
+        },
+        {
+            "indicator": "vwma",
+            "signal": "Price is trading above VWMA, indicating bullish volume support.",
+            "implication": "Suggests buyers are active."
+        }
+    ],
+    "price_action_summary": {
+        "recent_high_low": "Price is near recent highs.",
+        "support_levels": [
+            "260",
+            "255"
+        ],
+        "resistance_levels": [
+            "280",
+            "285"
+        ],
+        "short_term_behavior": "Price is consolidating near recent highs."
+    },
+    "market_sentiment": {
+        "sentiment_score": 72,
+        "sentiment_label": "Bullish"
+    },
+    "key_risks": [
+        "RSI indicates overbought conditions.",
+        "MACD Histogram shows weakening momentum.",
+        "Potential for a pullback due to proximity to upper Bollinger Band."
+    ],
+    "short_term_outlook": "Bullish continuation is likely if the price remains above the 10-day EMA and the 50-day SMA. However, a short-term pullback is possible due to overbought conditions.",
+    "confidence_score": 0.8
 }

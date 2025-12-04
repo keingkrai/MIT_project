@@ -98,7 +98,7 @@ def main():
         with open("./sum_market.txt", 'w', encoding='utf-8') as f:
             f.write(str(sum_market))
             
-        with open("./full_market.txt", 'w', encoding='utf-8') as f:
+        with open("./full_market.json", 'w', encoding='utf-8') as f:
             f.write(str(market))
 
         with open("./sum_social.txt", 'w', encoding='utf-8') as f:

@@ -16,94 +16,107 @@
         "vwma"
     ],
     "market_overview": {
-        "trend_direction": "Bullish",
-        "momentum_state": "Strong Momentum",
-        "volatility_level": "Moderate",
-        "volume_condition": "Neutral"
+        "trend_direction": "bullish",
+        "momentum_state": "strong",
+        "volatility_level": "moderate",
+        "volume_condition": "average"
     },
     "indicator_analysis": [
         {
             "indicator": "close_50_sma",
-            "signal": "Price trading above 50 SMA indicates medium-term bullish trend.",
-            "implication": "Suggests buyers remain in control."
+            "indicator_full_name": "50-Day Simple Moving Average",
+            "signal": "above",
+            "implication": "The 50-day SMA is above the 200-day SMA, indicating a bullish trend in the medium term. The price is trading above the 50-day SMA, confirming upward momentum."
         },
         {
             "indicator": "close_200_sma",
-            "signal": "Price trading above 200 SMA indicates long-term bullish trend.",
-            "implication": "Suggests a sustained uptrend."
+            "indicator_full_name": "200-Day Simple Moving Average",
+            "signal": "above",
+            "implication": "The 200-day SMA indicates the long-term trend. The price trading above it suggests a sustained bullish sentiment."
         },
         {
             "indicator": "close_10_ema",
-            "signal": "Price is above 10 EMA, indicating a short-term bullish trend.",
-            "implication": "Suggests positive short-term momentum."
+            "indicator_full_name": "10-Day Exponential Moving Average",
+            "signal": "above",
+            "implication": "The 10-day EMA is above the 50-day SMA and the price is trading above the 10-day EMA, indicating strong short-term bullish momentum."
         },
         {
             "indicator": "macd",
-            "signal": "MACD is positive and rising, indicating bullish momentum.",
-            "implication": "Suggests increasing buying pressure."
+            "indicator_full_name": "MACD",
+            "signal": "positive",
+            "implication": "The MACD line is above the signal line and in positive territory, suggesting bullish momentum is present and strengthening."
         },
         {
             "indicator": "macds",
-            "signal": "MACD signal line is positive and rising.",
-            "implication": "Supports the bullish trend."
+            "indicator_full_name": "MACD Signal Line",
+            "signal": "rising",
+            "implication": "The MACD signal line is rising, which, when combined with a rising MACD line, confirms the bullish momentum."
         },
         {
             "indicator": "macdh",
-            "signal": "MACD histogram is positive and decreasing, suggesting weakening bullish momentum.",
-            "implication": "Potential for a consolidation or pullback."
+            "indicator_full_name": "MACD Histogram",
+            "signal": "positive and increasing",
+            "implication": "The MACD histogram is positive and increasing, indicating that the MACD line is moving further away from the signal line, reinforcing the bullish momentum."
         },
         {
             "indicator": "rsi",
-            "signal": "RSI is in overbought territory, but not yet indicating a reversal.",
-            "implication": "Suggests the stock may be due for a pullback."
+            "indicator_full_name": "Relative Strength Index",
+            "signal": "above 50",
+            "implication": "The RSI is above 50, indicating that buyers have control and momentum is to the upside. It is currently in the upper range, suggesting strong buying pressure but not yet overbought."
         },
         {
             "indicator": "boll",
-            "signal": "Price is trading near the upper Bollinger Band.",
-            "implication": "Suggests potential for a pullback."
+            "indicator_full_name": "Bollinger Bands Middle Line",
+            "signal": "above",
+            "implication": "The price is trading above the middle Bollinger Band, which is generally a bullish sign, indicating the price is in the upper half of its recent range."
         },
         {
             "indicator": "boll_ub",
-            "signal": "Price is approaching the upper Bollinger Band.",
-            "implication": "Suggests potential for a pullback."
+            "indicator_full_name": "Bollinger Upper Band",
+            "signal": "above",
+            "implication": "The price has touched or is trading near the upper Bollinger Band, suggesting strong upward momentum. However, it could also indicate the asset is becoming overextended in the short term."
         },
         {
             "indicator": "boll_lb",
-            "signal": "Price is far above the lower Bollinger Band.",
-            "implication": "Indicates strong bullish momentum."
+            "indicator_full_name": "Bollinger Lower Band",
+            "signal": "below",
+            "implication": "The price is significantly above the lower Bollinger Band, which is expected given the bullish trend and does not indicate oversold conditions."
         },
         {
             "indicator": "atr",
-            "signal": "ATR is at a moderate level.",
-            "implication": "Suggests moderate volatility."
+            "indicator_full_name": "Average True Range",
+            "signal": "moderate",
+            "implication": "The ATR indicates moderate volatility, suggesting that price swings are within a typical range, allowing for potential trading opportunities without excessive risk."
         },
         {
             "indicator": "vwma",
-            "signal": "Price is trading above VWMA, indicating bullish volume support.",
-            "implication": "Suggests buyers are active."
+            "indicator_full_name": "Volume Weighted Moving Average",
+            "signal": "above",
+            "implication": "The VWMA is above the price, indicating that volume is supporting the current price levels, which is a positive sign for the trend."
         }
     ],
     "price_action_summary": {
-        "recent_high_low": "Price is near recent highs.",
+        "recent_high_low": "The price has been trending upwards, reaching near the upper Bollinger Band, suggesting strong recent performance.",
         "support_levels": [
-            "260",
-            "255"
+            "The 10-day EMA around 273.91",
+            "The 50-day SMA around 262.46",
+            "The lower Bollinger Band around 264.25"
         ],
         "resistance_levels": [
-            "280",
-            "285"
+            "The upper Bollinger Band around 278.78",
+            "Previous highs near 279.53"
         ],
-        "short_term_behavior": "Price is consolidating near recent highs."
+        "short_term_behavior": "The stock is exhibiting strong bullish behavior, with price consistently trading above key moving averages and showing positive momentum."
     },
     "market_sentiment": {
-        "sentiment_score": 72,
+        "sentiment_score": 75,
         "sentiment_label": "Bullish"
     },
     "key_risks": [
-        "RSI indicates overbought conditions.",
-        "MACD Histogram shows weakening momentum.",
-        "Potential for a pullback due to proximity to upper Bollinger Band."
+        "Overbought conditions signaled by RSI near extreme levels.",
+        "Potential for a short-term pullback if the price fails to break above the upper Bollinger Band.",
+        "Any significant negative news impacting the tech sector could affect AAPL."
     ],
-    "short_term_outlook": "Bullish continuation is likely if the price remains above the 10-day EMA and the 50-day SMA. However, a short-term pullback is possible due to overbought conditions.",
-    "confidence_score": 0.8
+    "short_term_outlook": "Bullish, with potential for continued upward movement as long as key support levels hold and momentum indicators remain positive. A break above resistance could signal further gains.",
+    "confidence_score": 0.85
 }

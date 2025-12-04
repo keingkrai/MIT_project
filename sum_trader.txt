@@ -1,0 +1,16 @@
+### 1.Trade Setup (The Action)
+- **Strategy:** Trend Following Breakout
+- **Action:** BUY
+- **Timeframe:** Swing Trade
+
+### 2.Key Levels (The Numbers)
+- **Entry Zone:** Market Price (at the time of execution)
+- **Stop Loss:** 260.00
+- **Target/Take Profit:** *Not specified in the provided plan.* (To be determined based on risk/reward ratio or chart patterns.)
+
+### 3.Position Sizing
+- **Proposed Size:** 100% of available capital.
+- **Risk Rationale:** Strong bullish conviction based on comprehensive analysis, justifying aggressive allocation.
+
+### 4.Trader's Note
+- Execute immediately at the market price. Monitor price action closely and adjust the target/take profit level based on subsequent developments.

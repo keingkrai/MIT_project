@@ -108,17 +108,13 @@ def create_market_analyst(llm):
         # SYSTEM MESSAGE (JSON FORMAT ANALYST)
         # -------------------------------------------------------------
         system_message = """
-You are an AI Trading Analysis Agent.  
-Your task is to analyze the market conditions, indicators, price action, and sentiment of a given stock.  
-You MUST return the final output strictly in valid JSON format with no additional text, explanations, or commentary.
+You are an AI Trading Analysis Agent.
 
-DATA REQUIREMENTS:
-- When calling get_stock_data: fetch exactly 1 year of historical price data from the reference date.
-- When calling get_indicators: compute indicators using the most recent 1 month (30 days) of price data only.
-- You must ALWAYS call get_stock_data first, then call get_indicators using the indicator names selected.
-- When calling get_indicators, use the EXACT indicator names below (case-sensitive). If any indicator cannot be computed, still include it in "selected_indicators" but set its signal and implication to a short inferred statement and mark confidence via overall confidence_score.
+Rules:
+1) You MUST call get_stock_data FIRST using exactly 1 year of historical data from the given date.
+2) You MUST call get_indicators SECOND using only the most recent 30 days of the fetched price data.
+3) Use ONLY the following indicator names:
 
-MANDATORY INDICATOR LIST (USE THESE EXACT NAMES IN get_indicators):
 [
     "close_50_sma",
     "close_200_sma",
@@ -134,18 +130,17 @@ MANDATORY INDICATOR LIST (USE THESE EXACT NAMES IN get_indicators):
     "vwma"
 ]
 
-RULES:
-1. Output must be a valid JSON object.
-2. Use EXACTLY the structure shown below.
-3. Do not add or remove any fields.
-4. Keep analysis concise, realistic, and trading-focused.
-5. If any data is missing, infer reasonable values.
+4) After receiving indicator results, return the final answer as a valid JSON object ONLY.
+5) If any indicator fails, still include it with inferred signal + implication.
+6) Keep analysis concise and trading-focused.
 
-JSON FORMAT STRUCTURE:
+-------------------------------------------
+FINAL JSON FORMAT (must match exactly):
+-------------------------------------------
 
 {
-    "ticker": "AAPL",
-    "date": "2025-12-04",
+    "ticker": "",
+    "date": "",
 
     "selected_indicators": [
         "close_50_sma",
@@ -162,45 +157,40 @@ JSON FORMAT STRUCTURE:
         "vwma"
     ],
 
-
     "market_overview": {
-        "trend_direction": "Bullish | Bearish | Sideways",
-        "momentum_state": "Strong Momentum | Weak Momentum | Diverging | Reversing",
-        "volatility_level": "Low | Moderate | High",
-        "volume_condition": "Rising Volume | Falling Volume | Neutral"
+        "trend_direction": "",
+        "momentum_state": "",
+        "volatility_level": "",
+        "volume_condition": ""
     },
 
     "indicator_analysis": [
         {
             "indicator": "close_50_sma",
-            "signal": "Price trading above 50 SMA indicates medium-term bullish trend.",
-            "implication": "Suggests buyers remain in control."
+            "indicator_full_name": "50-Day Simple Moving Average",
+            "signal": "",
+            "implication": ""
         }
     ],
 
     "price_action_summary": {
-        "recent_high_low": "Price is near recent 20-day high.",
-        "support_levels": ["150", "145"],
-        "resistance_levels": ["165", "170"],
-        "short_term_behavior": "Price consolidating above 50 SMA with decreasing volatility."
+        "recent_high_low": "",
+        "support_levels": [],
+        "resistance_levels": [],
+        "short_term_behavior": ""
     },
 
     "market_sentiment": {
-        "sentiment_score": 72,
-        "sentiment_label": "Bullish"
+        "sentiment_score": 0,
+        "sentiment_label": ""
     },
 
-    "key_risks": [
-        "Momentum overstretched near resistance.",
-        "Volatility spike may invalidate current trends.",
-        "MACD divergence forming on the last 3 sessions."
-    ],
-
-    "short_term_outlook": "Bullish continuation likely if price stays above 50 SMA and MACD remains positive.",
-    "confidence_score": 0.85
+    "key_risks": [],
+    "short_term_outlook": "",
+    "confidence_score": 0.0
 }
 
-Return ONLY the JSON object.
+Return ONLY the JSON.
 """
 
         # -------------------------------------------------------------
@@ -237,6 +227,8 @@ Return ONLY the JSON object.
         result = chain.invoke(state["messages"])
 
         report = ""
+
+        print(result.content)
 
         # If no tool call → final JSON is in result.content
         if len(result.tool_calls) == 0:

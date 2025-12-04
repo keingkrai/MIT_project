@@ -1,0 +1,34 @@
+{
+    "sentiment_score": 75,
+    "sentiment_verdict": "Bullish",
+    "social_volume_analysis": "Social media discussions around Apple (AAPL) have shown a significant increase, particularly in the last few days of November and early December 2025. There's a notable focus on institutional options volume and activity, suggesting heightened interest from large players. Mentions of \"all-time high\" and \"record\" in relation to Apple's stock price are frequent, indicating positive market sentiment and investor confidence.",
+    "dominant_narrative": "The dominant narrative is that Apple is experiencing a resurgence driven by strong performance in its core products like the iPhone 17, coupled with optimism surrounding its 'Apple Intelligence' AI strategy and robust buyback programs, leading to new all-time highs in its stock price.",
+    "top_discussion_topics": [
+        {
+            "topic": "iPhone 17 Sales and Performance",
+            "sentiment_impact": "Positive",
+            "detailed_analysis": "Discussions frequently highlight the strong initial sales of the iPhone 17, with some reports indicating a significant increase compared to previous models. This is seen as a key driver for Apple's revenue and market position, contributing to the overall bullish sentiment."
+        },
+        {
+            "topic": "Apple Intelligence and AI Strategy",
+            "sentiment_impact": "Positive",
+            "detailed_analysis": "The integration and potential of 'Apple Intelligence' are a recurring theme. Investors are optimistic about how this on-device AI strategy will enhance user experience, protect privacy, and potentially drive future product upgrades and service revenue. It's viewed as a crucial element for Apple's long-term competitiveness."
+        },
+        {
+            "topic": "Stock Price Performance and All-Time Highs",
+            "sentiment_impact": "Positive",
+            "detailed_analysis": "Numerous posts celebrate Apple's stock reaching new all-time highs, with market capitalization nearing $3.9 trillion. This consistent positive performance is a major talking point, reinforcing investor confidence and attracting broader market attention."
+        },
+        {
+            "topic": "Institutional Options Activity",
+            "sentiment_impact": "Positive",
+            "detailed_analysis": "There is a significant volume of discussion around institutional equity and options activity, including 'sweep' and 'dark pool' alerts. This heavy activity, often with a bullish bias, suggests strong conviction from large investors about Apple's upward trajectory."
+        },
+        {
+            "topic": "Buyback Programs and Shareholder Returns",
+            "sentiment_impact": "Positive",
+            "detailed_analysis": "Apple's aggressive share buyback program is frequently mentioned as a key factor supporting the stock price and a \"greatest product.\" This focus on returning capital to shareholders contributes to a positive sentiment, especially among long-term investors."
+        }
+    ],
+    "retail_psychology_assessment": "Retail investor sentiment appears to be overwhelmingly positive, bordering on euphoric, driven by the stock's consistent performance, positive news flow around new products and AI initiatives, and the general momentum in the tech sector. There's a strong belief in Apple's ecosystem and its ability to continue innovating and driving growth, leading to a 'Fear Of Missing Out' (FOMO) sentiment among some investors who are eager to participate in the rally."
+}

@@ -226,29 +226,77 @@ Return ONLY the JSON.
         # LLM output
         result = chain.invoke(state["messages"])
 
-        report = ""
+        import re
+        import json
+        import ast  # for literal_eval fallback
 
         print(result.content)
 
-        # If no tool call → final JSON is in result.content
-        if len(result.tool_calls) == 0:
-            report = result.content
+        report = None
+        raw = result.content
 
-            raw = report
+        # 1) Clean obvious markdown fences first
+        clean = re.sub(r"```[\w]*", "", raw if isinstance(raw, str) else str(raw)).replace("```", "").strip()
 
-            # 1) Clean markdown fences
-            clean = re.sub(r"```[\w]*", "", raw).replace("```", "").strip()
+        parsed = None
 
-            # 2) Try parse JSON
+        # 2) Try JSON parse
+        try:
+            parsed = json.loads(clean)
+        except Exception:
+            # 3) If JSON parsing fails, try to interpret Python literal (e.g. "[{'type':'text', 'text': '...'}]")
             try:
-                parsed = json.loads(clean)
-                report = parsed
-            except:
+                parsed = ast.literal_eval(clean)
+            except Exception:
+                parsed = None
+
+        # 4) If parsed is a list, try common heuristics to extract the single JSON object we want
+        if isinstance(parsed, list):
+            # Case A: list of dicts where each dict has 'text' (e.g. [{'type':'text','text':'...'}])
+            if all(isinstance(item, dict) and "text" in item for item in parsed):
+                # join all text parts and try parse again
+                joined = "\n".join(item["text"] for item in parsed)
+                joined = re.sub(r"```[\w]*", "", joined).replace("```", "").strip()
+                try:
+                    parsed = json.loads(joined)
+                except Exception:
+                    try:
+                        parsed = ast.literal_eval(joined)
+                    except Exception:
+                        # leave parsed as-is (list of dicts)
+                        parsed = parsed
+            # Case B: list with single element which is the JSON dict we want
+            elif len(parsed) == 1 and isinstance(parsed[0], dict):
+                parsed = parsed[0]
+            # Otherwise keep parsed as list (maybe it's legitimately a list of items)
+
+        # 5) If parsed is a dict -> pretty JSON string
+        if isinstance(parsed, dict):
+            report = json.dumps(parsed, indent=4)
+        # If parsed is a list -> if first element is dict, pick it (common), else dump the list
+        elif isinstance(parsed, list):
+            if len(parsed) > 0 and isinstance(parsed[0], dict):
+                report = json.dumps(parsed[0], indent=4)
+            else:
+                try:
+                    report = json.dumps(parsed, indent=4)
+                except Exception:
+                    report = str(parsed)
+        # 6) If parsed is None, fallback to `clean` (string). If it's still a list-like string that wraps JSON, try a final json.loads
+        else:
+            # final attempt: maybe clean itself is a JSON list string like "[{...}]"
+            try:
+                final_try = json.loads(clean)
+                if isinstance(final_try, list) and len(final_try) == 1 and isinstance(final_try[0], dict):
+                    report = json.dumps(final_try[0], indent=4)
+                else:
+                    report = json.dumps(final_try, indent=4) if not isinstance(final_try, (str, int, float)) else str(final_try)
+            except Exception:
                 report = clean
 
-            # 3) If parsed successfully (Python dict), convert back to pretty JSON
-            if isinstance(report, dict):
-                report = json.dumps(report, indent=4)
+        # Ensure report is a string for downstream usage
+        if isinstance(report, (dict, list)):
+            report = json.dumps(report, indent=4)
 
         return {
             "messages": [result],

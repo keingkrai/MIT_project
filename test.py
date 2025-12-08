@@ -34,8 +34,7 @@ def print_section(title, content):
 def main():
     print("⚙️  Initializing System...")
     
-    # analysts = ["market", "social", "news", "fundamentals"]
-    analysts = ["market"]
+    analysts = ["market", "social", "news", "fundamentals"]
     
     try:
         graph = TradingAgentsGraph(selected_analysts=analysts, debug=False)

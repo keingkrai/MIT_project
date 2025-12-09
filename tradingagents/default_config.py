@@ -14,15 +14,15 @@ DEFAULT_CONFIG = {
     # "deep_think_llm": "o4-mini",
     # "quick_think_llm": "gpt-4o-mini",
     # "backend_url": "https://api.openai.com/v1",
-    # "llm_provider": "typhoon",              # หรือ "typhoon"
-    # "deep_think_llm": "typhoon-v2.5-30b-a3b-instruct",
-    # "quick_think_llm": "typhoon-v2.5-30b-a3b-instruct",
-    # "backend_url": "https://api.opentyphoon.ai/v1",
-    # "TYPHOON_API_KEY": "sk-lAq00ACwIqxLElTD0lTuhN0MThvNIUveq9hagVOo4n1jYPHl",
+    "llm_provider": "typhoon",              # หรือ "typhoon"
+    "deep_think_llm": "typhoon-v2.5-30b-a3b-instruct",
+    "quick_think_llm": "typhoon-v2.5-30b-a3b-instruct",
+    "backend_url": "https://api.opentyphoon.ai/v1",
+    "TYPHOON_API_KEY": "sk-lAq00ACwIqxLElTD0lTuhN0MThvNIUveq9hagVOo4n1jYPHl",
     # LLM settings
-    "llm_provider": "google",
-    "deep_think_llm": "gemini-2.5-flash-lite",
-    "quick_think_llm": "gemini-2.5-flash-lite",
+    # "llm_provider": "google",
+    # "deep_think_llm": "gemini-2.5-flash-lite",
+    # "quick_think_llm": "gemini-2.5-flash-lite",
     # Debate and discussion settings
     "max_debate_rounds": 1,
     "max_risk_discuss_rounds": 1,

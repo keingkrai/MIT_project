@@ -1,1 +1,1 @@
-"I need a ticker symbol to get started. Please provide the ticker for the company you'd like me to analyze."
+"<tool_call>\n{\"name\": \"get_social\", \"arguments\": {\"ticker\": \"AAPL\"}}\n</tool_call>\n<tool_call>\n{\"name\": \"get_news\", \"arguments\": {\"ticker\": \"AAPL\", \"start_date\": \"2025-11-23\", \"end_date\": \"2025-11-30\"}}\n</tool_call>"

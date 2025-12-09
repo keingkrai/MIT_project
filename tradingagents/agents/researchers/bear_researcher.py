@@ -58,6 +58,7 @@ def create_bear_researcher(llm, memory):
         State clearly why the stock should be sold or avoided.
         """
 
+        # เรียก LLM (ส่งเป็น List เพื่อแยก Role)
         response = llm.invoke([
             {"role": "system", "content": system_message},
             {"role": "user", "content": user_message}

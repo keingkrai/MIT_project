@@ -197,7 +197,7 @@ def select_research_depth() -> int:
 # Automatically select default shallow-thinking llm engine without asking.
 def select_shallow_thinking_agent(provider) -> str:
     """Automatically select default shallow-thinking LLM engine without asking."""
-    return "gemini-2.0-flash"
+    return "gemini-2.5-flash"
 
 
 # def select_deep_thinking_agent(provider) -> str:
@@ -266,7 +266,7 @@ def select_shallow_thinking_agent(provider) -> str:
 # Automatically select default deep-thinking llm engine without asking.
 def select_deep_thinking_agent(provider) -> str:
     """Automatically select default deep-thinking LLM engine without asking."""
-    return "gemini-2.0-flash"
+    return "gemini-2.5-flash"
 
 # def select_llm_provider() -> tuple[str, str]:
 #     """Select the OpenAI api url using interactive selection."""

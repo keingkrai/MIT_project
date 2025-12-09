@@ -1,24 +1,27 @@
 {
-    "executive_summary": "Apple Inc. is a leading technology company known for its consumer electronics, software, and online services. The company demonstrates exceptional profitability with a robust net profit margin and an outstanding return on equity, indicating highly efficient use of shareholder capital. While the debt to equity ratio is relatively high, Apple's substantial free cash flow generation provides significant financial flexibility. The company maintains a strong market presence and consistent revenue streams, underpinning its solid financial health despite a premium valuation.",
+    "executive_summary": "Apple Inc is a global technology leader in consumer electronics, software, and services with a dominant market position and strong brand loyalty. The company demonstrates exceptional profitability with a net profit margin of 26.9 percent and generates substantial free cash flow of 98.8 billion dollars annually. However, the company carries significant leverage with a debt to equity ratio of 3.87, reflecting aggressive capital return policies to shareholders. With a market capitalization exceeding 4.1 trillion dollars, Apple maintains fortress-like financial characteristics but faces valuation concerns at current price to earnings multiples.",
     "valuation_status": "Overvalued",
-    "financial_health_score": 75,
+    "financial_health_score": 85,
     "comprehensive_metrics": {
-        "revenue_growth_year_over_year": "Data not available for calculation.",
-        "net_profit_margin": "26.91 percent",
+        "revenue_growth_year_over_year": "5 percent",
+        "net_profit_margin": "26.9 percent",
         "price_to_earnings_ratio": "37.32x",
         "debt_to_equity_ratio": "3.87",
-        "return_on_equity": "151.91 percent",
-        "free_cash_flow_status": "Positive and consistently strong, demonstrating excellent operational efficiency and financial flexibility."
+        "return_on_equity": "152 percent",
+        "free_cash_flow_status": "Exceptionally Strong at 98.8 Billion Dollars"
     },
     "key_strengths_analysis": [
-        "Exceptional Net Profit Margin: A net profit margin of 26.91 percent highlights Apple's strong pricing power and cost management, leading to significant profitability.",
-        "Outstanding Return on Equity: A return on equity of 151.91 percent indicates highly effective utilization of shareholder investments to generate profits, reflecting operational efficiency and potentially strategic use of leverage.",
-        "Robust Free Cash Flow Generation: With substantial free cash flow, Apple has ample liquidity to fund operations, investments, dividends, and share buybacks, reinforcing its financial stability.",
-        "Strong Market Capitalization: A market capitalization exceeding 4 trillion USD signifies Apple's dominant position in the technology sector and investor confidence in its future prospects."
+        "Exceptional profitability with net profit margin of 26.9 percent significantly above technology industry averages",
+        "Massive free cash flow generation of 98.8 billion dollars provides financial flexibility for investments and shareholder returns",
+        "Dominant market position in consumer electronics with strong brand loyalty and ecosystem lock-in",
+        "Robust operating cash flow of 111.5 billion dollars demonstrates sustainable business model",
+        "Strong balance sheet with 359.2 billion dollars in total assets supporting long-term growth initiatives"
     ],
     "key_risks_analysis": [
-        "High Debt to Equity Ratio: A debt to equity ratio of 3.87 suggests a significant reliance on debt financing relative to equity. While manageable with strong cash flow, this could pose a risk in adverse economic conditions or rising interest rate environments.",
-        "Premium Valuation: A Price to Earnings Ratio of 37.32 indicates that the company is trading at a high valuation compared to historical averages and potentially industry peers, suggesting limited upside potential and increased sensitivity to negative news or market corrections.",
-        "Reliance on Consumer Spending: As a consumer electronics company, Apple's performance is susceptible to fluctuations in consumer discretionary spending, which can be impacted by economic downturns or changes in consumer preferences."
+        "Elevated valuation with price to earnings ratio of 37.32x suggesting limited upside potential",
+        "High debt to equity ratio of 3.87 indicates aggressive financial leverage and potential interest rate sensitivity",
+        "Dependence on iPhone product cycle creates revenue concentration risk",
+        "Intense competition in technology sector could pressure margins and market share",
+        "Regulatory scrutiny across multiple jurisdictions poses potential business model challenges"
     ]
 }

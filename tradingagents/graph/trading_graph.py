@@ -86,6 +86,9 @@ class TradingAgentsGraph:
         elif self.config["llm_provider"].lower() == "typhoon":
             self.deep_thinking_llm = ChatOpenAI(model=self.config["deep_think_llm"], base_url=self.config["backend_url"], api_key=self.config["TYPHOON_API_KEY"])
             self.quick_thinking_llm = ChatOpenAI(model=self.config["quick_think_llm"], base_url=self.config["backend_url"], api_key=self.config["TYPHOON_API_KEY"])
+        elif self.config["llm_provider"].lower() == "deepseek":
+            self.deep_thinking_llm = ChatOpenAI(model=self.config["deep_think_llm"], base_url=self.config["backend_url"],  api_key=os.getenv("DEEPSEEK_API_KEY"))
+            self.quick_thinking_llm = ChatOpenAI(model=self.config["quick_think_llm"], base_url=self.config["backend_url"],  api_key=os.getenv("DEEPSEEK_API_KEY"))
         else:
             raise ValueError(f"Unsupported LLM provider: {self.config['llm_provider']}")
         

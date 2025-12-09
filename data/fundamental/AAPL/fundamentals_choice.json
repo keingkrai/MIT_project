@@ -2,24 +2,24 @@
   "symbol": "AAPL",
   "chosen_source": "alphavantage",
   "scores": {
-    "yfinance": 9,
-    "finnhub": 5,
-    "alphavantage": 12
+    "yfinance": 12,
+    "finnhub": 6,
+    "alphavantage": 14
   },
   "completeness": {
-    "yfinance": 10,
+    "yfinance": 13,
     "finnhub": 8,
     "alphavantage": 16
   },
   "sections": {
     "overview": {
       "scores": {
-        "yfinance": 2,
-        "finnhub": 5,
-        "alphavantage": 5
+        "yfinance": 5,
+        "finnhub": 6,
+        "alphavantage": 7
       },
       "completeness": {
-        "yfinance": 3,
+        "yfinance": 6,
         "finnhub": 8,
         "alphavantage": 8
       }
@@ -88,5 +88,5 @@
       "eps": null
     }
   },
-  "timestamp": "2025-12-09T07:30:20.041397+00:00"
+  "timestamp": "2025-12-09T08:00:34.484961+00:00"
 }

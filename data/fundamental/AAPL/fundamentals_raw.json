@@ -1,6 +1,6 @@
 {
   "symbol": "AAPL",
-  "timestamp": "2025-12-09T07:30:20.041397+00:00",
+  "timestamp": "2025-12-09T08:00:34.484961+00:00",
   "raw": {
     "yfinance": {
       "overview": {
@@ -8,7 +8,10 @@
         "sharesOutstanding": null,
         "peRatio": null,
         "currency": "USD",
-        "exchange": "NMS"
+        "exchange": "NMS",
+        "name": "Apple Inc.",
+        "sector": "Technology",
+        "industry": "Consumer Electronics"
       },
       "balancesheet": {
         "totalAssets": 359241000000.0,

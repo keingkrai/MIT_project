@@ -1,29 +1,34 @@
 {
-    "sentiment_score": 78,
+    "sentiment_score": 68,
     "sentiment_verdict": "Bullish",
-    "social_volume_analysis": "Social media volume remained consistently high throughout the period, driven by ongoing discussions about Apple's record-breaking performance and positive analyst revisions. While no single event caused an extreme spike during the exact analysis window, the cumulative positive news from preceding weeks maintained elevated engagement.",
-    "dominant_narrative": "The dominant narrative surrounding Apple (AAPL) is one of sustained growth and market leadership, primarily fueled by the exceptional sales performance of the iPhone 17 and high expectations for the company's Artificial Intelligence strategy, 'Apple Intelligence'. The company's achievement of a $4 trillion market capitalization further solidified this positive sentiment.",
+    "social_volume_analysis": "Significant spike in discussion volume driven by multiple catalysts including executive departures, analyst price target upgrades, and AI strategy developments. Heavy institutional options activity observed with AAPL consistently ranking among top equity options volume.",
+    "dominant_narrative": "Apple's AI strategy execution and leadership stability concerns amid executive departures, balanced by strong iPhone 17 sales momentum and analyst optimism about 2026 AI market entry.",
     "top_discussion_topics": [
+        {
+            "topic": "Executive Departures and Leadership Stability",
+            "sentiment_impact": "Mixed",
+            "detailed_analysis": "Multiple senior executive departures including COO Jeff Williams and AI chief John Giannandrea created uncertainty about Apple's AI roadmap and succession planning. However, Apple Chip Chief reassuring staff he's not leaving 'anytime soon' provided some stability. Community sentiment is divided between concerns about 'chaos internally' and optimism that leadership changes could bring fresh perspectives."
+        },
+        {
+            "topic": "Analyst Price Target Upgrades and AI Strategy",
+            "sentiment_impact": "Positive",
+            "detailed_analysis": "Wedbush raised price target to $350 from $320, Evercore ISI raised to $325 from $300, both citing Apple's upcoming AI strategy centered on Siri 2.0 relaunch in early 2026. Analysts expect 2026 to be the year Apple fully enters the AI market, supported by strong iPhone 17 sales. The community views these upgrades as validation of Apple's AI potential despite recent executive turnover."
+        },
         {
             "topic": "iPhone 17 Sales Performance",
             "sentiment_impact": "Positive",
-            "detailed_analysis": "Discussions highlighted the confirmed success and record-breaking sales of the iPhone 17, particularly in key markets like the United States and China. Analysts consistently referenced strong demand and upgrade cycles contributing to Apple's robust financial outlook."
+            "detailed_analysis": "Strong iPhone 17 sales momentum continues to drive market optimism, with market capitalization approaching $3.9 trillion. IDC reports iPhone 17 will drive record Apple shipments in 2025. The community sees this as evidence of Apple's resilient hardware ecosystem despite AI competition concerns."
         },
         {
-            "topic": "Apple Intelligence and Artificial Intelligence Strategy",
+            "topic": "Apple Intelligence and AI Integration",
             "sentiment_impact": "Positive",
-            "detailed_analysis": "The integration of 'Apple Intelligence' across iOS, iPadOS, and macOS was a significant point of positive discussion. Investors and analysts anticipate that this on-device Artificial Intelligence platform will enhance user experience, strengthen the ecosystem, and drive future growth and service revenue."
+            "detailed_analysis": "Apple's 'Apple Intelligence' AI strategy focusing on privacy and on-device functionality is gaining traction. The community discusses how this privacy-focused approach could differentiate Apple from competitors. However, there are concerns about Apple being perceived as behind in AI compared to other tech giants."
         },
         {
-            "topic": "Market Capitalization Achievement",
-            "sentiment_impact": "Positive",
-            "detailed_analysis": "Apple's milestone of reaching and maintaining a market capitalization of $4 trillion was widely celebrated. This achievement was frequently cited as evidence of the company's strong market position, financial health, and investor confidence."
-        },
-        {
-            "topic": "Analyst Ratings and Price Target Upgrades",
-            "sentiment_impact": "Positive",
-            "detailed_analysis": "Multiple financial institutions, including Bank of America and Wedbush, issued positive analyst reports, raising price targets for AAPL. These upgrades were attributed to strong iPhone 17 sales, robust service sector growth, and the promising outlook for Apple's Artificial Intelligence initiatives."
+            "topic": "Institutional Options Activity and Market Pressure",
+            "sentiment_impact": "Mixed",
+            "detailed_analysis": "Heavy institutional options volume with AAPL consistently ranking among top equity options activity (3rd-4th most active). This indicates significant institutional interest and potential hedging activity. The stock experienced pressure from executive departures but showed resilience with new all-time highs earlier in the period."
         }
     ],
-    "retail_psychology_assessment": "Retail investor psychology during this period was characterized by significant Greed and a strong Fear Of Missing Out. The continuous stream of positive news regarding record sales, market capitalization milestones, and Artificial Intelligence advancements fostered a highly optimistic environment, encouraging sustained buying and holding of Apple shares."
+    "retail_psychology_assessment": "Retail investors exhibit cautious optimism with elements of Fear Of Missing Out on Apple's AI transformation potential, balanced by concerns about leadership stability. There's growing confidence in Apple's ecosystem strength and iPhone 17 performance, but anxiety about whether Apple can catch up in the AI race. The community shows resilience in holding positions despite volatility, with long-term holders viewing dips as buying opportunities."
 }

@@ -1,4 +1,123 @@
 {
-    "error": "Parsing failed",
-    "raw": "<tool_call>\n{\"name\": \"get_stock_data\", \"arguments\": {\"symbol\": \"AAPL\", \"start_date\": \"2024-11-30\", \"end_date\": \"2025-11-30\"}}\n</tool_call>"
+    "ticker": "AAPL",
+    "date": "2025-11-30",
+    "selected_indicators": [
+        "close_50_sma",
+        "close_200_sma",
+        "close_10_ema",
+        "macd",
+        "macds",
+        "macdh",
+        "rsi",
+        "boll",
+        "boll_ub",
+        "boll_lb",
+        "atr",
+        "vwma"
+    ],
+    "market_overview": {
+        "trend_direction": "Bullish",
+        "momentum_state": "Strong",
+        "volatility_level": "Moderate",
+        "volume_condition": "Falling"
+    },
+    "indicator_analysis": [
+        {
+            "indicator": "close_50_sma",
+            "indicator_full_name": "50-day Simple Moving Average",
+            "signal": "Current price ($278.85) is significantly above the rising 50-day SMA ($262.46).",
+            "implication": "Confirms a strong short-to-medium term bullish trend. The 50-SMA acts as dynamic support."
+        },
+        {
+            "indicator": "close_200_sma",
+            "indicator_full_name": "200-day Simple Moving Average",
+            "signal": "Current price ($278.85) is well above the rising 200-day SMA ($226.76).",
+            "implication": "Strong long-term bullish trend confirmed."
+        },
+        {
+            "indicator": "close_10_ema",
+            "indicator_full_name": "10-day Exponential Moving Average",
+            "signal": "Current price ($278.85) is above the rising 10-day EMA ($273.91).",
+            "implication": "Indicates strong short-term bullish momentum and continued upward price action."
+        },
+        {
+            "indicator": "macd",
+            "indicator_full_name": "Moving Average Convergence Divergence",
+            "signal": "The MACD line (4.20) is above the MACD Signal line (4.05).",
+            "implication": "Bullish crossover, suggesting increasing upward momentum."
+        },
+        {
+            "indicator": "macds",
+            "indicator_full_name": "Moving Average Convergence Divergence Signal",
+            "signal": "The MACD Signal line (4.05) is rising, following the MACD line.",
+            "implication": "Reinforces the bullish momentum identified by the MACD line."
+        },
+        {
+            "indicator": "macdh",
+            "indicator_full_name": "Moving Average Convergence Divergence Histogram",
+            "signal": "The MACD Histogram (0.16) is positive and recently turned positive.",
+            "implication": "Short-term bullish momentum is strengthening, indicating potential for further upward movement."
+        },
+        {
+            "indicator": "rsi",
+            "indicator_full_name": "Relative Strength Index",
+            "signal": "RSI (68.41) is in the upper region, close to the overbought threshold of 70.",
+            "implication": "The stock is exhibiting strong buying pressure, but watch for potential short-term pullback if it enters overbought territory."
+        },
+        {
+            "indicator": "boll",
+            "indicator_full_name": "Bollinger Bands Middle",
+            "signal": "Current price ($278.85) is above the middle Bollinger Band ($271.51).",
+            "implication": "Supports the ongoing upward trend."
+        },
+        {
+            "indicator": "boll_ub",
+            "indicator_full_name": "Bollinger Bands Upper Band",
+            "signal": "Current price ($278.85) is very close to the upper Bollinger Band ($278.78).",
+            "implication": "Indicates that the price is at the upper extreme of its recent volatility range, potentially signaling a short-term overextension or a breakout."
+        },
+        {
+            "indicator": "boll_lb",
+            "indicator_full_name": "Bollinger Bands Lower Band",
+            "signal": "Current price ($278.85) is far above the lower Bollinger Band ($264.25).",
+            "implication": "Confirms strong bullish sentiment and distance from oversold conditions."
+        },
+        {
+            "indicator": "atr",
+            "indicator_full_name": "Average True Range",
+            "signal": "ATR value (5.44) indicates moderate volatility.",
+            "implication": "Price movements are within a reasonable range, not excessively wild or stagnant, suggesting a somewhat stable trend."
+        },
+        {
+            "indicator": "vwma",
+            "indicator_full_name": "Volume Weighted Moving Average",
+            "signal": "The VWMA ($272.33) is rising, and the price ($278.85) is above it.",
+            "implication": "The bullish trend is supported by significant volume, indicating strong conviction from buyers, although recent daily volume has declined."
+        }
+    ],
+    "price_action_summary": {
+        "recent_high_low": "The current price ($278.85) is trading near its recent 30-day highs ($280.38).",
+        "support_levels": [
+            "$273.91 (10-EMA)",
+            "$271.51 (Bollinger Mid)",
+            "$264.25 (Bollinger Lower Band)",
+            "$262.46 (50-SMA)"
+        ],
+        "resistance_levels": [
+            "$278.78 (Bollinger Upper Band)",
+            "$280.38 (Recent High)"
+        ],
+        "short_term_behavior": "The stock has been in a strong uptrend over the past month, consistently making higher lows and higher highs. The most recent price action shows the stock pushing against its 30-day high and the upper Bollinger Band, indicating strong buying pressure but also potential for short-term overextension."
+    },
+    "market_sentiment": {
+        "sentiment_score": 85,
+        "sentiment_label": "Bullish"
+    },
+    "key_risks": [
+        "RSI is near overbought levels (68.41), suggesting a potential for a short-term pullback or consolidation.",
+        "Price is at the upper Bollinger Band, which might indicate a temporary overextension and a mean reversion move.",
+        "Recent falling volume on upward price movement could signal weakening conviction or a lack of fresh buyers, potentially leading to a reversal or slowdown in the uptrend."
+    ],
+    "short_term_outlook": "AAPL is exhibiting a strong bullish trend across multiple timeframes, supported by momentum indicators. While currently near short-term overextension levels, the overall sentiment remains positive, suggesting further upside potential, though a minor pullback for consolidation cannot be ruled out.",
+    "confidence_score": 0.85
 }

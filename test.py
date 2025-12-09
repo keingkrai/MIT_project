@@ -34,7 +34,8 @@ def print_section(title, content):
 def main():
     print("⚙️  Initializing System...")
     
-    analysts = ["market"]
+    analysts = ["market", "social", "news", "fundamentals"]
+    # analysts = ["market"]
     
     try:
         graph = TradingAgentsGraph(selected_analysts=analysts, debug=False)
@@ -65,104 +66,121 @@ def main():
         sum_news = final_state.get("Summarize_news_report")
         news = final_state.get("news_report")
 
-        sum_cons = final_state.get("Summarize_conservative_report")
-        cons = final_state.get("risk_debate_state").get("risky_history")
+        # sum_cons = final_state.get("Summarize_conservative_report")
+        # cons = final_state.get("risk_debate_state")
 
-        sum_aggr = final_state.get("Summarize_aggressive_report")
-        aggr = final_state.get("risk_debate_state").get("safe_history")
+        # sum_aggr = final_state.get("Summarize_aggressive_report")
+        # aggr = final_state.get("risk_debate_state").get("safe_history")
 
-        sum_neut = final_state.get("Summarize_neutral_report")
-        neut = final_state.get("risk_debate_state").get("neutral_history")
+        # sum_neut = final_state.get("Summarize_neutral_report")
+        # neut = final_state.get("risk_debate_state").get("neutral_history")
 
-        sum_investment_plan = final_state.get("Summarize_investment_plan_report")
-        investment_plan = final_state.get("investment_plan")
+        # sum_investment_plan = final_state.get("Summarize_investment_plan_report")
+        # investment_plan = final_state.get("investment_debate_state")
 
-        sum_risk_plan = final_state.get("Summarize_final_trade_decision_report")
-        risk_plan = final_state.get("final_trade_decision")
+        # sum_risk_plan = final_state.get("Summarize_final_trade_decision_report")
+        # risk_plan = final_state.get("risk_debate_state")
         
-        sum_bull = final_state.get("bull_researcher_summarizer")
-        bull = final_state.get("investment_debate_state").get("bull_history")
+        # sum_bull = final_state.get("bull_researcher_summarizer")
+        # bull = final_state.get("investment_debate_state").get("bull_history")
         
-        sum_bear = final_state.get("bear_researcher_summarizer")
-        bear = final_state.get("investment_debate_state").get("bear_history")
+        # sum_bear = final_state.get("bear_researcher_summarizer")
+        # bear = final_state.get("investment_debate_state").get("bear_history")
         
-        sum_trader = final_state.get("trader_summarizer")
-        trader = final_state.get("trader_investment_plan")
+        # sum_trader = final_state.get("trader_summarizer")
+        # trader = final_state.get("trader_investment_plan")
         
         with open("./sum_funda.txt", 'w', encoding='utf-8') as f:
             f.write(str(sum_finda))
             
-        with open("./full_funda.txt", 'w', encoding='utf-8') as f:
-            f.write(str(funda))
+        funda = json.loads(funda)
+        with open("./full_funda.json", 'w', encoding='utf-8') as f:
+            json.dump(funda, f, ensure_ascii=False, indent=4)
             
         with open("./sum_market.txt", 'w', encoding='utf-8') as f:
             f.write(str(sum_market))
             
+        market = json.loads(market)
         with open("./full_market.json", 'w', encoding='utf-8') as f:
-            f.write(str(market))
+            json.dump(market, f, ensure_ascii=False, indent=4)
 
         with open("./sum_social.txt", 'w', encoding='utf-8') as f:
             f.write(str(sum_cial))
 
-        with open("./full_social.txt", 'w', encoding='utf-8') as f:
-            f.write(str(social))
+        social = json.loads(social)
+        with open("./full_social.json", 'w', encoding='utf-8') as f:
+            json.dump(social, f, ensure_ascii=False, indent=4)
 
         with open("./sum_news.txt", 'w', encoding='utf-8') as f:
             f.write(str(sum_news))
         
-        with open("./full_news.txt", 'w', encoding='utf-8') as f:
-            f.write(str(news))
+        news = json.loads(news)
+        with open("./full_news.json", 'w', encoding='utf-8') as f:
+            json.dump(news, f, ensure_ascii=False, indent=4)
         
-        with open("./sum_conservative.txt", 'w', encoding='utf-8') as f:
-            f.write(str(sum_cons))
+        # with open("./sum_conservative.txt", 'w', encoding='utf-8') as f:
+        #     f.write(str(sum_cons))
         
-        with open("./full_conservative.txt", 'w', encoding='utf-8') as f:
-            f.write(str(cons))
+        # with open("./full_conservative.json", 'w', encoding='utf-8') as f:
+        #     json.dump(cons, f, ensure_ascii=False, indent=4)
 
-        with open("./sum_aggressive.txt", 'w', encoding='utf-8') as f:
-            f.write(str(sum_aggr))
+        # with open("./sum_aggressive.txt", 'w', encoding='utf-8') as f:
+        #     f.write(str(sum_aggr))
 
-        with open("./full_aggressive.txt", 'w', encoding='utf-8') as f:
-            f.write(str(aggr))
+        # with open("./full_aggressive.json", 'w', encoding='utf-8') as f:
+        #     f.write(str(aggr))
 
-        with open("./sum_neutral.txt", 'w', encoding='utf-8') as f:
-            f.write(str(sum_neut))
+        # with open("./sum_neutral.txt", 'w', encoding='utf-8') as f:
+        #     f.write(str(sum_neut))
         
-        with open("./full_neutral.txt", 'w', encoding='utf-8') as f:
-            f.write(str(neut))
+        # with open("./full_neutral.json", 'w', encoding='utf-8') as f:
+        #     f.write(str(neut))
         
-        with open("./sum_investment_plan.txt", 'w', encoding='utf-8') as f:
-            f.write(str(sum_investment_plan))
+        # with open("./sum_investment_plan.txt", 'w', encoding='utf-8') as f:
+        #     f.write(str(sum_investment_plan))
         
-        with open("./full_investment_plan.txt", 'w', encoding='utf-8') as f:
-            f.write(str(investment_plan))
+        # with open("./full_investment_plan.json", 'w', encoding='utf-8') as f:
+        #     f.write(str(investment_plan))
         
-        with open("./sum_risk_plan.txt", 'w', encoding='utf-8') as f:
-            f.write(str(sum_risk_plan))
+        # with open("./sum_risk_plan.txt", 'w', encoding='utf-8') as f:
+        #     f.write(str(sum_risk_plan))
         
-        with open("./full_risk_plan.txt", 'w', encoding='utf-8') as f:
-            f.write(str(risk_plan))
+        # with open("./full_risk_plan.json", 'w', encoding='utf-8') as f:
+        #     f.write(str(risk_plan))
             
-        with open("./sum_bull.txt", 'w', encoding='utf-8') as f:
-            f.write(str(sum_bull))
+        # with open("./sum_bull.txt", 'w', encoding='utf-8') as f:
+        #     f.write(str(sum_bull))
             
-        with open("./full_bull.txt", 'w', encoding='utf-8') as f:
-            f.write(str(bull))
+        # with open("./full_bull.json", 'w', encoding='utf-8') as f:
+        #     f.write(str(bull))
             
-        with open("./sum_bear.txt", 'w', encoding='utf-8') as f:
-            f.write(str(sum_bear))
+        # with open("./sum_bear.txt", 'w', encoding='utf-8') as f:
+        #     f.write(str(sum_bear))
             
-        with open("./full_bear.txt", 'w', encoding='utf-8') as f:
-            f.write(str(bear))
+        # with open("./full_bear.json", 'w', encoding='utf-8') as f:
+        #     f.write(str(bear))
             
-        with open("./sum_trader.txt", 'w', encoding='utf-8') as f:
-            f.write(str(sum_trader))
+        # with open("./sum_trader.txt", 'w', encoding='utf-8') as f:
+        #     f.write(str(sum_trader))
             
-        with open("./full_trader.txt", 'w', encoding='utf-8') as f:
-            f.write(str(trader))
+        # with open("./full_trader.json", 'w', encoding='utf-8') as f:
+        #     f.write(str(trader))
+            
         
-        print_section("Long fundament", final_state.get("fundamentals_report"))
-        print_section("Short fundament", final_state.get("Summarize_fundamentals_report"))
+        investment = final_state.get("investment_debate_state")
+        risk = final_state.get("risk_debate_state")
+        trader = final_state.get("trader_investment_decision")
+    
+        
+        # เขียนให้เป็น JSON สวยๆ (pretty)
+        with open("./investment.json", "w", encoding="utf-8") as f:
+            json.dump(investment, f, ensure_ascii=False, indent=4)
+
+        with open("./risk.json", "w", encoding="utf-8") as f:
+            json.dump(risk, f, ensure_ascii=False, indent=4)
+            
+        with open("./trader.json", "w", encoding="utf-8") as f:
+            json.dump(trader, f, ensure_ascii=False, indent=4)
         
         # print_section("📊 Market Analyst Report", final_state.get("market_report"))
 

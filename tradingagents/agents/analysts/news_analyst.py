@@ -1,40 +1,46 @@
-from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
-from datetime import datetime, timedelta
-import time
 import json
 import re
+from typing import List
+from datetime import datetime, timedelta
+from pydantic import BaseModel, Field
+from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
+from langchain_core.output_parsers import JsonOutputParser
 
-# ตรวจสอบ path ให้ตรง
 from tradingagents.agents.utils.agent_utils import get_news, get_global_news
-from tradingagents.dataflows.config import get_config
 
-def extract_first_json(text):
-    """
-    Extract the first valid JSON object from text by counting braces.
-    """
-    text = text.strip()
-    start_index = text.find('{')
-    if start_index == -1:
-        return None
-    
-    count = 0
-    for i, char in enumerate(text[start_index:], start=start_index):
-        if char == '{':
-            count += 1
-        elif char == '}':
-            count -= 1
-        
-        if count == 0:
-            return text[start_index : i + 1]
-    
-    return None
 
+# ===================== PYDANTIC MODELS ======================
+class GlobalMacroContext(BaseModel):
+    economic_policy_analysis: str = Field(description="Analysis of Central Bank actions and Interest Rates.")
+    geopolitical_impact: str = Field(description="Analysis of wars, trade bans, or elections affecting the sector.")
+
+
+class CompanyNewsItem(BaseModel):
+    headline: str = Field(description="Full headline of the news.")
+    source: str = Field(description="News Source (e.g. Reuters, Bloomberg).")
+    date: str = Field(description="Date of the news (YYYY-MM-DD).")
+    sentiment_impact: str = Field(description="Impact on sentiment (Positive/Negative/Neutral).")
+    detailed_implication: str = Field(description="A full sentence explaining WHY this matters for the stock price.")
+
+
+class NewsReport(BaseModel):
+    executive_summary: str = Field(description="A detailed paragraph summarizing the single most important story driving the stock right now.")
+    market_sentiment_score: int = Field(ge=0, le=100, description="Score from 0 (Very Negative) to 100 (Very Positive).")
+    market_sentiment_verdict: str = Field(description="Overall verdict: Bullish, Bearish, or Neutral.")
+    global_macro_context: GlobalMacroContext
+    company_specific_developments: List[CompanyNewsItem] = Field(description="List of key company-specific news items.")
+    key_risks_identified: List[str] = Field(description="List of major risks identified from the news.")
+
+
+# ===================== AGENT FACTORY ======================
 def create_news_analyst(llm):
+    parser = JsonOutputParser(pydantic_object=NewsReport)
+
     def news_analyst_node(state):
         current_date = state["trade_date"]
         ticker = state["company_of_interest"]
 
-        # --- 1. คำนวณวันย้อนหลัง 7 วัน ---
+        # Calculate 7 days lookback
         try:
             curr_date_obj = datetime.strptime(current_date, "%Y-%m-%d")
             start_date = (curr_date_obj - timedelta(days=7)).strftime("%Y-%m-%d")
@@ -43,65 +49,54 @@ def create_news_analyst(llm):
 
         tools = [get_news, get_global_news]
 
-        # --- 2. Detailed JSON System Prompt ---
-        system_message = (
-            f"""Act as a Senior Market News Analyst.
+        # ===================== SYSTEM MESSAGE ======================
+        system_message = f"""
+You are a Senior Market News Analyst specializing in financial news and market impact assessment.
 
-    **CRITICAL INSTRUCTION:**
-    - You **DO NOT** have access to real-time news in your internal memory.
-    - You **MUST CALL** the `get_global_news` and `get_news` tools IMMEDIATELY to fetch data.
-    - **DO NOT** hallucinate or invent news. If you do not call the tools, you cannot complete this task.
-    - **Output JSON ONLY.**
+**CRITICAL INSTRUCTION:**
+- You **MUST CALL** both tools IMMEDIATELY to gather comprehensive data.
+- **DO NOT** hallucinate or invent news stories.
+- Base all analysis on actual news retrieved from the tools.
 
-    **YOUR MANDATORY WORKFLOW:**
-    1. **Step 1:** Invoke call `get_global_news(curr_date='{current_date}', look_back_days=7, limit=5)`.
-    2. **Step 2:** Invoke call `get_news(query='{ticker}', start_date='{start_date}', end_date='{current_date}')`.
-    3. **Step 3:** Wait for tool outputs.
-    4. **Step 4:** Synthesize the data into the required JSON format.
+**MANDATORY WORKFLOW:**
+1. Call `get_global_news(curr_date='{current_date}', look_back_days=7)` to gather macro news.
+2. Call `get_news(ticker='{ticker}', start_date='{start_date}', end_date='{current_date}')` to gather company-specific news.
+3. Analyze both macro and company-specific factors.
+4. Synthesize findings into the required JSON format.
 
-    **STRICT FORMATTING RULES:**
-    - **NO ABBREVIATIONS:** Use full names (e.g., Federal Reserve, Year over Year).
-    - **Output JSON ONLY DON'T HAVE ANYTHING ELSE.**
-    
-    **IMPORTENT**
-    - JSON format below only.
+**ANALYSIS GUIDELINES:**
+- Focus on material news that could impact stock price
+- Connect macro trends to company performance
+- Assess both immediate and long-term implications
+- Identify specific risks from news events
 
-    **JSON STRUCTURE:**
-    {{
-        "executive_summary": "String: A detailed paragraph summarizing the single most important story driving the stock right now.",
-        "market_sentiment_score": "Number: 0 (Negative) to 100 (Positive)",
-        "market_sentiment_verdict": "String: Bullish / Bearish / Neutral",
-        "global_macro_context": {{
-            "economic_policy_analysis": "String: Analysis of Central Bank actions and Interest Rates.",
-            "geopolitical_impact": "String: Analysis of wars, trade bans, or elections affecting the sector."
-        }},
-        "company_specific_developments": [
-            {{
-                "headline": "String: Full headline",
-                "source": "String: News Source",
-                "date": "String: YYYY-MM-DD",
-                "sentiment_impact": "String: Positive / Negative",
-                "detailed_implication": "String: A full sentence explaining WHY this matters for the stock price."
-            }}
-        ],
-        "key_risks_identified": [
-            "String: Detailed risk factor 1",
-            "String: Detailed risk factor 2"
-        ]
-    }}
-    """
-        )
+**SENTIMENT SCORE GUIDE:**
+- 0-20: Very Negative / Crisis
+- 21-40: Negative / Bearish
+- 41-60: Neutral / Mixed
+- 61-80: Positive / Bullish
+- 81-100: Very Positive / Strong Bullish
 
-        prompt = ChatPromptTemplate.from_messages(
-            [
-                (
-                    "system",
-                    "You are a helpful AI assistant... \n{system_message}\n"
-                    "For your reference, the current date is {current_date}. We are looking at the company {ticker}",
-                ),
-                MessagesPlaceholder(variable_name="messages"),
-            ]
-        )
+**OUTPUT FORMAT:**
+{parser.get_format_instructions()}
+
+Return ONLY the JSON object, no markdown code blocks.
+"""
+
+        # ===================== PROMPT ======================
+        prompt = ChatPromptTemplate.from_messages([
+            (
+                "system",
+                "You are a helpful AI assistant, collaborating with other assistants. "
+                "Use the provided tools to progress towards answering the question. "
+                "You have access to the following tools: {tool_names}. \n\n"
+                "{system_message}\n\n"
+                "For your reference, the current date is {current_date}. "
+                "The company we want to look at is {ticker}. "
+                "Analysis period: {start_date} to {current_date}."
+            ),
+            MessagesPlaceholder(variable_name="messages"),
+        ])
 
         prompt = prompt.partial(
             system_message=system_message,
@@ -110,62 +105,89 @@ def create_news_analyst(llm):
             ticker=ticker,
             start_date=start_date
         )
-        
 
+        # ===================== CHAIN ======================
         chain = prompt | llm.bind_tools(tools)
-        
-        result = None # ประกาศตัวแปรรอไว้ก่อน
 
-        try:
-            print("🚀 Invoking News Analyst Chain...")
-            result = chain.invoke({"messages": state["messages"]})
-            print("✅ Chain invocation succeeded")
-            
-        except Exception as e:
-            print(f"❌ Chain invocation failed: {e}")
-            # ถ้าพังตรงนี้ ต้อง return ค่าว่าง หรือ error message กลับไปเลย
-            # ไม่งั้นโค้ดบรรทัดล่างจะพังตามไปด้วย
-            return {
-                "messages": state["messages"], # คืนค่าเดิม
-                "news_report": f"Error during analysis: {e}"
-            }
-
-        report_content = ""
-    
+        # Execute
+        result = chain.invoke(state["messages"])
         
-        # --- 3. JSON Parsing Logic ---
+        print("News Analysis Result:", result)
+
+        # ========== PARSE WITH ROBUST ERROR HANDLING ==========
+        report_dict = None
+        
         if not result.tool_calls:
             raw_content = result.content
             
-            # 1. แปลง List เป็น String (กันเหนียว)
+            # Handle list format (e.g., [{'type': 'text', 'text': '...'}])
             if isinstance(raw_content, list):
-                raw_content = " ".join([str(item) for item in raw_content])
+                for item in raw_content:
+                    if isinstance(item, dict) and item.get('type') == 'text':
+                        raw_content = item.get('text', '')
+                        break
+                else:
+                    raw_content = " ".join([str(item) for item in raw_content])
+            
             if raw_content is None:
                 raw_content = ""
-                  
-            print("this result :", raw_content)
-
+            
             try:
-                # 2. ใช้ Regex ค้นหา JSON Object {...} ที่แท้จริง
-                # มองหาปีกกาเปิดตัวแรก { และปีกกาปิดตัวสุดท้าย }
-                match = re.search(r"\{.*\}", raw_content, re.DOTALL)
+                # Method 1: Use Parser (handles string cleaning internally)
+                report_dict = parser.parse(str(raw_content))
                 
-                if match:
-                    json_str = match.group(0) # ดึงเฉพาะส่วนที่เป็น JSON
-                    parsed_json = json.loads(json_str)
-                    report_content = json.dumps(parsed_json, indent=4, ensure_ascii=False)
-                else:
-                    # ถ้าหาไม่เจอจริงๆ ให้ Error ไป
-                    raise ValueError("No JSON object found in response")
+            except Exception as e1:
+                print(f"⚠️ Parser failed: {e1}")
                 
-            except (json.JSONDecodeError, ValueError) as e:
-                print(f"⚠️ News Analyst: JSON Parse Error ({e}). Saving raw content.")
-                # ถ้าพังจริงๆ ก็เก็บค่าดิบไว้ ดีกว่าไม่ได้อะไรเลย
-                report_content = str(raw_content)
+                # Method 2: Clean markdown and extract JSON
+                try:
+                    clean = re.sub(r"```[\w]*\n?", "", str(raw_content)).strip()
+                    match = re.search(r"\{[\s\S]*\}", clean)
+                    
+                    if match:
+                        json_str = match.group(0)
+                        report_dict = json.loads(json_str)
+                        # Validate with Pydantic
+                        report_dict = NewsReport.model_validate(report_dict).model_dump()
+                    else:
+                        print("⚠️ No JSON object found in response")
+                        # Create minimal valid fallback
+                        report_dict = {
+                            "executive_summary": "Unable to retrieve news data for analysis.",
+                            "market_sentiment_score": 50,
+                            "market_sentiment_verdict": "Neutral (Data Unavailable)",
+                            "global_macro_context": {
+                                "economic_policy_analysis": "No data available.",
+                                "geopolitical_impact": "No data available."
+                            },
+                            "company_specific_developments": [],
+                            "key_risks_identified": ["Data retrieval error - unable to assess risks"]
+                        }
+                        
+                except Exception as e2:
+                    print(f"⚠️ Fallback parsing failed: {e2}")
+                    report_dict = {
+                        "executive_summary": "Error occurred during news analysis.",
+                        "market_sentiment_score": 50,
+                        "market_sentiment_verdict": "Error",
+                        "global_macro_context": {
+                            "economic_policy_analysis": "Error processing data.",
+                            "geopolitical_impact": "Error processing data."
+                        },
+                        "company_specific_developments": [],
+                        "key_risks_identified": ["Analysis error occurred"]
+                    }
+        
+        # If still None (tool_calls present), create waiting structure
+        if report_dict is None:
+            report_dict = {"status": "waiting_for_tool_response"}
+
+        # Convert dict to JSON string
+        report_json = json.dumps(report_dict, indent=4, ensure_ascii=False)
 
         return {
             "messages": [result],
-            "news_report": report_content,
+            "news_report": report_json,  # Return as JSON string
         }
 
     return news_analyst_node

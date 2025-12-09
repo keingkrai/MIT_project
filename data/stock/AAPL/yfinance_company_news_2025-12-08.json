@@ -1,5 +1,69 @@
 [
   {
+<<<<<<< HEAD
+=======
+    "id": "32f13664-1b61-43f5-b2c4-ddb0b2a2b136",
+    "content": {
+      "id": "32f13664-1b61-43f5-b2c4-ddb0b2a2b136",
+      "contentType": "STORY",
+      "title": "Why these 2 stocks have shockingly blown away Nvidia",
+      "description": "",
+      "summary": "Go figure, dollar stores.",
+      "pubDate": "2025-12-07T13:30:23Z",
+      "displayTime": "2025-12-08T06:32:11Z",
+      "isHosted": true,
+      "bypassModal": false,
+      "previewUrl": null,
+      "thumbnail": {
+        "originalUrl": "https://s.yimg.com/os/creatr-uploaded-images/2025-12/8dd32470-d1eb-11f0-bf5f-5dfb5a56848d",
+        "originalWidth": 3750,
+        "originalHeight": 2500,
+        "caption": "",
+        "resolutions": [
+          {
+            "url": "https://s.yimg.com/uu/api/res/1.2/hF460bso.4GTYyKMGLNS0A--~B/aD0yNTAwO3c9Mzc1MDthcHBpZD15dGFjaHlvbg--/https://s.yimg.com/os/creatr-uploaded-images/2025-12/8dd32470-d1eb-11f0-bf5f-5dfb5a56848d",
+            "width": 3750,
+            "height": 2500,
+            "tag": "original"
+          },
+          {
+            "url": "https://s.yimg.com/uu/api/res/1.2/0_jWlB22PT2Q.8HoxJdXYA--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://s.yimg.com/os/creatr-uploaded-images/2025-12/8dd32470-d1eb-11f0-bf5f-5dfb5a56848d",
+            "width": 170,
+            "height": 128,
+            "tag": "170x128"
+          }
+        ]
+      },
+      "provider": {
+        "displayName": "Yahoo Finance",
+        "url": "http://finance.yahoo.com/"
+      },
+      "canonicalUrl": {
+        "url": "https://finance.yahoo.com/news/why-these-2-stocks-have-shockingly-blown-away-nvidia-133023103.html",
+        "site": "finance",
+        "region": "US",
+        "lang": "en-US"
+      },
+      "clickThroughUrl": {
+        "url": "https://finance.yahoo.com/news/why-these-2-stocks-have-shockingly-blown-away-nvidia-133023103.html",
+        "site": "finance",
+        "region": "US",
+        "lang": "en-US"
+      },
+      "metadata": {
+        "editorsPick": true
+      },
+      "finance": {
+        "premiumFinance": {
+          "isPremiumNews": false,
+          "isPremiumFreeNews": false
+        }
+      },
+      "storyline": null
+    }
+  },
+  {
+>>>>>>> tang
     "id": "ccfb6f17-5188-4fac-b6a9-366c7b11c9fb",
     "content": {
       "id": "ccfb6f17-5188-4fac-b6a9-366c7b11c9fb",
@@ -61,6 +125,7 @@
     }
   },
   {
+<<<<<<< HEAD
     "id": "32f13664-1b61-43f5-b2c4-ddb0b2a2b136",
     "content": {
       "id": "32f13664-1b61-43f5-b2c4-ddb0b2a2b136",
@@ -70,10 +135,22 @@
       "summary": "Go figure, dollar stores.",
       "pubDate": "2025-12-07T13:30:23Z",
       "displayTime": "2025-12-07T13:30:23Z",
+=======
+    "id": "ea138e53-00eb-496f-8280-0503e09d3154",
+    "content": {
+      "id": "ea138e53-00eb-496f-8280-0503e09d3154",
+      "contentType": "STORY",
+      "title": "Why women are judged more harshly than men for using AI at work",
+      "description": "",
+      "summary": "Research found that when both women and men use AI to produce identical work products, the women are perceived as less competent than the men.",
+      "pubDate": "2025-12-08T06:00:37Z",
+      "displayTime": "2025-12-08T06:00:37Z",
+>>>>>>> tang
       "isHosted": true,
       "bypassModal": false,
       "previewUrl": null,
       "thumbnail": {
+<<<<<<< HEAD
         "originalUrl": "https://s.yimg.com/os/creatr-uploaded-images/2025-12/8dd32470-d1eb-11f0-bf5f-5dfb5a56848d",
         "originalWidth": 3750,
         "originalHeight": 2500,
@@ -87,6 +164,21 @@
           },
           {
             "url": "https://s.yimg.com/uu/api/res/1.2/0_jWlB22PT2Q.8HoxJdXYA--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://s.yimg.com/os/creatr-uploaded-images/2025-12/8dd32470-d1eb-11f0-bf5f-5dfb5a56848d",
+=======
+        "originalUrl": "https://s.yimg.com/os/creatr-uploaded-images/2025-12/ad0d4040-d124-11f0-bffd-6e4cec835027",
+        "originalWidth": 8807,
+        "originalHeight": 5871,
+        "caption": "",
+        "resolutions": [
+          {
+            "url": "https://s.yimg.com/uu/api/res/1.2/21EHYuKaHpA7SLNJl92KwA--~B/aD01ODcxO3c9ODgwNzthcHBpZD15dGFjaHlvbg--/https://s.yimg.com/os/creatr-uploaded-images/2025-12/ad0d4040-d124-11f0-bffd-6e4cec835027",
+            "width": 8807,
+            "height": 5871,
+            "tag": "original"
+          },
+          {
+            "url": "https://s.yimg.com/uu/api/res/1.2/VviFdV0KHYsftKxqhWC29w--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://s.yimg.com/os/creatr-uploaded-images/2025-12/ad0d4040-d124-11f0-bffd-6e4cec835027",
+>>>>>>> tang
             "width": 170,
             "height": 128,
             "tag": "170x128"
@@ -94,6 +186,7 @@
         ]
       },
       "provider": {
+<<<<<<< HEAD
         "displayName": "Yahoo Finance",
         "url": "http://finance.yahoo.com/"
       },
@@ -105,12 +198,90 @@
       },
       "clickThroughUrl": {
         "url": "https://finance.yahoo.com/news/why-these-2-stocks-have-shockingly-blown-away-nvidia-133023103.html",
+=======
+        "displayName": "Yahoo Finance UK",
+        "url": "http://uk.finance.yahoo.com/"
+      },
+      "canonicalUrl": {
+        "url": "https://uk.finance.yahoo.com/news/women-ai-work-men-gender-equality-sexism-060037035.html",
+        "site": "finance",
+        "region": "GB",
+        "lang": "en-GB"
+      },
+      "clickThroughUrl": {
+        "url": "https://finance.yahoo.com/news/women-ai-work-men-gender-equality-sexism-060037035.html",
+>>>>>>> tang
         "site": "finance",
         "region": "US",
         "lang": "en-US"
       },
       "metadata": {
+<<<<<<< HEAD
         "editorsPick": true
+=======
+        "editorsPick": false
+      },
+      "finance": {
+        "premiumFinance": {
+          "isPremiumNews": false,
+          "isPremiumFreeNews": false
+        }
+      },
+      "storyline": null
+    }
+  },
+  {
+    "id": "f874da75-e5b3-31df-b419-bc4c4fe29363",
+    "content": {
+      "id": "f874da75-e5b3-31df-b419-bc4c4fe29363",
+      "contentType": "STORY",
+      "title": "Stock market history signals a reckoning for today’s AI spending surge",
+      "description": "",
+      "summary": "The debate over whether the artificial intelligence (AI) spending boom is primed for a bust continues to rumble.",
+      "pubDate": "2025-12-08T06:00:00Z",
+      "displayTime": "2025-12-08T06:00:00Z",
+      "isHosted": true,
+      "bypassModal": false,
+      "previewUrl": null,
+      "thumbnail": {
+        "originalUrl": "https://media.zenfs.com/en/the_telegraph_818/b75d2ed96337c060c14b2e691a33dd7b",
+        "originalWidth": 2500,
+        "originalHeight": 1563,
+        "caption": "Sam Altman",
+        "resolutions": [
+          {
+            "url": "https://s.yimg.com/uu/api/res/1.2/4tw2zIhM.ButLm08HcXtrg--~B/aD0xNTYzO3c9MjUwMDthcHBpZD15dGFjaHlvbg--/https://media.zenfs.com/en/the_telegraph_818/b75d2ed96337c060c14b2e691a33dd7b",
+            "width": 2500,
+            "height": 1563,
+            "tag": "original"
+          },
+          {
+            "url": "https://s.yimg.com/uu/api/res/1.2/LC4Qk2o0xWnes_ZJWh42Rw--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/the_telegraph_818/b75d2ed96337c060c14b2e691a33dd7b",
+            "width": 170,
+            "height": 128,
+            "tag": "170x128"
+          }
+        ]
+      },
+      "provider": {
+        "displayName": "The Telegraph",
+        "url": "http://www.telegraph.co.uk/"
+      },
+      "canonicalUrl": {
+        "url": "https://uk.finance.yahoo.com/news/stock-market-history-signals-reckoning-060000641.html",
+        "site": "finance",
+        "region": "GB",
+        "lang": "en-GB"
+      },
+      "clickThroughUrl": {
+        "url": "https://finance.yahoo.com/news/stock-market-history-signals-reckoning-060000641.html",
+        "site": "finance",
+        "region": "US",
+        "lang": "en-US"
+      },
+      "metadata": {
+        "editorsPick": false
+>>>>>>> tang
       },
       "finance": {
         "premiumFinance": {
@@ -467,6 +638,7 @@
       },
       "storyline": null
     }
+<<<<<<< HEAD
   },
   {
     "id": "2bca7f80-6247-4039-81de-c81d19df28e9",
@@ -589,5 +761,7 @@
       },
       "storyline": null
     }
+=======
+>>>>>>> tang
   }
 ]

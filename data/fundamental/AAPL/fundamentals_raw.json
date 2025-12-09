@@ -1,17 +1,14 @@
 {
   "symbol": "AAPL",
-  "timestamp": "2025-12-08T05:50:12.215508+00:00",
+  "timestamp": "2025-12-09T07:30:20.041397+00:00",
   "raw": {
     "yfinance": {
       "overview": {
-        "marketCap": 4137203906084.2896,
+        "marketCap": 4123996194488.5254,
         "sharesOutstanding": null,
         "peRatio": null,
         "currency": "USD",
-        "exchange": "NMS",
-        "name": "Apple Inc.",
-        "sector": "Technology",
-        "industry": "Consumer Electronics"
+        "exchange": "NMS"
       },
       "balancesheet": {
         "totalAssets": 359241000000.0,
@@ -36,9 +33,9 @@
         "exchange": "NASDAQ NMS - GLOBAL MARKET",
         "sector": "Technology",
         "industry": "Technology",
-        "marketCap": 4119351739981226.0,
+        "marketCap": 4106200589099820.0,
         "sharesOutstanding": 14776.35,
-        "peRatio": 36.7766
+        "peRatio": 36.4495
       },
       "balancesheet": {
         "totalAssets": null,

@@ -1,19 +1,39 @@
-from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
-from datetime import datetime, timedelta
-import time
 import json
 import re
+from typing import List
+from datetime import datetime, timedelta
+from pydantic import BaseModel, Field
+from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
+from langchain_core.output_parsers import JsonOutputParser
 
-# ตรวจสอบ path ให้ตรง
 from tradingagents.agents.utils.agent_utils import get_news, get_social
-from tradingagents.dataflows.config import get_config
 
+
+# ===================== PYDANTIC MODELS ======================
+class DiscussionTopic(BaseModel):
+    topic: str = Field(description="The specific subject being discussed.")
+    sentiment_impact: str = Field(description="Impact on sentiment (Positive, Negative, or Mixed).")
+    detailed_analysis: str = Field(description="Deep dive into the community's feelings and arguments about this topic.")
+
+
+class SocialMediaReport(BaseModel):
+    sentiment_score: int = Field(ge=0, le=100, description="Score from 0 (Extreme Fear) to 100 (Extreme Greed). Default 50 if neutral.")
+    sentiment_verdict: str = Field(description="Overall verdict: Bearish, Neutral, Bullish, Euphoric, or Panic.")
+    social_volume_analysis: str = Field(description="Assessment of discussion volume (e.g., 'Spike in mentions due to news').")
+    dominant_narrative: str = Field(description="The main story driving retail investor sentiment.")
+    top_discussion_topics: List[DiscussionTopic] = Field(description="List of key topics trending in discussions.")
+    retail_psychology_assessment: str = Field(description="Analysis of crowd psychology (e.g., Fear Of Missing Out, Capitulation).")
+
+
+# ===================== AGENT FACTORY ======================
 def create_social_media_analyst(llm):
+    parser = JsonOutputParser(pydantic_object=SocialMediaReport)
+
     def social_media_analyst_node(state):
         current_date = state["trade_date"]
         ticker = state["company_of_interest"]
 
-        # --- 1. คำนวณวันย้อนหลัง 7 วัน ---
+        # Calculate 7 days lookback
         try:
             curr_date_obj = datetime.strptime(current_date, "%Y-%m-%d")
             start_date = (curr_date_obj - timedelta(days=7)).strftime("%Y-%m-%d")
@@ -22,57 +42,48 @@ def create_social_media_analyst(llm):
 
         tools = [get_social]
 
-        # --- 2. Force-Tool JSON System Prompt ---
-        system_message = (
-            """Act as a Senior Social Media & Sentiment Analyst. Gauge the market pulse for **{ticker}** from **{start_date} to {current_date}** and output strictly in **JSON format**.
+        # ===================== SYSTEM MESSAGE ======================
+        system_message = f"""
+Act as a Senior Social Media & Sentiment Analyst. Gauge the market pulse for **{ticker}** from **{start_date} to {current_date}**.
 
-    **CRITICAL INSTRUCTION:**
-    - You **DO NOT** have real-time sentiment data.
-    - You **MUST CALL** `get_social` IMMEDIATELY.
-    - **Do not** hallucinate sentiment. If you do not call the tools, you fail.
-    - **Output JSON ONLY DON'T HAVE ANYTHING ELSE.**
+**YOUR WORKFLOW:**
+1. Call `get_social` to gather public discussions (Reddit, Twitter, forums).
+2. Call `get_news` to cross-check sentiment against real events.
+3. Synthesize the findings into the required JSON format.
 
-    **YOUR WORKFLOW:**
-    1. **Step 1:** Call `get_social` (start_date='{start_date}', end_date='{current_date}').
-    2. **Step 2:** Analyze the results.
-    3. **Step 3:** Output the final report as a JSON object.
+**STRICT FORMATTING RULES:**
+- **NO SLANG/ABBREVIATIONS:** Use formal full terms in the JSON output.
+  - ❌ Forbidden: FOMO, FUD, ATH, HODL, YOLO, etc.
+  - ✅ Required: Fear Of Missing Out, Fear Uncertainty and Doubt, All Time High, Hold On for Dear Life, You Only Live Once.
+- **OUTPUT JSON ONLY:** Do not include markdown code blocks or conversational text.
 
-    **STRICT FORMATTING RULES:**
-    - **NO ABBREVIATIONS / SLANG:** You MUST use formal full terms.
-      - Forbidden: FOMO, FUD, ATH, YTD, HODL, BTFD, OP.
-      - Required: Fear Of Missing Out, Fear Uncertainty and Doubt, All Time High, Year To Date, Hold On for Dear Life, Buy The Dip, Original Poster.
-    - **Output JSON ONLY DON'T HAVE ANYTHING ELSE.**
+**SENTIMENT SCORE GUIDE:**
+- 0-20: Extreme Fear / Panic Selling
+- 21-40: Fear / Bearish
+- 41-60: Neutral / Mixed
+- 61-80: Greed / Bullish
+- 81-100: Extreme Greed / Euphoria
 
-    **JSON STRUCTURE:**
-    {{
-        "sentiment_score": "Number: 0 (Extreme Fear) to 100 (Extreme Greed)",
-        "sentiment_verdict": "String: Bearish / Neutral / Bullish / Euphoric / Panic",
-        "social_volume_analysis": "String: Detailed assessment of discussion volume.",
-        "dominant_narrative": "String: A full sentence explaining the main story driving retail investors right now.",
-        "top_discussion_topics": [
-            {{
-                "topic": "String: The subject being discussed",
-                "sentiment_impact": "String: Positive / Negative",
-                "detailed_analysis": "String: Deep dive into why people are talking about this and how they feel."
-            }}
-        ],
-        "retail_psychology_assessment": "String: Analysis of crowd psychology."
-    }}
-    """
-        )
+{parser.get_format_instructions()}
 
-        prompt = ChatPromptTemplate.from_messages(
-            [
-                (
-                    "system",
-                    "You are a helpful AI assistant... \n{system_message}\n"
-                    "For your reference, the current date is {current_date}. The current company we want to analyze is {ticker}",
-                ),
-                MessagesPlaceholder(variable_name="messages"),
-            ]
-        )
+Return ONLY the JSON object.
+"""
 
-        # Bind variables
+        # ===================== PROMPT ======================
+        prompt = ChatPromptTemplate.from_messages([
+            (
+                "system",
+                "You are a helpful AI assistant, collaborating with other assistants. "
+                "Use the provided tools to progress towards answering the question. "
+                "You have access to the following tools: {tool_names}. \n\n"
+                "{system_message}\n\n"
+                "For your reference, the current date is {current_date}. "
+                "The company we want to look at is {ticker}. "
+                "Analysis period: {start_date} to {current_date}."
+            ),
+            MessagesPlaceholder(variable_name="messages"),
+        ])
+
         prompt = prompt.partial(
             system_message=system_message,
             tool_names=", ".join([tool.name for tool in tools]),
@@ -81,43 +92,82 @@ def create_social_media_analyst(llm):
             start_date=start_date
         )
 
+        # ===================== CHAIN ======================
         chain = prompt | llm.bind_tools(tools)
 
-        # Call Chain (Send as dict)
-        result = chain.invoke({"messages": state["messages"]})
-
-        report_content = ""
+        # Execute
+        result = chain.invoke(state["messages"])
         
-        # --- 3. JSON Parsing Logic ---
+        print("Social Media Analysis Result:", result)
+
+        # ========== PARSE WITH ROBUST ERROR HANDLING ==========
+        report_dict = None
+        
         if not result.tool_calls:
             raw_content = result.content
             
-            # 1. แปลง List เป็น String (กันเหนียว)
+            # Handle list format (e.g., [{'type': 'text', 'text': '...'}])
             if isinstance(raw_content, list):
-                raw_content = " ".join([str(item) for item in raw_content])
+                for item in raw_content:
+                    if isinstance(item, dict) and item.get('type') == 'text':
+                        raw_content = item.get('text', '')
+                        break
+                else:
+                    raw_content = " ".join([str(item) for item in raw_content])
+            
             if raw_content is None:
                 raw_content = ""
-
+            
             try:
-                # 2. ใช้ Regex ค้นหาปีกกาเปิด-ปิด {...} เพื่อดึงเฉพาะ JSON
-                # re.DOTALL ช่วยให้หาข้ามบรรทัดได้
-                match = re.search(r"\{.*\}", raw_content, re.DOTALL)
+                # Method 1: Use Parser (handles string cleaning internally)
+                report_dict = parser.parse(str(raw_content))
                 
-                if match:
-                    json_str = match.group(0)
-                    parsed_json = json.loads(json_str)
-                    report_content = json.dumps(parsed_json, indent=4, ensure_ascii=False)
-                else:
-                    print("⚠️ Social Media Analyst: No JSON object found via Regex.")
-                    report_content = raw_content # ถ้าหาไม่เจอจริงๆ ก็ส่ง text ดิบไป
+            except Exception as e1:
+                print(f"⚠️ Parser failed: {e1}")
                 
-            except Exception as e:
-                print(f"⚠️ Social Media Analyst: Parsing Error ({e}). Saving raw content.")
-                report_content = raw_content
+                # Method 2: Clean markdown and extract JSON
+                try:
+                    clean = re.sub(r"```[\w]*\n?", "", str(raw_content)).strip()
+                    match = re.search(r"\{[\s\S]*\}", clean)
+                    
+                    if match:
+                        json_str = match.group(0)
+                        report_dict = json.loads(json_str)
+                        # Validate with Pydantic
+                        report_dict = SocialMediaReport.model_validate(report_dict).model_dump()
+                    else:
+                        print("⚠️ No JSON object found in response")
+                        # Create minimal valid fallback
+                        report_dict = {
+                            "sentiment_score": 50,
+                            "sentiment_verdict": "Neutral (Data Unavailable)",
+                            "social_volume_analysis": "Unable to retrieve social media data.",
+                            "dominant_narrative": "No clear narrative identified.",
+                            "top_discussion_topics": [],
+                            "retail_psychology_assessment": "Insufficient data for psychological assessment."
+                        }
+                        
+                except Exception as e2:
+                    print(f"⚠️ Fallback parsing failed: {e2}")
+                    report_dict = {
+                        "sentiment_score": 50,
+                        "sentiment_verdict": "Error",
+                        "social_volume_analysis": "Parsing error occurred.",
+                        "dominant_narrative": "Error processing data.",
+                        "top_discussion_topics": [],
+                        "retail_psychology_assessment": "Error occurred during analysis."
+                    }
+        
+        # If still None (tool_calls present), create waiting structure
+        if report_dict is None:
+            report_dict = {"status": "waiting_for_tool_response"}
+
+        # Convert dict to JSON string
+        report_json = json.dumps(report_dict, indent=4, ensure_ascii=False)
 
         return {
             "messages": [result],
-            "sentiment_report": report_content,
+            "sentiment_report": report_json,  # Return as JSON string
         }
 
     return social_media_analyst_node

@@ -1,0 +1,29 @@
+{
+    "sentiment_score": 78,
+    "sentiment_verdict": "Bullish",
+    "social_volume_analysis": "Social media volume remained consistently high throughout the period, driven by ongoing discussions about Apple's record-breaking performance and positive analyst revisions. While no single event caused an extreme spike during the exact analysis window, the cumulative positive news from preceding weeks maintained elevated engagement.",
+    "dominant_narrative": "The dominant narrative surrounding Apple (AAPL) is one of sustained growth and market leadership, primarily fueled by the exceptional sales performance of the iPhone 17 and high expectations for the company's Artificial Intelligence strategy, 'Apple Intelligence'. The company's achievement of a $4 trillion market capitalization further solidified this positive sentiment.",
+    "top_discussion_topics": [
+        {
+            "topic": "iPhone 17 Sales Performance",
+            "sentiment_impact": "Positive",
+            "detailed_analysis": "Discussions highlighted the confirmed success and record-breaking sales of the iPhone 17, particularly in key markets like the United States and China. Analysts consistently referenced strong demand and upgrade cycles contributing to Apple's robust financial outlook."
+        },
+        {
+            "topic": "Apple Intelligence and Artificial Intelligence Strategy",
+            "sentiment_impact": "Positive",
+            "detailed_analysis": "The integration of 'Apple Intelligence' across iOS, iPadOS, and macOS was a significant point of positive discussion. Investors and analysts anticipate that this on-device Artificial Intelligence platform will enhance user experience, strengthen the ecosystem, and drive future growth and service revenue."
+        },
+        {
+            "topic": "Market Capitalization Achievement",
+            "sentiment_impact": "Positive",
+            "detailed_analysis": "Apple's milestone of reaching and maintaining a market capitalization of $4 trillion was widely celebrated. This achievement was frequently cited as evidence of the company's strong market position, financial health, and investor confidence."
+        },
+        {
+            "topic": "Analyst Ratings and Price Target Upgrades",
+            "sentiment_impact": "Positive",
+            "detailed_analysis": "Multiple financial institutions, including Bank of America and Wedbush, issued positive analyst reports, raising price targets for AAPL. These upgrades were attributed to strong iPhone 17 sales, robust service sector growth, and the promising outlook for Apple's Artificial Intelligence initiatives."
+        }
+    ],
+    "retail_psychology_assessment": "Retail investor psychology during this period was characterized by significant Greed and a strong Fear Of Missing Out. The continuous stream of positive news regarding record sales, market capitalization milestones, and Artificial Intelligence advancements fostered a highly optimistic environment, encouraging sustained buying and holding of Apple shares."
+}

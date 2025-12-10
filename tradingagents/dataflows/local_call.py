@@ -1,5 +1,5 @@
 from typing import Annotated
-from .local import alphavantage_get_company_news, get_world_news_yf, fetch_reddit_world_news, fetch_reddit_symbol_top_praw, fetch_mastodon_stock_posts, fetch_bsky_stock_posts, pick_fundamental_source, finnhub_get_company_news, reddit_get_company_news, yfinance_get_company_news, fetch_finnhub_world_news, fetch_and_choose
+from .local import alphavantage_get_company_news, get_world_news_yf, fetch_reddit_world_news, fetch_reddit_symbol_top_praw, fetch_mastodon_stock_posts, fetch_bsky_stock_posts, pick_fundamental_source, finnhub_get_company_news, reddit_get_company_news, yfinance_get_company_news, fetch_finnhub_world_news
 import os, requests
 from rich.console import Console
 
@@ -137,22 +137,6 @@ def get_finnhub_world_news(
     with open("all_report_message.txt", "a", encoding='utf-8') as file:
         file.write(report_message + "\n\n")
     return res
-
-
-#indicator data
-def get_indicator(
-    symbol: Annotated[str, "ticker symbol of the company"],
-    indicator: Annotated[str, "technical indicator to get the analysis and report of"],
-    curr_date: Annotated[
-        str, "The current trading date you are trading on, YYYY-mm-dd"
-    ],
-    look_back_days: Annotated[int, "how many days to look back"],
-) -> str:
-    
-    res = fetch_and_choose(symbol)
-    print(f'\n\n\n [get_indicator] Indicator result:\n\n\n\n')
-    return res
-
 
 #social media news
 def get_bluesky_news(

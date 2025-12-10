@@ -2,9 +2,9 @@
   "symbol": "AAPL",
   "chosen_source": "alphavantage",
   "scores": {
-    "yfinance": 12,
+    "yfinance": 13,
     "finnhub": 6,
-    "alphavantage": 14
+    "alphavantage": 15
   },
   "completeness": {
     "yfinance": 13,
@@ -14,9 +14,9 @@
   "sections": {
     "overview": {
       "scores": {
-        "yfinance": 5,
+        "yfinance": 6,
         "finnhub": 6,
-        "alphavantage": 7
+        "alphavantage": 8
       },
       "completeness": {
         "yfinance": 6,
@@ -68,9 +68,9 @@
       "exchange": "NASDAQ",
       "sector": "TECHNOLOGY",
       "industry": "CONSUMER ELECTRONICS",
-      "marketCap": 4137203794000.0,
+      "marketCap": 4113459053000.0,
       "sharesOutstanding": 14776353000.0,
-      "peRatio": 37.32
+      "peRatio": 37.21
     },
     "balancesheet": {
       "totalAssets": 359241000000.0,
@@ -88,5 +88,5 @@
       "eps": null
     }
   },
-  "timestamp": "2025-12-09T08:00:34.484961+00:00"
+  "timestamp": "2025-12-10T12:39:01.579438+00:00"
 }

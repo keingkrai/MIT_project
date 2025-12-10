@@ -3,15 +3,15 @@
 ===== TOTAL RECORDS CHECK =====
 YFinance:      249
 TwelveData:    249
-TradingView:   249
+TradingView:   0
 
 
 ===== SIMILARITY SCORE =====
-YFinance Score: 55
-TwelveData Score: 492
-TradingView Score: 491
+YFinance Score: 28
+TwelveData Score: 28
+TradingView Score: 0
 
-🏆 Best Source: TWELVEDATA
+🏆 Best Source: YFINANCE
 
 📊 Indicator 'close_50_sma' Source Comparison for AAPL:
 Yahoo Finance Score: 40
@@ -44,10 +44,10 @@ TradingView Score: 12
 🏆 Best Source: YAHOO, TV
 
 📊 Indicator 'macdh' Source Comparison for AAPL:
-Yahoo Finance Score: 4
+Yahoo Finance Score: 0
 Alpha Vantage Score: 0
-TradingView Score: 4
-🏆 Best Source: YAHOO, TV
+TradingView Score: 0
+🏆 Best Source: YAHOO
 
 📊 Indicator 'rsi' Source Comparison for AAPL:
 Yahoo Finance Score: 40
@@ -74,10 +74,10 @@ TradingView Score: 40
 🏆 Best Source: YAHOO, ALPHA, TV
 
 📊 Indicator 'atr' Source Comparison for AAPL:
-Yahoo Finance Score: 40
-Alpha Vantage Score: 40
-TradingView Score: 40
-🏆 Best Source: YAHOO, ALPHA, TV
+Yahoo Finance Score: 20
+Alpha Vantage Score: 20
+TradingView Score: 0
+🏆 Best Source: YAHOO, ALPHA
 
 📊 Indicator 'vwma' Source Comparison for AAPL:
 Yahoo Finance Score: 20
@@ -87,9 +87,9 @@ TradingView Score: 20
 
 
 🌐 Social Media News: 
-Bluesky news fetched for AAPL: 112 posts found.
+Bluesky news fetched for AAPL: 27 posts found.
 Mastodon news fetched for AAPL: 120 posts found.
-Subreddit news fetched for AAPL: 12 posts found.
+Subreddit news fetched for AAPL: 11 posts found.
 
 📰 News :
 Fetched 50 news items for AAPL from Finnhub.
@@ -100,7 +100,7 @@ Fetched 50 news items for AAPL from Alpha Vantage.
 🌏 Global News: 
 Reddit global news have : 40 posts.
 Yfinance global news have : 49 posts.
-Finnhub global news have : 269 posts.
+Finnhub global news have : 50 posts.
 
 
 Fetched fundamentals for AAPL:

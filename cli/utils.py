@@ -199,7 +199,7 @@ def select_shallow_thinking_agent(provider) -> str:
     """Automatically select default shallow-thinking LLM engine without asking."""
     if provider.lower() == "deepseek":
         return "deepseek-chat"
-    return "gemini-2.0-flash-live"  # Updated to Gemini 2.0 Flash Live
+    return "deepseek-chat"  # Default to DeepSeek Chat
 
 
 # def select_deep_thinking_agent(provider) -> str:
@@ -270,7 +270,7 @@ def select_deep_thinking_agent(provider) -> str:
     """Automatically select default deep-thinking LLM engine without asking."""
     if provider.lower() == "deepseek":
         return "deepseek-reasoner"  # DeepSeek R1 reasoning model
-    return "gemini-2.0-flash-live"  # Updated to Gemini 2.0 Flash Live
+    return "deepseek-reasoner"  # Default to DeepSeek Reasoner
 
 # def select_llm_provider() -> tuple[str, str]:
 #     """Select the OpenAI api url using interactive selection."""

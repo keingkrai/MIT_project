@@ -43,23 +43,11 @@ class RateLimiter:
         self.semaphore.release()
 
 
-# Global rate limiter instance for Google API
-# Slower rate limits for free tier to avoid quota violations
-google_rate_limiter = RateLimiter(min_interval=5.0, max_concurrent=1)
-
-
 def rate_limit_llm_call(func: Callable) -> Callable:
     """Decorator to rate limit LLM calls."""
     @wraps(func)
     def wrapper(*args, **kwargs):
-        # Check if this is a Google LLM call
-        # We'll apply rate limiting to all LLM calls to be safe
-        google_rate_limiter.acquire()
-        try:
-            google_rate_limiter.wait_if_needed()
-            return func(*args, **kwargs)
-        finally:
-            google_rate_limiter.release()
+        return func(*args, **kwargs)
     
     return wrapper
 

@@ -27,25 +27,22 @@
   ];
 
   const llmProviders = [
-    { id: "google", label: "Google", url: "https://generativelanguage.googleapis.com/v1" },
+    { id: "deepseek", label: "DeepSeek", url: "https://api.deepseek.com/v1" },
   ];
 
   const shallowAgents = {
-    google: [
-      ["Gemini 2.0 Flash Live • latest stable", "gemini-2.0-flash-live"],
-      ["Gemini 2.5 Flash • adaptive", "gemini-2.5-flash-preview-05-20"],
-      ["Gemini 2.0 Flash • next-gen speed", "gemini-2.0-flash"],
-      ["Gemini 2.0 Flash-Lite • low latency", "gemini-2.0-flash-lite"],
+    deepseek: [
+      ["DeepSeek Chat • fast and efficient", "deepseek-chat"],
+      ["DeepSeek Chat V3 • latest iteration", "deepseek-chat-v3"],
     ],
   };
 
   const deepAgents = {
-    google: [
-      ["Gemini 2.0 Flash Live • latest stable", "gemini-2.0-flash-live"],
-      ["Gemini 2.5 Pro", "gemini-2.5-pro-preview-06-05"],
-      ["Gemini 2.5 Flash", "gemini-2.5-flash-preview-05-20"],
-      ["Gemini 2.0 Flash", "gemini-2.0-flash"],
-      ["Gemini 2.0 Flash-Lite", "gemini-2.0-flash-lite"],
+    deepseek: [
+      ["DeepSeek Reasoner • advanced reasoning", "deepseek-reasoner"],
+      ["DeepSeek Reasoner V2 • latest reasoning model", "deepseek-reasoner-v2"],
+      ["DeepSeek Chat V3 • latest iteration", "deepseek-chat-v3"],
+      ["DeepSeek Chat • standard model", "deepseek-chat"],
     ],
   };
 
@@ -143,10 +140,10 @@
     // Hardcoded defaults - not displayed in UI
     analysts: new Set(analystsData.map((item) => item.value)), // All analysts selected by default
     researchDepth: researchDepthOptions[1].value, // Auto/Medium depth (value: 3) - not displayed
-    llmProvider: "google", // Hardcoded to Google - not displayed
-    backendUrl: "https://generativelanguage.googleapis.com/v1", // Hardcoded to Google Gemini endpoint - not displayed
-    shallowModel: shallowAgents.google[0][1], // Default: Gemini 2.0 Flash Live - not displayed
-    deepModel: deepAgents.google[0][1], // Default: Gemini 2.0 Flash Live - not displayed
+    llmProvider: "deepseek", // Default provider
+    backendUrl: "https://api.deepseek.com/v1", // Default backend URL
+    shallowModel: shallowAgents.deepseek[0][1], // Default: DeepSeek Chat
+    deepModel: deepAgents.deepseek[0][1], // Default: DeepSeek Reasoner
     isRunning: false,
     reportPlainText: "",
     reportSections: [], // Store all report sections for length switching

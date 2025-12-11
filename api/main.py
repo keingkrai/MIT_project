@@ -56,7 +56,7 @@ class AnalysisRequest(BaseModel):
     analysis_date: str
     analysts: List[str]  # List of analyst types: ["market", "social", "news", "fundamentals"]
     research_depth: int  # 1, 3, or 5
-    llm_provider: str  # "openai", "anthropic", "google", etc.
+    llm_provider: str  # "openai", "anthropic", "deepseek", etc.
     backend_url: str
     shallow_thinker: str
     deep_thinker: str
@@ -102,23 +102,11 @@ async def run_analysis_stream(websocket: WebSocket, request: AnalysisRequest):
         config["max_debate_rounds"] = request.research_depth
         config["max_risk_discuss_rounds"] = request.research_depth
         
-        # Use models from request (allow gemini-2.0-flash-live)
-        shallow_model = request.shallow_thinker
-        deep_model = request.deep_thinker
-        
-        # Only upgrade old 2.0 models (not flash-live or flash-exp variants) to flash-live
-        if ("2.0" in shallow_model or shallow_model == "gemini-2.5") and "flash-live" not in shallow_model and "flash-exp" not in shallow_model and "gemini-2.5-flash" not in shallow_model:
-            logger.warning(f"Detected old/invalid model '{shallow_model}', upgrading to Gemini 2.5 Flash")
-            shallow_model = "gemini-2.5-flash"
-        
-        if ("2.0" in deep_model or deep_model == "gemini-2.5") and "flash-live" not in deep_model and "flash-exp" not in deep_model and "gemini-2.5-pro" not in deep_model:
-            logger.warning(f"Detected old/invalid model '{deep_model}', upgrading to Gemini 2.5 Pro")
-            deep_model = "gemini-2.5-pro"
-        
-        config["quick_think_llm"] = shallow_model
-        config["deep_think_llm"] = deep_model
-        config["backend_url"] = request.backend_url
-        config["llm_provider"] = request.llm_provider.lower()
+        # Hardcoded to use DeepSeek AI - override any frontend requests
+        config["quick_think_llm"] = "deepseek-chat"  # Hardcoded DeepSeek Chat
+        config["deep_think_llm"] = "deepseek-reasoner"  # Hardcoded DeepSeek Reasoner
+        config["backend_url"] = "https://api.deepseek.com/v1"  # Hardcoded DeepSeek API endpoint
+        config["llm_provider"] = "deepseek"  # Hardcoded DeepSeek provider
         
         # Log the models being used
         logger.info(f"Using models - Quick: {config['quick_think_llm']}, Deep: {config['deep_think_llm']}")
@@ -191,33 +179,24 @@ async def run_analysis_stream(websocket: WebSocket, request: AnalysisRequest):
         # Stream the analysis with rate limiting
         trace = []
         last_request_time = 0
-        # Use configurable rate limit interval
-        # Google free tier: 5 seconds, DeepSeek: 2 seconds (more generous limits), others: 0.5 seconds
-        if request.llm_provider.lower() == "google":
-            min_request_interval = config.get("rate_limit_interval", 5.0)
-        elif request.llm_provider.lower() == "deepseek":
-            min_request_interval = config.get("rate_limit_interval", 2.0)  # DeepSeek has better rate limits
-        else:
-            min_request_interval = 0.5
+        # Hardcoded to use DeepSeek rate limiting (2 seconds interval)
+        min_request_interval = config.get("rate_limit_interval", 2.0)  # DeepSeek has better rate limits
         
         # Add initial delay before starting stream to avoid immediate quota hits
         # This gives time for any previous requests to clear and prevents rapid-fire initialization
-        if request.llm_provider.lower() in ["google", "deepseek"]:
-            delay = 2.0 if request.llm_provider.lower() == "google" else 1.0
-            await asyncio.sleep(delay)  # Brief delay before first API call
+        await asyncio.sleep(1.0)  # Brief delay before first API call
         
         # Stream with enhanced rate limiting
         for chunk in graph.graph.stream(init_agent_state, **args):
             # Rate limiting: Add delay between chunks to avoid ResourceExhausted errors
             # This ensures we never exceed the rate limits
-            if request.llm_provider.lower() in ["google", "deepseek"]:
-                current_time = time.time()
-                time_since_last = current_time - last_request_time
-                if time_since_last < min_request_interval:
-                    sleep_time = min_request_interval - time_since_last
-                    # Use asyncio.sleep for non-blocking delay
-                    await asyncio.sleep(sleep_time)
-                last_request_time = time.time()
+            current_time = time.time()
+            time_since_last = current_time - last_request_time
+            if time_since_last < min_request_interval:
+                sleep_time = min_request_interval - time_since_last
+                # Use asyncio.sleep for non-blocking delay
+                await asyncio.sleep(sleep_time)
+            last_request_time = time.time()
             if len(chunk.get("messages", [])) > 0:
                 # Get the last message from the chunk
                 last_message = chunk["messages"][-1]

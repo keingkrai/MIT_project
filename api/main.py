@@ -17,6 +17,9 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse, RedirectResponse
 from pydantic import BaseModel
 from dotenv import load_dotenv
+import requests
+from rich import _console
+from tradingagents.agents import *
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -80,6 +83,29 @@ def extract_content_string(content):
         return ' '.join(text_parts)
     else:
         return str(content)
+    
+def sent_to_telegram(message: str):
+    """Send a message to Telegram if configured."""
+    TELEGRAM_TOKEN = os.getenv("TELEGRAM_TOKEN")
+    TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID")
+
+    if TELEGRAM_TOKEN and TELEGRAM_CHAT_ID:
+        url = f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendMessage"
+        payload = {
+            "chat_id": TELEGRAM_CHAT_ID,
+            "text": message,
+            "parse_mode": "Markdown",
+        }
+        try:
+            response = requests.post(url, data=payload, timeout=10)
+            response.raise_for_status()
+            _console.print("[green]Report sent to Telegram successfully![/green]")
+        except requests.RequestException as e:
+            _console.print(f"[red]Failed to send report to Telegram: {e}[/red]")
+    else:
+        _console.print("[yellow]Telegram not configured. Skipping sending report.[/yellow]")
+
+
 
 
 async def send_update(websocket: WebSocket, update_type: str, data: Dict[str, Any]):
@@ -500,6 +526,144 @@ async def run_analysis_stream(websocket: WebSocket, request: AnalysisRequest):
                 "final_trade_decision": report_sections.get("final_trade_decision"),
             }
         })
+
+        # Store current state for reflection
+        curr_state = final_state
+
+        print("📝 Summarizing Reports with Typhoon...")
+        try:
+            summarizer_func = create_summarizer_fundamental()
+            sum_market = create_summarizer_market()
+            sum_social = create_summarizer_social()
+            sum_news = create_summarizer_news()
+            sum_cons = create_summarizer_conservative()
+            sum_aggr = create_summarizer_aggressive()
+            sum_neut = create_summarizer_neutral()
+            sum_investment_plan = create_summarizer_research_manager()
+            sum_risk_plan = create_summarizer_risk_manager()
+            sum_bull = create_summarizer_bull_researcher()
+            sum_bear = create_summarizer_bear_researcher()
+            sum_trader = create_summarizer_trader()
+            
+            update_dict_fund = summarizer_func(final_state)
+            update_dict_market = sum_market(final_state)
+            update_dict_social = sum_social(final_state)
+            update_dict_news = sum_news(final_state)
+            update_dict_cons = sum_cons(final_state)
+            update_dict_aggr = sum_aggr(final_state)
+            update_dict_neut = sum_neut(final_state)
+            update_dict_investment_plan = sum_investment_plan(final_state)
+            update_dict_risk_plan = sum_risk_plan(final_state)
+            update_dict_bull = sum_bull(final_state)
+            update_dict_bear = sum_bear(final_state)
+            update_dict_trader = sum_trader(final_state)
+            
+            
+            # --- อัปเดต Fundamental ---
+            if update_dict_fund:
+                final_state.update(update_dict_fund)
+                curr_state.update(update_dict_fund)
+                print("✅ Fundamental Summary Updated!")
+            else:
+                print("⚠️ Fundamental Summary returned empty.")
+
+            # --- อัปเดต Market ---
+            if update_dict_market:
+                final_state.update(update_dict_market)
+                curr_state.update(update_dict_market)
+                print("✅ Market Summary Updated!")
+            else:
+                print("⚠️ Market Summary returned empty.")
+
+            # --- อัปเดต Social ---
+            if update_dict_social:
+                final_state.update(update_dict_social)
+                curr_state.update(update_dict_social)
+                print("✅ Social Summary Updated!")
+            else:
+                print("⚠️ Social Summary returned empty.")
+
+            # --- อัปเดต News ---
+            if update_dict_news:
+                final_state.update(update_dict_news)
+                curr_state.update(update_dict_news)
+                print("✅ News Summary Updated!")
+            else:
+                print("⚠️ News Summary returned empty.")
+
+            # --- อัปเดต Conservative ---
+            if update_dict_cons:
+                final_state.update(update_dict_cons)
+                curr_state.update(update_dict_cons)
+                print("✅ Conservative Summary Updated!")
+            else:
+                print("⚠️ Conservative Summary returned empty.")
+            
+            # --- อัปเดต Aggressive ---
+            if update_dict_aggr:
+                final_state.update(update_dict_aggr)
+                curr_state.update(update_dict_aggr)
+                print("✅ Aggressive Summary Updated!")
+            else:
+                print("⚠️ Aggressive Summary returned empty.")
+
+            # --- อัปเดต Neutral ---
+            if update_dict_neut:
+                final_state.update(update_dict_neut)
+                curr_state.update(update_dict_neut)
+                print("✅ Neutral Summary Updated!")
+            else:
+                print("⚠️ Neutral Summary returned empty.")
+
+            # --- อัปเดต Investment Plan ---
+            if update_dict_investment_plan:
+                final_state.update(update_dict_investment_plan)
+                curr_state.update(update_dict_investment_plan)
+                print("✅ Investment Plan Summary Updated!")
+            else:
+                print("⚠️ Investment Plan Summary returned empty.")
+            
+            # --- อัปเดต Risk Plan ---
+            if update_dict_risk_plan:
+                final_state.update(update_dict_risk_plan)
+                curr_state.update(update_dict_risk_plan)
+                print("✅ Risk Plan Summary Updated!")
+            else:
+                print("⚠️ Risk Plan Summary returned empty.")
+                
+            # --- อัปเดต bull ---
+            if update_dict_bull:
+                final_state.update(update_dict_bull)
+                curr_state.update(update_dict_bull)
+                print("✅ bull Summary Updated!")
+            else:
+                print("⚠️ bull Summary returned empty.")
+                
+            # --- อัปเดต bear ---
+            if update_dict_bear:
+                final_state.update(update_dict_bear)
+                curr_state.update(update_dict_bear)
+                print("✅ bear Summary Updated!")
+            else:
+                print("⚠️ bear Summary returned empty.")
+                
+            # --- อัปเดต trader ---
+            if update_dict_trader:
+                final_state.update(update_dict_trader)
+                curr_state.update(update_dict_trader)
+                print("✅ trader Summary Updated!")
+            else:
+                print("⚠️ trader Summary returned empty.")
+                
+            print("📝 Sent telegram...")    
+            # read text and send to telegram
+            with open("all_report_message.txt", "r", encoding="utf-8") as f:
+                report_messages = f.read()
+                sent_to_telegram(report_messages)
+                
+        except Exception as e:
+            print(f"❌ Failed to summarize: {e}")
+
 
         sum_finda = final_state.get("Summarize_fundamentals_report")
         funda = final_state.get("fundamentals_report")

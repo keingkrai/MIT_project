@@ -19,6 +19,36 @@ def create_market_analyst(llm):
             get_indicators,
         ]
 
+        # Get report length from state
+        report_length = state.get("report_length", "long")
+        
+        # Create report style instructions based on length
+        if report_length == "short":
+            style_instruction = """
+**REPORT STYLE - SHORT FORMAT:**
+- Write a brief, easy-to-understand summary using bullet points
+- Keep it concise - maximum 10-15 bullet points total
+- Use simple, clear language that anyone can understand
+- Focus on the most important findings only
+- Format everything as bullet points (no paragraphs)
+- Avoid technical jargon - explain terms in plain English
+- Make it scannable and quick to read
+- NO summary tables needed - just bullet points
+"""
+        else:
+            style_instruction = """
+**REPORT STYLE - LONG FORMAT:**
+- Write a comprehensive but easy-to-understand report using bullet points
+- Use clear, simple language - avoid unnecessary complexity
+- Format key information as bullet points for easy scanning
+- Explain technical terms in plain English when first introduced
+- Break down complex concepts into digestible bullet point sections
+- Use headings to organize sections, then bullet points under each
+- Make it accessible to both beginners and experienced traders
+- Keep explanations straightforward and concise
+- NO summary tables needed - use bullet points throughout
+"""
+        
         system_message = (
             """You are a trading assistant tasked with analyzing financial markets. Your role is to select the **most relevant indicators** for a given market condition or trading strategy from the following list. The goal is to choose up to **8 indicators** that provide complementary insights without redundancy. Categories and each category's indicators are:
 
@@ -44,8 +74,20 @@ Volatility Indicators:
 Volume-Based Indicators:
 - vwma: VWMA: A moving average weighted by volume. Usage: Confirm trends by integrating price action with volume data. Tips: Watch for skewed results from volume spikes; use in combination with other volume analyses.
 
-- Select indicators that provide diverse and complementary information. Avoid redundancy (e.g., do not select both rsi and stochrsi). Also briefly explain why they are suitable for the given market context. When you tool call, please use the exact name of the indicators provided above as they are defined parameters, otherwise your call will fail. Please make sure to call get_stock_data first to retrieve the CSV that is needed to generate indicators. Then use get_indicators with the specific indicator names. Write a very detailed and nuanced report of the trends you observe. Do not simply state the trends are mixed, provide detailed and finegrained analysis and insights that may help traders make decisions."""
-            + """ Make sure to append a Markdown table at the end of the report to organize key points in the report, organized and easy to read."""
+- Select indicators that provide diverse and complementary information. Avoid redundancy (e.g., do not select both rsi and stochrsi). Also briefly explain why they are suitable for the given market context. When you tool call, please use the exact name of the indicators provided above as they are defined parameters, otherwise your call will fail. Please make sure to call get_stock_data first to retrieve the CSV that is needed to generate indicators. Then use get_indicators with the specific indicator names."""
+            + style_instruction
+            + """
+**IMPORTANT WRITING GUIDELINES:**
+- Write in plain, simple English that is easy for humans to understand
+- Format everything as bullet points - NO paragraphs or tables
+- Avoid jargon - if you must use technical terms, explain them clearly
+- Use analogies and examples to make concepts clearer
+- Break down complex ideas into simple bullet points
+- Focus on what matters most for making trading decisions
+- Be direct and clear - get to the point quickly
+- Keep each bullet point short (1-2 sentences maximum)
+- Make your report scannable with clear headings and bullet points
+"""
         )
 
         prompt = ChatPromptTemplate.from_messages(

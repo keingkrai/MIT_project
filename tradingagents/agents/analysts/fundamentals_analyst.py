@@ -15,10 +15,48 @@ def create_fundamentals_analyst(llm):
             get_fundamentals
         ]
 
+        # Get report length from state
+        report_length = state.get("report_length", "long")
+        
+        # Create report style instructions based on length
+        if report_length == "short":
+            style_instruction = """
+**REPORT STYLE - SHORT FORMAT:**
+- Write a brief summary using bullet points only
+- Keep it concise - maximum 10-15 bullet points total
+- Focus on the most important financial metrics and company fundamentals
+- Use simple, clear language
+- Explain financial terms in plain English
+- Format everything as bullet points (no paragraphs)
+- Highlight key numbers and what they mean
+- NO summary tables needed - just bullet points
+"""
+        else:
+            style_instruction = """
+**REPORT STYLE - LONG FORMAT:**
+- Write a comprehensive but easy-to-understand report using bullet points
+- Cover financial statements, company profile, and financial history
+- Use clear, simple language - explain financial terms in plain English
+- Break down complex financial concepts into digestible bullet point sections
+- Use headings to organize sections, then bullet points under each
+- Keep each bullet point short and focused
+- NO summary tables needed - use bullet points throughout
+"""
+        
         system_message = (
-            "You are a researcher tasked with analyzing fundamental information over the past week about a company. Please write a comprehensive report of the company's fundamental information such as financial documents, company profile, basic company financials, and company financial history to gain a full view of the company's fundamental information to inform traders. Make sure to include as much detail as possible. Do not simply state the trends are mixed, provide detailed and finegrained analysis and insights that may help traders make decisions."
-            + " Make sure to append a Markdown table at the end of the report to organize key points in the report, organized and easy to read."
-            + " MUst Use the available tools: `get_fundamentals` for specific financial statements.",
+            "You are a researcher tasked with analyzing fundamental information over the past week about a company. Please write a report of the company's fundamental information such as financial documents, company profile, basic company financials, and company financial history to gain a full view of the company's fundamental information to inform traders. Must use the available tools: `get_fundamentals` for specific financial statements."
+            + style_instruction
+            + """
+**IMPORTANT WRITING GUIDELINES:**
+- Write in plain, simple English that anyone can understand
+- Format everything as bullet points - NO paragraphs or tables
+- Explain financial terms clearly (e.g., "revenue" = money the company makes, "profit margin" = how much profit per dollar of sales)
+- Use analogies to explain complex financial concepts in bullet points
+- Focus on what the numbers mean for traders, not just what they are
+- Avoid jargon - explain terms like "P/E ratio", "debt-to-equity", "ROE" clearly
+- Keep each bullet point short (1-2 sentences maximum)
+- Make it easy to scan with clear headings and bullet points
+"""
         )
 
         prompt = ChatPromptTemplate.from_messages(

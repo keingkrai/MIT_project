@@ -1,76 +1,76 @@
 {
   "symbol": "MSFT",
-  "chosen_source": "yfinance",
+  "chosen_source": "alphavantage",
   "scores": {
-    "yfinance": 3,
-    "finnhub": 3,
-    "alphavantage": 0
+    "yfinance": 14,
+    "finnhub": 6,
+    "alphavantage": 14
   },
   "completeness": {
     "yfinance": 13,
     "finnhub": 8,
-    "alphavantage": 0
+    "alphavantage": 16
   },
   "sections": {
     "overview": {
       "scores": {
-        "yfinance": 3,
-        "finnhub": 3,
-        "alphavantage": 0
+        "yfinance": 7,
+        "finnhub": 6,
+        "alphavantage": 7
       },
       "completeness": {
         "yfinance": 6,
         "finnhub": 8,
-        "alphavantage": 0
+        "alphavantage": 8
       }
     },
     "balancesheet": {
       "scores": {
-        "yfinance": 0,
+        "yfinance": 3,
         "finnhub": 0,
-        "alphavantage": 0
+        "alphavantage": 3
       },
       "completeness": {
         "yfinance": 3,
         "finnhub": 0,
-        "alphavantage": 0
+        "alphavantage": 3
       }
     },
     "cashflow": {
       "scores": {
-        "yfinance": 0,
+        "yfinance": 2,
         "finnhub": 0,
-        "alphavantage": 0
+        "alphavantage": 2
       },
       "completeness": {
         "yfinance": 2,
         "finnhub": 0,
-        "alphavantage": 0
+        "alphavantage": 3
       }
     },
     "incomestatement": {
       "scores": {
-        "yfinance": 0,
+        "yfinance": 2,
         "finnhub": 0,
-        "alphavantage": 0
+        "alphavantage": 2
       },
       "completeness": {
         "yfinance": 2,
         "finnhub": 0,
-        "alphavantage": 0
+        "alphavantage": 2
       }
     }
   },
   "final_payload": {
     "overview": {
-      "marketCap": 3642251525710.0,
-      "sharesOutstanding": null,
-      "peRatio": null,
-      "currency": "USD",
-      "exchange": "NMS",
       "name": "Microsoft Corporation",
-      "sector": "Technology",
-      "industry": "Software - Infrastructure"
+      "currency": "USD",
+      "exchange": "NASDAQ",
+      "sector": "TECHNOLOGY",
+      "industry": "SOFTWARE - INFRASTRUCTURE",
+      "marketCap": 3642251543000.0,
+      "sharesOutstanding": 7432378000.0,
+      "peRatio": 34.83
     },
     "balancesheet": {
       "totalAssets": 619003000000.0,
@@ -80,7 +80,7 @@
     "cashflow": {
       "operatingCashFlow": 136162000000.0,
       "freeCashFlow": 71611000000.0,
-      "capitalExpenditures": null
+      "capitalExpenditures": 64551000000.0
     },
     "incomestatement": {
       "totalRevenue": 281724000000.0,
@@ -88,5 +88,5 @@
       "eps": null
     }
   },
-  "timestamp": "2025-12-03T02:03:13.129006+00:00"
+  "timestamp": "2025-12-04T07:13:12.305301+00:00"
 }

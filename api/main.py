@@ -6,6 +6,7 @@ import asyncio
 import json
 import datetime
 import logging
+import time
 from pathlib import Path
 from typing import Dict, Any, List, Optional
 from contextlib import asynccontextmanager
@@ -13,7 +14,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, RedirectResponse
 from pydantic import BaseModel
 from dotenv import load_dotenv
 
@@ -39,6 +40,11 @@ WEB_DIR = PROJECT_ROOT / "web"
 
 logger.info(f"Project root: {PROJECT_ROOT}")
 logger.info(f"Web directory: {WEB_DIR} (exists: {WEB_DIR.exists()})")
+WEB_DIST_DIR = WEB_DIR / "dist"
+if WEB_DIST_DIR.exists():
+    logger.info(f"Production build found: {WEB_DIST_DIR}")
+else:
+    logger.info(f"Using development web directory: {WEB_DIR}")
 
 # Active WebSocket connections
 active_connections: List[WebSocket] = []
@@ -54,6 +60,7 @@ class AnalysisRequest(BaseModel):
     backend_url: str
     shallow_thinker: str
     deep_thinker: str
+    report_length: str = "long"  # "short" or "long"
 
 
 def extract_content_string(content):
@@ -94,10 +101,27 @@ async def run_analysis_stream(websocket: WebSocket, request: AnalysisRequest):
         config = DEFAULT_CONFIG.copy()
         config["max_debate_rounds"] = request.research_depth
         config["max_risk_discuss_rounds"] = request.research_depth
-        config["quick_think_llm"] = request.shallow_thinker
-        config["deep_think_llm"] = request.deep_thinker
+        
+        # Use models from request (allow gemini-2.0-flash-live)
+        shallow_model = request.shallow_thinker
+        deep_model = request.deep_thinker
+        
+        # Only upgrade old 2.0 models (not flash-live or flash-exp variants) to flash-live
+        if ("2.0" in shallow_model or shallow_model == "gemini-2.5") and "flash-live" not in shallow_model and "flash-exp" not in shallow_model and "gemini-2.5-flash" not in shallow_model:
+            logger.warning(f"Detected old/invalid model '{shallow_model}', upgrading to Gemini 2.5 Flash")
+            shallow_model = "gemini-2.5-flash"
+        
+        if ("2.0" in deep_model or deep_model == "gemini-2.5") and "flash-live" not in deep_model and "flash-exp" not in deep_model and "gemini-2.5-pro" not in deep_model:
+            logger.warning(f"Detected old/invalid model '{deep_model}', upgrading to Gemini 2.5 Pro")
+            deep_model = "gemini-2.5-pro"
+        
+        config["quick_think_llm"] = shallow_model
+        config["deep_think_llm"] = deep_model
         config["backend_url"] = request.backend_url
         config["llm_provider"] = request.llm_provider.lower()
+        
+        # Log the models being used
+        logger.info(f"Using models - Quick: {config['quick_think_llm']}, Deep: {config['deep_think_llm']}")
 
         # Validate analysts list before using
         if request.analysts is None:
@@ -127,7 +151,7 @@ async def run_analysis_stream(websocket: WebSocket, request: AnalysisRequest):
 
         # Initialize state
         init_agent_state = graph.propagator.create_initial_state(
-            request.ticker, request.analysis_date
+            request.ticker, request.analysis_date, report_length=request.report_length
         )
         args = graph.propagator.get_graph_args()
 
@@ -164,9 +188,36 @@ async def run_analysis_stream(websocket: WebSocket, request: AnalysisRequest):
             "final_trade_decision": None,
         }
 
-        # Stream the analysis
+        # Stream the analysis with rate limiting
         trace = []
+        last_request_time = 0
+        # Use configurable rate limit interval
+        # Google free tier: 5 seconds, DeepSeek: 2 seconds (more generous limits), others: 0.5 seconds
+        if request.llm_provider.lower() == "google":
+            min_request_interval = config.get("rate_limit_interval", 5.0)
+        elif request.llm_provider.lower() == "deepseek":
+            min_request_interval = config.get("rate_limit_interval", 2.0)  # DeepSeek has better rate limits
+        else:
+            min_request_interval = 0.5
+        
+        # Add initial delay before starting stream to avoid immediate quota hits
+        # This gives time for any previous requests to clear and prevents rapid-fire initialization
+        if request.llm_provider.lower() in ["google", "deepseek"]:
+            delay = 2.0 if request.llm_provider.lower() == "google" else 1.0
+            await asyncio.sleep(delay)  # Brief delay before first API call
+        
+        # Stream with enhanced rate limiting
         for chunk in graph.graph.stream(init_agent_state, **args):
+            # Rate limiting: Add delay between chunks to avoid ResourceExhausted errors
+            # This ensures we never exceed the rate limits
+            if request.llm_provider.lower() in ["google", "deepseek"]:
+                current_time = time.time()
+                time_since_last = current_time - last_request_time
+                if time_since_last < min_request_interval:
+                    sleep_time = min_request_interval - time_since_last
+                    # Use asyncio.sleep for non-blocking delay
+                    await asyncio.sleep(sleep_time)
+                last_request_time = time.time()
             if len(chunk.get("messages", [])) > 0:
                 # Get the last message from the chunk
                 last_message = chunk["messages"][-1]
@@ -479,7 +530,34 @@ async def run_analysis_stream(websocket: WebSocket, request: AnalysisRequest):
 
 
 # Create FastAPI app
-app = FastAPI(title="TradingAgents API", version="1.0.0")
+app = FastAPI(
+    title="TradingAgents API",
+    version="1.0.0",
+    description="""
+    TradingAgents API provides real-time trading analysis through WebSocket connections.
+    
+    ## Frontend Applications
+    
+    * **React Frontend**: `/web/` - Modern React + Vite application
+    * **Legacy Frontend**: `/legacy` - Vanilla JavaScript version
+    
+    ## Quick Links
+    
+    * [React Frontend](/web/) - Main web interface
+    * [Legacy Frontend](/legacy) - Legacy vanilla JS version
+    * [API Documentation](/docs) - Interactive API documentation
+    * [Alternative Docs](/redoc) - Alternative API documentation
+    
+    ## WebSocket
+    
+    Connect to `/ws` for real-time analysis updates. Send analysis requests and receive:
+    - Agent status updates
+    - Report sections as they're generated
+    - Final analysis results
+    """,
+    docs_url="/docs",
+    redoc_url="/redoc"
+)
 
 # Configure CORS
 app.add_middleware(
@@ -491,25 +569,65 @@ app.add_middleware(
 )
 
 # Mount static files for web interface
-if WEB_DIR.exists():
+# Check for production build (dist folder) first, then fall back to web directory
+if WEB_DIST_DIR.exists():
+    # Production build - serve from dist folder
+    app.mount("/web", StaticFiles(directory=str(WEB_DIST_DIR), html=True), name="web")
+elif WEB_DIR.exists():
+    # Development - serve from web directory
     app.mount("/web", StaticFiles(directory=str(WEB_DIR), html=True), name="web")
 
 
-@app.get("/")
+@app.get("/", tags=["Frontend"], summary="Web Interface", description="Main web interface - React application")
 async def root():
     """Serve the web interface at root."""
-    if WEB_DIR.exists():
+    # Check for production build first (React app)
+    if WEB_DIST_DIR.exists():
+        index_path = WEB_DIST_DIR / "index.html"
+        if index_path.exists():
+            return FileResponse(str(index_path))
+    elif WEB_DIR.exists():
         index_path = WEB_DIR / "index.html"
         if index_path.exists():
             return FileResponse(str(index_path))
-    from fastapi.responses import RedirectResponse
     return RedirectResponse(url="/web/")
+
+
+@app.get("/legacy", tags=["Frontend"], summary="Legacy Web Interface", description="Legacy vanilla JavaScript version of the web interface")
+async def serve_legacy():
+    """Serve the legacy vanilla JS version."""
+    if WEB_DIR.exists():
+        legacy_path = WEB_DIR / "legacy.html"
+        if legacy_path.exists():
+            return FileResponse(str(legacy_path))
+    raise HTTPException(status_code=404, detail="Legacy HTML file not found")
+
+
+@app.get("/api/frontend", tags=["Frontend"], summary="Redirect to React Frontend", description="Redirects to the React web application at /web/")
+async def redirect_to_frontend():
+    """Redirect to the React frontend."""
+    return RedirectResponse(url="/web/", status_code=302)
+
+
+@app.get("/api/legacy-frontend", tags=["Frontend"], summary="Redirect to Legacy Frontend", description="Redirects to the legacy vanilla JavaScript web application at /legacy")
+async def redirect_to_legacy():
+    """Redirect to the legacy frontend."""
+    return RedirectResponse(url="/legacy", status_code=302)
 
 
 @app.get("/styles.css")
 async def serve_styles():
     """Serve CSS file at root level."""
+    # Check dist first (React build), then web directory
+    if WEB_DIST_DIR.exists():
+        css_path = WEB_DIST_DIR / "styles.css"
+        if css_path.exists():
+            return FileResponse(str(css_path), media_type="text/css")
     if WEB_DIR.exists():
+        css_path = WEB_DIR / "src" / "styles.css"
+        if css_path.exists():
+            return FileResponse(str(css_path), media_type="text/css")
+        # Fallback to root styles.css for legacy
         css_path = WEB_DIR / "styles.css"
         if css_path.exists():
             return FileResponse(str(css_path), media_type="text/css")
@@ -528,7 +646,12 @@ async def serve_script():
 
 @app.websocket("/ws")
 async def websocket_endpoint(websocket: WebSocket):
-    """WebSocket endpoint for real-time analysis updates."""
+    """
+    WebSocket endpoint for real-time analysis updates.
+    
+    Connect to receive live status updates, reports, and analysis results.
+    Send analysis requests in JSON format with action: "start_analysis".
+    """
     await websocket.accept()
     active_connections.append(websocket)
     
@@ -571,18 +694,23 @@ async def chrome_devtools_config():
     return {}
 
 
-@app.get("/api/health")
+@app.get("/api/health", tags=["System"], summary="Health Check", description="Check API health status and active connections")
 async def health_check():
     """Health check endpoint."""
     return {
         "status": "ok",
         "connections": len(active_connections),
         "project_root": str(PROJECT_ROOT),
-        "web_dir_exists": WEB_DIR.exists()
+        "web_dir_exists": WEB_DIR.exists(),
+        "web_dist_exists": WEB_DIST_DIR.exists() if WEB_DIST_DIR else False,
+        "frontend_urls": {
+            "react": "/web/",
+            "legacy": "/legacy"
+        }
     }
 
 
-@app.get("/api/test")
+@app.get("/api/test", tags=["System"], summary="Test Endpoint", description="Test endpoint to verify API and imports are working correctly")
 async def test_endpoint():
     """Test endpoint to verify API is working."""
     try:

@@ -1,76 +1,76 @@
 {
   "symbol": "NVDA",
-  "chosen_source": "yfinance",
+  "chosen_source": "alphavantage",
   "scores": {
-    "yfinance": 3,
-    "finnhub": 3,
-    "alphavantage": 0
+    "yfinance": 13,
+    "finnhub": 5,
+    "alphavantage": 14
   },
   "completeness": {
     "yfinance": 13,
     "finnhub": 8,
-    "alphavantage": 0
+    "alphavantage": 16
   },
   "sections": {
     "overview": {
       "scores": {
-        "yfinance": 3,
-        "finnhub": 3,
-        "alphavantage": 0
+        "yfinance": 6,
+        "finnhub": 5,
+        "alphavantage": 7
       },
       "completeness": {
         "yfinance": 6,
         "finnhub": 8,
-        "alphavantage": 0
+        "alphavantage": 8
       }
     },
     "balancesheet": {
       "scores": {
-        "yfinance": 0,
+        "yfinance": 3,
         "finnhub": 0,
-        "alphavantage": 0
+        "alphavantage": 3
       },
       "completeness": {
         "yfinance": 3,
         "finnhub": 0,
-        "alphavantage": 0
+        "alphavantage": 3
       }
     },
     "cashflow": {
       "scores": {
-        "yfinance": 0,
+        "yfinance": 2,
         "finnhub": 0,
-        "alphavantage": 0
+        "alphavantage": 2
       },
       "completeness": {
         "yfinance": 2,
         "finnhub": 0,
-        "alphavantage": 0
+        "alphavantage": 3
       }
     },
     "incomestatement": {
       "scores": {
-        "yfinance": 0,
+        "yfinance": 2,
         "finnhub": 0,
-        "alphavantage": 0
+        "alphavantage": 2
       },
       "completeness": {
         "yfinance": 2,
         "finnhub": 0,
-        "alphavantage": 0
+        "alphavantage": 2
       }
     }
   },
   "final_payload": {
     "overview": {
-      "marketCap": 4410385463180.542,
-      "sharesOutstanding": null,
-      "peRatio": null,
-      "currency": "USD",
-      "exchange": "NMS",
       "name": "NVIDIA Corporation",
-      "sector": "Technology",
-      "industry": "Semiconductors"
+      "currency": "USD",
+      "exchange": "NASDAQ",
+      "sector": "TECHNOLOGY",
+      "industry": "SEMICONDUCTORS",
+      "marketCap": 4441136693000.0,
+      "sharesOutstanding": 24305000000.0,
+      "peRatio": 45.26
     },
     "balancesheet": {
       "totalAssets": 111601000000.0,
@@ -80,7 +80,7 @@
     "cashflow": {
       "operatingCashFlow": 64089000000.0,
       "freeCashFlow": 60853000000.0,
-      "capitalExpenditures": null
+      "capitalExpenditures": 3236000000.0
     },
     "incomestatement": {
       "totalRevenue": 130497000000.0,
@@ -88,5 +88,5 @@
       "eps": null
     }
   },
-  "timestamp": "2025-12-03T02:13:10.928530+00:00"
+  "timestamp": "2025-12-09T04:35:37.959659+00:00"
 }

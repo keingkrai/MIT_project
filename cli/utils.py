@@ -197,7 +197,9 @@ def select_research_depth() -> int:
 # Automatically select default shallow-thinking llm engine without asking.
 def select_shallow_thinking_agent(provider) -> str:
     """Automatically select default shallow-thinking LLM engine without asking."""
-    return "gemini-2.0-flash"
+    if provider.lower() == "deepseek":
+        return "deepseek-chat"
+    return "gemini-2.0-flash-live"  # Updated to Gemini 2.0 Flash Live
 
 
 # def select_deep_thinking_agent(provider) -> str:
@@ -266,7 +268,9 @@ def select_shallow_thinking_agent(provider) -> str:
 # Automatically select default deep-thinking llm engine without asking.
 def select_deep_thinking_agent(provider) -> str:
     """Automatically select default deep-thinking LLM engine without asking."""
-    return "gemini-2.0-flash"
+    if provider.lower() == "deepseek":
+        return "deepseek-reasoner"  # DeepSeek R1 reasoning model
+    return "gemini-2.0-flash-live"  # Updated to Gemini 2.0 Flash Live
 
 # def select_llm_provider() -> tuple[str, str]:
 #     """Select the OpenAI api url using interactive selection."""
@@ -305,11 +309,11 @@ def select_deep_thinking_agent(provider) -> str:
     
 #     return display_name, url
 
-# Automatically select Google LLM provider without asking.
+# Automatically select DeepSeek LLM provider without asking.
 def select_llm_provider() -> tuple[str, str]:
-    """Automatically select Google LLM provider without asking."""
-    display_name = "Google"
-    url = "https://generativelanguage.googleapis.com/v1"
+    """Automatically select DeepSeek LLM provider without asking."""
+    display_name = "DeepSeek"
+    url = "https://api.deepseek.com/v1"
     return display_name, url
 
 def select_execution_mode() -> str:

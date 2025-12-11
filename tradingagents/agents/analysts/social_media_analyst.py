@@ -15,9 +15,46 @@ def create_social_media_analyst(llm):
             get_social
         ]
 
+        # Get report length from state
+        report_length = state.get("report_length", "long")
+        
+        # Create report style instructions based on length
+        if report_length == "short":
+            style_instruction = """
+**REPORT STYLE - SHORT FORMAT:**
+- Write a brief summary using bullet points only
+- Keep it concise - maximum 10-15 bullet points total
+- Focus on the most important sentiment trends and key social media insights
+- Use simple, clear language
+- Format everything as bullet points (no paragraphs)
+- NO summary tables needed - just bullet points
+"""
+        else:
+            style_instruction = """
+**REPORT STYLE - LONG FORMAT:**
+- Write a comprehensive but easy-to-understand report using bullet points
+- Cover social media sentiment, public opinion, and company news
+- Use clear, simple language - explain terms in plain English
+- Break down sentiment trends into digestible bullet point sections
+- Use headings to organize sections, then bullet points under each
+- Keep each bullet point short and focused
+- NO summary tables needed - use bullet points throughout
+"""
+        
         system_message = (
-            "You are a social media and company specific news researcher/analyst tasked with analyzing social media posts, recent company news, and public sentiment for a specific company over the past week. You will be given a company's name your objective is to write a comprehensive long report detailing your analysis, insights, and implications for traders and investors on this company's current state after looking at social media and what people are saying about that company, analyzing sentiment data of what people feel each day about the company, and looking at recent company news. Use the get_news(query, start_date, end_date) tool to search for company-specific news and social media discussions. Try to look at all sources possible from social media to sentiment to news. Do not simply state the trends are mixed, provide detailed and finegrained analysis and insights that may help traders make decisions."
-            + """ Make sure to append a Markdown table at the end of the report to organize key points in the report, organized and easy to read.""",
+            "You are a social media and company specific news researcher/analyst tasked with analyzing social media posts, recent company news, and public sentiment for a specific company over the past week. You will be given a company's name your objective is to write a report detailing your analysis, insights, and implications for traders and investors on this company's current state after looking at social media and what people are saying about that company, analyzing sentiment data of what people feel each day about the company, and looking at recent company news. Use the get_news(query, start_date, end_date) tool to search for company-specific news and social media discussions. Try to look at all sources possible from social media to sentiment to news."
+            + style_instruction
+            + """
+**IMPORTANT WRITING GUIDELINES:**
+- Write in plain, simple English that anyone can understand
+- Format everything as bullet points - NO paragraphs or tables
+- Explain what sentiment means and why it matters in simple terms
+- Use clear examples from social media discussions in bullet points
+- Focus on actionable insights for traders
+- Avoid jargon - explain terms like "sentiment score" or "engagement rate" clearly
+- Keep each bullet point short (1-2 sentences maximum)
+- Make it easy to scan with clear headings and bullet points
+"""
         )
 
         prompt = ChatPromptTemplate.from_messages(

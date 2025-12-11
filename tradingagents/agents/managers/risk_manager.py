@@ -22,7 +22,33 @@ def create_risk_manager(llm, memory):
         for i, rec in enumerate(past_memories, 1):
             past_memory_str += rec["recommendation"] + "\n\n"
 
-        prompt = f"""As the Risk Management Judge and Debate Facilitator, your goal is to evaluate the debate between three risk analysts—Risky, Neutral, and Safe/Conservative—and determine the best course of action for the trader. Your decision must result in a clear recommendation: Buy, Sell, or Hold. Choose Hold only if strongly justified by specific arguments, not as a fallback when all sides seem valid. Strive for clarity and decisiveness.
+        # Get report length from state
+        report_length = state.get("report_length", "long")
+        
+        # Create style instructions based on length
+        if report_length == "short":
+            style_instruction = """
+**WRITING STYLE - SHORT FORMAT:**
+- Write a brief final decision using bullet points only
+- Keep it concise - maximum 8-10 bullet points
+- Use simple, clear language
+- Focus on the most important risk factors and final recommendation
+- Explain your decision in plain English
+- Format everything as bullet points (no paragraphs)
+"""
+        else:
+            style_instruction = """
+**WRITING STYLE - LONG FORMAT:**
+- Write a comprehensive but easy-to-understand final decision using bullet points
+- Use clear, simple language - avoid jargon
+- Explain your risk assessment step-by-step in bullet points
+- Break down complex risk concepts into simple bullet points
+- Use headings to organize sections, then bullet points under each
+- Keep each bullet point short and focused
+"""
+        
+        prompt = (
+            f"""As the Risk Management Judge and Debate Facilitator, your goal is to evaluate the debate between three risk analysts—Risky, Neutral, and Safe/Conservative—and determine the best course of action for the trader. Your decision must result in a clear recommendation: Buy, Sell, or Hold. Choose Hold only if strongly justified by specific arguments, not as a fallback when all sides seem valid. Strive for clarity and decisiveness.
 
 Guidelines for Decision-Making:
 1. **Summarize Key Arguments**: Extract the strongest points from each analyst, focusing on relevance to the context.
@@ -32,7 +58,10 @@ Guidelines for Decision-Making:
 
 Deliverables:
 - A clear and actionable recommendation: Buy, Sell, or Hold.
-- Detailed reasoning anchored in the debate and past reflections.
+- Detailed reasoning anchored in the debate and past reflections."""
+            + style_instruction
+            + f"""
+**IMPORTANT: Write in plain, simple English that anyone can understand. Format everything as bullet points - NO paragraphs. Explain your risk assessment and final decision clearly. Avoid jargon - explain risk terms in everyday language. Make it easy for humans to understand why you're recommending BUY, SELL, or HOLD. Keep each bullet point short (1-2 sentences maximum).**
 
 ---
 
@@ -42,6 +71,7 @@ Deliverables:
 ---
 
 Focus on actionable insights and continuous improvement. Build on past lessons, critically evaluate all perspectives, and ensure each decision advances better outcomes."""
+        )
 
         response = llm.invoke(prompt)
 

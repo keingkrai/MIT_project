@@ -1,10 +1,10 @@
 {
   "symbol": "MSFT",
-  "timestamp": "2025-12-03T02:03:13.129006+00:00",
+  "timestamp": "2025-12-04T07:13:12.305301+00:00",
   "raw": {
     "yfinance": {
       "overview": {
-        "marketCap": 3642251525710.0,
+        "marketCap": 3551046655902.875,
         "sharesOutstanding": null,
         "peRatio": null,
         "currency": "USD",
@@ -36,9 +36,9 @@
         "exchange": "NASDAQ NMS - GLOBAL MARKET",
         "sector": "Technology",
         "industry": "Technology",
-        "marketCap": 3641864873220857.0,
+        "marketCap": 3550669675082946.5,
         "sharesOutstanding": 7432.38,
-        "peRatio": 34.4826
+        "peRatio": 34.7135
       },
       "balancesheet": {
         "totalAssets": null,
@@ -57,20 +57,29 @@
       }
     },
     "alphavantage": {
-      "overview": {},
+      "overview": {
+        "name": "Microsoft Corporation",
+        "currency": "USD",
+        "exchange": "NASDAQ",
+        "sector": "TECHNOLOGY",
+        "industry": "SOFTWARE - INFRASTRUCTURE",
+        "marketCap": 3642251543000.0,
+        "sharesOutstanding": 7432378000.0,
+        "peRatio": 34.83
+      },
       "balancesheet": {
-        "totalAssets": null,
-        "totalLiabilities": null,
-        "shareholderEquity": null
+        "totalAssets": 619003000000.0,
+        "totalLiabilities": 275524000000.0,
+        "shareholderEquity": 343479000000.0
       },
       "cashflow": {
-        "operatingCashFlow": null,
-        "freeCashFlow": null,
-        "capitalExpenditures": null
+        "operatingCashFlow": 136162000000.0,
+        "freeCashFlow": 71611000000.0,
+        "capitalExpenditures": 64551000000.0
       },
       "incomestatement": {
-        "totalRevenue": null,
-        "netIncome": null,
+        "totalRevenue": 281724000000.0,
+        "netIncome": 101832000000.0,
         "eps": null
       }
     }

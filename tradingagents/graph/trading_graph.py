@@ -80,8 +80,18 @@ class TradingAgentsGraph:
             self.deep_thinking_llm = ChatAnthropic(model=self.config["deep_think_llm"], base_url=self.config["backend_url"])
             self.quick_thinking_llm = ChatAnthropic(model=self.config["quick_think_llm"], base_url=self.config["backend_url"])
         elif self.config["llm_provider"].lower() == "google":
-            self.deep_thinking_llm = ChatGoogleGenerativeAI(model=self.config["deep_think_llm"])
-            self.quick_thinking_llm = ChatGoogleGenerativeAI(model=self.config["quick_think_llm"])
+            # Configure Google Gemini with rate limiting and retry settings
+            # Add delays between requests to avoid ResourceExhausted errors
+            self.deep_thinking_llm = ChatGoogleGenerativeAI(
+                model=self.config["deep_think_llm"],
+                max_retries=5,  # Increase retries with exponential backoff
+                timeout=120,  # Increase timeout for slower responses
+            )
+            self.quick_thinking_llm = ChatGoogleGenerativeAI(
+                model=self.config["quick_think_llm"],
+                max_retries=5,
+                timeout=120,
+            )
         elif self.config["llm_provider"].lower() == "typhoon":
             self.deep_thinking_llm = ChatOpenAI(model=self.config["deep_think_llm"], base_url=self.config["backend_url"])
             self.quick_thinking_llm = ChatOpenAI(model=self.config["quick_think_llm"], base_url=self.config["backend_url"])

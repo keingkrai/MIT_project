@@ -16,12 +16,15 @@ DEFAULT_CONFIG = {
     # "backend_url": "https://api.openai.com/v1",
     # LLM settings
     "llm_provider": "google",
-    "deep_think_llm": "gemini-2.0-flash",
-    "quick_think_llm": "gemini-2.0-flash-lite",
+    "deep_think_llm": "gemini-2.5-pro",  # Gemini 2.5 Pro for deep thinking
+    "quick_think_llm": "gemini-2.0-flash-lite",  # Gemini 2.5 Flash for quick thinking
     # Debate and discussion settings
     "max_debate_rounds": 1,
     "max_risk_discuss_rounds": 1,
     "max_recur_limit": 100,
+    # Rate limiting settings for API calls (to prevent ResourceExhausted errors)
+    "rate_limit_interval": 10.0,  # Increased from 1.5 to 10 seconds to avoid quota issues
+    "max_concurrent_requests": 1,  # Reduced from 2 to 1 to avoid quota issues
     # Data vendor configuration
     # Category-level configuration (default for all tools in category)
     "data_vendors": {

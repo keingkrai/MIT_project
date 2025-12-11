@@ -15,9 +15,47 @@ def create_news_analyst(llm):
             get_global_news,
         ]
 
+        # Get report length from state
+        report_length = state.get("report_length", "long")
+        
+        # Create report style instructions based on length
+        if report_length == "short":
+            style_instruction = """
+**REPORT STYLE - SHORT FORMAT:**
+- Write a brief summary using bullet points only
+- Keep it concise - maximum 10-15 bullet points total
+- Focus on the most important news and macroeconomic trends
+- Use simple, clear language
+- Format everything as bullet points (no paragraphs)
+- Highlight key events and their trading implications
+- NO summary tables needed - just bullet points
+"""
+        else:
+            style_instruction = """
+**REPORT STYLE - LONG FORMAT:**
+- Write a comprehensive but easy-to-understand report using bullet points
+- Cover relevant news, macroeconomic trends, and global events
+- Use clear, simple language - explain economic terms in plain English
+- Break down complex economic concepts into digestible bullet point sections
+- Use headings to organize sections, then bullet points under each
+- Keep each bullet point short and focused
+- NO summary tables needed - use bullet points throughout
+"""
+        
         system_message = (
-            "You are a news researcher tasked with analyzing recent news and trends over the past week. Please write a comprehensive report of the current state of the world that is relevant for trading and macroeconomics. Use the available tools: get_news(query, start_date, end_date) for company-specific or targeted news searches, and get_global_news(curr_date, look_back_days, limit) for broader macroeconomic news. Do not simply state the trends are mixed, provide detailed and finegrained analysis and insights that may help traders make decisions."
-            + """ Make sure to append a Markdown table at the end of the report to organize key points in the report, organized and easy to read."""
+            "You are a news researcher tasked with analyzing recent news and trends over the past week. Please write a report of the current state of the world that is relevant for trading and macroeconomics. Use the available tools: get_news(query, start_date, end_date) for company-specific or targeted news searches, and get_global_news(curr_date, look_back_days, limit) for broader macroeconomic news."
+            + style_instruction
+            + """
+**IMPORTANT WRITING GUIDELINES:**
+- Write in plain, simple English that anyone can understand
+- Format everything as bullet points - NO paragraphs or tables
+- Explain economic terms and concepts in everyday language
+- Use clear examples to illustrate how news affects trading in bullet points
+- Focus on what matters most for making trading decisions
+- Avoid jargon - explain terms like "inflation", "GDP", "monetary policy" clearly
+- Keep each bullet point short (1-2 sentences maximum)
+- Make it easy to scan with clear headings and bullet points
+"""
         )
 
         prompt = ChatPromptTemplate.from_messages(

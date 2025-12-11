@@ -32,18 +32,20 @@
 
   const shallowAgents = {
     google: [
-      ["Gemini 2.0 Flash-Lite • low latency", "gemini-2.0-flash-lite"],
-      ["Gemini 2.0 Flash • next-gen speed", "gemini-2.0-flash"],
+      ["Gemini 2.0 Flash Live • latest stable", "gemini-2.0-flash-live"],
       ["Gemini 2.5 Flash • adaptive", "gemini-2.5-flash-preview-05-20"],
+      ["Gemini 2.0 Flash • next-gen speed", "gemini-2.0-flash"],
+      ["Gemini 2.0 Flash-Lite • low latency", "gemini-2.0-flash-lite"],
     ],
   };
 
   const deepAgents = {
     google: [
-      ["Gemini 2.0 Flash-Lite", "gemini-2.0-flash-lite"],
-      ["Gemini 2.0 Flash", "gemini-2.0-flash"],
-      ["Gemini 2.5 Flash", "gemini-2.5-flash-preview-05-20"],
+      ["Gemini 2.0 Flash Live • latest stable", "gemini-2.0-flash-live"],
       ["Gemini 2.5 Pro", "gemini-2.5-pro-preview-06-05"],
+      ["Gemini 2.5 Flash", "gemini-2.5-flash-preview-05-20"],
+      ["Gemini 2.0 Flash", "gemini-2.0-flash"],
+      ["Gemini 2.0 Flash-Lite", "gemini-2.0-flash-lite"],
     ],
   };
 
@@ -143,8 +145,8 @@
     researchDepth: researchDepthOptions[1].value, // Auto/Medium depth (value: 3) - not displayed
     llmProvider: "google", // Hardcoded to Google - not displayed
     backendUrl: "https://generativelanguage.googleapis.com/v1", // Hardcoded to Google Gemini endpoint - not displayed
-    shallowModel: shallowAgents.google[0][1], // Hardcoded to Gemini 2.0 Flash-Lite - not displayed
-    deepModel: deepAgents.google[0][1], // Hardcoded to Gemini 2.0 Flash-Lite - not displayed
+    shallowModel: shallowAgents.google[0][1], // Default: Gemini 2.0 Flash Live - not displayed
+    deepModel: deepAgents.google[0][1], // Default: Gemini 2.0 Flash Live - not displayed
     isRunning: false,
     reportPlainText: "",
     reportSections: [], // Store all report sections for length switching
@@ -194,6 +196,8 @@
     initNavigation();
     bindEvents();
     updateDebugDisplay();
+    // Connect to WebSocket for debug panel on page load
+    connectDebugWebSocket();
     // Initialize report view buttons (default to long view)
     if (elements.viewLongBtn) {
       elements.viewLongBtn.classList.add("active");
@@ -516,6 +520,112 @@
     if (elements.summarySymbol) elements.summarySymbol.textContent = state.ticker;
     if (elements.summaryDate) elements.summaryDate.textContent = state.analysisDate;
     // Research depth is auto-set and not displayed in UI
+  }
+
+  function connectDebugWebSocket() {
+    // Don't connect if already connected or if there's an active analysis connection
+    if (debugState.wsConnected || (state.wsConnection && state.wsConnection.readyState === WebSocket.OPEN)) {
+      return;
+    }
+
+    // Determine WebSocket URL
+    let wsUrl;
+    if (window.location.protocol === "file:" || window.location.hostname === "") {
+      wsUrl = "ws://localhost:8000/ws";
+    } else {
+      const wsProtocol = window.location.protocol === "https:" ? "wss:" : "ws:";
+      const wsHost = window.location.hostname;
+      const wsPort = window.location.port || (window.location.protocol === "https:" ? "443" : "8000");
+      wsUrl = `${wsProtocol}//${wsHost}:${wsPort}/ws`;
+    }
+
+    // Check backend health first
+    checkBackendHealth().then((isHealthy) => {
+      if (isHealthy) {
+        try {
+          const ws = new WebSocket(wsUrl);
+          let debugWsConnection = ws;
+
+          ws.onopen = () => {
+            updateDebugWsStatus(true, wsUrl);
+            addDebugLog("system", "Debug WebSocket connected successfully", false);
+            // Send a ping to keep connection alive
+            ws.send(JSON.stringify({ action: "ping" }));
+          };
+
+          ws.onmessage = (event) => {
+            try {
+              const message = JSON.parse(event.data);
+              const { type, data } = message;
+              addDebugLog(type, JSON.stringify(data).substring(0, 200), type === "error");
+            } catch (error) {
+              addDebugLog("error", `Failed to parse message: ${error.message}`, true);
+            }
+          };
+
+          ws.onerror = (error) => {
+            addDebugLog("error", `WebSocket error: ${error.message || "Connection error"}`, true);
+            updateDebugWsStatus(false);
+          };
+
+          ws.onclose = () => {
+            updateDebugWsStatus(false);
+            addDebugLog("system", "Debug WebSocket connection closed", false);
+            // Attempt to reconnect after 5 seconds
+            setTimeout(() => {
+              if (!state.isRunning) {
+                connectDebugWebSocket();
+              }
+            }, 5000);
+          };
+        } catch (error) {
+          addDebugLog("error", `Failed to create debug WebSocket: ${error.message}`, true);
+        }
+      } else {
+        addDebugLog("error", "Backend health check failed. Retrying in 5 seconds...", true);
+        setTimeout(() => connectDebugWebSocket(), 5000);
+      }
+    });
+  }
+
+  async function checkBackendHealth() {
+    try {
+      // Always use the backend URL directly (port 8000)
+      let baseUrl;
+      if (window.location.protocol === "file:" || window.location.hostname === "") {
+        baseUrl = "http://localhost:8000";
+      } else {
+        // Use backend port 8000 directly
+        baseUrl = `${window.location.protocol}//${window.location.hostname}:8000`;
+      }
+      
+      const response = await fetch(`${baseUrl}/api/health`, {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+        },
+      });
+      
+      if (response.ok) {
+        const contentType = response.headers.get('content-type');
+        if (contentType && contentType.includes('application/json')) {
+          const data = await response.json();
+          addDebugLog("system", `Backend health check: ${data.status}`, false);
+          return true;
+        } else {
+          // Got HTML instead of JSON - backend might not be running or wrong endpoint
+          addDebugLog("error", `Backend returned HTML instead of JSON. Check if FastAPI is running on ${baseUrl}`, true);
+          return false;
+        }
+      } else {
+        addDebugLog("error", `Backend health check returned status: ${response.status}`, true);
+        return false;
+      }
+    } catch (error) {
+      // Network error or CORS issue
+      addDebugLog("error", `Backend health check failed: ${error.message}. Make sure FastAPI is running on port 8000.`, true);
+      return false;
+    }
   }
 
   function stopPipeline() {

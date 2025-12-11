@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trading Agents - Multi-Agents LLM Financial Trading</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Arial', sans-serif;
+            background: linear-gradient(135deg, #000f1d 0%, #0a1628 50%, #040b12 100%);
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Main Container */
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Left Sidebar */
+        .sidebar {
+            width: 400px;
+            padding: 60px 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            background: rgba(19, 28, 48, 0.6);
+            backdrop-filter: blur(10px);
+            z-index: 10;
+            position: relative;
+            border-right: 2px solid transparent;
+            animation: slideInLeft 0.8s ease-out, borderGlowLeft 3s ease-in-out infinite;
+            overflow: hidden;
+        }
+
+        .sidebar::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 2px;
+            height: 100%;
+            background: linear-gradient(180deg, 
+                transparent 0%, 
+                rgba(74, 215, 218, 0.5) 20%, 
+                rgba(74, 215, 218, 0.8) 50%, 
+                rgba(74, 215, 218, 0.5) 80%, 
+                transparent 100%);
+            animation: borderFlow 2s linear infinite;
+        }
+
+        .sidebar::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(74, 215, 218, 0.1) 0%, transparent 70%);
+            animation: rotateGlow 8s linear infinite;
+            pointer-events: none;
+        }
+
+        @keyframes slideInLeft {
+            from {
+                transform: translateX(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes borderGlowLeft {
+            0%, 100% {
+                border-right-color: rgba(74, 215, 218, 0.3);
+                box-shadow: -5px 0 20px rgba(74, 215, 218, 0.2);
+            }
+            50% {
+                border-right-color: rgba(74, 215, 218, 0.6);
+                box-shadow: -5px 0 30px rgba(74, 215, 218, 0.4);
+            }
+        }
+
+        @keyframes borderFlow {
+            0% {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            50% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100%);
+                opacity: 0;
+            }
+        }
+
+        @keyframes rotateGlow {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .logo-section {
+            position: relative;
+        }
+
+
+        .logo-section h1 {
+            font-size: 2.5rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #fff;
+        }
+
+        .logo-section p {
+            font-size: 1rem;
+            color: #c9dae6;
+            font-weight: 400;
+        }
+
+        .features {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            margin: 40px 0;
+            position: relative;
+        }
+
+        .feature-item {
+            position: relative;
+            margin-bottom: 25px;
+            display: flex;
+        }
+
+        .feature-item::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: -12px;
+            height: 1px;
+            border-top: 2px dashed rgba(74, 215, 218, 0.5);
+        }
+
+        .feature-item:last-child::after {
+            display: none;
+        }
+
+        .feature-btn {
+            padding: 12px 20px;
+            background: #ffffff;
+            color: #000000;
+            border: none;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: inherit;
+            position: relative;
+            width: auto;
+            display: inline-block;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+            font-weight: 500;
+            min-width: 200px;
+        }
+
+        .feature-btn:hover {
+            background: #f0f0f0;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+        }
+
+        .feature-item:nth-child(odd) {
+            justify-content: flex-start;
+        }
+
+        .feature-item:nth-child(even) {
+            justify-content: flex-end;
+        }
+
+        .feature-item:last-child .feature-btn {
+            background: #e5e5e5;
+        }
+
+        .feature-item:nth-child(1) .feature-btn {
+            animation: slideInLeft 0.6s ease-out 0.2s both;
+        }
+
+        .feature-item:nth-child(2) .feature-btn {
+            animation: slideInRight 0.6s ease-out 0.4s both;
+        }
+
+        .feature-item:nth-child(3) .feature-btn {
+            animation: slideInLeft 0.6s ease-out 0.6s both;
+        }
+
+        .feature-item:nth-child(4) .feature-btn {
+            animation: slideInRight 0.6s ease-out 0.8s both;
+        }
+
+        .feature-item:nth-child(5) .feature-btn {
+            animation: slideInLeft 0.6s ease-out 1s both;
+        }
+
+        .register-btn {
+            padding: 16px 32px;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+            font-family: inherit;
+        }
+
+        .register-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+        }
+
+        /* Right Content Area */
+        .main-content {
+            flex: 1;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 60px;
+            overflow: hidden;
+            border-left: 2px solid transparent;
+            animation: slideInRight 0.8s ease-out, borderGlowRight 3s ease-in-out infinite;
+        }
+
+        .main-content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 2px;
+            height: 100%;
+            background: linear-gradient(180deg, 
+                transparent 0%, 
+                rgba(16, 185, 129, 0.5) 20%, 
+                rgba(16, 185, 129, 0.8) 50%, 
+                rgba(16, 185, 129, 0.5) 80%, 
+                transparent 100%);
+            animation: borderFlow 2s linear infinite reverse;
+            z-index: 3;
+        }
+
+        .main-content::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(16, 185, 129, 0.1) 0%, transparent 70%);
+            animation: rotateGlow 10s linear infinite reverse;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        @keyframes borderGlowRight {
+            0%, 100% {
+                border-left-color: rgba(16, 185, 129, 0.3);
+                box-shadow: 5px 0 20px rgba(16, 185, 129, 0.2);
+            }
+            50% {
+                border-left-color: rgba(16, 185, 129, 0.6);
+                box-shadow: 5px 0 30px rgba(16, 185, 129, 0.4);
+            }
+        }
+
+        /* Animated Globe Background */
+        .globe-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 50% 50%, rgba(74, 215, 218, 0.15) 0%, transparent 70%),
+                radial-gradient(circle at 30% 30%, rgba(24, 192, 246, 0.1) 0%, transparent 60%);
+            z-index: 1;
+        }
+
+        .globe-background::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 600px;
+            height: 600px;
+            background: 
+                radial-gradient(circle, rgba(74, 215, 218, 0.2) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.3; }
+            50% { transform: translate(-50%, -50%) scale(1.1); opacity: 0.5; }
+        }
+
+        /* Candlestick Charts Overlay */
+        .candlestick-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 2;
+            opacity: 0.3;
+        }
+
+        .candlestick {
+            position: absolute;
+            width: 4px;
+            height: 30px;
+            background: #10b981;
+            border-radius: 2px;
+        }
+
+        .candlestick.red {
+            background: #ef4444;
+        }
+
+        /* Central Icon */
+        .central-icon {
+            position: relative;
+            width: 250px;
+            height: 250px;
+            margin-bottom: 40px;
+            z-index: 5;
+        }
+
+        .icon-circle {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            box-shadow: 0 0 40px rgba(74, 215, 218, 0.4);
+            animation: glow 3s ease-in-out infinite;
+            overflow: hidden;
+        }
+
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 40px rgba(74, 215, 218, 0.4); }
+            50% { box-shadow: 0 0 60px rgba(74, 215, 218, 0.6); }
+        }
+
+        /* Network Grid Background */
+        .icon-circle::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 2px 2px, rgba(74, 215, 218, 0.15) 1px, transparent 0);
+            background-size: 20px 20px;
+            opacity: 0.5;
+        }
+
+
+        /* Content Text */
+        .content-text {
+            position: relative;
+            z-index: 5;
+            text-align: center;
+            max-width: 700px;
+        }
+
+        .main-headline {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #fff 0%, #c9dae6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            white-space: nowrap;
+        }
+
+        .subtitle {
+            font-size: 1.5rem;
+            color: #c9dae6;
+            margin-bottom: 30px;
+            font-weight: 400;
+        }
+
+        .description {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #a0b8c8;
+            text-align: justify;
+        }
+
+        /* Top Navigation */
+        .top-nav {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 100;
+        }
+
+        .nav-btn {
+            padding: 10px 20px;
+            background: rgba(21, 31, 51, 0.9);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+        }
+
+        .nav-btn:hover {
+            background: rgba(21, 31, 51, 1);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .container {
+                flex-direction: column;
+            }
+
+        .sidebar {
+            width: 100%;
+            padding: 40px 30px;
+            animation: slideInTop 0.8s ease-out, borderGlowLeft 3s ease-in-out infinite;
+        }
+
+        .sidebar::before {
+            display: none;
+        }
+
+        .main-content {
+            min-height: 600px;
+            animation: slideInBottom 0.8s ease-out, borderGlowRight 3s ease-in-out infinite;
+        }
+
+        .main-content::before {
+            display: none;
+        }
+
+        @keyframes slideInTop {
+            from {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideInBottom {
+            from {
+                transform: translateY(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        }
+    </style>
+</head>
+<body>
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Left Sidebar -->
+        <div class="sidebar">
+            <div>
+                <div class="logo-section">
+                    <h1>Trading Agents</h1>
+                    <p>Multi-Agents LLM Financial Trading</p>
+                </div>
+
+                <div class="features">
+                    <div class="feature-item">
+                        <button class="feature-btn">AI Market Analysis</button>
+                    </div>
+                    <div class="feature-item">
+                        <button class="feature-btn">Autonomous Execution</button>
+                    </div>
+                    <div class="feature-item">
+                        <button class="feature-btn">Risk Management</button>
+                    </div>
+                    <div class="feature-item">
+                        <button class="feature-btn">Backtesting Engine</button>
+                    </div>
+                    <div class="feature-item">
+                        <button class="feature-btn">Supported Markets</button>
+                    </div>
+                </div>
+            </div>
+
+            <button class="register-btn">Register</button>
+        </div>
+
+        <!-- Right Main Content -->
+        <div class="main-content">
+            <!-- Globe Background -->
+            <div class="globe-background"></div>
+
+            <!-- Candlestick Overlay -->
+            <div class="candlestick-overlay">
+                <div class="candlestick" style="top: 10%; left: 15%;"></div>
+                <div class="candlestick red" style="top: 20%; left: 25%; height: 20px;"></div>
+                <div class="candlestick" style="top: 15%; left: 35%; height: 35px;"></div>
+                <div class="candlestick red" style="top: 25%; left: 45%; height: 25px;"></div>
+                <div class="candlestick" style="top: 12%; left: 55%; height: 28px;"></div>
+                <div class="candlestick red" style="top: 18%; left: 65%; height: 22px;"></div>
+                <div class="candlestick" style="top: 22%; left: 75%; height: 32px;"></div>
+                <div class="candlestick red" style="top: 14%; left: 85%; height: 18px;"></div>
+            </div>
+
+            <!-- Central Icon -->
+            <div class="central-icon">
+                <div class="icon-circle">
+                </div>
+            </div>
+
+            <!-- Content Text -->
+            <div class="content-text">
+                <h2 class="main-headline">ยกระดับการเทรดด้วย AI อัจฉริยะ</h2>
+                <p class="subtitle">Multi-Agents LLM Financial Trading</p>
+                <p class="description">
+                    พบกับ Trading Agent ที่ไม่หยุดนิ่งด้วยสถาปัตยกรรม Multi-Agents LLM Financial Trading 
+                    ระบบของเราไม่ใช่แค่ระบบธรรมดา แต่เป็นเครือข่ายของ Agents อัจฉริยะที่สื่อสาร แลกเปลี่ยนข้อมูล 
+                    และเรียนรู้จากประสบการณ์การเทรดนับล้านครั้ง การทำงานร่วมกันของ AI เหล่านี้ช่วยให้ Agent ของคุณ 
+                    ปรับตัว พัฒนากลยุทธ์ และเพิ่มความสามารถในการทำกำไรอย่างต่อเนื่องในทุกสภาวะตลาด
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Top Navigation -->
+    <div class="top-nav">
+        <button class="nav-btn">Views Docs</button>
+        <button class="nav-btn">Sign In</button>
+        <button class="nav-btn">Contact</button>
+    </div>
+</body>
+</html>

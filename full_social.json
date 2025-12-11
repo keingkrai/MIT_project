@@ -1,34 +1,34 @@
 {
     "sentiment_score": 68,
     "sentiment_verdict": "Bullish",
-    "social_volume_analysis": "Elevated discussion volume driven by iPhone 17 upgrade cycle momentum, Apple Intelligence artificial intelligence platform expansion, and multiple analyst price target upgrades. Institutional options flow data shows Apple consistently ranking among the top three most actively traded equities alongside Nvidia and Tesla, indicating strong professional and retail trader engagement during the analysis period.",
-    "dominant_narrative": "The primary narrative centers on Apple's successful iPhone 17 launch with initial sales exceeding prior generation by approximately fourteen percent, combined with optimism surrounding Apple Intelligence on-device artificial intelligence capabilities. Analyst price target increases from Wedbush to three hundred fifty dollars and Citigroup to three hundred thirty dollars have reinforced bullish sentiment. Market capitalization approaching four trillion dollars has amplified institutional interest and exchange-traded fund inflows.",
-    "top_discussion_topics": [
+    "social_volume": "Elevated due to analyst upgrades and AI strategy discussions",
+    "dominant_narrative": "Retail investors are optimistic about Apple's AI integration strategy and strong iPhone 17 performance, with Wedbush's significant price target increase to $350 fueling positive sentiment. The market is focused on Apple's executive stability and AI roadmap execution.",
+    "top_topics": [
         {
-            "topic": "iPhone 17 Sales Performance and Upgrade Cycle",
-            "sentiment_impact": "Positive",
-            "detailed_analysis": "Retail investors and analysts are celebrating strong initial demand data for iPhone 17, with reports indicating approximately fourteen percent higher sales compared to iPhone 16 in the first ten days. Community discussions emphasize the premium product positioning, robust carrier promotions in the United States and China, and expectations that this upgrade cycle will sustain through year-end holiday shopping season. The consensus view suggests Apple has successfully navigated competitive pressures and tariff concerns."
+            "topic": "Analyst Price Target Increases",
+            "sentiment": "Positive",
+            "analysis_snippet": "Wedbush raised Apple's price target to $350 citing iPhone 17 momentum and AI executive appointments."
         },
         {
-            "topic": "Apple Intelligence Artificial Intelligence Platform Expansion",
-            "sentiment_impact": "Positive",
-            "detailed_analysis": "Significant community enthusiasm surrounds Apple's on-device artificial intelligence strategy with Apple Intelligence being integrated across iOS, iPadOS, and macOS. Discussions highlight the privacy-focused approach with Private Cloud Compute architecture as a key differentiator versus competitors. Retail investors view this as a long-term ecosystem strengthening catalyst that could increase average revenue per user through enhanced services integration and drive additional hardware upgrade motivation."
+            "topic": "Apple Intelligence AI Strategy",
+            "sentiment": "Positive",
+            "analysis_snippet": "Investors are optimistic about Apple's on-device AI integration and hiring of former DeepMind executive."
         },
         {
-            "topic": "Analyst Price Target Upgrades and Valuation Debates",
-            "sentiment_impact": "Positive",
-            "detailed_analysis": "Multiple analyst upgrades have generated positive social media engagement, particularly Wedbush raising their target to three hundred fifty dollars citing iPhone 17 momentum and artificial intelligence executive hiring from DeepMind. Citigroup's increase to three hundred thirty dollars with maintained buy rating further validates bullish positioning. Some value-oriented investors note discounted cash flow models suggest fair value near two hundred twenty-eight dollars, creating constructive debate about whether current prices reflect growth appropriately."
+            "topic": "Executive Stability and Leadership",
+            "sentiment": "Positive",
+            "analysis_snippet": "Tim Cook's commitment to remain CEO until 2027 is viewed as positive for strategic continuity."
         },
         {
-            "topic": "Executive Departures and Leadership Succession",
-            "sentiment_impact": "Mixed",
-            "detailed_analysis": "Reports of senior executive departures including chip chief Johny Srouji potentially leaving and VP Alan Dye departing for Meta have generated mixed reactions. While some community members express concern about talent retention and internal stability, others view leadership refreshment as natural organizational evolution. Discussions about Tim Cook's potential departure timeline and successor speculation featuring names like Ternus and Federighi reflect longer-term governance interest rather than immediate alarm."
+            "topic": "Regulatory and Legal Concerns",
+            "sentiment": "Mixed",
+            "analysis_snippet": "Bipartisan attorneys general warnings about AI chatbot outputs create regulatory uncertainty."
         },
         {
-            "topic": "Market Capitalization Milestone and Index Influence",
-            "sentiment_impact": "Positive",
-            "detailed_analysis": "Apple approaching four trillion dollar market capitalization has attracted significant discussion about the company's weighting in major indices and exchange-traded funds. Retail investors recognize the passive investment flow dynamics where large index fund inflows automatically purchase Apple shares, creating structural demand support. This index dominance is viewed favorably as providing price stability and attracting continued institutional participation."
+            "topic": "China Market Performance",
+            "sentiment": "Positive",
+            "analysis_snippet": "Foreign-branded phone shipments in China increased 13% year-over-year, indicating strong market performance."
         }
     ],
-    "retail_psychology_assessment": "Current retail investor psychology reflects confident accumulation behavior with moderate Fear Of Missing Out dynamics emerging as Apple stock reaches new all-time highs. The combination of strong product fundamentals, artificial intelligence narrative tailwinds, and analyst validation has created a constructive but not euphoric environment. Investors demonstrate willingness to buy pullbacks rather than panic sell on negative headlines such as executive departures. The community shows measured optimism rather than irrational exuberance, with price target debates and valuation discussions indicating thoughtful engagement rather than blind speculation. Institutional options activity suggesting professional validation provides additional confidence to retail participants maintaining long positions."
+    "psychology": "Optimism driven by analyst upgrades and Fear Of Missing Out on AI integration potential"
 }

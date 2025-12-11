@@ -1,27 +1,26 @@
 {
-    "executive_summary": "Apple Inc is a global technology leader in consumer electronics, software, and services with a dominant market position and exceptional brand loyalty. The company demonstrates extraordinary financial strength with massive cash generation capabilities, high profitability, and a fortress balance sheet. With a market capitalization exceeding four trillion dollars, Apple maintains industry-leading margins and continues to innovate across its ecosystem of hardware, software, and services.",
+    "executive_summary": "Apple Inc is a global technology leader in consumer electronics, software, and services with a dominant market position and strong brand loyalty. The company demonstrates exceptional profitability with a net profit margin of approximately 27 percent and generates substantial free cash flow of nearly 99 billion dollars annually. However, the company carries significant leverage with a debt to equity ratio of 3.87, which raises concerns about financial flexibility. Apple maintains strong operational performance but faces valuation concerns with a Price to Earnings Ratio of 37.21, suggesting the stock may be fully valued relative to earnings.",
     "valuation_status": "Overvalued",
-    "financial_health_score": 92,
+    "financial_health_score": 65,
     "comprehensive_metrics": {
-        "revenue_growth_year_over_year": "Low single digit percent",
+        "revenue_growth_year_over_year": "Moderate single digit growth",
         "net_profit_margin": "26.9 percent",
-        "price_to_earnings_ratio": "37.21x",
+        "price_to_earnings_ratio": "37.21",
         "debt_to_equity_ratio": "3.87",
-        "return_on_equity": "151.9 percent",
-        "free_cash_flow_status": "Exceptionally strong at 98.8 billion dollars annually"
+        "return_on_equity": "152 percent",
+        "free_cash_flow_status": "Strong positive cash generation of 98.8 billion dollars"
     },
     "key_strengths_analysis": [
-        "Exceptional profitability with net profit margin of 26.9 percent, significantly above technology industry averages",
-        "Massive free cash flow generation of 98.8 billion dollars annually, providing tremendous financial flexibility",
-        "Strong brand equity and customer loyalty creating sustainable competitive advantages",
-        "Diversified revenue streams across hardware, services, and software reducing dependency on any single product",
-        "Robust balance sheet with substantial cash reserves and manageable debt levels relative to cash flow"
+        "Exceptional profitability with net profit margin of 26.9 percent, significantly above industry averages",
+        "Strong free cash flow generation of 98.8 billion dollars provides financial flexibility for dividends, buybacks, and investments",
+        "Dominant market position in consumer electronics with strong brand loyalty and ecosystem lock-in",
+        "Diversified revenue streams across hardware, software, and services reducing dependency on any single product category"
     ],
     "key_risks_analysis": [
-        "High valuation with Price to Earnings Ratio of 37.21x, suggesting limited upside potential and vulnerability to market corrections",
-        "Significant debt to equity ratio of 3.87 indicating substantial leverage, though manageable given strong cash flows",
+        "High debt to equity ratio of 3.87 indicates significant leverage which could constrain financial flexibility during economic downturns",
+        "Elevated Price to Earnings Ratio of 37.21 suggests the stock may be overvalued relative to earnings growth expectations",
         "Dependence on iPhone sales for majority of revenue creates concentration risk despite diversification efforts",
-        "Intense competition in consumer electronics and services markets from global technology giants",
-        "Regulatory scrutiny and potential antitrust actions across multiple jurisdictions could impact business operations"
+        "Intense competition in consumer electronics and services markets from global competitors",
+        "Regulatory scrutiny and potential antitrust actions across multiple jurisdictions"
     ]
 }

@@ -1,6 +1,6 @@
 import json
 import re
-from typing import List
+from typing import List, Literal
 from datetime import datetime, timedelta
 from pydantic import BaseModel, Field
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
@@ -11,25 +11,22 @@ from tradingagents.agents.utils.agent_utils import get_news, get_global_news
 
 # ===================== PYDANTIC MODELS ======================
 class GlobalMacroContext(BaseModel):
-    economic_policy_analysis: str = Field(description="Analysis of Central Bank actions and Interest Rates.")
-    geopolitical_impact: str = Field(description="Analysis of wars, trade bans, or elections affecting the sector.")
-
+    macro_summary: str = Field(description="Concise analysis of Central Bank, Interest Rates, and Geopolitics combined. Max 5 sentences.")
 
 class CompanyNewsItem(BaseModel):
-    headline: str = Field(description="Full headline of the news.")
-    source: str = Field(description="News Source (e.g. Reuters, Bloomberg).")
-    date: str = Field(description="Date of the news (YYYY-MM-DD).")
-    sentiment_impact: str = Field(description="Impact on sentiment (Positive/Negative/Neutral).")
-    detailed_implication: str = Field(description="A full sentence explaining WHY this matters for the stock price.")
-
+    headline: str
+    source: str
+    date: str
+    sentiment: Literal["Positive", "Negative", "Neutral"] = Field(description="Strict label")
+    implication: str = Field(description="One sentence on price impact.")
 
 class NewsReport(BaseModel):
-    executive_summary: str = Field(description="A detailed paragraph summarizing the single most important story driving the stock right now.")
-    market_sentiment_score: int = Field(ge=0, le=100, description="Score from 0 (Very Negative) to 100 (Very Positive).")
-    market_sentiment_verdict: str = Field(description="Overall verdict: Bullish, Bearish, or Neutral.")
+    executive_summary: str = Field(description="The single most important driver. Max 50 words.")
+    market_sentiment_score: int = Field(description="0-100")
+    market_sentiment_verdict: Literal["Bullish", "Bearish", "Neutral"]
     global_macro_context: GlobalMacroContext
-    company_specific_developments: List[CompanyNewsItem] = Field(description="List of key company-specific news items.")
-    key_risks_identified: List[str] = Field(description="List of major risks identified from the news.")
+    top_news_developments: List[CompanyNewsItem] = Field(description="Select ONLY top 3-5 most impactful items.")
+    key_risks: List[str] = Field(description="Max 3 bullet points.")
 
 
 # ===================== AGENT FACTORY ======================

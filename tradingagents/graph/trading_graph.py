@@ -1,10 +1,14 @@
 # TradingAgents/graph/trading_graph.py
 
-import os
+import os, requests
 from pathlib import Path
 import json
 from datetime import date
 from typing import Dict, Any, Tuple, List, Optional
+from rich.console import Console
+
+console = Console()
+
 
 from langchain_openai import ChatOpenAI
 from langchain_anthropic import ChatAnthropic
@@ -43,6 +47,27 @@ from .setup import GraphSetup
 from .propagation import Propagator
 from .reflection import Reflector
 from .signal_processing import SignalProcessor
+
+def sent_to_telegram(message: str):
+    """Send a message to Telegram if configured."""
+    TELEGRAM_TOKEN = os.getenv("TELEGRAM_TOKEN")
+    TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID")
+
+    if TELEGRAM_TOKEN and TELEGRAM_CHAT_ID:
+        url = f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendMessage"
+        payload = {
+            "chat_id": TELEGRAM_CHAT_ID,
+            "text": message,
+            "parse_mode": "Markdown",
+        }
+        try:
+            response = requests.post(url, data=payload, timeout=10)
+            response.raise_for_status()
+            console.print("[green]Report sent to Telegram successfully![/green]")
+        except requests.RequestException as e:
+            console.print(f"[red]Failed to send report to Telegram: {e}[/red]")
+    else:
+        console.print("[yellow]Telegram not configured. Skipping sending report.[/yellow]")
 
 
 class TradingAgentsGraph:
@@ -319,6 +344,12 @@ class TradingAgentsGraph:
                 print("✅ trader Summary Updated!")
             else:
                 print("⚠️ trader Summary returned empty.")
+                
+            print("📝 Sent telegram...")    
+            # read text and send to telegram
+            with open("all_report_message.txt", "r", encoding="utf-8") as f:
+                report_messages = f.read()
+                sent_to_telegram(report_messages)
                 
         except Exception as e:
             print(f"❌ Failed to summarize: {e}")

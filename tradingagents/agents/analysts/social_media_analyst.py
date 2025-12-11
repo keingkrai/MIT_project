@@ -1,6 +1,6 @@
 import json
 import re
-from typing import List
+from typing import List, Literal
 from datetime import datetime, timedelta
 from pydantic import BaseModel, Field
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
@@ -11,19 +11,18 @@ from tradingagents.agents.utils.agent_utils import get_news, get_social
 
 # ===================== PYDANTIC MODELS ======================
 class DiscussionTopic(BaseModel):
-    topic: str = Field(description="The specific subject being discussed.")
-    sentiment_impact: str = Field(description="Impact on sentiment (Positive, Negative, or Mixed).")
-    detailed_analysis: str = Field(description="Deep dive into the community's feelings and arguments about this topic.")
-
+    topic: str = Field(description="The subject.")
+    sentiment: Literal["Positive", "Negative", "Mixed"]
+    # จำกัดความยาว: Social media ชอบบ่นยาว เราต้องสั่งตัดบท
+    analysis_snippet: str = Field(description="Max 1 sentence summary of the crowd's opinion.")
 
 class SocialMediaReport(BaseModel):
-    sentiment_score: int = Field(ge=0, le=100, description="Score from 0 (Extreme Fear) to 100 (Extreme Greed). Default 50 if neutral.")
-    sentiment_verdict: str = Field(description="Overall verdict: Bearish, Neutral, Bullish, Euphoric, or Panic.")
-    social_volume_analysis: str = Field(description="Assessment of discussion volume (e.g., 'Spike in mentions due to news').")
-    dominant_narrative: str = Field(description="The main story driving retail investor sentiment.")
-    top_discussion_topics: List[DiscussionTopic] = Field(description="List of key topics trending in discussions.")
-    retail_psychology_assessment: str = Field(description="Analysis of crowd psychology (e.g., Fear Of Missing Out, Capitulation).")
-
+    sentiment_score: int = Field(description="0 (Fear) to 100 (Greed).")
+    sentiment_verdict: Literal["Bearish", "Neutral", "Bullish", "Euphoria", "Panic"]
+    social_volume: str = Field(description="Brief assessment (e.g., 'Spike due to earnings').")
+    dominant_narrative: str = Field(description="Main story driving retail. Max 2 sentences.")
+    top_topics: List[DiscussionTopic] = Field(description="Select ONLY top 3-5 trending topics.")
+    psychology: str = Field(description="Crowd psychology (e.g. FOMO, Capitulation).")
 
 # ===================== AGENT FACTORY ======================
 def create_social_media_analyst(llm):

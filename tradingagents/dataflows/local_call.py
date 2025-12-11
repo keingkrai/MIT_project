@@ -4,27 +4,6 @@ import os, requests
 from rich.console import Console
 
 console = Console()
-
-def sent_to_telegram(message: str):
-    """Send a message to Telegram if configured."""
-    TELEGRAM_TOKEN = os.getenv("TELEGRAM_TOKEN")
-    TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID")
-
-    if TELEGRAM_TOKEN and TELEGRAM_CHAT_ID:
-        url = f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendMessage"
-        payload = {
-            "chat_id": TELEGRAM_CHAT_ID,
-            "text": message,
-            "parse_mode": "Markdown",
-        }
-        try:
-            response = requests.post(url, data=payload, timeout=10)
-            response.raise_for_status()
-            console.print("[green]Report sent to Telegram successfully![/green]")
-        except requests.RequestException as e:
-            console.print(f"[red]Failed to send report to Telegram: {e}[/red]")
-    else:
-        console.print("[yellow]Telegram not configured. Skipping sending report.[/yellow]")
  
 #fundamental data
 def get_fundamentals_local(ticker, curr_date):
@@ -36,11 +15,6 @@ def get_fundamentals_local(ticker, curr_date):
     res = pick_fundamental_source(ticker)
     
     print(f'\n\n\n [get_fundamentals_local] Chosen fundamental data source result:\n{res}\n\n\n')
-    
-    # read text and send to telegram
-    with open("all_report_message.txt", "r", encoding="utf-8") as f:
-        report_messages = f.read()
-        sent_to_telegram(report_messages)
         
     return res
 

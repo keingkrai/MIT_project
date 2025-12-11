@@ -1,6 +1,6 @@
 import json
 import re
-from typing import List
+from typing import List, Literal
 from datetime import datetime, timedelta
 from pydantic import BaseModel, Field
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
@@ -11,10 +11,10 @@ from tradingagents.dataflows.core_stock_price import get_stock_data
 
 # ===================== PYDANTIC MODELS ======================
 class MarketOverview(BaseModel):
-    trend_direction: str = Field(description="Primary trend direction: Bullish, Bearish, or Sideways.")
-    momentum_state: str = Field(description="Momentum description e.g., Strong, Weak, Diverging.")
-    volatility_level: str = Field(description="Volatility level: Low, Moderate, High.")
-    volume_condition: str = Field(description="Volume analysis: Rising, Falling, Neutral.")
+    trend_direction: Literal["Bullish", "Bearish", "Sideways"] = Field(description="Primary trend direction")
+    momentum_state: Literal["Strong", "Weak", "Diverging", "Neutral"] = Field(description="Momentum state")
+    volatility_level: Literal["Low", "Moderate", "High"] = Field(description="Volatility based on ATR/Bollinger")
+    volume_condition: Literal["Rising", "Falling", "Neutral"] = Field(description="Volume trend analysis")
 
 
 class IndicatorAnalysis(BaseModel):

@@ -501,6 +501,61 @@ async def run_analysis_stream(websocket: WebSocket, request: AnalysisRequest):
             }
         })
 
+        sum_finda = final_state.get("Summarize_fundamentals_report")
+        funda = final_state.get("fundamentals_report")
+        
+        sum_market = final_state.get("Summarize_market_report")
+        market = final_state.get("market_report")
+
+        sum_cial = final_state.get("Summarize_social_report")
+        social = final_state.get("sentiment_report")
+
+        sum_news = final_state.get("Summarize_news_report")
+        news = final_state.get("news_report")
+        
+        with open("./sum_funda.txt", 'w', encoding='utf-8') as f:
+            f.write(str(sum_finda))
+            
+        funda = json.loads(funda)
+        with open("./full_funda.json", 'w', encoding='utf-8') as f:
+            json.dump(funda, f, ensure_ascii=False, indent=4)
+            
+        with open("./sum_market.txt", 'w', encoding='utf-8') as f:
+            f.write(str(sum_market))
+            
+        market = json.loads(market)
+        with open("./full_market.json", 'w', encoding='utf-8') as f:
+            json.dump(market, f, ensure_ascii=False, indent=4)
+
+        with open("./sum_social.txt", 'w', encoding='utf-8') as f:
+            f.write(str(sum_cial))
+
+        social = json.loads(social)
+        with open("./full_social.json", 'w', encoding='utf-8') as f:
+            json.dump(social, f, ensure_ascii=False, indent=4)
+
+        with open("./sum_news.txt", 'w', encoding='utf-8') as f:
+            f.write(str(sum_news))
+        
+        news = json.loads(news)
+        with open("./full_news.json", 'w', encoding='utf-8') as f:
+            json.dump(news, f, ensure_ascii=False, indent=4)
+
+        investment = final_state.get("investment_debate_state")
+        risk = final_state.get("risk_debate_state")
+        trader = final_state.get("trader_investment_decision")
+    
+        
+        # เขียนให้เป็น JSON สวยๆ (pretty)
+        with open("./investment.json", "w", encoding="utf-8") as f:
+            json.dump(investment, f, ensure_ascii=False, indent=4)
+
+        with open("./risk.json", "w", encoding="utf-8") as f:
+            json.dump(risk, f, ensure_ascii=False, indent=4)
+            
+        with open("./trader.json", "w", encoding="utf-8") as f:
+            json.dump(trader, f, ensure_ascii=False, indent=4)
+
     except Exception as e:
         await send_update(websocket, "error", {
             "message": str(e)

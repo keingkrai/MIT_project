@@ -18,22 +18,48 @@ def create_safe_debator(llm):
         fundamentals_report = state["fundamentals_report"]
 
         trader_decision = state["trader_investment_plan"]
+        
+        system_prompt = (
+            "You are a Senior Conservative Risk Analyst. Your number one priority is Capital Preservation. "
+            "You are skeptical of hype and high volatility. You must critique the Risky and Neutral analysts for being reckless. "
+            "INSTRUCTIONS "
+            "1. Write using ONLY plain text. Do not use asterisks, hashes, or dashes. "
+            "2. Do NOT use abbreviations. Use full terms (e.g., Maximum Drawdown, Stop Loss, Moving Average). "
+            "3. Focus on the Downside. Ask: What if this goes wrong?"
+        )
 
-        prompt = f"""As the Safe/Conservative Risk Analyst, your primary objective is to protect assets, minimize volatility, and ensure steady, reliable growth. You prioritize stability, security, and risk mitigation, carefully assessing potential losses, economic downturns, and market volatility. When evaluating the trader's decision or plan, critically examine high-risk elements, pointing out where the decision may expose the firm to undue risk and where more cautious alternatives could secure long-term gains. Here is the trader's decision:
+        user_prompt = f"""
+        Review the Trader Plan and the Debate to formulate your Conservative argument.
 
-{trader_decision}
+        TRADER PLAN
+        {trader_decision}
 
-Your task is to actively counter the arguments of the Risky and Neutral Analysts, highlighting where their views may overlook potential threats or fail to prioritize sustainability. Respond directly to their points, drawing from the following data sources to build a convincing case for a low-risk approach adjustment to the trader's decision:
+        RAW INTELLIGENCE
+        Market Technicals: {market_research_report}
+        Sentiment: {sentiment_report}
+        News: {news_report}
+        Fundamentals: {fundamentals_report}
 
-Market Research Report: {market_research_report}
-Social Media Sentiment Report: {sentiment_report}
-Latest World Affairs Report: {news_report}
-Company Fundamentals Report: {fundamentals_report}
-Here is the current conversation history: {history} Here is the last response from the risky analyst: {current_risky_response} Here is the last response from the neutral analyst: {current_neutral_response}. If there are no responses from the other viewpoints, do not halluncinate and just present your point.
+        DEBATE CONTEXT
+        History: {history}
+        Risky Argument: {current_risky_response}
+        Neutral Argument: {current_neutral_response}
 
-Engage by questioning their optimism and emphasizing the potential downsides they may have overlooked. Address each of their counterpoints to showcase why a conservative stance is ultimately the safest path for the firm's assets. Focus on debating and critiquing their arguments to demonstrate the strength of a low-risk strategy over their approaches. Output conversationally as if you are speaking without any special formatting."""
+        REQUIRED OUTPUT FORMAT
+        Section 1 Direct Rebuttal
+        Directly counter the points made by the Risky and Neutral analysts. Explain why their optimism ignores potential dangers.
 
-        response = llm.invoke(prompt)
+        Section 2 Worst Case Scenario
+        Describe exactly how the trade could fail based on the data (e.g., Economic Recession, Overbought Signals).
+
+        Section 3 Protective Measures
+        Propose stricter safety rules. Suggest reducing the Position Size or tightening the Stop Loss.
+        """
+
+        response = llm.invoke([
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": user_prompt}
+        ])
 
         argument = f"Safe Analyst: {response.content}"
 

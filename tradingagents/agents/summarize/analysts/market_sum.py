@@ -7,7 +7,7 @@ client = openai.OpenAI(
 )
 
 def create_summarizer_market():
-    def market_nodels_summarizer(state) -> dict:
+    def market_node_summarizer(state) -> dict:
         
         # ดึงรายงานเดิมมา
         market_report = state.get("market_report")
@@ -74,4 +74,4 @@ def create_summarizer_market():
             print(f"Error in summarizer: {e}")
             return {} # คืนค่าว่างถ้า error จะได้ไม่พัง
         
-    return market_nodels_summarizer
+    return market_node_summarizer

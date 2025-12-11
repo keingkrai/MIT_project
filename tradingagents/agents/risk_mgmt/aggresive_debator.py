@@ -17,22 +17,48 @@ def create_risky_debator(llm):
         fundamentals_report = state["fundamentals_report"]
 
         trader_decision = state["trader_investment_plan"]
+        
+        system_prompt = (
+            "You are a Senior High Risk Equity Researcher. Your goal is to champion high reward opportunities, innovation, and aggressive growth. "
+            "You must critique the Conservative and Neutral analysts for being too cautious. "
+            "INSTRUCTIONS "
+            "1. Write using ONLY plain text. Do not use asterisks, hashes, or dashes. "
+            "2. Do NOT use abbreviations. Use full terms (e.g., Return on Investment, Volatility, Year over Year). "
+            "3. Focus on the Upside. Argue that fortune favors the bold."
+        )
 
-        prompt = f"""As the Risky Risk Analyst, your role is to actively champion high-reward, high-risk opportunities, emphasizing bold strategies and competitive advantages. When evaluating the trader's decision or plan, focus intently on the potential upside, growth potential, and innovative benefits—even when these come with elevated risk. Use the provided market data and sentiment analysis to strengthen your arguments and challenge the opposing views. Specifically, respond directly to each point made by the conservative and neutral analysts, countering with data-driven rebuttals and persuasive reasoning. Highlight where their caution might miss critical opportunities or where their assumptions may be overly conservative. Here is the trader's decision:
+        user_prompt = f"""
+        Review the Trader Plan and the Debate to formulate your High Risk argument.
 
-{trader_decision}
+        TRADER PLAN
+        {trader_decision}
 
-Your task is to create a compelling case for the trader's decision by questioning and critiquing the conservative and neutral stances to demonstrate why your high-reward perspective offers the best path forward. Incorporate insights from the following sources into your arguments:
+        RAW INTELLIGENCE
+        Market Technicals: {market_research_report}
+        Sentiment: {sentiment_report}
+        News: {news_report}
+        Fundamentals: {fundamentals_report}
 
-Market Research Report: {market_research_report}
-Social Media Sentiment Report: {sentiment_report}
-Latest World Affairs Report: {news_report}
-Company Fundamentals Report: {fundamentals_report}
-Here is the current conversation history: {history} Here are the last arguments from the conservative analyst: {current_safe_response} Here are the last arguments from the neutral analyst: {current_neutral_response}. If there are no responses from the other viewpoints, do not halluncinate and just present your point.
+        DEBATE CONTEXT
+        History: {history}
+        Conservative Argument: {current_safe_response}
+        Neutral Argument: {current_neutral_response}
 
-Engage actively by addressing any specific concerns raised, refuting the weaknesses in their logic, and asserting the benefits of risk-taking to outpace market norms. Maintain a focus on debating and persuading, not just presenting data. Challenge each counterpoint to underscore why a high-risk approach is optimal. Output conversationally as if you are speaking without any special formatting."""
+        REQUIRED OUTPUT FORMAT
+        Section 1 Direct Rebuttal
+        Directly counter the fears raised by the Conservative and Neutral analysts. Explain why their caution will lead to missed opportunities.
 
-        response = llm.invoke(prompt)
+        Section 2 The Growth Thesis
+        Highlight specific data points (Earnings Growth, Hype, Momentum) that justify taking higher risks.
+
+        Section 3 Aggressive Strategy
+        Advocate for a decisive position. Suggest that volatility is the price of entry for high returns.
+        """
+
+        response = llm.invoke([
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": user_prompt}
+        ])
 
         argument = f"Risky Analyst: {response.content}"
 

@@ -7,7 +7,7 @@ client = openai.OpenAI(
 )
 
 def create_summarizer_fundamental():
-    def fundamental_nodels_summarizer(state) -> dict:
+    def fundamental_node_summarizer(state) -> dict:
         
         # ดึงรายงานเดิมมา
         fundamental_report = state.get("fundamentals_report")
@@ -64,4 +64,4 @@ def create_summarizer_fundamental():
             print(f"Error in summarizer: {e}")
             return {} # คืนค่าว่างถ้า error จะได้ไม่พัง
         
-    return fundamental_nodels_summarizer
+    return fundamental_node_summarizer

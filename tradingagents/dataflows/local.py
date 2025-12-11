@@ -477,766 +477,21 @@ def get_reddit_companynews(
 
     return f"##{query} News Reddit, from {start_date} to {end_date}:\n\n{news_str}"
 
-#------------------------------ EDIT INDICATORS ---------------------------------#
-
-_INTERVAL_MAP = {
-    "1m":  Interval.INTERVAL_1_MINUTE,
-    "5m":  Interval.INTERVAL_5_MINUTES,
-    "15m": Interval.INTERVAL_15_MINUTES,
-    "30m": Interval.INTERVAL_30_MINUTES,
-    "1h":  Interval.INTERVAL_1_HOUR,
-    "4h":  Interval.INTERVAL_4_HOURS,
-    "1d":  Interval.INTERVAL_1_DAY,
-    "1w":  Interval.INTERVAL_1_WEEK,
-    "1mo": Interval.INTERVAL_1_MONTH,
-}
-
-def _to_interval(interval_str: str) -> Interval:
-    i = interval_str.lower().strip()
-    if i not in _INTERVAL_MAP:
-        raise ValueError(f"Unsupported interval '{interval_str}'. Use one of: {', '.join(_INTERVAL_MAP.keys())}")
-    return _INTERVAL_MAP[i]
-
-# ต้องมี (ถ้ายังไม่ได้ import)
-from tradingview_ta import TA_Handler, Interval
-from datetime import datetime
-
-# ====== กำหนดรายการที่ต้องการโชว์ + alias ======
-REQUESTED_INDICATORS = {
-    "close_50_sma":   ("50 SMA", "close"),
-    "close_200_sma":  ("200 SMA", "close"),
-    "close_10_ema":   ("10 EMA", "close"),
-    "macd":           ("MACD", "close"),
-    "macds":          ("MACD Signal", "close"),
-    "macdh":          ("MACD Histogram", "close"),
-    "rsi":            ("RSI", "close"),
-    "boll":           ("Bollinger Middle", "close"),
-    "boll_ub":        ("Bollinger Upper Band", "close"),
-    "boll_lb":        ("Bollinger Lower Band", "close"),
-    "atr":            ("ATR", None),
-    "vwma":           ("VWMA", "close"),
-}
-
-INDICATOR_ALIASES = {
-    "close_50_sma":  ["SMA50", "sma50", "MA50", "ma50"],
-    "close_200_sma": ["SMA200", "sma200", "MA200", "ma200"],
-    "close_10_ema":  ["EMA10", "ema10"],
-    "macd":          ["MACD.macd", "macd", "MACD"],
-    "macds":         ["MACD.signal", "macds", "MACDSignal", "signal"],
-    "macdh":         ["MACD.hist", "macdh", "MACDHistogram", "histogram"],
-    "rsi":           ["RSI", "rsi", "RSI[14]"],
-    "boll":          ["BB.middle", "BBasis", "BOLL_MIDDLE", "BOLL"],
-    "boll_ub":       ["BB.upper", "BBUpper", "BOLL_UPPER"],
-    "boll_lb":       ["BB.lower", "BBLower", "BOLL_LOWER"],
-    "atr":           ["ATR", "atr", "ATR[14]"],
-    "vwma":          ["VWMA", "vwma", "VWMA20"],
-}
-
-def _pick_from_indicators(ind_dict: dict, key: str):
-    """คืนค่า ind_dict[key] โดยลอง alias เผื่อคีย์ไม่ตรง"""
-    if key in ind_dict:
-        return ind_dict[key]
-    for alt in INDICATOR_ALIASES.get(key, []):
-        if alt in ind_dict:
-            return ind_dict[alt]
-    return None
-
-
-def get_tradingview_indicators_dict(
-    symbol: str,
-    exchange: str = "NASDAQ",
-    screener: str = "america",
-    interval: str = "1d",
-) -> dict:
-    """
-    ดึงค่าจาก TradingView แล้วคืนเป็น dict ตาม key ใน REQUESTED_INDICATORS
-    เช่น {"close_50_sma": 123.45, "close_200_sma": 234.56, ...}
-    """
-    tv_interval = _to_interval(interval)
-    h = TA_Handler(
-        symbol=symbol,
-        screener=screener,
-        exchange=exchange,
-        interval=tv_interval,
-    )
-
-    # อาจโดน rate-limit หรือ symbol ผิด — กัน error ให้คืน dict ว่าง
-    try:
-        a = h.get_analysis()
-    except Exception as e:
-        # ถ้าอยากดีบักก็ print(e) ได้
-        return {}
-
-    ind = a.indicators or {}
-    out = {}
-    for key in REQUESTED_INDICATORS.keys():
-        v = _pick_from_indicators(ind, key)
-        try:
-            out[key] = float(v) if v is not None else None
-        except Exception:
-            out[key] = None
-    return out
-
-
-def get_tradingview_indicators(
-    symbol: str,
-    exchange: str = "NASDAQ",
-    screener: str = "america",
-    interval: str = "1d",
-) -> str:
-    """
-    เวอร์ชันเดิม (คืน Markdown) แต่ภายในเรียก dict เวอร์ชันเพื่อให้รูปแบบข้อมูลสอดคล้อง
-    """
-    data = get_tradingview_indicators_dict(
-        symbol=symbol, exchange=exchange, screener=screener, interval=interval
-    )
-
-    header  = f"# TradingView TA for {symbol.upper()} ({exchange}) [{interval}]\n"
-    header += f"# Screener: {screener}\n"
-    header += f"# Retrieved on: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n\n"
-
-    lines = []
-    lines.append("## INDICATORS (numeric)")
-    if not data:
-        lines.append("(no indicators)")
-        lines.append("")
-        return header + "\n".join(lines)
-
-    lines.append("| Indicator | Value |")
-    lines.append("|---|---|")
-
-    any_found = False
-    for key, (display_name, _src) in REQUESTED_INDICATORS.items():
-        v = data.get(key, None)
-        if v is None:
-            val_str = "–"
-        else:
-            any_found = True
-            val_str = f"{v:.4f}"
-        lines.append(f"| {display_name} | {val_str} |")
-
-    if not any_found:
-        lines.append("| (no indicators found) | - |")
-    lines.append("")
-
-    body = "\n".join(lines)
-    return header + body
-
-
-# ----------------------------- yfinance INDICATORS ----------------------------- #
-# pip install yfinance pandas ta
-import pandas as pd
-import yfinance as yf
-from typing import Dict, Optional
-
-from ta.trend import EMAIndicator, SMAIndicator, MACD
-from ta.momentum import RSIIndicator
-from ta.volatility import BollingerBands, AverageTrueRange
-
-# ใช้ mapping/alias เดิมที่คุณประกาศไว้ก่อนหน้า:
-# REQUESTED_INDICATORS = {
-#   "close_50_sma": ("50 SMA", "close"), ...
-# }
-
-def _normalize_ohlcv(df: pd.DataFrame) -> pd.DataFrame:
-    """ทำชื่อคอลัมน์ให้เป็น Open/High/Low/Close/Adj Close/Volume (ถ้ามี)"""
-    if isinstance(df.columns, pd.MultiIndex):
-        df = df.copy()
-        df.columns = df.columns.droplevel(-1)
-    ren = {c: c.capitalize() for c in df.columns}
-    df = df.rename(columns=ren)
-    if "Adj close" in df.columns:
-        df.rename(columns={"Adj close": "Adj Close"}, inplace=True)
-    return df
-
-def _ensure_basic_columns(df: pd.DataFrame) -> pd.DataFrame:
-    """ให้แน่ใจว่ามีคอลัมน์หลักครบ ถ้าไม่มี Volume ให้เติม 0"""
-    for col in ["Open", "High", "Low", "Close", "Volume"]:
-        if col not in df.columns:
-            if col == "Volume":
-                df["Volume"] = 0
-            else:
-                raise RuntimeError(f"Missing column: {col}")
-    return df
-
-def _compute_indicators_yf(
-    df: pd.DataFrame,
-    ema_window: int = 10,
-    sma50_window: int = 50,
-    sma200_window: int = 200,
-    rsi_window: int = 14,
-    bb_window: int = 20,
-    bb_dev: float = 2.0,
-    atr_window: int = 14,
-    vwma_window: int = 20,
-) -> pd.DataFrame:
-    """คำนวณอินดิเคเตอร์ตามชื่อที่ต้องการ"""
-    out = df.copy()
-
-    # EMA / SMA
-    out["close_10_ema"]  = EMAIndicator(close=out["Close"], window=ema_window).ema_indicator()
-    out["close_50_sma"]  = SMAIndicator(close=out["Close"], window=sma50_window).sma_indicator()
-    out["close_200_sma"] = SMAIndicator(close=out["Close"], window=sma200_window).sma_indicator()
-
-    # MACD
-    macd = MACD(close=out["Close"], window_slow=26, window_fast=12, window_sign=9)
-    out["macd"]  = macd.macd()
-    out["macds"] = macd.macd_signal()
-    out["macdh"] = macd.macd_diff()
-
-    # RSI
-    out["rsi"] = RSIIndicator(close=out["Close"], window=rsi_window).rsi()
-
-    # Bollinger Bands
-    bb = BollingerBands(close=out["Close"], window=bb_window, window_dev=bb_dev)
-    out["boll"]    = bb.bollinger_mavg()
-    out["boll_ub"] = bb.bollinger_hband()
-    out["boll_lb"] = bb.bollinger_lband()
-
-    # ATR
-    atr = AverageTrueRange(high=out["High"], low=out["Low"], close=out["Close"], window=atr_window)
-    out["atr"] = atr.average_true_range()
-
-    # VWMA = rolling sum(Close*Vol)/rolling sum(Vol)
-    pv = (out["Close"] * out["Volume"]).rolling(window=vwma_window, min_periods=vwma_window).sum()
-    vv = out["Volume"].rolling(window=vwma_window, min_periods=vwma_window).sum()
-    out["vwma"] = pv / vv
-
-    return out
-
-def _last_row_to_dict(ind_df: pd.DataFrame) -> Dict[str, float]:
-    last = ind_df.iloc[-1]
-    out: Dict[str, float] = {}
-    for key in REQUESTED_INDICATORS.keys():
-        val = last.get(key, None)
-        if pd.isna(val):
-            continue
-        out[key] = float(val)
-    out["_last_bar_time_utc"] = ind_df.index[-1].strftime("%Y-%m-%d %H:%M:%S")
-    return out
-
-def _format_markdown_table(data: Dict[str, float]) -> str:
-    """แปลง dict เป็นตาราง Markdown ตามลำดับ REQUESTED_INDICATORS"""
-    lines = []
-    lines.append("## INDICATORS (numeric)")
-    if not data:
-        lines.append("(no indicators)")
-        lines.append("")
-        return "\n".join(lines)
-
-    lines.append("| Indicator | Value |")
-    lines.append("|---|---|")
-    for key, (display, _src) in REQUESTED_INDICATORS.items():
-        if key not in data:
-            continue
-        v = data[key]
-        val_str = f"{v:.4f}" if isinstance(v, (int, float)) else str(v)
-        lines.append(f"| {display} | {val_str} |")
-    lines.append("")
-    return "\n".join(lines)
-
-def get_yfin_indicators_dict(
-    symbol: str,
-    start_date: str,
-    end_date: str,
-    windows: Optional[Dict[str, float]] = None,
-) -> Dict[str, float]:
-    """
-    อ่านราคาจาก CSV (ผ่าน get_YFin_data) → คำนวณอินดิเคเตอร์ → คืนค่า dict ของค่าล่าสุด
-    windows: override เช่น {"ema":10,"sma50":50,"sma200":200,"rsi":14,"bb":20,"bb_dev":2.0,"atr":14,"vwma":20}
-    """
-    # ใช้ฟังก์ชันที่คุณมีอยู่แล้ว
-    df = get_YFin_data(symbol, start_date, end_date)
-    if df.empty:
-        raise RuntimeError("No rows in requested date range.")
-
-    df = df.copy()
-    df["Date"] = pd.to_datetime(df["Date"], utc=True)
-    df = df.set_index("Date")
-    df = _normalize_ohlcv(df)
-    df = _ensure_basic_columns(df)
-
-    windows = windows or {}
-    ind_df = _compute_indicators_yf(
-        df,
-        ema_window=int(windows.get("ema", 10)),
-        sma50_window=int(windows.get("sma50", 50)),
-        sma200_window=int(windows.get("sma200", 200)),
-        rsi_window=int(windows.get("rsi", 14)),
-        bb_window=int(windows.get("bb", 20)),
-        bb_dev=float(windows.get("bb_dev", 2.0)),
-        atr_window=int(windows.get("atr", 14)),
-        vwma_window=int(windows.get("vwma", 20)),
-    ).dropna()
-
-    if ind_df.empty:
-        raise RuntimeError("Not enough bars to compute indicators (dropna yielded empty). "
-                           "Increase range or use smaller windows.")
-    return _last_row_to_dict(ind_df)
-
-def get_yfin_indicators(
-    symbol: str,
-    start_date: str,
-    end_date: str,
-    windows: Optional[Dict[str, float]] = None,
-) -> str:
-    """
-    เวอร์ชัน “เหมือน TradingView” → คืน Markdown string
-      - Header: symbol, date range, retrieved timestamp (UTC), last bar time
-      - Body: ตาราง INDICATORS (numeric)
-    """
-    data = get_yfin_indicators_dict(symbol, start_date, end_date, windows=windows)
-    last_bar = data.pop("_last_bar_time_utc", None)
-
-    header  = f"# yfinance TA for {symbol.upper()} [{start_date} → {end_date}]\n"
-    header += f"# Retrieved on: {datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M:%S')} UTC\n"
-    if last_bar:
-        header += f"# Last bar (UTC): {last_bar}\n\n"
-    else:
-        header += "\n"
-    body = _format_markdown_table(data)
-    return header + body
-
-# -------- yfinance -------- #
-
-def get_yfin_indicators_online_dict(
-    symbol: str,
-    period: str = "2y",
-    interval: str = "1d",
-    windows: Optional[Dict[str, float]] = None,
-) -> Dict[str, float]:
-    """
-    ดาวน์โหลดจาก yfinance → คำนวณอินดิเคเตอร์ → คืน dict
-    """
-    df = yf.download(
-        symbol,
-        period=period,
-        interval=interval,
-        auto_adjust=False,
-        progress=False,
-        group_by="column",
-        threads=True,
-    )
-    if df.empty:
-        raise RuntimeError(f"No data for {symbol} (period={period}, interval={interval})")
-
-    df.index = pd.to_datetime(df.index, utc=True)
-    df = _normalize_ohlcv(df)
-    df = _ensure_basic_columns(df)
-
-    windows = windows or {}
-    ind_df = _compute_indicators_yf(
-        df,
-        ema_window=int(windows.get("ema", 10)),
-        sma50_window=int(windows.get("sma50", 50)),
-        sma200_window=int(windows.get("sma200", 200)),
-        rsi_window=int(windows.get("rsi", 14)),
-        bb_window=int(windows.get("bb", 20)),
-        bb_dev=float(windows.get("bb_dev", 2.0)),
-        atr_window=int(windows.get("atr", 14)),
-        vwma_window=int(windows.get("vwma", 20)),
-    ).dropna()
-
-    if ind_df.empty:
-        raise RuntimeError("Not enough bars to compute indicators (dropna yielded empty). "
-                           "Increase period or use smaller windows.")
-    return _last_row_to_dict(ind_df)
-
-def get_yfin_indicators_online(
-    symbol: str,
-    period: str = "2y",
-    interval: str = "1d",
-    windows: Optional[Dict[str, float]] = None,
-) -> str:
-    data = get_yfin_indicators_online_dict(symbol, period=period, interval=interval, windows=windows)
-    last_bar = data.pop("_last_bar_time_utc", None)
-
-    header  = f"# yfinance TA for {symbol.upper()} [{interval}] (period={period})\n"
-    header += f"# Retrieved on: {datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M:%S')} UTC\n"
-    if last_bar:
-        header += f"# Last bar (UTC): {last_bar}\n\n"
-    else:
-        header += "\n"
-    body = _format_markdown_table(data)
-    return header + body
-
-
-# ------------------------ twelve data  ------------------------ #
-
-TD_BASE = "https://api.twelvedata.com"
-
-def _td_get(path, params, api_key=None):
-    api_key = "5fc2f7863f1c444987fd3b610db25220"
-    if not api_key:
-        raise RuntimeError("Set TWELVE_DATA_API_KEY")
-    params = {**params, "apikey": api_key}
-    r = requests.get(f"{TD_BASE}/{path}", params=params, timeout=30)
-    r.raise_for_status()
-    data = r.json()
-    if "status" in data and data["status"] == "error":
-        raise RuntimeError(f"TwelveData error: {data.get('message')}")
-    return data
-
-def get_twelve_data_indicator(symbol: str, interval="1day"):
-    """
-    ดึงเฉพาะค่าล่าสุดของชุดมาตรฐาน
-    (ยิงทีละ endpoint ตามข้อจำกัด Twelve Data)
-    """
-    out = {}
-    # SMA/EMA
-    out["close_50_sma"]  = float(_td_get("sma", {"symbol":symbol,"interval":interval,"time_period":50})["values"][0]["sma"])
-    out["close_200_sma"] = float(_td_get("sma", {"symbol":symbol,"interval":interval,"time_period":200})["values"][0]["sma"])
-    out["close_10_ema"]  = float(_td_get("ema", {"symbol":symbol,"interval":interval,"time_period":10})["values"][0]["ema"])
-    # MACD
-    macd = _td_get("macd", {"symbol":symbol,"interval":interval,"fast":12,"slow":26,"signal":9})
-    out["macd"]  = float(macd["values"][0]["macd"])
-    out["macds"] = float(macd["values"][0]["macd_signal"])
-    out["macdh"] = float(macd["values"][0]["macd_hist"])
-    # RSI
-    out["rsi"] = float(_td_get("rsi", {"symbol":symbol,"interval":interval,"time_period":14})["values"][0]["rsi"])
-    # Bollinger
-    bb = _td_get("bbands", {"symbol":symbol,"interval":interval,"time_period":20,"stddev":2})
-    out["boll"]    = float(bb["values"][0]["middle_band"])
-    out["boll_ub"] = float(bb["values"][0]["upper_band"])
-    out["boll_lb"] = float(bb["values"][0]["lower_band"])
-    # ATR
-    out["atr"] = float(_td_get("atr", {"symbol":symbol,"interval":interval,"time_period":14})["values"][0]["atr"])
-    # VWMA — ไม่มี endpoint ตรง ต้องคำนวณเองจาก time_series
-    ts = _td_get("time_series", {"symbol":symbol,"interval":interval,"outputsize":60})
-    import pandas as pd
-    df = pd.DataFrame(ts["values"])
-    df["close"]  = pd.to_numeric(df["close"], errors="coerce")
-    df["volume"] = pd.to_numeric(df["volume"], errors="coerce")
-    vw = (df["close"]*df["volume"]).rolling(20).sum()/df["volume"].rolling(20).sum()
-    out["vwma"] = float(vw.iloc[0])  # ค่าล่าสุดอยู่ index 0 ของ Twelve Data
-    return out
-
-# ===========================
-# Compare only the fixed 6 indicators
-# ===========================
-
-COMPARE_KEYS = [
-    "close_50_sma",   # 50 sma
-    "close_200_sma",  # 200 sma
-    "close_10_ema",   # 10 ema
-    "macd",           # macd
-    "macds",          # macd signal
-    "macdh",          # macd histogram
-    "rsi",            # rsi
-    "boll",           # Bollinger middle band
-    "boll_ub",        # Bollinger upper band
-    "boll_lb",        # Bollinger lower band
-    "atr",            # ATR
-    "vwma",           # VWMA
-]
-
-# tolerance ต่ออินดิเคเตอร์ (จูนได้)
-INDICATOR_TOL = {
-    "rsi":            {"abs": 0.25, "rel": 0.0},
-    "macd":           {"abs": 0.005, "rel": 0.0},
-    "macds":          {"abs": 0.005, "rel": 0.0},
-    "macdh":          {"abs": 0.005, "rel": 0.0},
-    "close_10_ema":   {"abs": 0.03,  "rel": 6e-4},
-    "close_50_sma":   {"abs": 0.04,  "rel": 6e-4},
-    "close_200_sma":  {"abs": 0.06,  "rel": 6e-4},
-    "boll":          {"abs": 0.05,  "rel": 7e-4},
-    "boll_ub":        {"abs": 0.06,  "rel": 7e-4},
-    "boll_lb":        {"abs": 0.06,  "rel": 7e-4},
-    "atr":            {"abs": 0.05,  "rel": 7e-4},
-    "vwma":           {"abs": 0.05,  "rel": 7e-4},
-}
-
-# ===========================
-# Pick ONE source per indicator (prefer TV > YF > TD)
-# ===========================
-
-from typing import Optional
-
-def _ensure_dir(path: str):
-    os.makedirs(os.path.dirname(path) or ".", exist_ok=True)
-
-def _save_json(obj, path: str):
-    _ensure_dir(path)
-    with open(path, "w", encoding="utf-8") as f:
-        json.dump(obj, f, ensure_ascii=False, indent=2)
-
-def _append_jsonl_line(obj, path: str):
-    _ensure_dir(path)
-    with open(path, "a", encoding="utf-8") as f:
-        f.write(json.dumps(obj, ensure_ascii=False) + "\n")
-
-def _is_num(x) -> bool:
-    return isinstance(x, (int, float)) and not isinstance(x, bool) and math.isfinite(x)
-
-def _restrict(d: Optional[Dict]) -> Dict:
-    """
-    รับอะไรมาก็ตาม ถ้าไม่ใช่ dict → คืน {}
-    ถ้าเป็น dict → คัดเหลือเฉพาะคีย์ที่อยู่ใน COMPARE_KEYS และแปลงเป็น float/None
-    """
-    if not isinstance(d, dict):
-        return {}
-    out = {}
-    for k in COMPARE_KEYS:
-        v = d.get(k, None)
-        if _is_num(v):
-            out[k] = float(v)
-        else:
-            out[k] = None
-    return out
-
-def _completeness(d: Dict, keys=COMPARE_KEYS) -> Tuple[int, int, float]:
-    """
-    คืน (นับคีย์ที่เป็นตัวเลข, นับคีย์ทั้งหมด, สัดส่วนความครบ)
-    ถ้า d ไม่ใช่ dict ให้ถือว่าไม่มีข้อมูล
-    """
-    if not isinstance(d, dict):
-        return 0, len(keys), 0.0
-    n_tot = len(keys)
-    n_num = sum(1 for k in keys if _is_num(d.get(k)))
-    frac = (n_num / n_tot) if n_tot else 0.0
-    return n_num, n_tot, frac
-
-def _is_close_key(key: str, a: float, b: float, tol_cfg: dict) -> bool:
-    cfg = tol_cfg.get(key, {"abs": 0.05, "rel": 1e-3})
-    tol_abs, tol_rel = cfg["abs"], cfg["rel"]
-    diff = abs(a - b)
-    return diff <= max(tol_abs, tol_rel * max(abs(a), abs(b), 1e-12))
-
-def _pair_agreement(a: Dict, b: Dict, keys=COMPARE_KEYS, tol_cfg=INDICATOR_TOL) -> Tuple[int, int, float]:
-    """
-    เปรียบเทียบสองแหล่ง: (hits, comps, score)
-    - ถ้า a/b ไม่ใช่ dict ให้ถือว่าเทียบไม่ได้ (score=0)
-    """
-    if not isinstance(a, dict) or not isinstance(b, dict):
-        return 0, 0, 0.0
-    comps = 0
-    hits = 0
-    for k in keys:
-        va, vb = a.get(k), b.get(k)
-        if _is_num(va) and _is_num(vb):
-            comps += 1
-            if _is_close_key(k, float(va), float(vb), tol_cfg):
-                hits += 1
-    return hits, comps, (hits / comps if comps else 0.0)
-
-def _consensus_scores(tv: Optional[Dict], yf: Optional[Dict], td: Optional[Dict]) -> Dict[str, Dict[str, float]]:
-    """
-    คำนวณคะแนน agreement ต่อแหล่ง (รองรับ input ที่ไม่ใช่ dict)
-    """
-    tv_r, yf_r, td_r = _restrict(tv), _restrict(yf), _restrict(td)
-    present = {k: v for k, v in {"tradingview": tv_r, "yfinance": yf_r, "twelvedata": td_r}.items() if v}
-    names = list(present.keys())
-    scores = {name: {"hits": 0, "comps": 0, "score": 0.0} for name in names}
-
-    for i in range(len(names)):
-        for j in range(i + 1, len(names)):
-            ni, nj = names[i], names[j]
-            hi, ci, _ = _pair_agreement(present[ni], present[nj])
-            scores[ni]["hits"]  += hi
-            scores[ni]["comps"] += ci
-            scores[nj]["hits"]  += hi
-            scores[nj]["comps"] += ci
-
-    for n in names:
-        h, c = scores[n]["hits"], scores[n]["comps"]
-        scores[n]["score"] = (h / c) if c else 0.0
-    return scores
-
-def choose_single_source_by_consensus(
-    *,
-    tv: Optional[dict] = None,
-    yf: Optional[dict] = None,
-    td: Optional[dict] = None,
-) -> Dict:
-    """
-    เลือก 'เพียงแหล่งเดียว' ตามเกณฑ์:
-      1) agreement สูงสุด
-      2) completeness สูงสุด (tie-break)
-      3) numeric_count สูงสุด (tie-break)
-      4) ลำดับชื่อ (deterministic)
-    """
-    tv_r, yf_r, td_r = _restrict(tv), _restrict(yf), _restrict(td)
-    present = {k: v for k, v in {"tradingview": tv_r, "yfinance": yf_r, "twelvedata": td_r}.items() if isinstance(v, dict) and v}
-
-    if not present:
-        raise RuntimeError("ไม่พบข้อมูลจากทุกแหล่ง")
-
-    cons = _consensus_scores(tv_r, yf_r, td_r)
-
-    for name, d in present.items():
-        n_num, n_tot, frac = _completeness(d)
-        cons.setdefault(name, {})
-        cons[name]["completeness"] = frac
-        cons[name]["numeric_count"] = n_num
-
-    rank = sorted(
-        present.keys(),
-        key=lambda n: (
-            cons.get(n, {}).get("score", 0.0),
-            cons.get(n, {}).get("completeness", 0.0),
-            cons.get(n, {}).get("numeric_count", 0),
-            {"tradingview": 0, "yfinance": 1, "twelvedata": 2}.get(n, 9),
-        ),
-        reverse=True,
-    )
-    chosen = rank[0]
-    final_payload = present[chosen]
-
-    return {
-        "chosen_source": chosen,
-        "final_payload": final_payload,
-        "scores": cons,
-    }
-
-# =========================
-# Orchestrator: fetch → choose one source → save
-# ใช้ตัวดึงเดิมของคุณ: get_tradingview_indicators_dict, get_yfin_indicators_online_dict, get_twelve_data_indicator
-# =========================
-def fetch_and_choose(symbol: str):
-    """
-    ดึงค่าจาก 3 แหล่ง (TV / yfinance / TwelveData) → เลือก 'แหล่งเดียว' จากเกณฑ์
-      1) agreement สูงสุด
-      2) completeness สูงสุด (tie-break)
-      3) numeric_count สูงสุด (tie-break)
-    จากนั้นบันทึกผลทั้งแบบ JSONL (summary) และ JSON (detail)
-
-    return: Markdown ตารางสรุป (แสดง 'แหล่งเดียว' ที่เลือก + ค่า)
-    """
-    # ---------------- fetch ----------------
-    tv_exchange: str = "NASDAQ"
-    tv_screener: str = "america"
-    tv_interval: str = "1d"
-    yf_period: str = "2y"
-    yf_interval: str = "1d"
-    td_interval: str = "1day"
-
-    sources = {}
-    tv = yf = td = None
-
-    try:
-        tv = get_tradingview_indicators_dict(
-            symbol, exchange=tv_exchange, screener=tv_screener, interval=tv_interval
-        )
-        if tv:
-            sources["tradingview"] = tv
-    except Exception:
-        pass
-
-    try:
-        yf = get_yfin_indicators_online_dict(
-            symbol, period=yf_period, interval=yf_interval
-        )
-        if yf:
-            sources["yfinance"] = yf
-    except Exception:
-        pass
-
-    try:
-        td = get_twelve_data_indicator(symbol, interval=td_interval)
-        if td:
-            sources["twelvedata"] = td
-    except Exception:
-        pass
-
-    if not sources:
-        return {
-            "error": "no_sources_available",
-            "note": "ไม่สามารถดึงค่าจากทุกแหล่งได้ในตอนนี้",
-        }
-
-    # --------------- decide ONE source ---------------
-    decision = choose_single_source_by_consensus(tv=tv, yf=yf, td=td)
-    chosen = decision["chosen_source"]
-    final_payload = decision["final_payload"]
-    scores = decision["scores"]
-
-    # --------------- save ---------------
-    save_dir: str = f"data/indicators/{symbol.upper()}"
-    jsonl_path: str = os.path.join(save_dir, "indicator_pick.jsonl")
-    json_path:  str = os.path.join(save_dir, "indicator_pick_detail.json")
-
-    now_iso = datetime.now(timezone.utc).isoformat()
-
-    # summary JSONL (หนึ่งบรรทัดต่อการรัน)
-    _append_jsonl_line({
-        "timestamp": now_iso,
-        "symbol": symbol.upper(),
-        "chosen_source": chosen,
-        "compare_keys": COMPARE_KEYS,
-        "tolerance": INDICATOR_TOL,
-        "scores": scores,
-        "final_payload": final_payload,
-        "available_sources": {
-            "tradingview": bool(tv),
-            "yfinance": bool(yf),
-            "twelvedata": bool(td),
-        }
-    }, jsonl_path)
-
-    # detail JSON
-    _save_json({
-        "timestamp": now_iso,
-        "symbol": symbol.upper(),
-        "chosen_source": chosen,
-        "compare_keys": COMPARE_KEYS,
-        "tolerance": INDICATOR_TOL,
-        "scores": scores,
-        "final_payload": final_payload,
-        "raw": {
-            "tradingview": tv or {},
-            "yfinance": yf or {},
-            "twelvedata": td or {},
-        }
-    }, json_path)
-
-    # --------------- return (markdown สั้นอ่านง่าย) ---------------
-    # แสดง “แหล่งเดียวที่เลือก” + ค่า
-    title_map = {
-        "close_50_sma":  "50 SMA",
-        "close_200_sma": "200 SMA",
-        "close_10_ema":  "10 EMA",
-        "macd":          "MACD",
-        "macds":         "MACD Signal",
-        "macdh":         "MACD Histogram",
-        "rsi":           "RSI",
-        "boll":          "Bollinger Middle Band",
-        "boll_ub":       "Bollinger Upper Band",
-        "boll_lb":       "Bollinger Lower Band",
-        "atr":           "ATR",
-        "vwma":          "VWMA",
-    }
-    lines = []
-    lines.append(f"# Indicator pick for {symbol.upper()} — **{chosen}**")
-    lines.append("")
-    lines.append("| Indicator | Value |")
-    lines.append("|---|---|")
-    for k in COMPARE_KEYS:
-        v = final_payload.get(k)
-        lines.append(f"| {title_map.get(k,k)} | {('-' if v is None else v)} |")
-    lines.append("")
-    return "\n".join(lines)
-
-
 # ------------------------------ EDIT NEWS(GLOBAL) -----------------------------------------#
+
 # ---------------- Finnhub News  -----------------
-import finnhub
+DEFAULT_API_KEY = os.getenv("FINNHUB_API_KEY")
 
-DEFAULT_API_KEY = os.getenv("FINNHUB_API_KEY", "d49dhs1r01qshn3lpbn0d49dhs1r01qshn3lpbng")
-
-def _fh_client(api_key: Optional[str] = "d49dhs1r01qshn3lpbn0d49dhs1r01qshn3lpbng") -> finnhub.Client:
+def _fh_client(api_key: Optional[str] = None) -> finnhub.Client:
     key = api_key or DEFAULT_API_KEY
-    if not key:
-        raise RuntimeError("Missing FINNHUB_API_KEY")
+    if not key or key == "YOUR_API_KEY_HERE":
+        raise RuntimeError("❌ Missing FINNHUB_API_KEY. Please set env variable or pass it explicitly.")
     return finnhub.Client(api_key=key)
 
-# ----------------- Small IO helpers -----------------
+# ===================== I/O HELPERS =====================
 def _ensure_dir(path: str):
-    os.makedirs(os.path.dirname(path) or ".", exist_ok=True)
-
-def save_json(data, path: str):
-    _ensure_dir(path)
-    with open(path, "w", encoding="utf-8") as f:
-        json.dump(data, f, ensure_ascii=False, indent=2)
+    if os.path.dirname(path):
+        os.makedirs(os.path.dirname(path), exist_ok=True)
 
 def save_jsonl(items: List[Dict], path: str, append: bool = False):
     _ensure_dir(path)
@@ -1244,14 +499,14 @@ def save_jsonl(items: List[Dict], path: str, append: bool = False):
     with open(path, mode, encoding="utf-8") as f:
         for obj in items:
             f.write(json.dumps(obj, ensure_ascii=False) + "\n")
+    print(f"💾 Saved {len(items)} items to {path}")
 
-# ----------------- Time helpers -----------------
+# ===================== DATA HELPERS =====================
 def _to_iso_or_raw(ts):
     if isinstance(ts, (int, float)):
         return datetime.fromtimestamp(ts, tz=timezone.utc).isoformat()
     return ts
 
-# ----------------- Field projection -----------------
 WANTED_KEYS = {"datetime", "headline", "id", "source", "summary", "url"}
 
 def project_fields(items: List[Dict]) -> List[Dict]:
@@ -1263,74 +518,85 @@ def project_fields(items: List[Dict]) -> List[Dict]:
         out.append(obj)
     return out
 
-# ----------------- Core fetcher -----------------
+# ===================== CORE LOGIC =====================
 def fetch_finnhub_world_news_raw(
     category: str = "general",
     *,
-    max_pages: int = 3,
+    limit: int = 50,         # <--- ปรับเป็น limit ตามต้องการ
     sleep_s: float = 0.6,
+    api_key: Optional[str] = None
 ) -> List[Dict]:
     """
     ดึงข่าว 'ทั่วไป/ข่าวโลก' จาก Finnhub แบบ RAW (ไม่ตัดฟิลด์)
-    - ใช้การแบ่งหน้า (pagination) ด้วย min_id
-    - category ที่นิยม: "general", "forex", "crypto", "merger"
+    - ใช้ Logic วนลูปจนกว่าจะได้ครบตามจำนวน limit
     """
-    api_key = "d49dhs1r01qshn3lpbn0d49dhs1r01qshn3lpbng"
     client = _fh_client(api_key)
     all_items: List[Dict] = []
     min_id = 0
-    for _ in range(max_pages):
-        batch = client.general_news(category, min_id=min_id)
+    
+    print(f"🔄 Fetching '{category}' news (Limit: {limit})...")
+
+    while len(all_items) < limit:
+        # เรียก API (min_id=0 คือเอาข่าวล่าสุด)
+        try:
+            batch = client.general_news(category, min_id=min_id)
+        except Exception as e:
+            print(f"⚠️ API Error: {e}")
+            break
+
         if not batch:
             break
+            
         all_items.extend(batch)
-        # min_id ถัดไป = id ของรายการสุดท้ายในหน้าปัจจุบัน
+        print(f"   ... Got {len(batch)} items. Total so far: {len(all_items)}")
+        
+        # ถ้าได้ครบแล้ว break เลย ไม่ต้อง sleep
+        if len(all_items) >= limit:
+            break
+
+        # เตรียม min_id สำหรับรอบถัดไป (เอา id ตัวสุดท้ายของรอบนี้)
         min_id = batch[-1].get("id", min_id)
-        time.sleep(sleep_s)
-    return all_items
+        time.sleep(sleep_s) # กันโดนแบน
 
-def fetch_finnhub_world_news() -> List[Dict]:
-    """
-    ดึงข่าวโลกจาก Finnhub แล้ว (ค่าเริ่มต้น):
-      - คัดเฉพาะฟิลด์ที่ต้องใช้ (datetime/headline/id/source/summary/url) + datetime → ISO
-      - ถ้าต้องการ RAW ให้ตั้ง return_raw=True
-      - รองรับการเซฟ JSON/JSONL (ถ้าระบุ path)
+    return all_items[:limit] # ตัดส่วนเกินทิ้ง
 
-    Return: List[Dict] (raw หรือ slim ตาม return_raw)
+def fetch_finnhub_world_news(
+    limit: int = 50,
+    save_jsonl_path: Optional[str] = "data/global_news/finnhub_world_news.jsonl",
+    return_raw: bool = False,
+    api_key: Optional[str] = None
+) -> List[Dict]:
     """
-    
-    category: str = "general"
-    max_pages: int = 3
-    sleep_s: float = 0.6
-    return_raw: bool = False
-    save_jsonl_path: Optional[str] = f"data/global_news/finnhub_world_news.jsonl"  # เช่น "./data/news/world/finnhub_general_news.slim.jsonl"
-    api_key = "d49dhs1r01qshn3lpbn0d49dhs1r01qshn3lpbng"
+    Function หลักสำหรับเรียกใช้จากภายนอก
+    """
+    # 1. ดึงข้อมูล Raw
     raw_items = fetch_finnhub_world_news_raw(
-        category=category, max_pages=max_pages, sleep_s=sleep_s
+        category="general", 
+        limit=limit, 
+        api_key=api_key
     )
 
+    # 2. ถ้าต้องการ Raw ให้ Return เลย (และ Save ถ้ามี path)
     if return_raw:
         if save_jsonl_path:
             save_jsonl(raw_items, save_jsonl_path, append=False)
         return raw_items
 
-    # slim (เลือกฟิลด์/แปลงเวลา)
-    slim = project_fields(raw_items)
+    # 3. แปลงเป็น Slim format (เลือกเฉพาะฟิลด์ที่ใช้)
+    slim_items = project_fields(raw_items)
 
-    # เซฟ (slim) ถ้าระบุ path
+    # 4. Save ลงไฟล์ (ถ้ามี path)
     if save_jsonl_path:
-        save_jsonl(slim, save_jsonl_path, append=False)
+        save_jsonl(slim_items, save_jsonl_path, append=False)
 
-    return slim
+    return slim_items
     
 # ------------------------------ EDIT NEWS GLOBAL(REDDIT) -----------------------------------------#
     
 from typing import Iterable, List, Dict, Optional
 import praw
 
-
 DEFAULT_SUBS = ["worldnews", "news", "business", "economics"]
-
 
 # ---------------------------
 # Client / IO Utilities
@@ -1347,9 +613,9 @@ def make_reddit_client(
     ค่าเริ่มต้นอ่านจาก ENV:
       REDDIT_CLIENT_ID, REDDIT_CLIENT_SECRET, REDDIT_USER_AGENT
     """
-    client_id = "6ntwQ2TEM4UZNlsjqO9T0A"
-    client_secret = "GaSCQu0ZMPwLr-zfs9PBFFfVPKrncg"
-    user_agent = os.getenv("REDDIT_USER_AGENT", "news-fetcher:v1 (by u/yourname)")
+    client_id = os.getenv("REDDIT_ID")
+    client_secret = os.getenv("REDDIT_SECRET")
+    user_agent = os.getenv("REDDIT_USER_AGENT")
 
     if not client_id or not user_agent:
         raise RuntimeError("กรุณาตั้ง ENV/พารามิเตอร์: REDDIT_CLIENT_ID และ REDDIT_USER_AGENT (REDDIT_CLIENT_SECRET ใส่หรือไม่ก็ได้)")
@@ -1759,7 +1025,7 @@ def fetch_company_news_finnhub(
     ดึงข่าวบริษัท (Finnhub) ตามช่วงวัน (ชั้นข้อมูลฟรีย้อนหลัง~1ปี)
     """
     if client is None:
-        api_key = "d49dhs1r01qshn3lpbn0d49dhs1r01qshn3lpbng"
+        api_key = os.getenv("FINNHUB_API_KEY")
         if not api_key:
             raise RuntimeError("Missing FINNHUB_API_KEY")
         client = finnhub.Client(api_key=api_key)
@@ -1777,40 +1043,6 @@ def fetch_company_news_finnhub(
             continue
         out.append(n)
     return out
-
-# def fetch_company_news_yfinance(
-#     symbol: str,
-#     *,
-#     look_back_days: Optional[str] = (datetime.now(timezone.utc) - timedelta(days=30)).strftime("%Y-%m-%d"),
-#     curr_date: Optional[str] = datetime.now(timezone.utc).strftime("%Y-%m-%d"),    # ใช้คู่กับ look_back_days
-# ) -> List[Dict]:
-#     """
-#     ดึงข่าวบริษัทจาก yfinance.Ticker(symbol).news
-#     - ถ้าระบุ curr_date + look_back_days จะกรองตามหน้าต่างเวลา
-#     """
-#     tkr = yf.Ticker(symbol)
-#     raw = getattr(tkr, "news", []) or []
-#     out = []
-#     seen = set()
-
-#     # กำหนดหน้าต่างเวลา (optional)
-#     if curr_date and look_back_days is not None:
-#         start_ep, end_ep = _window_epochs(curr_date, look_back_days)
-#     else:
-#         start_ep = end_ep = None
-
-#     for it in raw:
-#         n = _norm_yf_item(symbol, it)
-#         if not n["_dedup_key"] or n["_dedup_key"] in seen:
-#             continue
-#         if n["published_epoch"] is None:
-#             continue
-#         if start_ep is not None and end_ep is not None:
-#             if not (start_ep <= n["published_epoch"] <= end_ep):
-#                 continue
-#         seen.add(n["_dedup_key"])
-#         out.append(n)
-#     return out
 
 # ---------------------------
 # Merge & Orchestrator
@@ -1849,7 +1081,7 @@ def finnhub_get_company_news( symbol: str ) -> List[Dict]:
     save_jsonl_path: Optional[str] = f"data/stock/{symbol}/finnhub_company_news.jsonl"
     items_fh: List[Dict] = []
     items_yf: List[Dict] = []
-    finnhub_api_key = "d49dhs1r01qshn3lpbn0d49dhs1r01qshn3lpbng"
+    finnhub_api_key = os.getenv("FINNHUB_API_KEY")
 
     if start_date and end_date:
         try:
@@ -1886,8 +1118,8 @@ from datetime import datetime, timedelta, timezone
 REDDIT_TOKEN_URL  = "https://www.reddit.com/api/v1/access_token"
 REDDIT_OAUTH_BASE = "https://oauth.reddit.com"
 
-CLIENT_ID = os.getenv("REDDIT_CLIENT_ID", "6ntwQ2TEM4UZNlsjqO9T0A")
-CLIENT_SECRET = os.getenv("REDDIT_CLIENT_SECRET", "GaSCQu0ZMPwLr-zfs9PBFFfVPKrncg")
+CLIENT_ID = os.getenv("REDDIT_ID")
+CLIENT_SECRET = os.getenv("REDDIT_SECRET")
 USER_AGENT = "news-fetcher:v1 (by u/keingkrai)"
 
 # ---------- small io helpers ----------
@@ -2084,7 +1316,7 @@ def alphavantage_get_company_news(
     look_back_days: int = 7
     max_items: int = 50
     base_url = "https://www.alphavantage.co/query"
-    api_key = "7DJF0DNKIR9T1F9X"
+    api_key = os.getenv("ALPHA_VANTAGE_API_KEY")
     if not api_key:
         raise ValueError("Missing ALPHAVANTAGE_API_KEY. Set env or pass api_key param.")
 
@@ -2239,9 +1471,9 @@ def fetch_bsky_stock_posts(
     Credentials:
       - ตั้ง ENV: BSKY_HANDLE, BSKY_APP_PW (แนะนำ) หรือใส่มาทางพารามิเตอร์ก็ได้
     """
-    limit_total: int = 180
-    handle: Optional[str] = "keingkrai.bsky.social"
-    app_password: Optional[str] = "ipki-ujyp-4a7h-ludf"
+    limit_total: int = 50
+    handle: Optional[str] = os.getenv("BSKY_HANDLE")
+    app_password: Optional[str] = os.getenv("BSKY_APP_PW")
     service: Optional[str] = None
     save_jsonl_path: Optional[str] = f"data/social/{symbol}/bsky_{symbol}_posts.jsonl"
     # ---- อ่าน credentials จาก env ถ้าไม่ส่งมา ----
@@ -2467,8 +1699,8 @@ def save_jsonl(items: List[Dict], path: str, append: bool = False):
 
 def _mk_reddit():
     return praw.Reddit(
-        client_id="6ntwQ2TEM4UZNlsjqO9T0A",
-        client_secret="GaSCQu0ZMPwLr-zfs9PBFFfVPKrncg",
+        client_id=os.getenv("REDDIT_ID"),
+        client_secret=os.getenv("REDDIT_SECRET"),
         user_agent="your-app:v1 (by u/yourname)",
         ratelimit_seconds=5,
     )
@@ -2549,8 +1781,8 @@ from typing import Dict, List, Optional, Tuple
 # =========================
 # CONFIG (ตั้งค่าได้ทาง ENV)
 # =========================
-FINNHUB_API_KEY      = os.getenv("FINNHUB_API_KEY", "d49dhs1r01qshn3lpbn0d49dhs1r01qshn3lpbng")
-ALPHAVANTAGE_API_KEY = os.getenv("ALPHAVANTAGE_API_KEY", "7DJF0DNKIR9T1F9X")
+FINNHUB_API_KEY      = os.getenv("FINNHUB_API_KEY")
+ALPHAVANTAGE_API_KEY = os.getenv("ALPHA_VANTAGE_API_KEY")
 REQUEST_TIMEOUT      = float(os.getenv("REQ_TIMEOUT", "30"))
 
 # เส้นทางบันทึกผล (รองรับ {symbol})

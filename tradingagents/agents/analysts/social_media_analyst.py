@@ -1,96 +1,172 @@
-from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
-import time
 import json
+import re
+from typing import List, Literal
+from datetime import datetime, timedelta
+from pydantic import BaseModel, Field
+from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
+from langchain_core.output_parsers import JsonOutputParser
+
 from tradingagents.agents.utils.agent_utils import get_news, get_social
-from tradingagents.dataflows.config import get_config
 
 
+# ===================== PYDANTIC MODELS ======================
+class DiscussionTopic(BaseModel):
+    topic: str = Field(description="The subject.")
+    sentiment: Literal["Positive", "Negative", "Mixed"]
+    # จำกัดความยาว: Social media ชอบบ่นยาว เราต้องสั่งตัดบท
+    analysis_snippet: str = Field(description="Max 1 sentence summary of the crowd's opinion.")
+
+class SocialMediaReport(BaseModel):
+    sentiment_score: int = Field(description="0 (Fear) to 100 (Greed).")
+    sentiment_verdict: Literal["Bearish", "Neutral", "Bullish", "Euphoria", "Panic"]
+    social_volume: str = Field(description="Brief assessment (e.g., 'Spike due to earnings').")
+    dominant_narrative: str = Field(description="Main story driving retail. Max 2 sentences.")
+    top_topics: List[DiscussionTopic] = Field(description="Select ONLY top 3-5 trending topics.")
+    psychology: str = Field(description="Crowd psychology (e.g. FOMO, Capitulation).")
+
+# ===================== AGENT FACTORY ======================
 def create_social_media_analyst(llm):
+    parser = JsonOutputParser(pydantic_object=SocialMediaReport)
+
     def social_media_analyst_node(state):
         current_date = state["trade_date"]
         ticker = state["company_of_interest"]
-        company_name = state["company_of_interest"]
 
-        tools = [
-            get_social
-        ]
+        # Calculate 7 days lookback
+        try:
+            curr_date_obj = datetime.strptime(current_date, "%Y-%m-%d")
+            start_date = (curr_date_obj - timedelta(days=7)).strftime("%Y-%m-%d")
+        except Exception:
+            start_date = "2024-01-01"
 
-        # Get report length from state
-        report_length = state.get("report_length", "long")
-        
-        # Create report style instructions based on length
-        if report_length == "short":
-            style_instruction = """
-**REPORT STYLE - SHORT FORMAT:**
-- Write a brief summary using bullet points only
-- Keep it concise - maximum 10-15 bullet points total
-- Focus on the most important sentiment trends and key social media insights
-- Use simple, clear language
-- Format everything as bullet points (no paragraphs)
-- NO summary tables needed - just bullet points
+        tools = [get_social]
+
+        # ===================== SYSTEM MESSAGE ======================
+        system_message = f"""
+Act as a Senior Social Media & Sentiment Analyst. Gauge the market pulse for **{ticker}** from **{start_date} to {current_date}**.
+
+**YOUR WORKFLOW:**
+1. Call `get_social` to gather public discussions (Reddit, Twitter, forums).
+2. Call `get_news` to cross-check sentiment against real events.
+3. Synthesize the findings into the required JSON format.
+
+**STRICT FORMATTING RULES:**
+- **NO SLANG/ABBREVIATIONS:** Use formal full terms in the JSON output.
+  - ❌ Forbidden: FOMO, FUD, ATH, HODL, YOLO, etc.
+  - ✅ Required: Fear Of Missing Out, Fear Uncertainty and Doubt, All Time High, Hold On for Dear Life, You Only Live Once.
+- **OUTPUT JSON ONLY:** Do not include markdown code blocks or conversational text.
+
+**SENTIMENT SCORE GUIDE:**
+- 0-20: Extreme Fear / Panic Selling
+- 21-40: Fear / Bearish
+- 41-60: Neutral / Mixed
+- 61-80: Greed / Bullish
+- 81-100: Extreme Greed / Euphoria
+
+{parser.get_format_instructions()}
+
+Return ONLY the JSON object.
 """
-        else:
-            style_instruction = """
-**REPORT STYLE - LONG FORMAT:**
-- Write a comprehensive but easy-to-understand report using bullet points
-- Cover social media sentiment, public opinion, and company news
-- Use clear, simple language - explain terms in plain English
-- Break down sentiment trends into digestible bullet point sections
-- Use headings to organize sections, then bullet points under each
-- Keep each bullet point short and focused
-- NO summary tables needed - use bullet points throughout
-"""
-        
-        system_message = (
-            "You are a social media and company specific news researcher/analyst tasked with analyzing social media posts, recent company news, and public sentiment for a specific company over the past week. You will be given a company's name your objective is to write a report detailing your analysis, insights, and implications for traders and investors on this company's current state after looking at social media and what people are saying about that company, analyzing sentiment data of what people feel each day about the company, and looking at recent company news. Use the get_news(query, start_date, end_date) tool to search for company-specific news and social media discussions. Try to look at all sources possible from social media to sentiment to news."
-            + style_instruction
-            + """
-**IMPORTANT WRITING GUIDELINES:**
-- Write in plain, simple English that anyone can understand
-- Format everything as bullet points - NO paragraphs or tables
-- Explain what sentiment means and why it matters in simple terms
-- Use clear examples from social media discussions in bullet points
-- Focus on actionable insights for traders
-- Avoid jargon - explain terms like "sentiment score" or "engagement rate" clearly
-- Keep each bullet point short (1-2 sentences maximum)
-- Make it easy to scan with clear headings and bullet points
-"""
+
+        # ===================== PROMPT ======================
+        prompt = ChatPromptTemplate.from_messages([
+            (
+                "system",
+                "You are a helpful AI assistant, collaborating with other assistants. "
+                "Use the provided tools to progress towards answering the question. "
+                "You have access to the following tools: {tool_names}. \n\n"
+                "{system_message}\n\n"
+                "For your reference, the current date is {current_date}. "
+                "The company we want to look at is {ticker}. "
+                "Analysis period: {start_date} to {current_date}."
+            ),
+            MessagesPlaceholder(variable_name="messages"),
+        ])
+
+        prompt = prompt.partial(
+            system_message=system_message,
+            tool_names=", ".join([tool.name for tool in tools]),
+            current_date=current_date,
+            ticker=ticker,
+            start_date=start_date
         )
 
-        prompt = ChatPromptTemplate.from_messages(
-            [
-                (
-                    "system",
-                    "You are a helpful AI assistant, collaborating with other assistants."
-                    " Use the provided tools to progress towards answering the question."
-                    " If you are unable to fully answer, that's OK; another assistant with different tools"
-                    " will help where you left off. Execute what you can to make progress."
-                    " If you or any other assistant has the FINAL TRANSACTION PROPOSAL: **BUY/HOLD/SELL** or deliverable,"
-                    " prefix your response with FINAL TRANSACTION PROPOSAL: **BUY/HOLD/SELL** so the team knows to stop."
-                    " You have access to the following tools: {tool_names}.\n{system_message}"
-                    "For your reference, the current date is {current_date}. The current company we want to analyze is {ticker}",
-                ),
-                MessagesPlaceholder(variable_name="messages"),
-            ]
-        )
-
-        prompt = prompt.partial(system_message=system_message)
-        prompt = prompt.partial(tool_names=", ".join([tool.name for tool in tools]))
-        prompt = prompt.partial(current_date=current_date)
-        prompt = prompt.partial(ticker=ticker)
-
+        # ===================== CHAIN ======================
         chain = prompt | llm.bind_tools(tools)
 
+        # Execute
         result = chain.invoke(state["messages"])
+        
+        print("Social Media Analysis Result:", result)
 
-        report = ""
+        # ========== PARSE WITH ROBUST ERROR HANDLING ==========
+        report_dict = None
+        
+        if not result.tool_calls:
+            raw_content = result.content
+            
+            # Handle list format (e.g., [{'type': 'text', 'text': '...'}])
+            if isinstance(raw_content, list):
+                for item in raw_content:
+                    if isinstance(item, dict) and item.get('type') == 'text':
+                        raw_content = item.get('text', '')
+                        break
+                else:
+                    raw_content = " ".join([str(item) for item in raw_content])
+            
+            if raw_content is None:
+                raw_content = ""
+            
+            try:
+                # Method 1: Use Parser (handles string cleaning internally)
+                report_dict = parser.parse(str(raw_content))
+                
+            except Exception as e1:
+                print(f"⚠️ Parser failed: {e1}")
+                
+                # Method 2: Clean markdown and extract JSON
+                try:
+                    clean = re.sub(r"```[\w]*\n?", "", str(raw_content)).strip()
+                    match = re.search(r"\{[\s\S]*\}", clean)
+                    
+                    if match:
+                        json_str = match.group(0)
+                        report_dict = json.loads(json_str)
+                        # Validate with Pydantic
+                        report_dict = SocialMediaReport.model_validate(report_dict).model_dump()
+                    else:
+                        print("⚠️ No JSON object found in response")
+                        # Create minimal valid fallback
+                        report_dict = {
+                            "sentiment_score": 50,
+                            "sentiment_verdict": "Neutral (Data Unavailable)",
+                            "social_volume_analysis": "Unable to retrieve social media data.",
+                            "dominant_narrative": "No clear narrative identified.",
+                            "top_discussion_topics": [],
+                            "retail_psychology_assessment": "Insufficient data for psychological assessment."
+                        }
+                        
+                except Exception as e2:
+                    print(f"⚠️ Fallback parsing failed: {e2}")
+                    report_dict = {
+                        "sentiment_score": 50,
+                        "sentiment_verdict": "Error",
+                        "social_volume_analysis": "Parsing error occurred.",
+                        "dominant_narrative": "Error processing data.",
+                        "top_discussion_topics": [],
+                        "retail_psychology_assessment": "Error occurred during analysis."
+                    }
+        
+        # If still None (tool_calls present), create waiting structure
+        if report_dict is None:
+            report_dict = {"status": "waiting_for_tool_response"}
 
-        if len(result.tool_calls) == 0:
-            report = result.content
+        # Convert dict to JSON string
+        report_json = json.dumps(report_dict, indent=4, ensure_ascii=False)
 
         return {
             "messages": [result],
-            "sentiment_report": report,
+            "sentiment_report": report_json,  # Return as JSON string
         }
 
     return social_media_analyst_node

@@ -18,55 +18,44 @@ def create_research_manager(llm, memory):
         past_memory_str = ""
         for i, rec in enumerate(past_memories, 1):
             past_memory_str += rec["recommendation"] + "\n\n"
-
-        # Get report length from state
-        report_length = state.get("report_length", "long")
-        
-        # Create style instructions based on length
-        if report_length == "short":
-            style_instruction = """
-**WRITING STYLE - SHORT FORMAT:**
-- Write a brief investment plan using bullet points only
-- Keep it concise - maximum 8-10 bullet points
-- Use simple, clear language
-- Focus on the most important decision and reasoning
-- Explain your recommendation in plain English
-- Format everything as bullet points (no paragraphs)
-"""
-        else:
-            style_instruction = """
-**WRITING STYLE - LONG FORMAT:**
-- Write a comprehensive but easy-to-understand investment plan using bullet points
-- Use clear, simple language - avoid jargon
-- Explain your reasoning step-by-step in bullet points
-- Break down complex investment concepts into simple bullet points
-- Use headings to organize sections, then bullet points under each
-- Keep each bullet point short and focused
-"""
-        
-        prompt = (
-            f"""As the portfolio manager and debate facilitator, your role is to critically evaluate this round of debate and make a definitive decision: align with the bear analyst, the bull analyst, or choose Hold only if it is strongly justified based on the arguments presented.
-
-Summarize the key points from both sides concisely, focusing on the most compelling evidence or reasoning. Your recommendation—Buy, Sell, or Hold—must be clear and actionable. Avoid defaulting to Hold simply because both sides have valid points; commit to a stance grounded in the debate's strongest arguments.
-
-Additionally, develop an investment plan for the trader. This should include:
-
-Your Recommendation: A decisive stance supported by the most convincing arguments.
-Rationale: An explanation of why these arguments lead to your conclusion.
-Strategic Actions: Concrete steps for implementing the recommendation.
-Take into account your past mistakes on similar situations. Use these insights to refine your decision-making and ensure you are learning and improving."""
-            + style_instruction
-            + f"""
-**IMPORTANT: Write in plain, simple English that anyone can understand. Format everything as bullet points - NO paragraphs. Explain your investment decision clearly and avoid jargon. Make it easy for humans to understand why you're recommending BUY, SELL, or HOLD. Keep each bullet point short (1-2 sentences maximum).**
-
-Here are your past reflections on mistakes:
-\"{past_memory_str}\"
-
-Here is the debate:
-Debate History:
-{history}"""
+            
+        system_prompt = (
+            "You are the Chief Investment Officer. Your role is to adjudicate the debate between the Bullish and Bearish researchers and make a final investment decision. "
+            "INSTRUCTIONS: "
+            "1. Write using ONLY plain text. Do not use asterisks, hashes, or dashes. "
+            "2. Do NOT use abbreviations. Use full terms (e.g., Price to Earnings Ratio, Simple Moving Average). "
+            "3. Be decisive. Do not hedge. Choose Buy, Sell, or Hold based on the strongest evidence."
         )
-        response = llm.invoke(prompt)
+
+        prompt = f"""
+        Review the following Debate and Past Lessons to form an Investment Plan:
+
+        DEBATE HISTORY
+        {history}
+
+        PAST REFLECTIONS
+        {past_memory_str}
+
+        REQUIRED OUTPUT FORMAT
+        Section 1 The Verdict
+        State clearly: BUY, SELL, or HOLD. Provide a 1 sentence reason for the decision.
+
+        Section 2 Winning Argument
+        Explain which side (Bull or Bear) presented the more compelling case and why. Mention specific data points used (using full names).
+
+        Section 3 Strategic Plan
+        Outline the execution strategy. 
+        - If Buying: Suggest entry urgency and conviction level.
+        - If Selling: Suggest exit urgency.
+        - If Holding: Explain what specific trigger you are waiting for.
+
+        Section 4 Risk Management Note
+        Highlight the single biggest risk identified in the debate that must be monitored.
+        """
+        response = llm.invoke([
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": prompt}
+        ])
 
         new_investment_debate_state = {
             "judge_decision": response.content,

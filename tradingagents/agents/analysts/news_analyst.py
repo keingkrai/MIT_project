@@ -1,96 +1,190 @@
-from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
-import time
 import json
+import re
+from typing import List, Literal
+from datetime import datetime, timedelta
+from pydantic import BaseModel, Field
+from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
+from langchain_core.output_parsers import JsonOutputParser
+
 from tradingagents.agents.utils.agent_utils import get_news, get_global_news
-from tradingagents.dataflows.config import get_config
 
 
+# ===================== PYDANTIC MODELS ======================
+class GlobalMacroContext(BaseModel):
+    macro_summary: str = Field(description="Concise analysis of Central Bank, Interest Rates, and Geopolitics combined. Max 5 sentences.")
+
+class CompanyNewsItem(BaseModel):
+    headline: str
+    source: str
+    date: str
+    sentiment: Literal["Positive", "Negative", "Neutral"] = Field(description="Strict label")
+    implication: str = Field(description="One sentence on price impact.")
+
+class NewsReport(BaseModel):
+    executive_summary: str = Field(description="The single most important driver. Max 50 words.")
+    market_sentiment_score: int = Field(description="0-100")
+    market_sentiment_verdict: Literal["Bullish", "Bearish", "Neutral"]
+    global_macro_context: GlobalMacroContext
+    top_news_developments: List[CompanyNewsItem] = Field(description="Select ONLY top 3-5 most impactful items.")
+    key_risks: List[str] = Field(description="Max 3 bullet points.")
+
+
+# ===================== AGENT FACTORY ======================
 def create_news_analyst(llm):
+    parser = JsonOutputParser(pydantic_object=NewsReport)
+
     def news_analyst_node(state):
         current_date = state["trade_date"]
         ticker = state["company_of_interest"]
 
-        tools = [
-            get_news,
-            get_global_news,
-        ]
+        # Calculate 7 days lookback
+        try:
+            curr_date_obj = datetime.strptime(current_date, "%Y-%m-%d")
+            start_date = (curr_date_obj - timedelta(days=7)).strftime("%Y-%m-%d")
+        except Exception:
+            start_date = "2024-01-01"
 
-        # Get report length from state
-        report_length = state.get("report_length", "long")
-        
-        # Create report style instructions based on length
-        if report_length == "short":
-            style_instruction = """
-**REPORT STYLE - SHORT FORMAT:**
-- Write a brief summary using bullet points only
-- Keep it concise - maximum 10-15 bullet points total
-- Focus on the most important news and macroeconomic trends
-- Use simple, clear language
-- Format everything as bullet points (no paragraphs)
-- Highlight key events and their trading implications
-- NO summary tables needed - just bullet points
+        tools = [get_news, get_global_news]
+
+        # ===================== SYSTEM MESSAGE ======================
+        system_message = f"""
+You are a Senior Market News Analyst specializing in financial news and market impact assessment.
+
+**CRITICAL INSTRUCTION:**
+- You **MUST CALL** both tools IMMEDIATELY to gather comprehensive data.
+- **DO NOT** hallucinate or invent news stories.
+- Base all analysis on actual news retrieved from the tools.
+
+**MANDATORY WORKFLOW:**
+1. Call `get_global_news(curr_date='{current_date}', look_back_days=7)` to gather macro news.
+2. Call `get_news(ticker='{ticker}', start_date='{start_date}', end_date='{current_date}')` to gather company-specific news.
+3. Analyze both macro and company-specific factors.
+4. Synthesize findings into the required JSON format.
+
+**ANALYSIS GUIDELINES:**
+- Focus on material news that could impact stock price
+- Connect macro trends to company performance
+- Assess both immediate and long-term implications
+- Identify specific risks from news events
+
+**SENTIMENT SCORE GUIDE:**
+- 0-20: Very Negative / Crisis
+- 21-40: Negative / Bearish
+- 41-60: Neutral / Mixed
+- 61-80: Positive / Bullish
+- 81-100: Very Positive / Strong Bullish
+
+**OUTPUT FORMAT:**
+{parser.get_format_instructions()}
+
+Return ONLY the JSON object, no markdown code blocks.
 """
-        else:
-            style_instruction = """
-**REPORT STYLE - LONG FORMAT:**
-- Write a comprehensive but easy-to-understand report using bullet points
-- Cover relevant news, macroeconomic trends, and global events
-- Use clear, simple language - explain economic terms in plain English
-- Break down complex economic concepts into digestible bullet point sections
-- Use headings to organize sections, then bullet points under each
-- Keep each bullet point short and focused
-- NO summary tables needed - use bullet points throughout
-"""
-        
-        system_message = (
-            "You are a news researcher tasked with analyzing recent news and trends over the past week. Please write a report of the current state of the world that is relevant for trading and macroeconomics. Use the available tools: get_news(query, start_date, end_date) for company-specific or targeted news searches, and get_global_news(curr_date, look_back_days, limit) for broader macroeconomic news."
-            + style_instruction
-            + """
-**IMPORTANT WRITING GUIDELINES:**
-- Write in plain, simple English that anyone can understand
-- Format everything as bullet points - NO paragraphs or tables
-- Explain economic terms and concepts in everyday language
-- Use clear examples to illustrate how news affects trading in bullet points
-- Focus on what matters most for making trading decisions
-- Avoid jargon - explain terms like "inflation", "GDP", "monetary policy" clearly
-- Keep each bullet point short (1-2 sentences maximum)
-- Make it easy to scan with clear headings and bullet points
-"""
+
+        # ===================== PROMPT ======================
+        prompt = ChatPromptTemplate.from_messages([
+            (
+                "system",
+                "You are a helpful AI assistant, collaborating with other assistants. "
+                "Use the provided tools to progress towards answering the question. "
+                "You have access to the following tools: {tool_names}. \n\n"
+                "{system_message}\n\n"
+                "For your reference, the current date is {current_date}. "
+                "The company we want to look at is {ticker}. "
+                "Analysis period: {start_date} to {current_date}."
+            ),
+            MessagesPlaceholder(variable_name="messages"),
+        ])
+
+        prompt = prompt.partial(
+            system_message=system_message,
+            tool_names=", ".join([tool.name for tool in tools]),
+            current_date=current_date,
+            ticker=ticker,
+            start_date=start_date
         )
 
-        prompt = ChatPromptTemplate.from_messages(
-            [
-                (
-                    "system",
-                    "You are a helpful AI assistant, collaborating with other assistants."
-                    " Use the provided tools to progress towards answering the question."
-                    " If you are unable to fully answer, that's OK; another assistant with different tools"
-                    " will help where you left off. Execute what you can to make progress."
-                    " If you or any other assistant has the FINAL TRANSACTION PROPOSAL: **BUY/HOLD/SELL** or deliverable,"
-                    " prefix your response with FINAL TRANSACTION PROPOSAL: **BUY/HOLD/SELL** so the team knows to stop."
-                    " You have access to the following tools: {tool_names}.\n{system_message}"
-                    "For your reference, the current date is {current_date}. We are looking at the company {ticker}",
-                ),
-                MessagesPlaceholder(variable_name="messages"),
-            ]
-        )
-
-        prompt = prompt.partial(system_message=system_message)
-        prompt = prompt.partial(tool_names=", ".join([tool.name for tool in tools]))
-        prompt = prompt.partial(current_date=current_date)
-        prompt = prompt.partial(ticker=ticker)
-
+        # ===================== CHAIN ======================
         chain = prompt | llm.bind_tools(tools)
+
+        # Execute
         result = chain.invoke(state["messages"])
+        
+        print("News Analysis Result:", result)
 
-        report = ""
+        # ========== PARSE WITH ROBUST ERROR HANDLING ==========
+        report_dict = None
+        
+        if not result.tool_calls:
+            raw_content = result.content
+            
+            # Handle list format (e.g., [{'type': 'text', 'text': '...'}])
+            if isinstance(raw_content, list):
+                for item in raw_content:
+                    if isinstance(item, dict) and item.get('type') == 'text':
+                        raw_content = item.get('text', '')
+                        break
+                else:
+                    raw_content = " ".join([str(item) for item in raw_content])
+            
+            if raw_content is None:
+                raw_content = ""
+            
+            try:
+                # Method 1: Use Parser (handles string cleaning internally)
+                report_dict = parser.parse(str(raw_content))
+                
+            except Exception as e1:
+                print(f"⚠️ Parser failed: {e1}")
+                
+                # Method 2: Clean markdown and extract JSON
+                try:
+                    clean = re.sub(r"```[\w]*\n?", "", str(raw_content)).strip()
+                    match = re.search(r"\{[\s\S]*\}", clean)
+                    
+                    if match:
+                        json_str = match.group(0)
+                        report_dict = json.loads(json_str)
+                        # Validate with Pydantic
+                        report_dict = NewsReport.model_validate(report_dict).model_dump()
+                    else:
+                        print("⚠️ No JSON object found in response")
+                        # Create minimal valid fallback
+                        report_dict = {
+                            "executive_summary": "Unable to retrieve news data for analysis.",
+                            "market_sentiment_score": 50,
+                            "market_sentiment_verdict": "Neutral (Data Unavailable)",
+                            "global_macro_context": {
+                                "economic_policy_analysis": "No data available.",
+                                "geopolitical_impact": "No data available."
+                            },
+                            "company_specific_developments": [],
+                            "key_risks_identified": ["Data retrieval error - unable to assess risks"]
+                        }
+                        
+                except Exception as e2:
+                    print(f"⚠️ Fallback parsing failed: {e2}")
+                    report_dict = {
+                        "executive_summary": "Error occurred during news analysis.",
+                        "market_sentiment_score": 50,
+                        "market_sentiment_verdict": "Error",
+                        "global_macro_context": {
+                            "economic_policy_analysis": "Error processing data.",
+                            "geopolitical_impact": "Error processing data."
+                        },
+                        "company_specific_developments": [],
+                        "key_risks_identified": ["Analysis error occurred"]
+                    }
+        
+        # If still None (tool_calls present), create waiting structure
+        if report_dict is None:
+            report_dict = {"status": "waiting_for_tool_response"}
 
-        if len(result.tool_calls) == 0:
-            report = result.content
+        # Convert dict to JSON string
+        report_json = json.dumps(report_dict, indent=4, ensure_ascii=False)
 
         return {
             "messages": [result],
-            "news_report": report,
+            "news_report": report_json,  # Return as JSON string
         }
 
     return news_analyst_node

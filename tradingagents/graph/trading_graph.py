@@ -1,13 +1,19 @@
 # TradingAgents/graph/trading_graph.py
 
-import os
+import os, requests
 from pathlib import Path
 import json
 from datetime import date
 from typing import Dict, Any, Tuple, List, Optional
+from rich.console import Console
+
+console = Console()
+
 
 from langchain_openai import ChatOpenAI
 from langchain_anthropic import ChatAnthropic
+from langchain_google_genai import ChatGoogleGenerativeAI
+from openai import OpenAI
 
 from langgraph.prebuilt import ToolNode
 
@@ -41,6 +47,27 @@ from .setup import GraphSetup
 from .propagation import Propagator
 from .reflection import Reflector
 from .signal_processing import SignalProcessor
+
+def sent_to_telegram(message: str):
+    """Send a message to Telegram if configured."""
+    TELEGRAM_TOKEN = os.getenv("TELEGRAM_TOKEN")
+    TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID")
+
+    if TELEGRAM_TOKEN and TELEGRAM_CHAT_ID:
+        url = f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendMessage"
+        payload = {
+            "chat_id": TELEGRAM_CHAT_ID,
+            "text": message,
+            "parse_mode": "Markdown",
+        }
+        try:
+            response = requests.post(url, data=payload, timeout=10)
+            response.raise_for_status()
+            console.print("[green]Report sent to Telegram successfully![/green]")
+        except requests.RequestException as e:
+            console.print(f"[red]Failed to send report to Telegram: {e}[/red]")
+    else:
+        console.print("[yellow]Telegram not configured. Skipping sending report.[/yellow]")
 
 
 class TradingAgentsGraph:
@@ -93,8 +120,11 @@ class TradingAgentsGraph:
             self.deep_thinking_llm = ChatAnthropic(model=self.config["deep_think_llm"], base_url=self.config["backend_url"])
             self.quick_thinking_llm = ChatAnthropic(model=self.config["quick_think_llm"], base_url=self.config["backend_url"])
         elif self.config["llm_provider"].lower() == "typhoon":
-            self.deep_thinking_llm = ChatOpenAI(model=self.config["deep_think_llm"], base_url=self.config["backend_url"])
-            self.quick_thinking_llm = ChatOpenAI(model=self.config["quick_think_llm"], base_url=self.config["backend_url"])
+            self.deep_thinking_llm = ChatOpenAI(model=self.config["deep_think_llm"], base_url=self.config["backend_url"], api_key=self.config["TYPHOON_API_KEY"])
+            self.quick_thinking_llm = ChatOpenAI(model=self.config["quick_think_llm"], base_url=self.config["backend_url"], api_key=self.config["TYPHOON_API_KEY"])
+        elif self.config["llm_provider"].lower() == "deepseek":
+            self.deep_thinking_llm = ChatOpenAI(model=self.config["deep_think_llm"], base_url=self.config["backend_url"],  api_key=os.getenv("DEEPSEEK_API_KEY"))
+            self.quick_thinking_llm = ChatOpenAI(model=self.config["quick_think_llm"], base_url=self.config["backend_url"],  api_key=os.getenv("DEEPSEEK_API_KEY"))
         else:
             raise ValueError(f"Unsupported LLM provider: {self.config['llm_provider']}")
         
@@ -205,9 +235,29 @@ class TradingAgentsGraph:
         try:
             summarizer_func = create_summarizer_fundamental()
             sum_market = create_summarizer_market()
+            sum_social = create_summarizer_social()
+            sum_news = create_summarizer_news()
+            sum_cons = create_summarizer_conservative()
+            sum_aggr = create_summarizer_aggressive()
+            sum_neut = create_summarizer_neutral()
+            sum_investment_plan = create_summarizer_research_manager()
+            sum_risk_plan = create_summarizer_risk_manager()
+            sum_bull = create_summarizer_bull_researcher()
+            sum_bear = create_summarizer_bear_researcher()
+            sum_trader = create_summarizer_trader()
             
             update_dict_fund = summarizer_func(final_state)
             update_dict_market = sum_market(final_state)
+            update_dict_social = sum_social(final_state)
+            update_dict_news = sum_news(final_state)
+            update_dict_cons = sum_cons(final_state)
+            update_dict_aggr = sum_aggr(final_state)
+            update_dict_neut = sum_neut(final_state)
+            update_dict_investment_plan = sum_investment_plan(final_state)
+            update_dict_risk_plan = sum_risk_plan(final_state)
+            update_dict_bull = sum_bull(final_state)
+            update_dict_bear = sum_bear(final_state)
+            update_dict_trader = sum_trader(final_state)
             
             
             # --- อัปเดต Fundamental ---
@@ -225,6 +275,92 @@ class TradingAgentsGraph:
                 print("✅ Market Summary Updated!")
             else:
                 print("⚠️ Market Summary returned empty.")
+
+            # --- อัปเดต Social ---
+            if update_dict_social:
+                final_state.update(update_dict_social)
+                self.curr_state.update(update_dict_social)
+                print("✅ Social Summary Updated!")
+            else:
+                print("⚠️ Social Summary returned empty.")
+
+            # --- อัปเดต News ---
+            if update_dict_news:
+                final_state.update(update_dict_news)
+                self.curr_state.update(update_dict_news)
+                print("✅ News Summary Updated!")
+            else:
+                print("⚠️ News Summary returned empty.")
+
+            # --- อัปเดต Conservative ---
+            if update_dict_cons:
+                final_state.update(update_dict_cons)
+                self.curr_state.update(update_dict_cons)
+                print("✅ Conservative Summary Updated!")
+            else:
+                print("⚠️ Conservative Summary returned empty.")
+            
+            # --- อัปเดต Aggressive ---
+            if update_dict_aggr:
+                final_state.update(update_dict_aggr)
+                self.curr_state.update(update_dict_aggr)
+                print("✅ Aggressive Summary Updated!")
+            else:
+                print("⚠️ Aggressive Summary returned empty.")
+
+            # --- อัปเดต Neutral ---
+            if update_dict_neut:
+                final_state.update(update_dict_neut)
+                self.curr_state.update(update_dict_neut)
+                print("✅ Neutral Summary Updated!")
+            else:
+                print("⚠️ Neutral Summary returned empty.")
+
+            # --- อัปเดต Investment Plan ---
+            if update_dict_investment_plan:
+                final_state.update(update_dict_investment_plan)
+                self.curr_state.update(update_dict_investment_plan)
+                print("✅ Investment Plan Summary Updated!")
+            else:
+                print("⚠️ Investment Plan Summary returned empty.")
+            
+            # --- อัปเดต Risk Plan ---
+            if update_dict_risk_plan:
+                final_state.update(update_dict_risk_plan)
+                self.curr_state.update(update_dict_risk_plan)
+                print("✅ Risk Plan Summary Updated!")
+            else:
+                print("⚠️ Risk Plan Summary returned empty.")
+                
+            # --- อัปเดต bull ---
+            if update_dict_bull:
+                final_state.update(update_dict_bull)
+                self.curr_state.update(update_dict_bull)
+                print("✅ bull Summary Updated!")
+            else:
+                print("⚠️ bull Summary returned empty.")
+                
+            # --- อัปเดต bear ---
+            if update_dict_bear:
+                final_state.update(update_dict_bear)
+                self.curr_state.update(update_dict_bear)
+                print("✅ bear Summary Updated!")
+            else:
+                print("⚠️ bear Summary returned empty.")
+                
+            # --- อัปเดต trader ---
+            if update_dict_trader:
+                final_state.update(update_dict_trader)
+                self.curr_state.update(update_dict_trader)
+                print("✅ trader Summary Updated!")
+            else:
+                print("⚠️ trader Summary returned empty.")
+                
+            print("📝 Sent telegram...")    
+            # read text and send to telegram
+            with open("all_report_message.txt", "r", encoding="utf-8") as f:
+                report_messages = f.read()
+                sent_to_telegram(report_messages)
                 
         except Exception as e:
             print(f"❌ Failed to summarize: {e}")

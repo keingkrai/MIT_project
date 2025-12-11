@@ -134,6 +134,7 @@ class FinancialSituationMemory:
 
         # ส่วนของ ChromaDB - ใช้ get_or_create_collection เพื่อป้องกัน error เมื่อ collection มีอยู่แล้ว
         self.chroma_client = chromadb.Client(Settings(allow_reset=True))
+<<<<<<< HEAD
         try:
             # พยายามดึง collection ที่มีอยู่แล้วก่อน
             self.situation_collection = self.chroma_client.get_collection(name=name)
@@ -145,6 +146,10 @@ class FinancialSituationMemory:
             except Exception:
                 # ถ้า collection ถูกสร้างระหว่างที่เราพยายามสร้าง (race condition) ให้ดึงมาใช้
                 self.situation_collection = self.chroma_client.get_collection(name=name)
+=======
+        # self.situation_collection = self.chroma_client.create_collection(name=name)
+        self.situation_collection = self.chroma_client.get_or_create_collection(name=name)
+>>>>>>> tang
 
     def get_embedding(self, text):
         """Get embedding for a text using a local SentenceTransformer model"""

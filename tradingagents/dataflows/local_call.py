@@ -1,30 +1,9 @@
 from typing import Annotated
-from .local import alphavantage_get_company_news, get_world_news_yf, fetch_reddit_world_news, fetch_reddit_symbol_top_praw, fetch_mastodon_stock_posts, fetch_bsky_stock_posts, pick_fundamental_source, finnhub_get_company_news, reddit_get_company_news, yfinance_get_company_news, fetch_finnhub_world_news, fetch_and_choose
+from .local import alphavantage_get_company_news, get_world_news_yf, fetch_reddit_world_news, fetch_reddit_symbol_top_praw, fetch_mastodon_stock_posts, fetch_bsky_stock_posts, pick_fundamental_source, finnhub_get_company_news, reddit_get_company_news, yfinance_get_company_news, fetch_finnhub_world_news
 import os, requests
 from rich.console import Console
 
 console = Console()
-
-def sent_to_telegram(message: str):
-    """Send a message to Telegram if configured."""
-    TELEGRAM_TOKEN = os.getenv("TELEGRAM_TOKEN")
-    TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID")
-
-    if TELEGRAM_TOKEN and TELEGRAM_CHAT_ID:
-        url = f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendMessage"
-        payload = {
-            "chat_id": TELEGRAM_CHAT_ID,
-            "text": message,
-            "parse_mode": "Markdown",
-        }
-        try:
-            response = requests.post(url, data=payload, timeout=10)
-            response.raise_for_status()
-            console.print("[green]Report sent to Telegram successfully![/green]")
-        except requests.RequestException as e:
-            console.print(f"[red]Failed to send report to Telegram: {e}[/red]")
-    else:
-        console.print("[yellow]Telegram not configured. Skipping sending report.[/yellow]")
  
 #fundamental data
 def get_fundamentals_local(ticker, curr_date):
@@ -35,12 +14,7 @@ def get_fundamentals_local(ticker, curr_date):
         
     res = pick_fundamental_source(ticker)
     
-    # print(f'\n\n\n [get_fundamentals_local] Chosen fundamental data source result:\n{res}\n\n\n')
-    
-    # read text and send to telegram
-    with open("all_report_message.txt", "r", encoding="utf-8") as f:
-        report_messages = f.read()
-        sent_to_telegram(report_messages)
+    print(f'\n\n\n [get_fundamentals_local] Chosen fundamental data source result:\n{res}\n\n\n')
         
     return res
 
@@ -137,22 +111,6 @@ def get_finnhub_world_news(
     with open("all_report_message.txt", "a", encoding='utf-8') as file:
         file.write(report_message + "\n\n")
     return res
-
-
-#indicator data
-def get_indicator(
-    symbol: Annotated[str, "ticker symbol of the company"],
-    indicator: Annotated[str, "technical indicator to get the analysis and report of"],
-    curr_date: Annotated[
-        str, "The current trading date you are trading on, YYYY-mm-dd"
-    ],
-    look_back_days: Annotated[int, "how many days to look back"],
-) -> str:
-    
-    res = fetch_and_choose(symbol)
-    print(f'\n\n\n [get_indicator] Indicator result:\n\n\n\n')
-    return res
-
 
 #social media news
 def get_bluesky_news(

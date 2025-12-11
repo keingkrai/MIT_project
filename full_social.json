@@ -1,0 +1,34 @@
+{
+    "sentiment_score": 68,
+    "sentiment_verdict": "Bullish",
+    "social_volume": "Elevated due to analyst upgrades and AI strategy discussions",
+    "dominant_narrative": "Retail investors are optimistic about Apple's AI integration strategy and strong iPhone 17 performance, with Wedbush's significant price target increase to $350 fueling positive sentiment. The market is focused on Apple's executive stability and AI roadmap execution.",
+    "top_topics": [
+        {
+            "topic": "Analyst Price Target Increases",
+            "sentiment": "Positive",
+            "analysis_snippet": "Wedbush raised Apple's price target to $350 citing iPhone 17 momentum and AI executive appointments."
+        },
+        {
+            "topic": "Apple Intelligence AI Strategy",
+            "sentiment": "Positive",
+            "analysis_snippet": "Investors are optimistic about Apple's on-device AI integration and hiring of former DeepMind executive."
+        },
+        {
+            "topic": "Executive Stability and Leadership",
+            "sentiment": "Positive",
+            "analysis_snippet": "Tim Cook's commitment to remain CEO until 2027 is viewed as positive for strategic continuity."
+        },
+        {
+            "topic": "Regulatory and Legal Concerns",
+            "sentiment": "Mixed",
+            "analysis_snippet": "Bipartisan attorneys general warnings about AI chatbot outputs create regulatory uncertainty."
+        },
+        {
+            "topic": "China Market Performance",
+            "sentiment": "Positive",
+            "analysis_snippet": "Foreign-branded phone shipments in China increased 13% year-over-year, indicating strong market performance."
+        }
+    ],
+    "psychology": "Optimism driven by analyst upgrades and Fear Of Missing Out on AI integration potential"
+}

@@ -47,9 +47,9 @@ def sent_to_telegram(report_message, score: dict, best_source: str):
     MESSAGE = (f"🏷️ Stock Data Source Comparison Result:\n\n"
                f"{report_message}\n"
                f"===== SIMILARITY SCORE =====\n"
-               f"YFinance Score: {score.get('yf', 0)}\n"
-               f"TwelveData Score: {score.get('tw', 0)}\n"
-               f"TradingView Score: {score.get('tv', 0)}\n\n"
+               f"YFinance Score: {score.get('yfinance', 0)}\n"
+               f"TwelveData Score: {score.get('twelvedata', 0)}\n"
+               f"TradingView Score: {score.get('tradingview', 0)}\n\n"
                f"🏆 Best Source: {best_source.upper()}")
     
     url = f"https://api.telegram.org/bot{TOKEN}/sendMessage"

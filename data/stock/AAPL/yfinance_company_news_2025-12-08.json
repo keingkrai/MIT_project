@@ -1,0 +1,767 @@
+[
+  {
+<<<<<<< HEAD
+=======
+    "id": "32f13664-1b61-43f5-b2c4-ddb0b2a2b136",
+    "content": {
+      "id": "32f13664-1b61-43f5-b2c4-ddb0b2a2b136",
+      "contentType": "STORY",
+      "title": "Why these 2 stocks have shockingly blown away Nvidia",
+      "description": "",
+      "summary": "Go figure, dollar stores.",
+      "pubDate": "2025-12-07T13:30:23Z",
+      "displayTime": "2025-12-08T06:32:11Z",
+      "isHosted": true,
+      "bypassModal": false,
+      "previewUrl": null,
+      "thumbnail": {
+        "originalUrl": "https://s.yimg.com/os/creatr-uploaded-images/2025-12/8dd32470-d1eb-11f0-bf5f-5dfb5a56848d",
+        "originalWidth": 3750,
+        "originalHeight": 2500,
+        "caption": "",
+        "resolutions": [
+          {
+            "url": "https://s.yimg.com/uu/api/res/1.2/hF460bso.4GTYyKMGLNS0A--~B/aD0yNTAwO3c9Mzc1MDthcHBpZD15dGFjaHlvbg--/https://s.yimg.com/os/creatr-uploaded-images/2025-12/8dd32470-d1eb-11f0-bf5f-5dfb5a56848d",
+            "width": 3750,
+            "height": 2500,
+            "tag": "original"
+          },
+          {
+            "url": "https://s.yimg.com/uu/api/res/1.2/0_jWlB22PT2Q.8HoxJdXYA--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://s.yimg.com/os/creatr-uploaded-images/2025-12/8dd32470-d1eb-11f0-bf5f-5dfb5a56848d",
+            "width": 170,
+            "height": 128,
+            "tag": "170x128"
+          }
+        ]
+      },
+      "provider": {
+        "displayName": "Yahoo Finance",
+        "url": "http://finance.yahoo.com/"
+      },
+      "canonicalUrl": {
+        "url": "https://finance.yahoo.com/news/why-these-2-stocks-have-shockingly-blown-away-nvidia-133023103.html",
+        "site": "finance",
+        "region": "US",
+        "lang": "en-US"
+      },
+      "clickThroughUrl": {
+        "url": "https://finance.yahoo.com/news/why-these-2-stocks-have-shockingly-blown-away-nvidia-133023103.html",
+        "site": "finance",
+        "region": "US",
+        "lang": "en-US"
+      },
+      "metadata": {
+        "editorsPick": true
+      },
+      "finance": {
+        "premiumFinance": {
+          "isPremiumNews": false,
+          "isPremiumFreeNews": false
+        }
+      },
+      "storyline": null
+    }
+  },
+  {
+>>>>>>> tang
+    "id": "ccfb6f17-5188-4fac-b6a9-366c7b11c9fb",
+    "content": {
+      "id": "ccfb6f17-5188-4fac-b6a9-366c7b11c9fb",
+      "contentType": "STORY",
+      "title": "Apple's executive exodus sends a signal about its AI strategy",
+      "description": "",
+      "summary": "A number of executives are departing Apple. At least some of them are related to its AI strategy.",
+      "pubDate": "2025-12-07T15:00:58Z",
+      "displayTime": "2025-12-07T15:00:58Z",
+      "isHosted": true,
+      "bypassModal": false,
+      "previewUrl": null,
+      "thumbnail": {
+        "originalUrl": "https://s.yimg.com/os/creatr-uploaded-images/2025-12/b9ad4820-d216-11f0-b5bd-1db4142d442c",
+        "originalWidth": 5000,
+        "originalHeight": 3327,
+        "caption": "",
+        "resolutions": [
+          {
+            "url": "https://s.yimg.com/uu/api/res/1.2/L52M6o6rL2M7YYg3uKWuSQ--~B/aD0zMzI3O3c9NTAwMDthcHBpZD15dGFjaHlvbg--/https://s.yimg.com/os/creatr-uploaded-images/2025-12/b9ad4820-d216-11f0-b5bd-1db4142d442c",
+            "width": 5000,
+            "height": 3327,
+            "tag": "original"
+          },
+          {
+            "url": "https://s.yimg.com/uu/api/res/1.2/amWyum4cfvEJMZUvIhOZWg--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://s.yimg.com/os/creatr-uploaded-images/2025-12/b9ad4820-d216-11f0-b5bd-1db4142d442c",
+            "width": 170,
+            "height": 128,
+            "tag": "170x128"
+          }
+        ]
+      },
+      "provider": {
+        "displayName": "Yahoo Finance",
+        "url": "http://finance.yahoo.com/"
+      },
+      "canonicalUrl": {
+        "url": "https://finance.yahoo.com/news/apples-executive-exodus-sends-a-signal-about-its-ai-strategy-150058611.html",
+        "site": "finance",
+        "region": "US",
+        "lang": "en-US"
+      },
+      "clickThroughUrl": {
+        "url": "https://finance.yahoo.com/news/apples-executive-exodus-sends-a-signal-about-its-ai-strategy-150058611.html",
+        "site": "finance",
+        "region": "US",
+        "lang": "en-US"
+      },
+      "metadata": {
+        "editorsPick": true
+      },
+      "finance": {
+        "premiumFinance": {
+          "isPremiumNews": false,
+          "isPremiumFreeNews": false
+        }
+      },
+      "storyline": null
+    }
+  },
+  {
+<<<<<<< HEAD
+    "id": "32f13664-1b61-43f5-b2c4-ddb0b2a2b136",
+    "content": {
+      "id": "32f13664-1b61-43f5-b2c4-ddb0b2a2b136",
+      "contentType": "STORY",
+      "title": "Why these 2 stocks have shockingly blown away Nvidia",
+      "description": "",
+      "summary": "Go figure, dollar stores.",
+      "pubDate": "2025-12-07T13:30:23Z",
+      "displayTime": "2025-12-07T13:30:23Z",
+=======
+    "id": "ea138e53-00eb-496f-8280-0503e09d3154",
+    "content": {
+      "id": "ea138e53-00eb-496f-8280-0503e09d3154",
+      "contentType": "STORY",
+      "title": "Why women are judged more harshly than men for using AI at work",
+      "description": "",
+      "summary": "Research found that when both women and men use AI to produce identical work products, the women are perceived as less competent than the men.",
+      "pubDate": "2025-12-08T06:00:37Z",
+      "displayTime": "2025-12-08T06:00:37Z",
+>>>>>>> tang
+      "isHosted": true,
+      "bypassModal": false,
+      "previewUrl": null,
+      "thumbnail": {
+<<<<<<< HEAD
+        "originalUrl": "https://s.yimg.com/os/creatr-uploaded-images/2025-12/8dd32470-d1eb-11f0-bf5f-5dfb5a56848d",
+        "originalWidth": 3750,
+        "originalHeight": 2500,
+        "caption": "",
+        "resolutions": [
+          {
+            "url": "https://s.yimg.com/uu/api/res/1.2/hF460bso.4GTYyKMGLNS0A--~B/aD0yNTAwO3c9Mzc1MDthcHBpZD15dGFjaHlvbg--/https://s.yimg.com/os/creatr-uploaded-images/2025-12/8dd32470-d1eb-11f0-bf5f-5dfb5a56848d",
+            "width": 3750,
+            "height": 2500,
+            "tag": "original"
+          },
+          {
+            "url": "https://s.yimg.com/uu/api/res/1.2/0_jWlB22PT2Q.8HoxJdXYA--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://s.yimg.com/os/creatr-uploaded-images/2025-12/8dd32470-d1eb-11f0-bf5f-5dfb5a56848d",
+=======
+        "originalUrl": "https://s.yimg.com/os/creatr-uploaded-images/2025-12/ad0d4040-d124-11f0-bffd-6e4cec835027",
+        "originalWidth": 8807,
+        "originalHeight": 5871,
+        "caption": "",
+        "resolutions": [
+          {
+            "url": "https://s.yimg.com/uu/api/res/1.2/21EHYuKaHpA7SLNJl92KwA--~B/aD01ODcxO3c9ODgwNzthcHBpZD15dGFjaHlvbg--/https://s.yimg.com/os/creatr-uploaded-images/2025-12/ad0d4040-d124-11f0-bffd-6e4cec835027",
+            "width": 8807,
+            "height": 5871,
+            "tag": "original"
+          },
+          {
+            "url": "https://s.yimg.com/uu/api/res/1.2/VviFdV0KHYsftKxqhWC29w--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://s.yimg.com/os/creatr-uploaded-images/2025-12/ad0d4040-d124-11f0-bffd-6e4cec835027",
+>>>>>>> tang
+            "width": 170,
+            "height": 128,
+            "tag": "170x128"
+          }
+        ]
+      },
+      "provider": {
+<<<<<<< HEAD
+        "displayName": "Yahoo Finance",
+        "url": "http://finance.yahoo.com/"
+      },
+      "canonicalUrl": {
+        "url": "https://finance.yahoo.com/news/why-these-2-stocks-have-shockingly-blown-away-nvidia-133023103.html",
+        "site": "finance",
+        "region": "US",
+        "lang": "en-US"
+      },
+      "clickThroughUrl": {
+        "url": "https://finance.yahoo.com/news/why-these-2-stocks-have-shockingly-blown-away-nvidia-133023103.html",
+=======
+        "displayName": "Yahoo Finance UK",
+        "url": "http://uk.finance.yahoo.com/"
+      },
+      "canonicalUrl": {
+        "url": "https://uk.finance.yahoo.com/news/women-ai-work-men-gender-equality-sexism-060037035.html",
+        "site": "finance",
+        "region": "GB",
+        "lang": "en-GB"
+      },
+      "clickThroughUrl": {
+        "url": "https://finance.yahoo.com/news/women-ai-work-men-gender-equality-sexism-060037035.html",
+>>>>>>> tang
+        "site": "finance",
+        "region": "US",
+        "lang": "en-US"
+      },
+      "metadata": {
+<<<<<<< HEAD
+        "editorsPick": true
+=======
+        "editorsPick": false
+      },
+      "finance": {
+        "premiumFinance": {
+          "isPremiumNews": false,
+          "isPremiumFreeNews": false
+        }
+      },
+      "storyline": null
+    }
+  },
+  {
+    "id": "f874da75-e5b3-31df-b419-bc4c4fe29363",
+    "content": {
+      "id": "f874da75-e5b3-31df-b419-bc4c4fe29363",
+      "contentType": "STORY",
+      "title": "Stock market history signals a reckoning for today’s AI spending surge",
+      "description": "",
+      "summary": "The debate over whether the artificial intelligence (AI) spending boom is primed for a bust continues to rumble.",
+      "pubDate": "2025-12-08T06:00:00Z",
+      "displayTime": "2025-12-08T06:00:00Z",
+      "isHosted": true,
+      "bypassModal": false,
+      "previewUrl": null,
+      "thumbnail": {
+        "originalUrl": "https://media.zenfs.com/en/the_telegraph_818/b75d2ed96337c060c14b2e691a33dd7b",
+        "originalWidth": 2500,
+        "originalHeight": 1563,
+        "caption": "Sam Altman",
+        "resolutions": [
+          {
+            "url": "https://s.yimg.com/uu/api/res/1.2/4tw2zIhM.ButLm08HcXtrg--~B/aD0xNTYzO3c9MjUwMDthcHBpZD15dGFjaHlvbg--/https://media.zenfs.com/en/the_telegraph_818/b75d2ed96337c060c14b2e691a33dd7b",
+            "width": 2500,
+            "height": 1563,
+            "tag": "original"
+          },
+          {
+            "url": "https://s.yimg.com/uu/api/res/1.2/LC4Qk2o0xWnes_ZJWh42Rw--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/the_telegraph_818/b75d2ed96337c060c14b2e691a33dd7b",
+            "width": 170,
+            "height": 128,
+            "tag": "170x128"
+          }
+        ]
+      },
+      "provider": {
+        "displayName": "The Telegraph",
+        "url": "http://www.telegraph.co.uk/"
+      },
+      "canonicalUrl": {
+        "url": "https://uk.finance.yahoo.com/news/stock-market-history-signals-reckoning-060000641.html",
+        "site": "finance",
+        "region": "GB",
+        "lang": "en-GB"
+      },
+      "clickThroughUrl": {
+        "url": "https://finance.yahoo.com/news/stock-market-history-signals-reckoning-060000641.html",
+        "site": "finance",
+        "region": "US",
+        "lang": "en-US"
+      },
+      "metadata": {
+        "editorsPick": false
+>>>>>>> tang
+      },
+      "finance": {
+        "premiumFinance": {
+          "isPremiumNews": false,
+          "isPremiumFreeNews": false
+        }
+      },
+      "storyline": null
+    }
+  },
+  {
+    "id": "0b57a4d9-a3d7-39ab-8656-21053fd0500f",
+    "content": {
+      "id": "0b57a4d9-a3d7-39ab-8656-21053fd0500f",
+      "contentType": "STORY",
+      "title": "Jim Cramer on Meta CEO: “Zuckerberg Makes Elon Musk Look Like a Real Softy”",
+      "description": "",
+      "summary": "Meta Platforms, Inc. (NASDAQ:META) is one of the stocks Jim Cramer discussed, along with the tech battleground. Cramer highlighted the company CEO’s hiring strategy, as he commented: “Third example, there used to be some honor among thieves in Silicon Valley, a sort of no-poach rule that led to a lot of rich executives filled with […]",
+      "pubDate": "2025-12-08T05:32:01Z",
+      "displayTime": "2025-12-08T05:32:01Z",
+      "isHosted": true,
+      "bypassModal": false,
+      "previewUrl": null,
+      "thumbnail": {
+        "originalUrl": "https://media.zenfs.com/en/insidermonkey.com/ec3ff787a5b6f6d5b0fd7957bcf52f0d",
+        "originalWidth": 1920,
+        "originalHeight": 1440,
+        "caption": "",
+        "resolutions": [
+          {
+            "url": "https://s.yimg.com/uu/api/res/1.2/viIrbvBW19MWMVXKBlgCGw--~B/aD0xNDQwO3c9MTkyMDthcHBpZD15dGFjaHlvbg--/https://media.zenfs.com/en/insidermonkey.com/ec3ff787a5b6f6d5b0fd7957bcf52f0d",
+            "width": 1920,
+            "height": 1440,
+            "tag": "original"
+          },
+          {
+            "url": "https://s.yimg.com/uu/api/res/1.2/Zx5QkpRka04r5CYIQ43.xQ--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/insidermonkey.com/ec3ff787a5b6f6d5b0fd7957bcf52f0d",
+            "width": 170,
+            "height": 128,
+            "tag": "170x128"
+          }
+        ]
+      },
+      "provider": {
+        "displayName": "Insider Monkey",
+        "url": "http://www.insidermonkey.com"
+      },
+      "canonicalUrl": {
+        "url": "https://finance.yahoo.com/news/jim-cramer-meta-ceo-zuckerberg-053201309.html",
+        "site": "finance",
+        "region": "US",
+        "lang": "en-US"
+      },
+      "clickThroughUrl": {
+        "url": "https://finance.yahoo.com/news/jim-cramer-meta-ceo-zuckerberg-053201309.html",
+        "site": "finance",
+        "region": "US",
+        "lang": "en-US"
+      },
+      "metadata": {
+        "editorsPick": false
+      },
+      "finance": {
+        "premiumFinance": {
+          "isPremiumNews": false,
+          "isPremiumFreeNews": false
+        }
+      },
+      "storyline": null
+    }
+  },
+  {
+    "id": "deef766a-c927-327c-96f3-522777711dbc",
+    "content": {
+      "id": "deef766a-c927-327c-96f3-522777711dbc",
+      "contentType": "STORY",
+      "title": "How Tesla’s Growth Stacks Up Against Amazon, Apple and Nvidia",
+      "description": "",
+      "summary": "Tesla's growth is exceptional, but not supreme in value. Even so, its rise in such a short period of time since its IPO has been incredible, percent over year.",
+      "pubDate": "2025-12-08T04:36:05Z",
+      "displayTime": "2025-12-08T04:36:05Z",
+      "isHosted": true,
+      "bypassModal": false,
+      "previewUrl": null,
+      "thumbnail": {
+        "originalUrl": "https://media.zenfs.com/en/gobankingrates_644/bd39d799a4e9af62ad2d4d413964db3b",
+        "originalWidth": 1920,
+        "originalHeight": 1080,
+        "caption": "",
+        "resolutions": [
+          {
+            "url": "https://s.yimg.com/uu/api/res/1.2/fIX0JmLBXcIgTQfMxBJOFA--~B/aD0xMDgwO3c9MTkyMDthcHBpZD15dGFjaHlvbg--/https://media.zenfs.com/en/gobankingrates_644/bd39d799a4e9af62ad2d4d413964db3b",
+            "width": 1920,
+            "height": 1080,
+            "tag": "original"
+          },
+          {
+            "url": "https://s.yimg.com/uu/api/res/1.2/FroTx9mN.cboqjyZBReDlw--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/gobankingrates_644/bd39d799a4e9af62ad2d4d413964db3b",
+            "width": 170,
+            "height": 128,
+            "tag": "170x128"
+          }
+        ]
+      },
+      "provider": {
+        "displayName": "GOBankingRates",
+        "url": "https://www.gobankingrates.com/"
+      },
+      "canonicalUrl": {
+        "url": "https://finance.yahoo.com/news/tesla-growth-stacks-against-amazon-043605534.html",
+        "site": "finance",
+        "region": "US",
+        "lang": "en-US"
+      },
+      "clickThroughUrl": {
+        "url": "https://finance.yahoo.com/news/tesla-growth-stacks-against-amazon-043605534.html",
+        "site": "finance",
+        "region": "US",
+        "lang": "en-US"
+      },
+      "metadata": {
+        "editorsPick": false
+      },
+      "finance": {
+        "premiumFinance": {
+          "isPremiumNews": false,
+          "isPremiumFreeNews": false
+        }
+      },
+      "storyline": null
+    }
+  },
+  {
+    "id": "f2747f08-990a-3a55-88e0-e5c9b78320ef",
+    "content": {
+      "id": "f2747f08-990a-3a55-88e0-e5c9b78320ef",
+      "contentType": "STORY",
+      "title": "Here's Why Alphabet Is the Best-Performing \"Magnificent Seven\" Stock in 2025 (and Why It Has Room to Run in 2026)",
+      "description": "",
+      "summary": "In a matter of months, Alphabet went from a market underperformer to knocking on the door of the $4 trillion club.",
+      "pubDate": "2025-12-07T22:20:00Z",
+      "displayTime": "2025-12-07T22:20:00Z",
+      "isHosted": true,
+      "bypassModal": false,
+      "previewUrl": null,
+      "thumbnail": {
+        "originalUrl": "https://media.zenfs.com/en/motleyfool.com/6fadf915c45deb0c6041d9d15dc180b6",
+        "originalWidth": 1400,
+        "originalHeight": 840,
+        "caption": "A Google logo dangling from a chain on a Tyrannosaurus rex skull.",
+        "resolutions": [
+          {
+            "url": "https://s.yimg.com/uu/api/res/1.2/nanNQXRCsvuFXRfuFpnaLw--~B/aD04NDA7dz0xNDAwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/motleyfool.com/6fadf915c45deb0c6041d9d15dc180b6",
+            "width": 1400,
+            "height": 840,
+            "tag": "original"
+          },
+          {
+            "url": "https://s.yimg.com/uu/api/res/1.2/h.1Qo8nz7xpmPQN9EndOoQ--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/motleyfool.com/6fadf915c45deb0c6041d9d15dc180b6",
+            "width": 170,
+            "height": 128,
+            "tag": "170x128"
+          }
+        ]
+      },
+      "provider": {
+        "displayName": "Motley Fool",
+        "url": "http://www.fool.com/"
+      },
+      "canonicalUrl": {
+        "url": "https://www.fool.com/investing/2025/12/07/heres-why-alphabet-is-the-best-performing-magnific/",
+        "site": "finance",
+        "region": "US",
+        "lang": "en-US"
+      },
+      "clickThroughUrl": {
+        "url": "https://finance.yahoo.com/news/heres-why-alphabet-best-performing-222000767.html",
+        "site": "finance",
+        "region": "US",
+        "lang": "en-US"
+      },
+      "metadata": {
+        "editorsPick": false
+      },
+      "finance": {
+        "premiumFinance": {
+          "isPremiumNews": false,
+          "isPremiumFreeNews": false
+        }
+      },
+      "storyline": null
+    }
+  },
+  {
+    "id": "9c93d04b-9357-3e8e-803c-9b8587bfdb56",
+    "content": {
+      "id": "9c93d04b-9357-3e8e-803c-9b8587bfdb56",
+      "contentType": "STORY",
+      "title": "My Surprising Top \"Magnificent Seven\" Stock Pick for 2026",
+      "description": "",
+      "summary": "Amazon is my pick to be the top-performing \"Magnificent Seven\" stock in 2026.",
+      "pubDate": "2025-12-07T21:44:00Z",
+      "displayTime": "2025-12-07T21:44:00Z",
+      "isHosted": true,
+      "bypassModal": false,
+      "previewUrl": null,
+      "thumbnail": {
+        "originalUrl": "https://media.zenfs.com/en/motleyfool.com/54d13594758a0fb5d29d6fbe1f714ff4",
+        "originalWidth": 1400,
+        "originalHeight": 933,
+        "caption": "An illustration of a bull against a candlestick chart.",
+        "resolutions": [
+          {
+            "url": "https://s.yimg.com/uu/api/res/1.2/shVmWruHhUMw_lSeqDp8VA--~B/aD05MzM7dz0xNDAwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/motleyfool.com/54d13594758a0fb5d29d6fbe1f714ff4",
+            "width": 1400,
+            "height": 933,
+            "tag": "original"
+          },
+          {
+            "url": "https://s.yimg.com/uu/api/res/1.2/MtgELpTzSdyQTwzORggZhA--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/motleyfool.com/54d13594758a0fb5d29d6fbe1f714ff4",
+            "width": 170,
+            "height": 128,
+            "tag": "170x128"
+          }
+        ]
+      },
+      "provider": {
+        "displayName": "Motley Fool",
+        "url": "http://www.fool.com/"
+      },
+      "canonicalUrl": {
+        "url": "https://www.fool.com/investing/2025/12/07/my-surprising-top-magnificent-seven-stock-pick-for/",
+        "site": "finance",
+        "region": "US",
+        "lang": "en-US"
+      },
+      "clickThroughUrl": {
+        "url": "https://finance.yahoo.com/news/surprising-top-magnificent-seven-stock-214400575.html",
+        "site": "finance",
+        "region": "US",
+        "lang": "en-US"
+      },
+      "metadata": {
+        "editorsPick": false
+      },
+      "finance": {
+        "premiumFinance": {
+          "isPremiumNews": false,
+          "isPremiumFreeNews": false
+        }
+      },
+      "storyline": null
+    }
+  },
+  {
+    "id": "e3cb063d-6e2a-356b-80ca-988daeed29ed",
+    "content": {
+      "id": "e3cb063d-6e2a-356b-80ca-988daeed29ed",
+      "contentType": "STORY",
+      "title": "Executive Exodus Hits Apple As Fears Grow Over Possible Chip Chief Departure",
+      "description": "",
+      "summary": "Apple Inc. (NASDAQ:AAPL) is witnessing a major reshuffle in its top management, with several key personnel and engineers exiting the company. The departures, which include the heads of artificial intelligence and interface design, represent an unprecedented level of turnover in Apple’s executive suite. What Happened: The company’s general counsel and head of governmental affairs are also on their way out. These exits have sparked concerns about Apple’s future, especially in the realm of artifici",
+      "pubDate": "2025-12-07T20:10:47Z",
+      "displayTime": "2025-12-07T20:10:47Z",
+      "isHosted": true,
+      "bypassModal": false,
+      "previewUrl": null,
+      "thumbnail": null,
+      "provider": {
+        "displayName": "Benzinga",
+        "url": "http://www.benzinga.com/"
+      },
+      "canonicalUrl": {
+        "url": "https://finance.yahoo.com/news/executive-exodus-hits-apple-fears-201047499.html",
+        "site": "finance",
+        "region": "US",
+        "lang": "en-US"
+      },
+      "clickThroughUrl": {
+        "url": "https://finance.yahoo.com/news/executive-exodus-hits-apple-fears-201047499.html",
+        "site": "finance",
+        "region": "US",
+        "lang": "en-US"
+      },
+      "metadata": {
+        "editorsPick": false
+      },
+      "finance": {
+        "premiumFinance": {
+          "isPremiumNews": false,
+          "isPremiumFreeNews": false
+        }
+      },
+      "storyline": null
+    }
+  },
+  {
+    "id": "0ddad5ce-1803-307a-9722-babaa5c58e1e",
+    "content": {
+      "id": "0ddad5ce-1803-307a-9722-babaa5c58e1e",
+      "contentType": "STORY",
+      "title": "Prediction: These 3 Stocks Could Be Worth More Than Apple 3 Years From Now",
+      "description": "",
+      "summary": "High valuation metrics prop up Apple's market valuation.",
+      "pubDate": "2025-12-07T10:20:00Z",
+      "displayTime": "2025-12-07T10:20:00Z",
+      "isHosted": true,
+      "bypassModal": false,
+      "previewUrl": null,
+      "thumbnail": {
+        "originalUrl": "https://media.zenfs.com/en/motleyfool.com/cd3460b8d06699c5e5f99d3ba0b430e0",
+        "originalWidth": 1400,
+        "originalHeight": 931,
+        "caption": "Investor comparing stock charts.",
+        "resolutions": [
+          {
+            "url": "https://s.yimg.com/uu/api/res/1.2/yLmKAjrxQ5V9bf6RE1.Szg--~B/aD05MzE7dz0xNDAwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/motleyfool.com/cd3460b8d06699c5e5f99d3ba0b430e0",
+            "width": 1400,
+            "height": 931,
+            "tag": "original"
+          },
+          {
+            "url": "https://s.yimg.com/uu/api/res/1.2/JziC7.1kvLeTWUyRDywqYA--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/motleyfool.com/cd3460b8d06699c5e5f99d3ba0b430e0",
+            "width": 170,
+            "height": 128,
+            "tag": "170x128"
+          }
+        ]
+      },
+      "provider": {
+        "displayName": "Motley Fool",
+        "url": "http://www.fool.com/"
+      },
+      "canonicalUrl": {
+        "url": "https://www.fool.com/investing/2025/12/07/prediction-3-stocks-that-could-be-worth-more-than/",
+        "site": "finance",
+        "region": "US",
+        "lang": "en-US"
+      },
+      "clickThroughUrl": {
+        "url": "https://finance.yahoo.com/news/prediction-3-stocks-could-worth-102000267.html",
+        "site": "finance",
+        "region": "US",
+        "lang": "en-US"
+      },
+      "metadata": {
+        "editorsPick": false
+      },
+      "finance": {
+        "premiumFinance": {
+          "isPremiumNews": false,
+          "isPremiumFreeNews": false
+        }
+      },
+      "storyline": null
+    }
+<<<<<<< HEAD
+  },
+  {
+    "id": "2bca7f80-6247-4039-81de-c81d19df28e9",
+    "content": {
+      "id": "2bca7f80-6247-4039-81de-c81d19df28e9",
+      "contentType": "STORY",
+      "title": "'Our women's hiking trousers saved our business – we've sold over 50,000'",
+      "description": "",
+      "summary": "Kasia Bromley is co-founder of Acai Outdoorwear, and has built a £5.5m purpose-led business alongside her husband.",
+      "pubDate": "2025-12-07T06:00:15Z",
+      "displayTime": "2025-12-07T06:00:15Z",
+      "isHosted": true,
+      "bypassModal": false,
+      "previewUrl": null,
+      "thumbnail": {
+        "originalUrl": "https://s.yimg.com/os/creatr-uploaded-images/2025-12/a1412c40-d1c9-11f0-afde-6e92ac102b61",
+        "originalWidth": 2000,
+        "originalHeight": 1333,
+        "caption": "",
+        "resolutions": [
+          {
+            "url": "https://s.yimg.com/uu/api/res/1.2/FWGlEd7TRjs4W6VChw2Axw--~B/aD0xMzMzO3c9MjAwMDthcHBpZD15dGFjaHlvbg--/https://s.yimg.com/os/creatr-uploaded-images/2025-12/a1412c40-d1c9-11f0-afde-6e92ac102b61",
+            "width": 2000,
+            "height": 1333,
+            "tag": "original"
+          },
+          {
+            "url": "https://s.yimg.com/uu/api/res/1.2/5oRSi2RXto5gB4xItnEKwg--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://s.yimg.com/os/creatr-uploaded-images/2025-12/a1412c40-d1c9-11f0-afde-6e92ac102b61",
+            "width": 170,
+            "height": 128,
+            "tag": "170x128"
+          }
+        ]
+      },
+      "provider": {
+        "displayName": "Yahoo Finance UK",
+        "url": "http://uk.finance.yahoo.com/"
+      },
+      "canonicalUrl": {
+        "url": "https://uk.finance.yahoo.com/news/acai-outdoorwear-women-leggings-hiking-acai-060015049.html",
+        "site": "finance",
+        "region": "GB",
+        "lang": "en-GB"
+      },
+      "clickThroughUrl": {
+        "url": "https://finance.yahoo.com/news/acai-outdoorwear-women-leggings-hiking-acai-060015049.html",
+        "site": "finance",
+        "region": "US",
+        "lang": "en-US"
+      },
+      "metadata": {
+        "editorsPick": false
+      },
+      "finance": {
+        "premiumFinance": {
+          "isPremiumNews": false,
+          "isPremiumFreeNews": false
+        }
+      },
+      "storyline": null
+    }
+  },
+  {
+    "id": "33aeee9e-0524-3d91-a998-83850a400c0d",
+    "content": {
+      "id": "33aeee9e-0524-3d91-a998-83850a400c0d",
+      "contentType": "STORY",
+      "title": "Prediction: This Will Be the First Tech Company to Split Its Stock in 2026",
+      "description": "",
+      "summary": "Several companies in big tech have split their stock in recent years.",
+      "pubDate": "2025-12-07T05:50:00Z",
+      "displayTime": "2025-12-07T05:50:00Z",
+      "isHosted": true,
+      "bypassModal": false,
+      "previewUrl": null,
+      "thumbnail": {
+        "originalUrl": "https://media.zenfs.com/en/motleyfool.com/59deb1c79058c47c523640d7715bc320",
+        "originalWidth": 1400,
+        "originalHeight": 894,
+        "caption": "Microsoft logo on dark backdrop.",
+        "resolutions": [
+          {
+            "url": "https://s.yimg.com/uu/api/res/1.2/O0q1hVFJXCExbQUDMVwqbw--~B/aD04OTQ7dz0xNDAwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/motleyfool.com/59deb1c79058c47c523640d7715bc320",
+            "width": 1400,
+            "height": 894,
+            "tag": "original"
+          },
+          {
+            "url": "https://s.yimg.com/uu/api/res/1.2/5MpCVtP6Wk_XpBRcDSWXOA--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/motleyfool.com/59deb1c79058c47c523640d7715bc320",
+            "width": 170,
+            "height": 128,
+            "tag": "170x128"
+          }
+        ]
+      },
+      "provider": {
+        "displayName": "Motley Fool",
+        "url": "http://www.fool.com/"
+      },
+      "canonicalUrl": {
+        "url": "https://www.fool.com/investing/2025/12/07/prediction-this-will-be-the-first-tech-company-to/",
+        "site": "finance",
+        "region": "US",
+        "lang": "en-US"
+      },
+      "clickThroughUrl": {
+        "url": "https://finance.yahoo.com/news/prediction-first-tech-company-split-055000770.html",
+        "site": "finance",
+        "region": "US",
+        "lang": "en-US"
+      },
+      "metadata": {
+        "editorsPick": false
+      },
+      "finance": {
+        "premiumFinance": {
+          "isPremiumNews": false,
+          "isPremiumFreeNews": false
+        }
+      },
+      "storyline": null
+    }
+=======
+>>>>>>> tang
+  }
+]

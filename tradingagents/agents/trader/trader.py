@@ -99,19 +99,8 @@ def create_trader(llm, memory):
 """
         
         messages = [
-<<<<<<< HEAD
-            {
-                "role": "system",
-                "content": f"""You are a trading agent analyzing market data to make investment decisions. Based on your analysis, provide a specific recommendation to buy, sell, or hold. End with a firm decision and always conclude your response with 'FINAL TRANSACTION PROPOSAL: **BUY/HOLD/SELL**' to confirm your recommendation. Do not forget to utilize lessons from past decisions to learn from your mistakes. Here is some reflections from similar situations you traded in and the lessons learned: {past_memory_str}"""
-                + style_instruction
-                + """
-**IMPORTANT: Write in plain, simple English that anyone can understand. Format everything as bullet points - NO paragraphs. Explain your trading decision clearly and avoid technical jargon. Make it easy for humans to understand why you're recommending BUY, SELL, or HOLD. Keep each bullet point short (1-2 sentences maximum)."""
-            },
-            context,
-=======
             {"role": "system", "content": system_msg},
             {"role": "user", "content": user_content},
->>>>>>> tang
         ]
 
         result = llm.invoke(messages)

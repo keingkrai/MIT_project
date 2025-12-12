@@ -21,15 +21,15 @@ class ExecutionDetails(BaseModel):
 class TraderDecision(BaseModel):
     plan_validation: PlanValidation
     memory_application: str = Field(description="Specific lesson applied from past reflections to this trade.")
-    final_decision_signal: str = Field(description="BUY / SELL / HOLD")
+    final_decision_signal: Literal["BUY", "SELL", "HOLD"] = Field(description="decision signal")
     execution_details: ExecutionDetails
-    trader_commentary: str = Field(description="Final remarks or warnings for the Risk Manager.")
+    trader_commentary: str = Field(description="Final remarks or warnings for the Risk Manager.") 
 
 def create_trader(llm, memory):
     def trader_node(state, name):
-        company_name = state.get("company_of_interest", "Unknown Company")
-        investment_plan = state.get("investment_plan", "N/A")
-        
+        company_name = state["company_of_interest"]
+        investment_plan = state["investment_plan"]
+
         market_report = state.get("market_report", "N/A")
         sentiment_report = state.get("sentiment_report", "N/A")
         news_report = state.get("news_report", "N/A")
@@ -44,7 +44,7 @@ def create_trader(llm, memory):
                 past_memory_str += f"Situation {i}: {rec.get('situation_summary', 'N/A')}\nLesson: {rec['recommendation']}\n"
         else:
             past_memory_str = "No relevant past memories found."
-
+            
         parser = JsonOutputParser(pydantic_object=TraderDecision)
 
         system_msg = (
@@ -56,7 +56,7 @@ def create_trader(llm, memory):
             "\n{format_instructions}" 
         )
 
-        user_template = f"""
+        user_content = f"""
         Review the Intelligence Reports and the Proposed Plan to make your decision for {company_name}.
 
         RAW INTELLIGENCE REPORTS
@@ -73,47 +73,48 @@ def create_trader(llm, memory):
         
         OUTPUT FORMAT:
         {parser.get_format_instructions()}
-        
         Response needs to follow the JSON schema strictly.
         """
 
-        prompt = PromptTemplate(
-            template=f"{system_msg}\n\n{user_template}",
-            input_variables=["company_name", "market_report", "sentiment_report", 
-                             "news_report", "fundamentals_report", "investment_plan", "past_memory_str"],
-            partial_variables={"format_instructions": parser.get_format_instructions()}
-        )
+        messages = [
+            {"role": "system", "content": system_msg},
+            {"role": "user", "content": user_content},
+        ]
 
-        chain = prompt | llm | parser
+        result = llm.invoke(messages)
+        
+        trader_plan_content = ""
 
         try:
-            parsed_result = chain.invoke({
-                "company_name": company_name,
-                "market_report": market_report,
-                "sentiment_report": sentiment_report,
-                "news_report": news_report,
-                "fundamentals_report": fundamentals_report,
-                "investment_plan": investment_plan,
-                "past_memory_str": past_memory_str
-            })
-
-            trader_plan_content = json.dumps(parsed_result, indent=4, ensure_ascii=False)
-            print("✅ Trader: Valid JSON parsed successfully.")
-
+            raw_content = result.content
+            clean_content = raw_content.strip()
+            if clean_content.startswith("```json"):
+                clean_content = clean_content[7:]
+            elif clean_content.startswith("```"):
+                clean_content = clean_content[3:]
+            if clean_content.endswith("```"):
+                clean_content = clean_content[:-3]
+            
+            match = re.search(r"\{[\s\S]*\}", clean_content)
+            if match:
+                json_str = match.group(0)
+                parsed_json = json.loads(json_str)
+                trader_plan_content = json.dumps(parsed_json, indent=4, ensure_ascii=False)
+            else:
+                print("⚠️ Trader: No JSON found. Using raw text.")
+                # Fallback structure
+                trader_plan_content = json.dumps({
+                    "final_decision_signal": "HOLD (Parsing Error)",
+                    "trader_commentary": raw_content
+                }, indent=4)
+                
         except Exception as e:
-            print(f"⚠️ Trader: Parsing Error ({e}). Attempting fallback recovery...")
-            fallback_data = {
-                "final_decision_signal": "HOLD (System Error)",
-                "trader_commentary": f"JSON Parsing failed: {str(e)}",
-                "plan_validation": {"agreement_status": "Error", "validation_notes": "Parsing failed"},
-                "execution_details": {},
-                "memory_application": "N/A"
-            }
-            trader_plan_content = json.dumps(fallback_data, indent=4)
+            print(f"⚠️ Trader: JSON Parse Error ({e}). Saving raw content.")
+            trader_plan_content = result.content
 
         return {
-            "messages": [f"Trader Decision: {parsed_result.get('final_decision_signal', 'Unknown')}"], 
-            "trader_investment_plan": trader_plan_content,
+            "messages": [result],
+            "trader_investment_plan": trader_plan_content, # เก็บ JSON String
             "sender": name,
         }
 

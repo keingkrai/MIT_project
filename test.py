@@ -169,16 +169,18 @@ def main():
         
         investment = final_state.get("investment_debate_state")
         risk = final_state.get("risk_debate_state")
-        trader = final_state.get("trader_investment_decision")
+        trader = final_state.get("trader_investment_plan")
     
         
-        # เขียนให้เป็น JSON สวยๆ (pretty)
+        investment = json.load(investment)
         with open("./investment.json", "w", encoding="utf-8") as f:
             json.dump(investment, f, ensure_ascii=False, indent=4)
-
+            
+        risk = json.load(risk)
         with open("./risk.json", "w", encoding="utf-8") as f:
             json.dump(risk, f, ensure_ascii=False, indent=4)
             
+        trader = json.load(trader)
         with open("./trader.json", "w", encoding="utf-8") as f:
             json.dump(trader, f, ensure_ascii=False, indent=4)
         

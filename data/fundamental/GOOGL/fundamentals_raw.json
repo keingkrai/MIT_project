@@ -1,0 +1,66 @@
+{
+  "symbol": "GOOGL",
+  "timestamp": "2025-12-12T07:16:18.142666+00:00",
+  "raw": {
+    "yfinance": {
+      "overview": {
+        "marketCap": 3784190279602.587,
+        "sharesOutstanding": null,
+        "peRatio": null,
+        "currency": "USD",
+        "exchange": "NMS",
+        "name": "Alphabet Inc.",
+        "sector": "Communication Services",
+        "industry": "Internet Content & Information"
+      },
+      "balancesheet": {
+        "totalAssets": 450256000000.0,
+        "totalLiabilities": 125172000000.0,
+        "shareholderEquity": 325084000000.0
+      },
+      "cashflow": {
+        "operatingCashFlow": 125299000000.0,
+        "freeCashFlow": 72764000000.0,
+        "capitalExpenditures": null
+      },
+      "incomestatement": {
+        "totalRevenue": 350018000000.0,
+        "netIncome": 100118000000.0,
+        "eps": null
+      }
+    },
+    "finnhub": {
+      "overview": {},
+      "balancesheet": {},
+      "cashflow": {},
+      "incomestatement": {}
+    },
+    "alphavantage": {
+      "overview": {
+        "name": "Alphabet Inc Class A",
+        "currency": "USD",
+        "exchange": "NASDAQ",
+        "sector": "COMMUNICATION SERVICES",
+        "industry": "INTERNET CONTENT & INFORMATION",
+        "marketCap": 3878422315000.0,
+        "sharesOutstanding": 5818000000.0,
+        "peRatio": 31.64
+      },
+      "balancesheet": {
+        "totalAssets": null,
+        "totalLiabilities": null,
+        "shareholderEquity": null
+      },
+      "cashflow": {
+        "operatingCashFlow": 125299000000.0,
+        "freeCashFlow": 72764000000.0,
+        "capitalExpenditures": 52535000000.0
+      },
+      "incomestatement": {
+        "totalRevenue": 350018000000.0,
+        "netIncome": 100118000000.0,
+        "eps": null
+      }
+    }
+  }
+}

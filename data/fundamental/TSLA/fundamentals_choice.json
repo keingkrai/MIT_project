@@ -1,18 +1,30 @@
 {
-  "symbol": "SPY",
+  "symbol": "TSLA",
   "chosen_source": "yfinance",
   "scores": {
-    "yfinance": 0,
+    "yfinance": 7,
     "finnhub": 0,
-    "alphavantage": 0
+    "alphavantage": 7
   },
   "completeness": {
-    "yfinance": 3,
+    "yfinance": 13,
     "finnhub": 0,
-    "alphavantage": 0
+    "alphavantage": 13
   },
   "sections": {
     "overview": {
+      "scores": {
+        "yfinance": 3,
+        "finnhub": 0,
+        "alphavantage": 3
+      },
+      "completeness": {
+        "yfinance": 6,
+        "finnhub": 0,
+        "alphavantage": 8
+      }
+    },
+    "balancesheet": {
       "scores": {
         "yfinance": 0,
         "finnhub": 0,
@@ -24,69 +36,57 @@
         "alphavantage": 0
       }
     },
-    "balancesheet": {
-      "scores": {
-        "yfinance": 0,
-        "finnhub": 0,
-        "alphavantage": 0
-      },
-      "completeness": {
-        "yfinance": 0,
-        "finnhub": 0,
-        "alphavantage": 0
-      }
-    },
     "cashflow": {
       "scores": {
-        "yfinance": 0,
+        "yfinance": 2,
         "finnhub": 0,
-        "alphavantage": 0
+        "alphavantage": 2
       },
       "completeness": {
-        "yfinance": 0,
+        "yfinance": 2,
         "finnhub": 0,
-        "alphavantage": 0
+        "alphavantage": 3
       }
     },
     "incomestatement": {
       "scores": {
-        "yfinance": 0,
+        "yfinance": 2,
         "finnhub": 0,
-        "alphavantage": 0
+        "alphavantage": 2
       },
       "completeness": {
-        "yfinance": 0,
+        "yfinance": 2,
         "finnhub": 0,
-        "alphavantage": 0
+        "alphavantage": 2
       }
     }
   },
   "final_payload": {
     "overview": {
-      "marketCap": null,
+      "marketCap": 1486275376258.684,
       "sharesOutstanding": null,
       "peRatio": null,
       "currency": "USD",
-      "exchange": "PCX",
-      "name": "SPDR S&P 500",
-      "sector": null,
-      "industry": null
+      "exchange": "NMS",
+      "name": "Tesla, Inc.",
+      "sector": "Consumer Cyclical",
+      "industry": "Auto Manufacturers"
     },
     "balancesheet": {
-      "totalAssets": null,
-      "totalLiabilities": null,
-      "shareholderEquity": null
+      "totalAssets": 122070000000.0,
+      "totalLiabilities": 48390000000.0,
+      "shareholderEquity": 73680000000.0
     },
     "cashflow": {
-      "operatingCashFlow": null,
-      "freeCashFlow": null,
+      "operatingCashFlow": 14923000000.0,
+      "freeCashFlow": 3581000000.0,
       "capitalExpenditures": null
     },
     "incomestatement": {
-      "totalRevenue": null,
-      "netIncome": null,
+      "totalRevenue": 97690000000.0,
+      "netIncome": 7130000000.0,
       "eps": null
     }
   },
-  "timestamp": "2025-12-12T06:15:54.291573+00:00"
+  "timestamp": "2025-12-12T04:33:53.170026+00:00"
 }

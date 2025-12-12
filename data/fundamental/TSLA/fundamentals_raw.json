@@ -1,0 +1,66 @@
+{
+  "symbol": "TSLA",
+  "timestamp": "2025-12-12T04:33:53.170026+00:00",
+  "raw": {
+    "yfinance": {
+      "overview": {
+        "marketCap": 1486275376258.684,
+        "sharesOutstanding": null,
+        "peRatio": null,
+        "currency": "USD",
+        "exchange": "NMS",
+        "name": "Tesla, Inc.",
+        "sector": "Consumer Cyclical",
+        "industry": "Auto Manufacturers"
+      },
+      "balancesheet": {
+        "totalAssets": 122070000000.0,
+        "totalLiabilities": 48390000000.0,
+        "shareholderEquity": 73680000000.0
+      },
+      "cashflow": {
+        "operatingCashFlow": 14923000000.0,
+        "freeCashFlow": 3581000000.0,
+        "capitalExpenditures": null
+      },
+      "incomestatement": {
+        "totalRevenue": 97690000000.0,
+        "netIncome": 7130000000.0,
+        "eps": null
+      }
+    },
+    "finnhub": {
+      "overview": {},
+      "balancesheet": {},
+      "cashflow": {},
+      "incomestatement": {}
+    },
+    "alphavantage": {
+      "overview": {
+        "name": "Tesla Inc",
+        "currency": "USD",
+        "exchange": "NASDAQ",
+        "sector": "CONSUMER CYCLICAL",
+        "industry": "AUTO MANUFACTURERS",
+        "marketCap": 1501441032000.0,
+        "sharesOutstanding": 3325819000.0,
+        "peRatio": 313.51
+      },
+      "balancesheet": {
+        "totalAssets": null,
+        "totalLiabilities": null,
+        "shareholderEquity": null
+      },
+      "cashflow": {
+        "operatingCashFlow": 14923000000.0,
+        "freeCashFlow": 3581000000.0,
+        "capitalExpenditures": 11342000000.0
+      },
+      "incomestatement": {
+        "totalRevenue": 97690000000.0,
+        "netIncome": 7130000000.0,
+        "eps": null
+      }
+    }
+  }
+}

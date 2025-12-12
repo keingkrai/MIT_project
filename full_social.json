@@ -1,34 +1,34 @@
 {
     "sentiment_score": 58,
     "sentiment_verdict": "Neutral",
-    "social_volume": "Moderate volume with mixed signals - some technical analysis discussions and options trading activity, but overshadowed by unrelated 'spy' content noise",
-    "dominant_narrative": "Retail investors are cautiously optimistic about SPY approaching previous highs, but concerns about technical resistance patterns and Federal Reserve policy decisions create uncertainty. The market appears to be in a holding pattern awaiting the FOMC meeting outcome.",
+    "social_volume": "Elevated due to regulatory concerns and AI competition developments",
+    "dominant_narrative": "Alphabet faces significant regulatory headwinds with EU antitrust probes and Disney copyright infringement claims, but maintains strong AI momentum with Gemini gaining ground on ChatGPT and Waymo's autonomous vehicle expansion. The market is balancing regulatory risks against continued AI innovation leadership.",
     "top_topics": [
         {
-            "topic": "Technical Analysis and Resistance Levels",
+            "topic": "EU Regulatory Probes and Fines",
+            "sentiment": "Negative",
+            "analysis_snippet": "European regulators are investigating Google for illegal web scraping to train AI and potential fines for Google Play favoritism, creating significant regulatory uncertainty."
+        },
+        {
+            "topic": "AI Competition with OpenAI",
             "sentiment": "Mixed",
-            "analysis_snippet": "Traders are discussing triple top reversal patterns and SPY approaching previous highs with caution ahead of the FOMC meeting."
+            "analysis_snippet": "Google's Gemini AI is gaining ground on ChatGPT, but faces simultaneous competition from OpenAI's GPT-5.2 release and regulatory scrutiny over training data practices."
         },
         {
-            "topic": "Options Trading Activity",
+            "topic": "Waymo Autonomous Vehicle Expansion",
             "sentiment": "Positive",
-            "analysis_snippet": "Active options trading with reports of successful 0DTE SPY trades and YOLO positions showing confidence in short-term market direction."
+            "analysis_snippet": "Waymo's rapid growth to 14 million rides in 2025 and plans for 1 million weekly robotaxi rides are seen as positive validation of Alphabet's long-term autonomous vehicle strategy."
         },
         {
-            "topic": "Federal Reserve Policy Concerns",
+            "topic": "Copyright and Legal Challenges",
             "sentiment": "Negative",
-            "analysis_snippet": "Investors express anxiety about upcoming Fed decisions and their potential impact on market direction and valuations."
+            "analysis_snippet": "Disney issued a cease-and-desist letter over AI copyright infringement, while India proposes charging for training AI on copyrighted content, creating legal headwinds."
         },
         {
-            "topic": "ETF Investment Strategy",
+            "topic": "AI Innovation and Market Position",
             "sentiment": "Positive",
-            "analysis_snippet": "Continued discussion about SPY as a core holding with debates about optimal ETF selection for long-term investment portfolios."
-        },
-        {
-            "topic": "Market Valuation Concerns",
-            "sentiment": "Negative",
-            "analysis_snippet": "Some voices express concern about overvaluation and weakening market fundamentals despite recent rallies."
+            "analysis_snippet": "Geoffrey Hinton's endorsement that Google is beginning to overtake OpenAI and the company's full-stack AI capabilities are viewed as competitive strengths."
         }
     ],
-    "psychology": "Cautious optimism mixed with Fear Uncertainty and Doubt about Federal Reserve policy decisions and technical resistance levels"
+    "psychology": "Cautious optimism tempered by regulatory fear, with investors balancing strong AI fundamentals against mounting legal and compliance risks."
 }

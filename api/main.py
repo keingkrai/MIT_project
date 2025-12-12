@@ -6,6 +6,7 @@ import asyncio
 import json
 import datetime
 import logging
+import os
 import time
 from pathlib import Path
 from typing import Dict, Any, List, Optional
@@ -17,6 +18,9 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse, RedirectResponse
 from pydantic import BaseModel
 from dotenv import load_dotenv
+import requests
+from rich import _console
+from tradingagents.agents import *
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -80,32 +84,88 @@ def extract_content_string(content):
         return ' '.join(text_parts)
     else:
         return str(content)
+    
+def sent_to_telegram(message: str):
+    """Send a message to Telegram if configured."""
+    TELEGRAM_TOKEN = os.getenv("TELEGRAM_TOKEN")
+    TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID")
+
+    if TELEGRAM_TOKEN and TELEGRAM_CHAT_ID:
+        url = f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendMessage"
+        payload = {
+            "chat_id": TELEGRAM_CHAT_ID,
+            "text": message,
+            "parse_mode": "Markdown",
+        }
+        try:
+            response = requests.post(url, data=payload, timeout=10)
+            response.raise_for_status()
+            _console.print("[green]Report sent to Telegram successfully![/green]")
+        except requests.RequestException as e:
+            _console.print(f"[red]Failed to send report to Telegram: {e}[/red]")
+    else:
+        _console.print("[yellow]Telegram not configured. Skipping sending report.[/yellow]")
 
 
-async def send_update(websocket: WebSocket, update_type: str, data: Dict[str, Any]):
+
+
+async def send_update(websocket: WebSocket, update_type: str, data: Dict[str, Any], stop_event: asyncio.Event = None):
     """Send an update to the WebSocket client."""
+    # Check if stop was requested
+    if stop_event and stop_event.is_set():
+        return False
+    
+    # Check WebSocket connection state
+    try:
+        if websocket.client_state.name != "CONNECTED":
+            return False
+    except:
+        return False
+    
     try:
         await websocket.send_json({
             "type": update_type,
             "data": data,
             "timestamp": datetime.datetime.now().isoformat()
         })
+        return True
     except (RuntimeError, ConnectionError, WebSocketDisconnect) as e:
         # Connection is closed, ignore silently
-        pass
+        return False
     except Exception as e:
         # Check if it's a connection-related error
         error_msg = str(e).lower()
         # Ignore errors about closed connections or sending to closed sockets
         if "close" in error_msg or "send" in error_msg or "cannot call" in error_msg:
-            pass  # Connection closed, ignore
+            return False  # Connection closed
         else:
             # Log other unexpected errors
-            print(f"Error sending update: {e}")
+            logger.warning(f"Error sending update: {e}")
+            return False
 
 
-async def run_analysis_stream(websocket: WebSocket, request: AnalysisRequest):
+async def run_analysis_stream(websocket: WebSocket, request: AnalysisRequest, stop_event: asyncio.Event = None):
     """Run the trading analysis and stream updates via WebSocket."""
+    if stop_event is None:
+        stop_event = asyncio.Event()
+    
+    def check_websocket_state():
+        """Check if WebSocket is still connected."""
+        try:
+            return websocket.client_state.name == "CONNECTED"
+        except:
+            return False
+    
+    def should_continue():
+        """Check if we should continue processing."""
+        return not stop_event.is_set() and check_websocket_state()
+    
+    async def send_update_safe(update_type: str, data: Dict[str, Any]):
+        """Wrapper for send_update that checks stop_event and connection."""
+        if not should_continue():
+            return False
+        return await send_update(websocket, update_type, data, stop_event)
+    
     try:
         # Create config
         config = DEFAULT_CONFIG.copy()
@@ -123,11 +183,11 @@ async def run_analysis_stream(websocket: WebSocket, request: AnalysisRequest):
 
         # Validate analysts list before using
         if request.analysts is None:
-            await send_update(websocket, "error", {"message": "Analysts list cannot be None"})
+            await send_update_safe("error", {"message": "Analysts list cannot be None"})
             return
         
         if not isinstance(request.analysts, list) or len(request.analysts) == 0:
-            await send_update(websocket, "error", {"message": "Analysts must be a non-empty list"})
+            await send_update_safe("error", {"message": "Analysts must be a non-empty list"})
             return
 
         # Initialize the graph
@@ -170,10 +230,11 @@ async def run_analysis_stream(websocket: WebSocket, request: AnalysisRequest):
         }
 
         # Send initial status
-        await send_update(websocket, "status", {
+        if not await send_update_safe("status", {
             "message": f"Starting analysis for {request.ticker} on {request.analysis_date}",
             "agents": agent_status
-        })
+        }):
+            return
 
         # Track report sections
         report_sections = {
@@ -192,125 +253,187 @@ async def run_analysis_stream(websocket: WebSocket, request: AnalysisRequest):
         # Hardcoded to use DeepSeek rate limiting (2 seconds interval)
         min_request_interval = config.get("rate_limit_interval", 2.0)  # DeepSeek has better rate limits
         
+        # Check if stop was requested before starting
+        if stop_event.is_set():
+            logger.info("Stop requested before starting analysis")
+            return
+        
         # Add initial delay before starting stream to avoid immediate quota hits
         # This gives time for any previous requests to clear and prevents rapid-fire initialization
         await asyncio.sleep(1.0)  # Brief delay before first API call
         
+        # Check again after sleep
+        if stop_event.is_set() or not check_websocket_state():
+            logger.info("Stop requested or disconnected during initialization")
+            return
+        
         # Stream with enhanced rate limiting
-        for chunk in graph.graph.stream(init_agent_state, **args):
-            # Rate limiting: Add delay between chunks to avoid ResourceExhausted errors
-            # This ensures we never exceed the rate limits
-            current_time = time.time()
-            time_since_last = current_time - last_request_time
-            if time_since_last < min_request_interval:
-                sleep_time = min_request_interval - time_since_last
-                # Use asyncio.sleep for non-blocking delay
-                await asyncio.sleep(sleep_time)
-            last_request_time = time.time()
-            if len(chunk.get("messages", [])) > 0:
-                # Get the last message from the chunk
-                last_message = chunk["messages"][-1]
+        try:
+            for chunk in graph.graph.stream(init_agent_state, **args):
+                # Check if stop was requested or WebSocket disconnected
+                if not should_continue():
+                    logger.info("Analysis stopped: stop requested or WebSocket disconnected")
+                    await send_update_safe("status", {
+                        "message": "Analysis stopped by user",
+                        "agents": agent_status
+                    })
+                    break
+                
+                # Rate limiting: Add delay between chunks to avoid ResourceExhausted errors
+                # This ensures we never exceed the rate limits
+                current_time = time.time()
+                time_since_last = current_time - last_request_time
+                if time_since_last < min_request_interval:
+                    sleep_time = min_request_interval - time_since_last
+                    # Use asyncio.sleep for non-blocking delay
+                    await asyncio.sleep(sleep_time)
+                last_request_time = time.time()
+                
+                # Check again after sleep
+                if not should_continue():
+                    logger.info("Stop requested or connection lost during sleep")
+                    break
+                
+                if len(chunk.get("messages", [])) > 0:
+                    # Get the last message from the chunk
+                    last_message = chunk["messages"][-1]
 
-                # Extract message content
-                if hasattr(last_message, "content"):
-                    content = extract_content_string(last_message.content)
-                    msg_type = "Reasoning"
-                else:
-                    content = str(last_message)
-                    msg_type = "System"
+                    # Extract message content
+                    if hasattr(last_message, "content"):
+                        content = extract_content_string(last_message.content)
+                        msg_type = "Reasoning"
+                    else:
+                        content = str(last_message)
+                        msg_type = "System"
 
-                # Send message update
-                await send_update(websocket, "message", {
-                    "type": msg_type,
-                    "content": content
-                })
+                    # Check connection before sending
+                    if not should_continue():
+                        break
+                    
+                    # Send message update
+                    if not await send_update_safe("message", {
+                        "type": msg_type,
+                        "content": content
+                    }):
+                        break
 
-                # Handle tool calls
-                if hasattr(last_message, "tool_calls"):
-                    for tool_call in last_message.tool_calls:
-                        if isinstance(tool_call, dict):
-                            tool_name = tool_call.get("name", "unknown")
-                            tool_args = tool_call.get("args", {})
-                        else:
-                            tool_name = tool_call.name
-                            tool_args = tool_call.args
+                    # Handle tool calls
+                    if hasattr(last_message, "tool_calls"):
+                        for tool_call in last_message.tool_calls:
+                            if not should_continue():
+                                break
+                            
+                            if isinstance(tool_call, dict):
+                                tool_name = tool_call.get("name", "unknown")
+                                tool_args = tool_call.get("args", {})
+                            else:
+                                tool_name = tool_call.name
+                                tool_args = tool_call.args
 
-                        await send_update(websocket, "tool_call", {
-                            "name": tool_name,
-                            "args": tool_args
-                        })
+                            if not await send_update_safe("tool_call", {
+                                "name": tool_name,
+                                "args": tool_args
+                            }):
+                                break
 
                 # Update agent statuses and reports based on chunk content
                 # Analyst Team Reports
                 if "market_report" in chunk and chunk["market_report"]:
+                    if not should_continue():
+                        break
+                    
                     report_sections["market_report"] = chunk["market_report"]
                     agent_status["Market Analyst"] = "completed"
                     # Save report
                     with open(report_dir / "market_report.md", "w", encoding="utf-8") as f:
                         f.write(chunk["market_report"])
                     
-                    await send_update(websocket, "report", {
+                    if not should_continue():
+                        break
+                    
+                    if not await send_update_safe("report", {
                         "section": "market_report",
                         "label": "Market Analysis",
                         "content": chunk["market_report"]
-                    })
+                    }):
+                        break
                     
                     if request.analysts and "social" in request.analysts:
                         agent_status["Social Analyst"] = "in_progress"
-                    await send_update(websocket, "status", {"agents": agent_status})
+                    
+                    if not await send_update_safe("status", {"agents": agent_status}):
+                        break
 
                 if "sentiment_report" in chunk and chunk["sentiment_report"]:
+                    if not should_continue():
+                        break
+                    
                     report_sections["sentiment_report"] = chunk["sentiment_report"]
                     agent_status["Social Analyst"] = "completed"
                     # Save report
                     with open(report_dir / "sentiment_report.md", "w", encoding="utf-8") as f:
                         f.write(chunk["sentiment_report"])
                     
-                    await send_update(websocket, "report", {
+                    if not await send_update_safe("report", {
                         "section": "sentiment_report",
                         "label": "Social Sentiment",
                         "content": chunk["sentiment_report"]
-                    })
+                    }):
+                        break
                     
                     if request.analysts and "news" in request.analysts:
                         agent_status["News Analyst"] = "in_progress"
-                    await send_update(websocket, "status", {"agents": agent_status})
+                    
+                    if not await send_update_safe("status", {"agents": agent_status}):
+                        break
 
                 if "news_report" in chunk and chunk["news_report"]:
+                    if not should_continue():
+                        break
+                    
                     report_sections["news_report"] = chunk["news_report"]
                     agent_status["News Analyst"] = "completed"
                     # Save report
                     with open(report_dir / "news_report.md", "w", encoding="utf-8") as f:
                         f.write(chunk["news_report"])
                     
-                    await send_update(websocket, "report", {
+                    if not await send_update_safe("report", {
                         "section": "news_report",
                         "label": "News Analysis",
                         "content": chunk["news_report"]
-                    })
+                    }):
+                        break
                     
                     if request.analysts and "fundamentals" in request.analysts:
                         agent_status["Fundamentals Analyst"] = "in_progress"
-                    await send_update(websocket, "status", {"agents": agent_status})
+                    
+                    if not await send_update_safe("status", {"agents": agent_status}):
+                        break
 
                 if "fundamentals_report" in chunk and chunk["fundamentals_report"]:
+                    if not should_continue():
+                        break
+                    
                     report_sections["fundamentals_report"] = chunk["fundamentals_report"]
                     agent_status["Fundamentals Analyst"] = "completed"
                     # Save report
                     with open(report_dir / "fundamentals_report.md", "w", encoding="utf-8") as f:
                         f.write(chunk["fundamentals_report"])
                     
-                    await send_update(websocket, "report", {
+                    if not await send_update_safe("report", {
                         "section": "fundamentals_report",
                         "label": "Fundamentals Review",
                         "content": chunk["fundamentals_report"]
-                    })
+                    }):
+                        break
                     
                     # Start research team
                     agent_status["Bull Researcher"] = "in_progress"
                     agent_status["Bear Researcher"] = "in_progress"
                     agent_status["Research Manager"] = "in_progress"
-                    await send_update(websocket, "status", {"agents": agent_status})
+                    
+                    if not await send_update_safe("status", {"agents": agent_status}):
+                        break
 
                 # Research Team - Handle Investment Debate State
                 if "investment_debate_state" in chunk and chunk["investment_debate_state"] is not None:
@@ -322,19 +445,25 @@ async def run_analysis_stream(websocket: WebSocket, request: AnalysisRequest):
 
                     # Update Bull Researcher status and report
                     if debate_state and "bull_history" in debate_state and debate_state.get("bull_history"):
+                        if not should_continue():
+                            break
+                        
                         agent_status["Bull Researcher"] = "in_progress"
                         agent_status["Bear Researcher"] = "in_progress"
                         agent_status["Research Manager"] = "in_progress"
-                        await send_update(websocket, "status", {"agents": agent_status})
+                        
+                        if not await send_update_safe("status", {"agents": agent_status}):
+                            break
                         
                         # Extract latest bull response
                         bull_responses = debate_state["bull_history"].split("\n")
                         latest_bull = bull_responses[-1] if bull_responses else ""
                         if latest_bull:
-                            await send_update(websocket, "message", {
+                            if not await send_update_safe("message", {
                                 "type": "Reasoning",
                                 "content": latest_bull
-                            })
+                            }):
+                                break
                             
                             # Update research report with bull's latest analysis
                             current_plan = report_sections.get("investment_plan") or ""
@@ -345,27 +474,34 @@ async def run_analysis_stream(websocket: WebSocket, request: AnalysisRequest):
                                 parts = current_plan.split("### Bear Researcher Analysis")
                                 report_sections["investment_plan"] = f"{parts[0].split('### Bull Researcher Analysis')[0]}### Bull Researcher Analysis\n{latest_bull}" + (f"\n\n### Bear Researcher Analysis{parts[1]}" if len(parts) > 1 else "")
                             
-                            await send_update(websocket, "report", {
+                            if not await send_update_safe("report", {
                                 "section": "investment_plan",
                                 "label": "Research Team Decision",
                                 "content": report_sections["investment_plan"]
-                            })
+                            }):
+                                break
 
                     # Update Bear Researcher status and report
                     if debate_state and "bear_history" in debate_state and debate_state.get("bear_history"):
+                        if not should_continue():
+                            break
+                        
                         agent_status["Bull Researcher"] = "in_progress"
                         agent_status["Bear Researcher"] = "in_progress"
                         agent_status["Research Manager"] = "in_progress"
-                        await send_update(websocket, "status", {"agents": agent_status})
+                        
+                        if not await send_update_safe("status", {"agents": agent_status}):
+                            break
                         
                         # Extract latest bear response
                         bear_responses = debate_state["bear_history"].split("\n")
                         latest_bear = bear_responses[-1] if bear_responses else ""
                         if latest_bear:
-                            await send_update(websocket, "message", {
+                            if not await send_update_safe("message", {
                                 "type": "Reasoning",
                                 "content": latest_bear
-                            })
+                            }):
+                                break
                             
                             # Update research report with bear's latest analysis
                             current_plan = report_sections.get("investment_plan") or ""
@@ -376,14 +512,18 @@ async def run_analysis_stream(websocket: WebSocket, request: AnalysisRequest):
                                 parts = current_plan.split("### Bear Researcher Analysis")
                                 report_sections["investment_plan"] = parts[0] + f"\n\n### Bear Researcher Analysis\n{latest_bear}"
                             
-                            await send_update(websocket, "report", {
+                            if not await send_update_safe("report", {
                                 "section": "investment_plan",
                                 "label": "Research Team Decision",
                                 "content": report_sections["investment_plan"]
-                            })
+                            }):
+                                break
 
                     # Update Research Manager status and final decision
                     if debate_state and "judge_decision" in debate_state and debate_state.get("judge_decision"):
+                        if not should_continue():
+                            break
+                        
                         agent_status["Bull Researcher"] = "completed"
                         agent_status["Bear Researcher"] = "completed"
                         agent_status["Research Manager"] = "completed"
@@ -396,36 +536,44 @@ async def run_analysis_stream(websocket: WebSocket, request: AnalysisRequest):
                         with open(report_dir / "investment_plan.md", "w", encoding="utf-8") as f:
                             f.write(report_sections["investment_plan"])
                         
-                        await send_update(websocket, "report", {
+                        if not await send_update_safe("report", {
                             "section": "investment_plan",
                             "label": "Research Team Decision",
                             "content": report_sections["investment_plan"]
-                        })
+                        }):
+                            break
                         
-                        await send_update(websocket, "message", {
+                        if not await send_update_safe("message", {
                             "type": "Reasoning",
                             "content": f"Research Manager: {debate_state['judge_decision']}"
-                        })
+                        }):
+                            break
                         
                         agent_status["Trader"] = "in_progress"
-                        await send_update(websocket, "status", {"agents": agent_status})
+                        if not await send_update_safe("status", {"agents": agent_status}):
+                            break
 
                 # Trading Team
                 if "trader_investment_plan" in chunk and chunk["trader_investment_plan"]:
+                    if not should_continue():
+                        break
+                    
                     report_sections["trader_investment_plan"] = chunk["trader_investment_plan"]
                     agent_status["Trader"] = "completed"
                     # Save report
                     with open(report_dir / "trader_investment_plan.md", "w", encoding="utf-8") as f:
                         f.write(chunk["trader_investment_plan"])
                     
-                    await send_update(websocket, "report", {
+                    if not await send_update_safe("report", {
                         "section": "trader_investment_plan",
                         "label": "Trader Investment Plan",
                         "content": chunk["trader_investment_plan"]
-                    })
+                    }):
+                        break
                     
                     agent_status["Risky Analyst"] = "in_progress"
-                    await send_update(websocket, "status", {"agents": agent_status})
+                    if not await send_update_safe("status", {"agents": agent_status}):
+                        break
 
                 # Risk Management Team
                 if "risk_debate_state" in chunk and chunk["risk_debate_state"] is not None:
@@ -436,30 +584,48 @@ async def run_analysis_stream(websocket: WebSocket, request: AnalysisRequest):
                         risk_state = {}
 
                     if risk_state and "current_risky_response" in risk_state and risk_state.get("current_risky_response"):
+                        if not should_continue():
+                            break
+                        
                         agent_status["Risky Analyst"] = "in_progress"
-                        await send_update(websocket, "status", {"agents": agent_status})
-                        await send_update(websocket, "message", {
+                        if not await send_update_safe("status", {"agents": agent_status}):
+                            break
+                        if not await send_update_safe("message", {
                             "type": "Reasoning",
                             "content": f"Risky Analyst: {risk_state['current_risky_response']}"
-                        })
+                        }):
+                            break
 
                     if risk_state and "current_safe_response" in risk_state and risk_state.get("current_safe_response"):
+                        if not should_continue():
+                            break
+                        
                         agent_status["Safe Analyst"] = "in_progress"
-                        await send_update(websocket, "status", {"agents": agent_status})
-                        await send_update(websocket, "message", {
+                        if not await send_update_safe("status", {"agents": agent_status}):
+                            break
+                        if not await send_update_safe("message", {
                             "type": "Reasoning",
                             "content": f"Safe Analyst: {risk_state['current_safe_response']}"
-                        })
+                        }):
+                            break
 
                     if risk_state and "current_neutral_response" in risk_state and risk_state.get("current_neutral_response"):
+                        if not should_continue():
+                            break
+                        
                         agent_status["Neutral Analyst"] = "in_progress"
-                        await send_update(websocket, "status", {"agents": agent_status})
-                        await send_update(websocket, "message", {
+                        if not await send_update_safe("status", {"agents": agent_status}):
+                            break
+                        if not await send_update_safe("message", {
                             "type": "Reasoning",
                             "content": f"Neutral Analyst: {risk_state['current_neutral_response']}"
-                        })
+                        }):
+                            break
 
                     if risk_state and "judge_decision" in risk_state and risk_state.get("judge_decision"):
+                        if not should_continue():
+                            break
+                        
                         agent_status["Risky Analyst"] = "completed"
                         agent_status["Safe Analyst"] = "completed"
                         agent_status["Neutral Analyst"] = "completed"
@@ -478,38 +644,203 @@ async def run_analysis_stream(websocket: WebSocket, request: AnalysisRequest):
                         with open(report_dir / "final_trade_decision.md", "w", encoding="utf-8") as f:
                             f.write(report_sections["final_trade_decision"])
                         
-                        await send_update(websocket, "report", {
+                        if not await send_update_safe("report", {
                             "section": "final_trade_decision",
                             "label": "Portfolio Management Decision",
                             "content": report_sections["final_trade_decision"]
-                        })
+                        }):
+                            break
                         
-                        await send_update(websocket, "message", {
+                        if not await send_update_safe("message", {
                             "type": "Reasoning",
                             "content": f"Portfolio Manager: {risk_state['judge_decision']}"
-                        })
+                        }):
+                            break
                         
-                        await send_update(websocket, "status", {"agents": agent_status})
+                        if not await send_update_safe("status", {"agents": agent_status}):
+                            break
 
-            trace.append(chunk)
+                trace.append(chunk)
+                
+                # Check if we should continue after processing chunk
+                if not should_continue():
+                    logger.info("Stopping analysis stream due to stop request or disconnection")
+                    break
+        
+        except asyncio.CancelledError:
+            logger.info("Analysis stream cancelled")
+            raise
+        except Exception as e:
+            if stop_event.is_set():
+                logger.info("Analysis stopped due to stop event")
+                return
+            raise
+
+        # Check if we should send completion (only if not stopped)
+        if not should_continue():
+            logger.info("Analysis stopped before completion")
+            return
 
         # Get final state and decision
+        if not trace:
+            logger.warning("No trace data available")
+            return
+            
         final_state = trace[-1]
         decision = graph.process_signal(final_state.get("final_trade_decision", ""))
 
-        # Send completion
-        await send_update(websocket, "complete", {
-            "decision": decision,
-            "final_state": {
-                "market_report": report_sections.get("market_report"),
-                "sentiment_report": report_sections.get("sentiment_report"),
-                "news_report": report_sections.get("news_report"),
-                "fundamentals_report": report_sections.get("fundamentals_report"),
-                "investment_plan": report_sections.get("investment_plan"),
-                "trader_investment_plan": report_sections.get("trader_investment_plan"),
-                "final_trade_decision": report_sections.get("final_trade_decision"),
-            }
-        })
+        # Send completion (check connection one more time)
+        if should_continue():
+            await send_update_safe("complete", {
+                "decision": decision,
+                "final_state": {
+                    "market_report": report_sections.get("market_report"),
+                    "sentiment_report": report_sections.get("sentiment_report"),
+                    "news_report": report_sections.get("news_report"),
+                    "fundamentals_report": report_sections.get("fundamentals_report"),
+                    "investment_plan": report_sections.get("investment_plan"),
+                    "trader_investment_plan": report_sections.get("trader_investment_plan"),
+                    "final_trade_decision": report_sections.get("final_trade_decision"),
+                }
+            })
+
+        # Store current state for reflection
+        curr_state = final_state
+
+        print("📝 Summarizing Reports with Typhoon...")
+        try:
+            summarizer_func = create_summarizer_fundamental()
+            sum_market = create_summarizer_market()
+            sum_social = create_summarizer_social()
+            sum_news = create_summarizer_news()
+            sum_cons = create_summarizer_conservative()
+            sum_aggr = create_summarizer_aggressive()
+            sum_neut = create_summarizer_neutral()
+            sum_investment_plan = create_summarizer_research_manager()
+            sum_risk_plan = create_summarizer_risk_manager()
+            sum_bull = create_summarizer_bull_researcher()
+            sum_bear = create_summarizer_bear_researcher()
+            sum_trader = create_summarizer_trader()
+            
+            update_dict_fund = summarizer_func(final_state)
+            update_dict_market = sum_market(final_state)
+            update_dict_social = sum_social(final_state)
+            update_dict_news = sum_news(final_state)
+            update_dict_cons = sum_cons(final_state)
+            update_dict_aggr = sum_aggr(final_state)
+            update_dict_neut = sum_neut(final_state)
+            update_dict_investment_plan = sum_investment_plan(final_state)
+            update_dict_risk_plan = sum_risk_plan(final_state)
+            update_dict_bull = sum_bull(final_state)
+            update_dict_bear = sum_bear(final_state)
+            update_dict_trader = sum_trader(final_state)
+            
+            
+            # --- อัปเดต Fundamental ---
+            if update_dict_fund:
+                final_state.update(update_dict_fund)
+                curr_state.update(update_dict_fund)
+                print("✅ Fundamental Summary Updated!")
+            else:
+                print("⚠️ Fundamental Summary returned empty.")
+
+            # --- อัปเดต Market ---
+            if update_dict_market:
+                final_state.update(update_dict_market)
+                curr_state.update(update_dict_market)
+                print("✅ Market Summary Updated!")
+            else:
+                print("⚠️ Market Summary returned empty.")
+
+            # --- อัปเดต Social ---
+            if update_dict_social:
+                final_state.update(update_dict_social)
+                curr_state.update(update_dict_social)
+                print("✅ Social Summary Updated!")
+            else:
+                print("⚠️ Social Summary returned empty.")
+
+            # --- อัปเดต News ---
+            if update_dict_news:
+                final_state.update(update_dict_news)
+                curr_state.update(update_dict_news)
+                print("✅ News Summary Updated!")
+            else:
+                print("⚠️ News Summary returned empty.")
+
+            # --- อัปเดต Conservative ---
+            if update_dict_cons:
+                final_state.update(update_dict_cons)
+                curr_state.update(update_dict_cons)
+                print("✅ Conservative Summary Updated!")
+            else:
+                print("⚠️ Conservative Summary returned empty.")
+            
+            # --- อัปเดต Aggressive ---
+            if update_dict_aggr:
+                final_state.update(update_dict_aggr)
+                curr_state.update(update_dict_aggr)
+                print("✅ Aggressive Summary Updated!")
+            else:
+                print("⚠️ Aggressive Summary returned empty.")
+
+            # --- อัปเดต Neutral ---
+            if update_dict_neut:
+                final_state.update(update_dict_neut)
+                curr_state.update(update_dict_neut)
+                print("✅ Neutral Summary Updated!")
+            else:
+                print("⚠️ Neutral Summary returned empty.")
+
+            # --- อัปเดต Investment Plan ---
+            if update_dict_investment_plan:
+                final_state.update(update_dict_investment_plan)
+                curr_state.update(update_dict_investment_plan)
+                print("✅ Investment Plan Summary Updated!")
+            else:
+                print("⚠️ Investment Plan Summary returned empty.")
+            
+            # --- อัปเดต Risk Plan ---
+            if update_dict_risk_plan:
+                final_state.update(update_dict_risk_plan)
+                curr_state.update(update_dict_risk_plan)
+                print("✅ Risk Plan Summary Updated!")
+            else:
+                print("⚠️ Risk Plan Summary returned empty.")
+                
+            # --- อัปเดต bull ---
+            if update_dict_bull:
+                final_state.update(update_dict_bull)
+                curr_state.update(update_dict_bull)
+                print("✅ bull Summary Updated!")
+            else:
+                print("⚠️ bull Summary returned empty.")
+                
+            # --- อัปเดต bear ---
+            if update_dict_bear:
+                final_state.update(update_dict_bear)
+                curr_state.update(update_dict_bear)
+                print("✅ bear Summary Updated!")
+            else:
+                print("⚠️ bear Summary returned empty.")
+                
+            # --- อัปเดต trader ---
+            if update_dict_trader:
+                final_state.update(update_dict_trader)
+                curr_state.update(update_dict_trader)
+                print("✅ trader Summary Updated!")
+            else:
+                print("⚠️ trader Summary returned empty.")
+                
+            print("📝 Sent telegram...")    
+            # read text and send to telegram
+            with open("all_report_message.txt", "r", encoding="utf-8") as f:
+                report_messages = f.read()
+                sent_to_telegram(report_messages)
+                
+        except Exception as e:
+            print(f"❌ Failed to summarize: {e}")
+
 
         sum_finda = final_state.get("Summarize_fundamentals_report")
         funda = final_state.get("fundamentals_report")
@@ -695,16 +1026,37 @@ async def websocket_endpoint(websocket: WebSocket):
     
     Connect to receive live status updates, reports, and analysis results.
     Send analysis requests in JSON format with action: "start_analysis".
+    Send stop requests with action: "stop_analysis".
     """
     await websocket.accept()
     active_connections.append(websocket)
     
+    # Create stop event for this connection
+    stop_event = asyncio.Event()
+    analysis_task = None
+    
     try:
         while True:
-            # Wait for analysis request
-            data = await websocket.receive_json()
+            # Wait for messages (analysis request or stop command)
+            try:
+                data = await websocket.receive_json()
+            except Exception as e:
+                logger.warning(f"Error receiving WebSocket message: {e}")
+                break
             
             if data.get("action") == "start_analysis":
+                # Cancel any existing analysis task first
+                if analysis_task and not analysis_task.done():
+                    logger.info("Cancelling existing analysis task before starting new one")
+                    analysis_task.cancel()
+                    try:
+                        await analysis_task
+                    except asyncio.CancelledError:
+                        pass
+                
+                # Reset stop event
+                stop_event.clear()
+                
                 request_data = data.get("request")
                 if not request_data:
                     await send_update(websocket, "error", {"message": "Missing request data"})
@@ -717,18 +1069,83 @@ async def websocket_endpoint(websocket: WebSocket):
                     await send_update(websocket, "error", {"message": f"Invalid request: {str(e)}"})
                     continue
                 
-                # Run analysis in background
-                await run_analysis_stream(websocket, request)
+                # Run analysis with stop event
+                analysis_task = asyncio.create_task(
+                    run_analysis_stream(websocket, request, stop_event)
+                )
+                try:
+                    await analysis_task
+                except asyncio.CancelledError:
+                    logger.info("Analysis task was cancelled")
+                except Exception as e:
+                    if not stop_event.is_set():
+                        logger.error(f"Analysis task error: {e}")
+                
+            elif data.get("action") == "stop_analysis":
+                logger.info("Stop analysis requested by client - stopping all processes")
+                stop_event.set()  # Set stop event first
+                
+                # Cancel analysis task immediately
+                if analysis_task and not analysis_task.done():
+                    logger.info("Cancelling analysis task")
+                    analysis_task.cancel()
+                    try:
+                        # Wait briefly for cancellation to propagate
+                        await asyncio.wait_for(analysis_task, timeout=1.0)
+                    except (asyncio.CancelledError, asyncio.TimeoutError):
+                        logger.info("Analysis task cancelled")
+                
+                # Try to send confirmation (but don't wait if connection is closed)
+                try:
+                    if websocket.client_state.name == "CONNECTED":
+                        await send_update(websocket, "status", {
+                            "message": "Analysis stopped - all processes terminated",
+                            "agents": {}
+                        })
+                except:
+                    pass  # Connection may be closed, ignore
+                
+                # Break out of the loop to prevent re-initialization
+                logger.info("Stopping WebSocket message loop after stop request")
+                break
                 
             elif data.get("action") == "ping":
                 await send_update(websocket, "pong", {})
                 
     except WebSocketDisconnect:
-        active_connections.remove(websocket)
-    except Exception as e:
-        print(f"WebSocket error: {e}")
+        logger.info("WebSocket disconnected by client - stopping all processes")
+        stop_event.set()  # Stop any running analysis immediately
+        
+        # Cancel analysis task immediately
+        if analysis_task and not analysis_task.done():
+            logger.info("Cancelling analysis task due to disconnect")
+            analysis_task.cancel()
+            try:
+                # Don't wait - just cancel
+                await asyncio.wait_for(analysis_task, timeout=0.5)
+            except (asyncio.CancelledError, asyncio.TimeoutError):
+                pass
+        
         if websocket in active_connections:
             active_connections.remove(websocket)
+        logger.info("All processes stopped and connection cleaned up")
+        
+    except Exception as e:
+        logger.error(f"WebSocket error: {e}")
+        stop_event.set()  # Stop any running analysis immediately
+        
+        # Cancel analysis task immediately
+        if analysis_task and not analysis_task.done():
+            logger.info("Cancelling analysis task due to error")
+            analysis_task.cancel()
+            try:
+                await asyncio.wait_for(analysis_task, timeout=0.5)
+            except (asyncio.CancelledError, asyncio.TimeoutError):
+                pass
+        
+        if websocket in active_connections:
+            active_connections.remove(websocket)
+        logger.info("All processes stopped after error")
 
 
 @app.get("/.well-known/appspecific/com.chrome.devtools.json")

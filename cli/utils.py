@@ -1,6 +1,8 @@
 import questionary
 from typing import List, Optional, Tuple, Dict
 
+from rich import _console
+
 from cli.models import AnalystType
 
 ANALYST_ORDER = [
@@ -25,7 +27,7 @@ def get_ticker() -> str:
     ).ask()
 
     if not ticker:
-        console.print("\n[red]No ticker symbol provided. Exiting...[/red]")
+        _console.print("\n[red]No ticker symbol provided. Exiting...[/red]")
         exit(1)
 
     return ticker.strip().upper()
@@ -58,7 +60,7 @@ def get_analysis_date() -> str:
     ).ask()
 
     if not date:
-        console.print("\n[red]No date provided. Exiting...[/red]")
+        _console.print("\n[red]No date provided. Exiting...[/red]")
         exit(1)
 
     return date.strip()

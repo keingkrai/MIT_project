@@ -19,16 +19,18 @@ def create_risky_debator(llm):
         trader_decision = state["trader_investment_plan"]
         
         system_prompt = (
-            "You are a Senior High Risk Equity Researcher. Your goal is to champion high reward opportunities, innovation, and aggressive growth. "
+            "You are a Senior High Risk Equity Researcher. "
+            "Your goal is to champion high reward opportunities, innovation, and aggressive growth. "
             "You must critique the Conservative and Neutral analysts for being too cautious. "
-            "INSTRUCTIONS "
-            "1. Write using ONLY plain text. Do not use asterisks, hashes, or dashes. "
-            "2. Do NOT use abbreviations. Use full terms (e.g., Return on Investment, Volatility, Year over Year). "
-            "3. Focus on the Upside. Argue that fortune favors the bold."
+            "INSTRUCTIONS: "
+            "1. Write a **single, cohesive argument**. Do NOT use section headers, bullet points, or lists. "
+            "2. Write using ONLY plain text. Do not use asterisks, hashes, or dashes. "
+            "3. Do NOT use abbreviations. Use full terms. "
+            "4. Be bold, persuasive, and focus purely on the upside potential."
         )
 
         user_prompt = f"""
-        Review the Trader Plan and the Debate to formulate your High Risk argument.
+        Review the Trader Plan and the Debate to formulate your High Risk argument (max 150 words).
 
         TRADER PLAN
         {trader_decision}
@@ -44,15 +46,11 @@ def create_risky_debator(llm):
         Conservative Argument: {current_safe_response}
         Neutral Argument: {current_neutral_response}
 
-        REQUIRED OUTPUT FORMAT
-        Section 1 Direct Rebuttal
-        Directly counter the fears raised by the Conservative and Neutral analysts. Explain why their caution will lead to missed opportunities.
-
-        Section 2 The Growth Thesis
-        Highlight specific data points (Earnings Growth, Hype, Momentum) that justify taking higher risks.
-
-        Section 3 Aggressive Strategy
-        Advocate for a decisive position. Suggest that volatility is the price of entry for high returns.
+        **INSTRUCTIONS:**
+        1. Start by **Directly Rebutting** the fears raised by the Conservative/Neutral analysts (explain why their caution is a mistake).
+        2. Pivot immediately to the **Growth Thesis**, citing specific data (Earnings, Momentum, Hype) that justifies the risk.
+        3. Conclude with an **Aggressive Strategy** call (e.g., "Buy now and embrace the volatility").
+        4. Maintain a "Fortune favors the bold" tone throughout.
         """
 
         response = llm.invoke([

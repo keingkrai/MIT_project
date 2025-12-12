@@ -2,14 +2,14 @@
   "symbol": "AAPL",
   "chosen_source": "alphavantage",
   "scores": {
-    "yfinance": 12,
+    "yfinance": 9,
     "finnhub": 6,
-    "alphavantage": 14
+    "alphavantage": 11
   },
   "completeness": {
     "yfinance": 13,
     "finnhub": 8,
-    "alphavantage": 16
+    "alphavantage": 13
   },
   "sections": {
     "overview": {
@@ -26,14 +26,14 @@
     },
     "balancesheet": {
       "scores": {
-        "yfinance": 3,
+        "yfinance": 0,
         "finnhub": 0,
-        "alphavantage": 3
+        "alphavantage": 0
       },
       "completeness": {
         "yfinance": 3,
         "finnhub": 0,
-        "alphavantage": 3
+        "alphavantage": 0
       }
     },
     "cashflow": {
@@ -73,9 +73,9 @@
       "peRatio": 37.37
     },
     "balancesheet": {
-      "totalAssets": 359241000000.0,
-      "totalLiabilities": 285508000000.0,
-      "shareholderEquity": 73733000000.0
+      "totalAssets": null,
+      "totalLiabilities": null,
+      "shareholderEquity": null
     },
     "cashflow": {
       "operatingCashFlow": 111482000000.0,
@@ -88,5 +88,5 @@
       "eps": null
     }
   },
-  "timestamp": "2025-12-12T08:38:40.778055+00:00"
+  "timestamp": "2025-12-12T09:21:06.267804+00:00"
 }

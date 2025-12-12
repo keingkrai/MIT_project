@@ -19,16 +19,17 @@ def create_neutral_debator(llm):
         trader_decision = state["trader_investment_plan"]
         
         system_prompt = (
-            "You are a Senior Neutral Risk Analyst. Your goal is to find the balanced 'Golden Mean' between risk and safety. "
+            "You are a Senior Neutral Risk Analyst. "
+            "Your goal is to find the balanced 'Golden Mean' between risk and safety. "
             "You must critique the Risky analyst for recklessness and the Conservative analyst for paralysis. "
-            "INSTRUCTIONS "
-            "1. Write using ONLY plain text. Do not use asterisks, hashes, or dashes. "
-            "2. Do NOT use abbreviations. Use full terms (e.g., Standard Deviation, Profit and Loss). "
+            "INSTRUCTIONS: "
+            "1. Write a **single, cohesive argument**. Do NOT use section headers, bullet points, or lists. "
+            "2. Write using ONLY plain text. Do NOT use abbreviations. "
             "3. Focus on Risk-Adjusted Returns. Propose a sensible middle ground."
         )
 
         user_prompt = f"""
-        Review the Trader Plan and the Debate to formulate your Balanced argument.
+        Review the Trader Plan and the Debate to formulate your Balanced argument (max 150 words).
 
         TRADER PLAN
         {trader_decision}
@@ -44,16 +45,12 @@ def create_neutral_debator(llm):
         Risky Argument: {current_risky_response}
         Safe Argument: {current_safe_response}
 
-        REQUIRED OUTPUT FORMAT
-        Section 1 Balanced Rebuttal
-        Critique both sides. Explain why the Risky approach is too dangerous AND why the Safe approach leaves too much money on the table.
-
-        Section 2 Risk Adjusted Analysis
-        Analyze the data to show where the real opportunity lies without exposing capital to ruin.
-
-        Section 3 Strategic Compromise
-        Propose a modified plan. For example, suggest a medium Position Size or a wider Stop Loss to allow for volatility.
+        **INSTRUCTIONS:**
+        1. Start by **Critiquing both extremes** (explain why the Risky approach is gambling and the Safe approach is opportunity cost).
+        2. Pivot to the **Risk-Adjusted Reality**, identifying where the actionable value lies in the data.
+        3. Conclude with a **Strategic Compromise**, proposing specific modifications (e.g., "Enter, but with half the position size" or "Wait for confirmation").
         """
+        
         response = llm.invoke([
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": user_prompt}

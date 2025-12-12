@@ -1,8 +1,8 @@
 {
-    "executive_summary": "Apple faces mixed sentiment with slowing App Store growth and regulatory pressures, but offset by strong China sales growth, AI/foldable interest, and strategic expansion in services like Fitness+. The Federal Reserve's rate cut provides a supportive macro backdrop.",
+    "executive_summary": "Apple faces mixed sentiment with slowing App Store growth and regulatory pressures, but offset by strong iPhone demand in China, AI integration potential, and strategic partnerships like MP Materials for rare earth supply chain.",
     "market_sentiment_verdict": "Neutral",
     "global_macro_context": {
-        "macro_summary": "The Federal Reserve delivered a 25 basis point rate cut, signaling cautious monetary policy into 2026. Geopolitical tensions persist with U.S. oil tanker seizures off Venezuela and ongoing Ukraine conflict discussions. Global markets show resilience with Dow and S&P 500 reaching records, though AI bubble concerns are emerging amid Oracle's disappointing earnings."
+        "macro_summary": "The Federal Reserve delivered another 25 basis point rate cut, supporting market liquidity and consumer spending. However, geopolitical tensions persist with U.S. oil tanker seizures off Venezuela, and AI bubble concerns are intensifying following Oracle's earnings miss. The broader market shows rotation from tech to other sectors despite record highs for Dow and S&P 500."
     },
     "top_news_developments": [
         {
@@ -10,40 +10,40 @@
             "source": "Yahoo",
             "date": "2025-12-11",
             "sentiment": "Neutral",
-            "implication": "Analyst maintains neutral stance citing slowing App Store momentum and tough December comps, limiting upside potential."
-        },
-        {
-            "headline": "Apple Takes China's Smartphone Battle House to House with Free 3-Hour iPhone Delivery",
-            "source": "Yahoo",
-            "date": "2025-12-11",
-            "sentiment": "Positive",
-            "implication": "Aggressive delivery strategy in China could boost market share and defend against local competition in key market."
-        },
-        {
-            "headline": "Appeals Court Backs Contempt Finding Against Apple Over App Store Fees",
-            "source": "Associated Press Finance",
-            "date": "2025-12-12",
-            "sentiment": "Negative",
-            "implication": "Legal setback on App Store commission structure could pressure services revenue and regulatory scrutiny."
+            "implication": "Analyst maintains neutral stance due to slowing App Store momentum and tough December comps, limiting near-term upside."
         },
         {
             "headline": "Apple's Tim Cook Urges Lawmakers to Rethink App Store Accountability Act",
             "source": "Yahoo",
             "date": "2025-12-11",
             "sentiment": "Negative",
-            "implication": "Regulatory pushback on child safety legislation could increase compliance costs and operational complexity."
+            "implication": "Regulatory pressure on App Store operations could impact Apple's services revenue model and margins."
         },
         {
-            "headline": "Apple Expands Fitness+ to 28 New Markets Including India and Japan",
+            "headline": "Apple takes China's smartphone battle house to house with free 3-hour iPhone delivery",
+            "source": "Yahoo",
+            "date": "2025-12-11",
+            "sentiment": "Positive",
+            "implication": "Aggressive logistics expansion in China signals strong demand and competitive positioning in key market."
+        },
+        {
+            "headline": "Morgan Stanley Upgrades MP Materials on US Supply Chain Push and Apple Deal",
+            "source": "Finviz",
+            "date": "2025-12-11",
+            "sentiment": "Positive",
+            "implication": "Strategic partnership with Apple for rare earth materials strengthens supply chain resilience and supports production growth."
+        },
+        {
+            "headline": "Apple's Foldable iPhone Expected to Land Well with Consumers",
             "source": "Yahoo",
             "date": "2025-12-10",
             "sentiment": "Positive",
-            "implication": "Service expansion drives recurring revenue growth and strengthens ecosystem lock-in across emerging markets."
+            "implication": "Entry into foldable market could drive premium device sales and refresh iPhone upgrade cycle."
         }
     ],
     "key_risks": [
-        "Slowing App Store growth momentum and regulatory pressures on commission structures",
-        "Rising memory prices (DRAM/NAND) due to AI demand could compress margins",
-        "Intensifying competition in China smartphone market requiring aggressive delivery investments"
+        "Regulatory pressure on App Store business model and potential antitrust actions",
+        "Slowing services revenue growth amid App Store momentum deceleration",
+        "Rising memory prices (DRAM/NAND) could compress margins due to AI-driven demand"
     ]
 }

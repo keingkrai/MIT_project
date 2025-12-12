@@ -1,33 +1,33 @@
 {
     "sentiment_verdict": "Bullish",
-    "social_volume": "Elevated volume driven by analyst upgrades, iPhone 17 success, and AI integration discussions",
-    "dominant_narrative": "Apple is experiencing strong momentum driven by iPhone 17 sales exceeding expectations and the successful rollout of Apple Intelligence AI platform, with multiple analyst upgrades reinforcing positive sentiment.",
+    "social_volume": "Elevated due to analyst upgrades and iPhone 17 success",
+    "dominant_narrative": "Apple is experiencing strong momentum driven by iPhone 17 sales success and strategic AI advancements with Apple Intelligence. The company is approaching $4 trillion market valuation while receiving multiple analyst upgrades citing strong fundamentals and growth potential.",
     "top_topics": [
         {
             "topic": "iPhone 17 Sales Performance",
             "sentiment": "Positive",
-            "analysis_snippet": "The crowd is enthusiastic about iPhone 17 sales exceeding expectations with reports of 14% higher sales compared to previous models."
+            "analysis_snippet": "Strong initial demand for iPhone 17 is driving record sales and contributing to Apple's market cap approaching $4 trillion."
         },
         {
-            "topic": "Apple Intelligence AI Integration",
+            "topic": "Apple Intelligence AI Strategy",
             "sentiment": "Positive",
-            "analysis_snippet": "Investors are optimistic about Apple's on-device AI strategy and its potential to strengthen ecosystem lock-in and drive future growth."
+            "analysis_snippet": "Investors are optimistic about Apple's on-device AI capabilities and recent executive appointments strengthening their AI leadership."
         },
         {
             "topic": "Analyst Price Target Upgrades",
             "sentiment": "Positive",
-            "analysis_snippet": "Multiple analyst upgrades including Wedbush to $350 and Citi to $350 are generating positive momentum and confidence in the stock."
+            "analysis_snippet": "Multiple analysts including Wedbush and Citi have raised price targets to $350 citing strong fundamentals and growth prospects."
         },
         {
-            "topic": "Market Cap Milestones",
-            "sentiment": "Positive",
-            "analysis_snippet": "Discussion focuses on Apple approaching $4 trillion market cap and its position among the world's most valuable companies."
-        },
-        {
-            "topic": "Technical Analysis and Trading Levels",
+            "topic": "Institutional Options Activity",
             "sentiment": "Mixed",
-            "analysis_snippet": "Traders are monitoring key support and resistance levels with some noting the stock is lagging behind other tech giants."
+            "analysis_snippet": "High institutional options volume indicates significant institutional interest but also suggests potential volatility."
+        },
+        {
+            "topic": "Market Valuation Milestones",
+            "sentiment": "Positive",
+            "analysis_snippet": "Apple briefly surpassed $4 trillion market cap, joining an elite club with Nvidia and Microsoft."
         }
     ],
-    "psychology": "Fear Of Missing Out driven by strong product cycle and AI narrative, with growing confidence in Apple's strategic positioning"
+    "psychology": "Fear Of Missing Out driven by strong iPhone sales and AI advancements, combined with confidence in analyst upgrades and institutional interest."
 }

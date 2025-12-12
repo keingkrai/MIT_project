@@ -17,107 +17,108 @@
     ],
     "market_overview": {
         "trend_direction": "Bullish",
-        "momentum_state": "Strong",
+        "momentum_state": "Weak",
         "volatility_level": "Moderate",
-        "volume_condition": "Rising"
+        "volume_condition": "Neutral"
     },
     "indicator_analysis": [
         {
             "indicator": "close_50_sma",
             "indicator_full_name": "50-Day Simple Moving Average",
-            "signal": "Price at 278.85 is significantly above 50 SMA at 262.46, indicating strong bullish medium-term trend",
-            "implication": "Bullish continuation likely as price maintains position above key moving average support"
+            "signal": "Price at $278.85 above 50 SMA at $262.46, indicating bullish medium-term trend",
+            "implication": "Positive trend continuation likely, with 50 SMA acting as dynamic support"
         },
         {
             "indicator": "close_200_sma",
             "indicator_full_name": "200-Day Simple Moving Average",
-            "signal": "Price well above 200 SMA at 226.76, confirming long-term bullish trend",
-            "implication": "Major uptrend intact with substantial distance from long-term support"
+            "signal": "Price significantly above 200 SMA at $226.76, confirming strong long-term uptrend",
+            "implication": "Major bull market intact, any pullbacks likely to find support at higher levels"
         },
         {
             "indicator": "close_10_ema",
             "indicator_full_name": "10-Day Exponential Moving Average",
-            "signal": "Price at 278.85 above 10 EMA at 273.91, showing short-term bullish momentum",
-            "implication": "Short-term trend remains positive with price holding above immediate dynamic support"
+            "signal": "Price at $278.85 above 10 EMA at $273.91, showing short-term bullish momentum",
+            "implication": "Immediate uptrend intact, with 10 EMA providing near-term support"
         },
         {
             "indicator": "macd",
             "indicator_full_name": "Moving Average Convergence Divergence",
-            "signal": "MACD at 4.20 above signal line at 4.05, histogram positive at 0.16 after recent recovery",
-            "implication": "Bullish momentum returning after brief consolidation, suggesting renewed upward pressure"
+            "signal": "MACD at 4.20 above signal line at 4.05 but declining from recent highs",
+            "implication": "Bullish momentum weakening, potential for consolidation or minor pullback"
         },
         {
             "indicator": "macds",
             "indicator_full_name": "MACD Signal Line",
-            "signal": "Signal line at 4.05 trending upward but below MACD line, showing positive momentum divergence",
-            "implication": "Bullish crossover recently occurred, supporting continuation of upward move"
+            "signal": "Signal line at 4.05 trending downward from recent peak of 5.70",
+            "implication": "Momentum deceleration suggests near-term consolidation phase"
         },
         {
             "indicator": "macdh",
             "indicator_full_name": "MACD Histogram",
-            "signal": "Histogram turned positive at 0.16 after being negative, showing momentum shift",
-            "implication": "Momentum shifting back to bullish after correction, suggesting potential acceleration"
+            "signal": "Histogram positive at 0.16 but declining from recent positive values",
+            "implication": "Bullish momentum fading, watch for potential bearish crossover"
         },
         {
             "indicator": "rsi",
             "indicator_full_name": "Relative Strength Index",
-            "signal": "RSI at 68.41 approaching overbought territory but not yet extreme",
-            "implication": "Strong bullish momentum but caution needed near overbought levels; may need consolidation"
+            "signal": "RSI at 68.41 approaching overbought territory (70 threshold)",
+            "implication": "Near-term caution warranted, potential for profit-taking or consolidation"
         },
         {
             "indicator": "boll",
             "indicator_full_name": "Bollinger Middle Band",
-            "signal": "Price at 278.85 above middle band at 271.51, trading in upper half of Bollinger range",
-            "implication": "Bullish positioning within volatility bands, suggesting continued strength"
+            "signal": "Price at $278.85 above middle band at $271.51",
+            "implication": "Bullish bias confirmed, middle band acting as dynamic support"
         },
         {
             "indicator": "boll_ub",
             "indicator_full_name": "Bollinger Upper Band",
-            "signal": "Price at 278.85 near upper band at 278.78, testing resistance level",
-            "implication": "Testing upper volatility boundary; breakout above could signal acceleration"
+            "signal": "Price near upper band at $278.78, testing resistance",
+            "implication": "Potential for consolidation or pullback as price tests upper boundary"
         },
         {
             "indicator": "boll_lb",
             "indicator_full_name": "Bollinger Lower Band",
-            "signal": "Lower band at 264.25 providing substantial support below current price",
-            "implication": "Strong support zone established, limiting downside risk in near term"
+            "signal": "Lower band at $264.25 well below current price",
+            "implication": "Significant downside buffer exists before oversold conditions"
         },
         {
             "indicator": "atr",
             "indicator_full_name": "Average True Range",
-            "signal": "ATR at 5.44 indicating moderate daily volatility of about 2%",
-            "implication": "Volatility manageable for position sizing; stop-losses should account for 5-6 point moves"
+            "signal": "ATR at 5.44 indicating moderate daily volatility",
+            "implication": "Normal trading conditions, suitable for standard position sizing"
         },
         {
             "indicator": "vwma",
             "indicator_full_name": "Volume Weighted Moving Average",
-            "signal": "VWMA at 272.33 below current price, confirming volume-supported uptrend",
-            "implication": "Price movement supported by volume, increasing confidence in trend sustainability"
+            "signal": "Price at $278.85 above VWMA at $272.33, confirming volume-supported uptrend",
+            "implication": "Bullish trend supported by volume, increasing confidence in price strength"
         }
     ],
     "price_action_summary": {
-        "recent_high_low": "Trading near recent highs around 279.00, well above November low of 245.27",
+        "recent_high_low": "Price near recent highs around $279-280 range, well above recent lows of $265-266",
         "support_levels": [
-            "275.00",
-            "271.50",
-            "264.25"
+            "$273.91 (10 EMA)",
+            "$271.51 (Bollinger Middle)",
+            "$268.00 (recent consolidation)",
+            "$264.25 (Bollinger Lower)"
         ],
         "resistance_levels": [
-            "279.00",
-            "280.38",
-            "285.00"
+            "$279.00 (recent high)",
+            "$280.38 (November high)",
+            "$285.00 (psychological level)"
         ],
-        "short_term_behavior": "Testing upper Bollinger Band resistance after strong recovery from mid-November lows"
+        "short_term_behavior": "Testing upper Bollinger Band resistance after strong rally, showing signs of momentum deceleration"
     },
     "market_sentiment": {
         "sentiment_label": "Bullish"
     },
     "key_risks": [
         "RSI approaching overbought levels at 68.41",
-        "Testing upper Bollinger Band resistance",
-        "Potential profit-taking near psychological 280 level",
-        "Elevated volume during recent rally suggests possible exhaustion"
+        "MACD momentum showing signs of weakening",
+        "Price testing upper Bollinger Band resistance",
+        "Potential for profit-taking after recent gains"
     ],
-    "short_term_outlook": "Bullish with price testing key resistance; breakout above 279 could target 285, while failure may lead to consolidation between 271-279",
+    "short_term_outlook": "Bullish but overextended; expect near-term consolidation or minor pullback before resuming uptrend",
     "confidence_score": 0.75
 }

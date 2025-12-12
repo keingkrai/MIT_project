@@ -32,7 +32,6 @@ class PriceActionSummary(BaseModel):
 
 
 class MarketSentiment(BaseModel):
-    sentiment_score: int = Field(description="Score from 0-100.")
     sentiment_label: str = Field(description="Sentiment label: Bullish/Bearish.")
 
 

@@ -1,34 +1,8 @@
 {
-    "sentiment_score": 72,
-    "sentiment_verdict": "Bullish",
-    "social_volume": "Elevated volume driven by analyst price target upgrades and AI strategy discussions",
-    "dominant_narrative": "Apple is experiencing renewed investor optimism fueled by strong iPhone 17 sales momentum and the successful rollout of Apple Intelligence AI platform, with multiple analysts raising price targets to $350 citing the company's AI advancements and ecosystem strength.",
-    "top_topics": [
-        {
-            "topic": "Analyst Price Target Upgrades",
-            "sentiment": "Positive",
-            "analysis_snippet": "Multiple analysts including Wedbush and Citi have raised Apple's price target to $350, citing strong iPhone 17 sales and AI integration progress."
-        },
-        {
-            "topic": "Apple Intelligence AI Platform",
-            "sentiment": "Positive",
-            "analysis_snippet": "Investors are optimistic about Apple's on-device AI strategy with Apple Intelligence gaining traction as a privacy-focused differentiator."
-        },
-        {
-            "topic": "iPhone 17 Sales Performance",
-            "sentiment": "Positive",
-            "analysis_snippet": "Strong early sales data for iPhone 17 models is driving revenue growth expectations and supporting the stock's upward momentum."
-        },
-        {
-            "topic": "Market Cap Milestones",
-            "sentiment": "Positive",
-            "analysis_snippet": "Apple approaching $4 trillion market valuation is generating positive sentiment about the company's long-term growth trajectory."
-        },
-        {
-            "topic": "Institutional Options Activity",
-            "sentiment": "Mixed",
-            "analysis_snippet": "High institutional options volume indicates significant professional interest, though some view Apple as lagging behind other tech giants."
-        }
-    ],
-    "psychology": "Fear Of Missing Out on AI integration benefits combined with confidence in Apple's ecosystem strength and product cycle momentum"
+    "sentiment_score": 50,
+    "sentiment_verdict": "Error",
+    "social_volume_analysis": "Parsing error occurred.",
+    "dominant_narrative": "Error processing data.",
+    "top_discussion_topics": [],
+    "retail_psychology_assessment": "Error occurred during analysis."
 }

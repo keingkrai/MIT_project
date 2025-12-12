@@ -1,12 +1,10 @@
 import functools
-import time
 import json
-import re
-from typing import Literal
 from pydantic import BaseModel, Field
 from langchain_core.output_parsers import JsonOutputParser
 from langchain_core.prompts import PromptTemplate
 
+# 1. กำหนดโครงสร้างข้อมูลที่ต้องการด้วย Pydantic (Schema Definition)
 class PlanValidation(BaseModel):
     agreement_status: str = Field(description="Agree / Disagree / Partial Agreement")
     validation_notes: str = Field(description="Why you agree or disagree based on raw intelligence.")
@@ -21,20 +19,24 @@ class ExecutionDetails(BaseModel):
 class TraderDecision(BaseModel):
     plan_validation: PlanValidation
     memory_application: str = Field(description="Specific lesson applied from past reflections to this trade.")
-    final_decision_signal: Literal["BUY", "SELL", "HOLD"] = Field(description="decision signal")
+    final_decision_signal: str = Field(description="BUY / SELL / HOLD")
     execution_details: ExecutionDetails
-    trader_commentary: str = Field(description="Final remarks or warnings for the Risk Manager.") 
+    trader_commentary: str = Field(description="Final remarks or warnings for the Risk Manager.")
+
+# --- Function หลัก ---
 
 def create_trader(llm, memory):
     def trader_node(state, name):
-        company_name = state["company_of_interest"]
-        investment_plan = state["investment_plan"]
-
+        company_name = state.get("company_of_interest", "Unknown Company")
+        investment_plan = state.get("investment_plan", "N/A")
+        
+        # 1. ดึงรายงานดิบทั้งหมด
         market_report = state.get("market_report", "N/A")
         sentiment_report = state.get("sentiment_report", "N/A")
         news_report = state.get("news_report", "N/A")
         fundamentals_report = state.get("fundamentals_report", "N/A")
 
+        # 2. ค้นหา Memory
         curr_situation = f"{market_report}\n\n{sentiment_report}\n\n{news_report}\n\n{fundamentals_report}"
         past_memories = memory.get_memories(curr_situation, n_matches=2)
 
@@ -44,9 +46,11 @@ def create_trader(llm, memory):
                 past_memory_str += f"Situation {i}: {rec.get('situation_summary', 'N/A')}\nLesson: {rec['recommendation']}\n"
         else:
             past_memory_str = "No relevant past memories found."
-            
+
+        # 3. Setup Parser (พระเอกของเรา)
         parser = JsonOutputParser(pydantic_object=TraderDecision)
 
+        # 4. System Prompt + Format Instructions (ใส่ format อัตโนมัติ)
         system_msg = (
             "You are a Senior Head Trader. Your job is to audit the investment plan and issue a final execution order.\n"
             "INSTRUCTIONS:\n"
@@ -56,7 +60,8 @@ def create_trader(llm, memory):
             "\n{format_instructions}" 
         )
 
-        user_content = f"""
+        # 5. User Prompt
+        user_template = """
         Review the Intelligence Reports and the Proposed Plan to make your decision for {company_name}.
 
         RAW INTELLIGENCE REPORTS
@@ -71,50 +76,54 @@ def create_trader(llm, memory):
         PAST REFLECTIONS
         {past_memory_str}
         
-        OUTPUT FORMAT:
-        {parser.get_format_instructions()}
         Response needs to follow the JSON schema strictly.
         """
 
-        messages = [
-            {"role": "system", "content": system_msg},
-            {"role": "user", "content": user_content},
-        ]
+        # สร้าง Prompt Template เพื่อรวม System และ User เข้าด้วยกัน
+        prompt = PromptTemplate(
+            template=f"{system_msg}\n\n{user_template}",
+            input_variables=["company_name", "market_report", "sentiment_report", 
+                             "news_report", "fundamentals_report", "investment_plan", "past_memory_str"],
+            partial_variables={"format_instructions": parser.get_format_instructions()}
+        )
 
-        result = llm.invoke(messages)
-        
-        trader_plan_content = ""
+        # 6. สร้าง Chain และ Invoke (Prompt -> LLM -> Parser)
+        # การใช้ | parser จะช่วยตัด Markdown และ Parse string เป็น Dict ให้เลย
+        chain = prompt | llm | parser
 
         try:
-            raw_content = result.content
-            clean_content = raw_content.strip()
-            if clean_content.startswith("```json"):
-                clean_content = clean_content[7:]
-            elif clean_content.startswith("```"):
-                clean_content = clean_content[3:]
-            if clean_content.endswith("```"):
-                clean_content = clean_content[:-3]
-            
-            match = re.search(r"\{[\s\S]*\}", clean_content)
-            if match:
-                json_str = match.group(0)
-                parsed_json = json.loads(json_str)
-                trader_plan_content = json.dumps(parsed_json, indent=4, ensure_ascii=False)
-            else:
-                print("⚠️ Trader: No JSON found. Using raw text.")
-                # Fallback structure
-                trader_plan_content = json.dumps({
-                    "final_decision_signal": "HOLD (Parsing Error)",
-                    "trader_commentary": raw_content
-                }, indent=4)
-                
+            # เรียกใช้งาน Chain
+            parsed_result = chain.invoke({
+                "company_name": company_name,
+                "market_report": market_report,
+                "sentiment_report": sentiment_report,
+                "news_report": news_report,
+                "fundamentals_report": fundamentals_report,
+                "investment_plan": investment_plan,
+                "past_memory_str": past_memory_str
+            })
+
+            # แปลง Dict กลับเป็น JSON String เพื่อเก็บลง State (ตาม Logic เดิม)
+            trader_plan_content = json.dumps(parsed_result, indent=4, ensure_ascii=False)
+            print("✅ Trader: Valid JSON parsed successfully.")
+
         except Exception as e:
-            print(f"⚠️ Trader: JSON Parse Error ({e}). Saving raw content.")
-            trader_plan_content = result.content
+            print(f"⚠️ Trader: Parsing Error ({e}). Attempting fallback recovery...")
+            # Fallback กรณีแย่ที่สุด (เช่น Model เอ๋อจนแก้ไม่ได้)
+            fallback_data = {
+                "final_decision_signal": "HOLD (System Error)",
+                "trader_commentary": f"JSON Parsing failed: {str(e)}",
+                "plan_validation": {"agreement_status": "Error", "validation_notes": "Parsing failed"},
+                "execution_details": {},
+                "memory_application": "N/A"
+            }
+            trader_plan_content = json.dumps(fallback_data, indent=4)
 
         return {
-            "messages": [result],
-            "trader_investment_plan": trader_plan_content, # เก็บ JSON String
+            # หมายเหตุ: ถ้าต้องการเก็บ raw message อาจต้องปรับ logic นิดหน่อย 
+            # แต่ปกติถ้าใช้ parser เราจะเก็บผลลัพธ์สุดท้ายเลย
+            "messages": [f"Trader Decision: {parsed_result.get('final_decision_signal', 'Unknown')}"], 
+            "trader_investment_plan": trader_plan_content,
             "sender": name,
         }
 

@@ -26,7 +26,6 @@ class ComprehensiveMetrics(BaseModel):
 class FundamentalReport(BaseModel):
     executive_summary: str = Field(description="A detailed paragraph summarizing the company's business model and financial health.")
     valuation_status: str = Field(description="A definitive statement on valuation (e.g., Undervalued / Overvalued / Fairly Valued).")
-    financial_health_score: int = Field(ge=0, le=100, description="An integer from 0 (Bankruptcy Risk) to 100 (Fortress Balance Sheet).")
     comprehensive_metrics: ComprehensiveMetrics = Field(description="Detailed financial metrics object.")
     key_strengths_analysis: List[str] = Field(description="List of detailed explanations of strengths.")
     key_risks_analysis: List[str] = Field(description="List of detailed explanations of risks.")

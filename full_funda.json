@@ -1,27 +1,27 @@
 {
-    "executive_summary": "Apple Inc is a global technology leader in consumer electronics, software, and services with a dominant market position and strong brand loyalty. The company demonstrates exceptional profitability with a 26.9 percent net profit margin and generates substantial free cash flow of 98.8 billion dollars annually. However, the company carries significant leverage with a debt to equity ratio of 3.87, which warrants monitoring despite its strong cash generation capabilities. Apple maintains a massive market capitalization of over 4.1 trillion dollars, reflecting its status as one of the world's most valuable companies.",
+    "executive_summary": "Apple Inc is a global technology leader in consumer electronics, software, and services with a dominant market position and strong brand loyalty. The company demonstrates exceptional profitability with a net profit margin of 26.9 percent and generates substantial free cash flow of 98.77 billion dollars. However, the company carries significant leverage with a debt to equity ratio of 3.87, indicating high financial leverage. Apple maintains robust cash generation capabilities with operating cash flow exceeding 111 billion dollars annually, supporting its capital return programs and strategic investments.",
     "valuation_status": "Overvalued",
-    "financial_health_score": 78,
+    "financial_health_score": 75,
     "comprehensive_metrics": {
         "revenue_growth_year_over_year": "5",
         "net_profit_margin": "26.9",
         "price_to_earnings_ratio": "37.37",
         "debt_to_equity_ratio": "3.87",
-        "return_on_equity": "152.0",
-        "free_cash_flow_status": "Strong and Consistent"
+        "return_on_equity": "151.9",
+        "free_cash_flow_status": "Exceptionally Strong with 98.77 Billion Dollars Annual Generation"
     },
     "key_strengths_analysis": [
-        "Exceptional profitability with a net profit margin of 26.9 percent, significantly above technology industry averages.",
-        "Outstanding return on equity of 152.0 percent, indicating highly efficient use of shareholder capital.",
-        "Strong free cash flow generation of 98.8 billion dollars annually, providing ample resources for dividends, share buybacks, and strategic investments.",
-        "Dominant market position and brand strength in consumer electronics and services, creating sustainable competitive advantages.",
-        "Massive scale with over 4.1 trillion dollars in market capitalization, providing financial stability and access to capital markets."
+        "Exceptional profitability with net profit margin of 26.9 percent significantly above technology industry averages",
+        "Massive free cash flow generation of 98.77 billion dollars provides financial flexibility for investments and shareholder returns",
+        "Strong operating cash flow of 111.48 billion dollars demonstrates efficient business operations and working capital management",
+        "Dominant market position in consumer electronics with premium brand pricing power and loyal customer base",
+        "Robust return on equity of 151.9 percent indicates highly efficient use of shareholder capital"
     ],
     "key_risks_analysis": [
-        "Elevated debt to equity ratio of 3.87 indicates high financial leverage that could pose risks during economic downturns or rising interest rate environments.",
-        "Price to earnings ratio of 37.37 appears high relative to historical averages and mature technology company valuations, suggesting potential overvaluation.",
-        "Dependence on iPhone sales for a significant portion of revenue creates concentration risk in a highly competitive smartphone market.",
-        "Regulatory scrutiny and potential antitrust challenges in multiple jurisdictions could impact business operations and profitability.",
-        "Supply chain concentration in China exposes the company to geopolitical risks and potential disruptions in manufacturing and component sourcing."
+        "High debt to equity ratio of 3.87 indicates significant financial leverage and potential vulnerability to interest rate increases",
+        "Elevated price to earnings ratio of 37.37 suggests the stock may be overvalued relative to earnings growth expectations",
+        "Concentration risk in iPhone revenue dependence creates vulnerability to smartphone market saturation and competition",
+        "Regulatory scrutiny in multiple jurisdictions could impact business operations and profit margins",
+        "Supply chain concentration in specific geographic regions creates operational risk and potential disruption exposure"
     ]
 }

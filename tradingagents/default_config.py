@@ -20,7 +20,7 @@ DEFAULT_CONFIG = {
     # "quick_think_llm": "gemini-2.5-flash",
     
     "llm_provider": "deepseek",
-    "deep_think_llm": "deepseek-chat",
+    "deep_think_llm": "deepseek-reasoner",
     "quick_think_llm": "deepseek-chat",
     "backend_url": "https://api.deepseek.com",
 

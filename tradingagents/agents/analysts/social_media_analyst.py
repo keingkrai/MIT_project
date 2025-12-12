@@ -17,7 +17,6 @@ class DiscussionTopic(BaseModel):
     analysis_snippet: str = Field(description="Max 1 sentence summary of the crowd's opinion.")
 
 class SocialMediaReport(BaseModel):
-    sentiment_score: int = Field(description="0 (Fear) to 100 (Greed).")
     sentiment_verdict: Literal["Bearish", "Neutral", "Bullish", "Euphoria", "Panic"]
     social_volume: str = Field(description="Brief assessment (e.g., 'Spike due to earnings').")
     dominant_narrative: str = Field(description="Main story driving retail. Max 2 sentences.")

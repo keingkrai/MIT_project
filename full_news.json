@@ -1,9 +1,9 @@
 {
-    "executive_summary": "Apple faces mixed sentiment with slowing App Store growth and regulatory pressures, but offset by strong AI product interest, China market expansion, and positive analyst upgrades. The Federal Reserve's rate cut provides supportive macro backdrop.",
+    "executive_summary": "Apple faces mixed sentiment with slowing App Store growth and regulatory pressures, but maintains strong positioning through AI integration, foldable iPhone anticipation, and China market expansion, supported by favorable Fed rate cuts boosting consumer spending.",
     "market_sentiment_score": 58,
     "market_sentiment_verdict": "Neutral",
     "global_macro_context": {
-        "macro_summary": "The Federal Reserve delivered a final quarter-point rate cut for 2025, providing market support with the Dow gaining almost 500 points and S&P 500 nearing record highs. However, geopolitical tensions persist with U.S. seizing oil tankers off Venezuela, and regulatory scrutiny on AI chatbots intensifies. The bond market is rallying but faces potential headwinds in January, while consumer health shows mixed signals with stretched finances despite surface resilience."
+        "macro_summary": "The Federal Reserve delivered a final 25 basis point rate cut in 2025, supporting market optimism and consumer spending. Geopolitical tensions persist with U.S. oil tanker seizures off Venezuela and ongoing Ukraine conflict commentary. AI infrastructure spending continues to drive private credit markets, while regulatory scrutiny on tech companies intensifies across multiple fronts."
     },
     "top_news_developments": [
         {
@@ -18,33 +18,33 @@
             "source": "Yahoo",
             "date": "2025-12-11",
             "sentiment": "Negative",
-            "implication": "Regulatory pressure on App Store operations could impact Apple's lucrative services revenue model."
+            "implication": "Regulatory pressure on App Store business model could impact future revenue streams and commission structures."
         },
         {
             "headline": "Apple takes China's smartphone battle house to house with free 3-hour iPhone delivery",
             "source": "Yahoo",
             "date": "2025-12-11",
             "sentiment": "Positive",
-            "implication": "Aggressive expansion in China with enhanced delivery services could boost iPhone sales in key market."
+            "implication": "Aggressive logistics strategy in China could boost market share in competitive smartphone environment."
         },
         {
             "headline": "UBS Reiterates Neutral on Apple (AAPL) as Interest in Apple Intelligence and Foldables Rises",
             "source": "Yahoo",
             "date": "2025-12-11",
             "sentiment": "Positive",
-            "implication": "Growing consumer interest in AI features and foldable devices provides potential growth catalysts."
+            "implication": "Growing consumer interest in AI features and upcoming foldable iPhone could drive future upgrade cycles."
         },
         {
-            "headline": "Soaring Memory Prices Will Cannibalize Apple's Profit",
-            "source": "SeekingAlpha",
-            "date": "2025-12-11",
-            "sentiment": "Negative",
-            "implication": "Rising DRAM/NAND prices due to AI demand could compress margins and impact premium valuation."
+            "headline": "Appeals court backs contempt finding against Apple, but reopens a door for iPhone app fees",
+            "source": "Associated Press Finance",
+            "date": "2025-12-12",
+            "sentiment": "Neutral",
+            "implication": "Mixed legal outcome maintains App Store pressure but preserves commission collection pathways."
         }
     ],
     "key_risks": [
-        "Regulatory pressure on App Store operations and potential legislative changes impacting services revenue",
-        "Rising component costs (DRAM/NAND) from AI demand squeezing profit margins",
-        "Slowing App Store growth momentum amid tough December comparables"
+        "Slowing App Store growth momentum and regulatory challenges to commission-based revenue model",
+        "Rising memory prices (DRAM/NAND) due to AI demand could compress margins and impact profitability",
+        "Intense competition in China smartphone market requiring aggressive pricing and delivery strategies"
     ]
 }

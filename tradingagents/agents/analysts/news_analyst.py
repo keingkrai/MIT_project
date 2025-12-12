@@ -22,7 +22,6 @@ class CompanyNewsItem(BaseModel):
 
 class NewsReport(BaseModel):
     executive_summary: str = Field(description="The single most important driver. Max 50 words.")
-    market_sentiment_score: int = Field(description="0-100")
     market_sentiment_verdict: Literal["Bullish", "Bearish", "Neutral"]
     global_macro_context: GlobalMacroContext
     top_news_developments: List[CompanyNewsItem] = Field(description="Select ONLY top 3-5 most impactful items.")

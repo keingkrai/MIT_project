@@ -172,24 +172,31 @@ def main():
         trader = final_state.get("trader_investment_plan")
     
         
-        investment = json.loads(investment)
+        if isinstance(investment, str):
+            investment = json.loads(investment)
         with open("./investment.json", "w", encoding="utf-8") as f:
             json.dump(investment, f, ensure_ascii=False, indent=4)
             
-        risk = json.loads(risk)
+        if isinstance(risk, str):
+            risk = json.loads(risk)
         with open("./risk.json", "w", encoding="utf-8") as f:
             json.dump(risk, f, ensure_ascii=False, indent=4)
             
-        trader = json.loads(trader)
+        if isinstance(trader, str):
+            trader = json.loads(trader)
         with open("./trader.json", "w", encoding="utf-8") as f:
             json.dump(trader, f, ensure_ascii=False, indent=4)
             
         investment_plan = final_state.get("investment_plan")
         final_decision = final_state.get("final_trade_decision")
-
+        
+        if isinstance(investment_plan, str):
+            investment_plan = json.loads(investment_plan)
         with open("./investment_plan.txt", "w", encoding="utf-8") as f:
             json.dump(investment_plan, f, ensure_ascii=False, indent=4)
-
+        
+        if isinstance(final_decision, str):
+            final_decision = json.loads(final_decision)
         with open("./final_decision.txt", "w", encoding="utf-8") as f:
             json.dump(final_decision, f, ensure_ascii=False, indent=4)
         

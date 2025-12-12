@@ -16,59 +16,27 @@ def create_summarizer_research_manager():
         if not investment_plan_report:
             return {} 
 
-        system_prompt = """You are a Senior Investment Strategy Analyst.
-Your task is to interpret raw investment plan content and convert it into a concise, 
-decision-ready summary suitable for strategic review.
-
-Your analysis must:
-- Focus strictly on information contained in the provided investment plan report.
-- Identify investment objectives, risk considerations, asset choices, time horizons,
-  portfolio rationale, and any supporting evidence or assumptions.
-- Highlight strengths, weaknesses, opportunities, and areas of uncertainty.
-- Avoid adding external data or making speculative predictions.
-- Present insights clearly, professionally, and in a structured format.
-
-Goal: Summarize the investment plan in a way that supports portfolio review, adjustments,
-or executive-level decision-making."""
+        system_prompt = (
+            "You are a Senior Investment Strategy Analyst. "
+            "Your task is to distill the Investment Plan into a **single, high-density executive summary**. "
+            "Do NOT use section headers, bullet points, or lists. "
+            "Write in a professional, narrative paragraph format. "
+            "Focus on the core decision, execution logic, and risk management."
+        )
         
         user_prompt = f"""
-Synthesize the following investment plan into a concise, structured analytical summary:
+        Synthesize the investment plan below into a concise summary (max 150 words).
 
-=========================================
-RAW INVESTMENT PLAN REPORT:
-{investment_plan_report}
-=========================================
+        =========================================
+        RAW INVESTMENT PLAN REPORT:
+        {investment_plan_report}
+        =========================================
 
-**INSTRUCTIONS:**
-- Derive all conclusions strictly from the provided investment plan.
-- Identify the plan's structure, rationale, asset strategy, risk logic, 
-  assumptions, constraints, and expected outcomes.
-- Highlight contradictions, unclear reasoning, or missing foundations.
-- Keep the summary clean, structured, and easy to scan.
-- Do NOT add external assumptions.
-
-**REQUIRED OUTPUT FORMAT:**
-
-### 1. Investment Plan Overview
-- **Objective:** (Return goals, time horizon, strategic intent)
-- **Strategy Type:** (e.g., growth, income, balanced, thematic, tactical)
-- **Rationale:** (Why this strategy? What principle does it rely on?)
-
-### 2. Key Components of the Plan
-- **Asset Allocation:** (Weighting, asset classes, sectors, instruments)
-- **Risk Management:** (Hedges, diversification logic, stop-loss, constraints)
-- **Supporting Assumptions:** (Market outlook, narrative, catalysts)
-- **Time Horizon & Rebalance Approach:** (Short/medium/long-term logic)
-
-### 3. Critical Observations
-- **Strengths:** (Clear logic, alignment with goals, diversification quality)
-- **Weaknesses / Gaps:** (Missing justification, unclear risk logic, overexposure)
-- **Dependencies:** (Factors that may impact success)
-
-### 4. Actionable Insight
-- Provide 1–2 neutral, professional recommendations or considerations 
-  (e.g., “Evaluate risk concentration,” “Clarify assumption on X,” 
-   “Assess whether allocation aligns with time horizon.”)
+        **INSTRUCTIONS:**
+        1. Start immediately with the **Final Decision & Strategic Intent** (e.g., "The plan is to ACCUMULATE based on...").
+        2. Seamlessly integrate the **Winning Argument** and **Rationale** (Why this side won?).
+        3. Embed the **Execution Details** (Entry zone, Urgency) naturally within the narrative.
+        4. Conclude with the **Primary Risk** that would invalidate this plan.
         """
         
         try:

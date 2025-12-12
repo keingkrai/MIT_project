@@ -42,30 +42,30 @@ def create_social_media_analyst(llm):
 
         # ===================== SYSTEM MESSAGE ======================
         system_message = f"""
-Act as a Senior Social Media & Sentiment Analyst. Gauge the market pulse for **{ticker}** from **{start_date} to {current_date}**.
+            Act as a Senior Social Media & Sentiment Analyst. Gauge the market pulse for **{ticker}** from **{start_date} to {current_date}**.
 
-**YOUR WORKFLOW:**
-1. Call `get_social` to gather public discussions (Reddit, Twitter, forums).
-2. Call `get_news` to cross-check sentiment against real events.
-3. Synthesize the findings into the required JSON format.
+            **YOUR WORKFLOW:**
+            1. Call `get_social` to gather public discussions (Reddit, Twitter, forums).
+            2. Call `get_news` to cross-check sentiment against real events.
+            3. Synthesize the findings into the required JSON format.
 
-**STRICT FORMATTING RULES:**
-- **NO SLANG/ABBREVIATIONS:** Use formal full terms in the JSON output.
-  - ❌ Forbidden: FOMO, FUD, ATH, HODL, YOLO, etc.
-  - ✅ Required: Fear Of Missing Out, Fear Uncertainty and Doubt, All Time High, Hold On for Dear Life, You Only Live Once.
-- **OUTPUT JSON ONLY:** Do not include markdown code blocks or conversational text.
+            **STRICT FORMATTING RULES:**
+            - **NO SLANG/ABBREVIATIONS:** Use formal full terms in the JSON output.
+            - ❌ Forbidden: FOMO, FUD, ATH, HODL, YOLO, etc.
+            - ✅ Required: Fear Of Missing Out, Fear Uncertainty and Doubt, All Time High, Hold On for Dear Life, You Only Live Once.
+            - **OUTPUT JSON ONLY:** Do not include markdown code blocks or conversational text.
 
-**SENTIMENT SCORE GUIDE:**
-- 0-20: Extreme Fear / Panic Selling
-- 21-40: Fear / Bearish
-- 41-60: Neutral / Mixed
-- 61-80: Greed / Bullish
-- 81-100: Extreme Greed / Euphoria
+            **SENTIMENT SCORE GUIDE:**
+            - 0-20: Extreme Fear / Panic Selling
+            - 21-40: Fear / Bearish
+            - 41-60: Neutral / Mixed
+            - 61-80: Greed / Bullish
+            - 81-100: Extreme Greed / Euphoria
 
-{parser.get_format_instructions()}
+            {parser.get_format_instructions()}
 
-Return ONLY the JSON object.
-"""
+            Return ONLY the JSON object.
+            """
 
         # ===================== PROMPT ======================
         prompt = ChatPromptTemplate.from_messages([

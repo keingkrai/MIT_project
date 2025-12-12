@@ -16,53 +16,27 @@ def create_summarizer_social():
         if not social_report:
             return {} 
 
-        system_prompt = """You are a Senior Social Media Intelligence Analyst. 
-Your role is to interpret raw social media insights and convert them into a concise, actionable summary.
-
-Your analysis should:
-- Focus strictly on information derived from the provided social media report.
-- Identify sentiment direction, public mood, conversation trends, volume patterns, and potential catalysts.
-- Highlight conflicts (e.g., rising volume but declining sentiment).
-- Avoid explaining what social media metrics are.
-- Present insights clearly, analytically, and professionally.
-
-Your goal: Produce a clean, decision-ready summary that can be used in broader market or narrative analysis."""
+        system_prompt = (
+            "You are a Senior Social Media Intelligence Analyst. "
+            "Your task is to distill raw social sentiment data into a **single, high-density executive summary**. "
+            "Do NOT use section headers, bullet points, or lists. "
+            "Write in a professional, narrative paragraph format. "
+            "Focus on crowd psychology, volume anomalies, and contrarian signals."
+        )
         
         user_prompt = f"""
-Synthesize the following social media intelligence into a concise analytical summary:
+        Synthesize the social media intelligence below into a concise summary (max 150 words).
 
-=========================================
-RAW SOCIAL MEDIA REPORT:
-{social_report}
-=========================================
+        =========================================
+        RAW SOCIAL MEDIA REPORT:
+        {social_report}
+        =========================================
 
-**INSTRUCTIONS:**
-- Base every conclusion strictly on the provided social media data.
-- Identify sentiment trends, shifts, anomalies, and traction levels.
-- Highlight contradictions if they exist (e.g., “Sentiment is negative but engagement is rising sharply”).
-- Keep the summary short, structured, and easy to scan.
-- Do NOT add external assumptions.
-
-**REQUIRED OUTPUT FORMAT:**
-
-### 1. Overall Social Sentiment
-- **Sentiment:** [Positive / Neutral / Negative / Mixed]
-- **Trend:** [Improving / Declining / Stable]
-- **Reasoning:** Clear explanation based only on the data.
-
-### 2. Key Social Signals
-- **Buzz & Volume:** (Conversation growth, spikes, sudden drops)
-- **Dominant Narratives:** (Main topics the crowd is focused on)
-- **Audience Mood:** (Emotional tone, concerns, excitement)
-- **Influencer / Media Impact:** (If present in raw data)
-
-### 3. Critical Observations
-- **Conflicts or Anomalies:** (e.g., “High volume but sentiment collapse”)
-- **Potential Catalysts:** (Events or themes driving discussions)
-
-### 4. Actionable Insight
-- Provide 1–2 concise actions or interpretations useful for broader decision-making 
-  (e.g., “Monitor sentiment reversal,” “Track narrative around X,” “Expect heightened volatility in discussions.”)
+        **INSTRUCTIONS:**
+        1. Start immediately with the **Overall Crowd Sentiment** (e.g., "Retail sentiment has shifted to Extreme Greed due to...").
+        2. Seamlessly integrate **Volume/Buzz trends** (spikes, silence) and the **Dominant Narrative** driving the discussion.
+        3. Highlight any **Psychological Extremes** (FOMO, Panic, Capitulation) naturally within the text.
+        4. Conclude with a **Contrarian or Volatility Insight** (e.g., "High volume suggests a potential top").
         """
         
         try:

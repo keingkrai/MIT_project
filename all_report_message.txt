@@ -3,21 +3,21 @@
 ===== TOTAL RECORDS CHECK =====
 YFinance:      249
 TwelveData:    249
-TradingView:   0
+TradingView:   249
 
 
 ===== SIMILARITY SCORE =====
-YFinance Score: 28
-TwelveData Score: 28
-TradingView Score: 0
+YFinance Score: 55
+TwelveData Score: 492
+TradingView Score: 491
 
-🏆 Best Source: YFINANCE
+🏆 Best Source: TWELVEDATA
 
 📊 Indicator 'close_50_sma' Source Comparison for AAPL:
-Yahoo Finance Score: 20
-Alpha Vantage Score: 20
-TradingView Score: 0
-🏆 Best Source: YAHOO, ALPHA
+Yahoo Finance Score: 40
+Alpha Vantage Score: 40
+TradingView Score: 40
+🏆 Best Source: YAHOO, ALPHA, TV
 
 📊 Indicator 'close_200_sma' Source Comparison for AAPL:
 Yahoo Finance Score: 20
@@ -50,10 +50,10 @@ TradingView Score: 2
 🏆 Best Source: YAHOO, TV
 
 📊 Indicator 'rsi' Source Comparison for AAPL:
-Yahoo Finance Score: 20
-Alpha Vantage Score: 20
-TradingView Score: 0
-🏆 Best Source: YAHOO, ALPHA
+Yahoo Finance Score: 40
+Alpha Vantage Score: 40
+TradingView Score: 40
+🏆 Best Source: YAHOO, ALPHA, TV
 
 📊 Indicator 'boll' Source Comparison for AAPL:
 Yahoo Finance Score: 40
@@ -80,10 +80,10 @@ TradingView Score: 40
 🏆 Best Source: YAHOO, ALPHA, TV
 
 📊 Indicator 'vwma' Source Comparison for AAPL:
-Yahoo Finance Score: 0
+Yahoo Finance Score: 20
 Alpha Vantage Score: 0
-TradingView Score: 0
-🏆 Best Source: YAHOO
+TradingView Score: 20
+🏆 Best Source: YAHOO, TV
 
 
 🌐 Social Media News: 
@@ -106,5 +106,5 @@ Finnhub global news have : 50 posts.
 Fetched fundamentals for AAPL:
 - YFinance: 4 fields fetched
 - Finnhub: 1 fields fetched
-- AlphaVantage: 3 fields fetched
+- AlphaVantage: 4 fields fetched
 📜 Fundamental data for AAPL. Chosen source: alphavantage

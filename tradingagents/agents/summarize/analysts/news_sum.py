@@ -16,54 +16,28 @@ def create_summarizer_news():
         if not news_report:
             return {} 
 
-        system_prompt = """You are a Senior News Intelligence Analyst.
-Your job is to review raw news data and convert it into a concise, actionable summary.
-
-Your analysis should:
-- Focus exclusively on the content of the provided news report.
-- Identify sentiment, narrative direction, supportive or conflicting storylines, tone, and potential market-moving catalysts.
-- Detect risks, opportunities, and notable shifts in coverage.
-- Avoid explaining what news metrics or terms mean.
-- Present insights clearly, professionally, and analytically.
-
-Goal: Produce a clean, decision-ready news summary suitable for use in investment, strategic, or narrative analysis."""
+        system_prompt = (
+            "You are a Senior News Intelligence Analyst. "
+            "Your task is to synthesize raw news reports into a **single, high-density executive summary**. "
+            "Do NOT use section headers, bullet points, or lists. "
+            "Write in a professional, narrative paragraph format. "
+            "Focus on the dominant sentiment, key catalysts, and critical risks."
+        )
+        
         user_prompt = f"""
-Synthesize the following news intelligence into a concise analytical summary:
+        Synthesize the news intelligence below into a concise summary (max 150 words).
 
-=========================================
-RAW NEWS REPORT:
-{news_report}
-=========================================
+        =========================================
+        RAW NEWS REPORT:
+        {news_report}
+        =========================================
 
-**INSTRUCTIONS:**
-- Base every conclusion strictly on the provided news data.
-- Identify sentiment, tone, key narratives, risks, opportunities, and catalysts.
-- Highlight contradictions if they exist (e.g., “Positive earnings but warnings about slowing demand”).
-- Keep the summary structured, objective, and easy to scan.
-- Do NOT add external assumptions.
-
-**REQUIRED OUTPUT FORMAT:**
-
-### 1. Overall News Sentiment
-- **Sentiment:** [Positive / Neutral / Negative / Mixed]
-- **Trend:** [Improving / Declining / Stable]
-- **Reasoning:** Brief explanation based only on the news content.
-
-### 2. Key News Signals
-- **Dominant Narratives:** (Main themes the articles emphasize)
-- **Market or Sector Impact:** (If applicable)
-- **Risk Factors:** (Warnings, regulatory concerns, geopolitical notes)
-- **Opportunities / Positive Drivers:** (Strong earnings, innovation, expansions)
-- **Credible Sources Influencing Tone:** (If mentioned in report)
-
-### 3. Critical Observations
-- **Conflicts or Mixed Signals:** (e.g., “Strong revenue but poor forward guidance”)
-- **Potential Catalysts:** (Events or developments that might shift sentiment or markets)
-
-### 4. Actionable Insight
-- Provide 1–2 concise insights useful for strategic or investment decisions
-  (e.g., “Monitor regulatory developments,” “Sentiment likely to turn bearish if X worsens”).
-"""
+        **INSTRUCTIONS:**
+        1. Start immediately with the **Overall News Sentiment** (e.g., "News sentiment is currently Negative due to...").
+        2. Seamlessly integrate the **Dominant Narratives** and **Key Drivers** (earnings, regulations, etc.) into the text.
+        3. Mention any critical **Risks or Conflicts** naturally within the sentences.
+        4. Conclude with the primary **Implication** for the stock/market (e.g., "Expect volatility ahead of the ruling").
+        """
         try:
             response = client.chat.completions.create(
                 model="typhoon-v2.1-12b-instruct",

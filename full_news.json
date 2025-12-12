@@ -1,50 +1,49 @@
 {
-    "executive_summary": "Apple faces mixed sentiment with slowing App Store growth and regulatory pressures, but maintains strong positioning through AI integration, foldable iPhone anticipation, and China market expansion, supported by favorable Fed rate cuts boosting consumer spending.",
-    "market_sentiment_score": 58,
+    "executive_summary": "Apple faces mixed sentiment with slowing App Store growth and regulatory pressures, but offset by strong China sales growth, AI/foldable interest, and strategic expansion in services like Fitness+. The Federal Reserve's rate cut provides a supportive macro backdrop.",
     "market_sentiment_verdict": "Neutral",
     "global_macro_context": {
-        "macro_summary": "The Federal Reserve delivered a final 25 basis point rate cut in 2025, supporting market optimism and consumer spending. Geopolitical tensions persist with U.S. oil tanker seizures off Venezuela and ongoing Ukraine conflict commentary. AI infrastructure spending continues to drive private credit markets, while regulatory scrutiny on tech companies intensifies across multiple fronts."
+        "macro_summary": "The Federal Reserve delivered a 25 basis point rate cut, signaling cautious monetary policy into 2026. Geopolitical tensions persist with U.S. oil tanker seizures off Venezuela and ongoing Ukraine conflict discussions. Global markets show resilience with Dow and S&P 500 reaching records, though AI bubble concerns are emerging amid Oracle's disappointing earnings."
     },
     "top_news_developments": [
         {
-            "headline": "UBS Reiterates Neutral on Apple (AAPL) as App Store Growth Slows",
+            "headline": "UBS Reiterates Neutral on Apple as App Store Growth Slows",
             "source": "Yahoo",
             "date": "2025-12-11",
             "sentiment": "Neutral",
-            "implication": "Analyst maintains neutral stance citing slowing App Store momentum and tough December comps, limiting near-term upside."
+            "implication": "Analyst maintains neutral stance citing slowing App Store momentum and tough December comps, limiting upside potential."
+        },
+        {
+            "headline": "Apple Takes China's Smartphone Battle House to House with Free 3-Hour iPhone Delivery",
+            "source": "Yahoo",
+            "date": "2025-12-11",
+            "sentiment": "Positive",
+            "implication": "Aggressive delivery strategy in China could boost market share and defend against local competition in key market."
+        },
+        {
+            "headline": "Appeals Court Backs Contempt Finding Against Apple Over App Store Fees",
+            "source": "Associated Press Finance",
+            "date": "2025-12-12",
+            "sentiment": "Negative",
+            "implication": "Legal setback on App Store commission structure could pressure services revenue and regulatory scrutiny."
         },
         {
             "headline": "Apple's Tim Cook Urges Lawmakers to Rethink App Store Accountability Act",
             "source": "Yahoo",
             "date": "2025-12-11",
             "sentiment": "Negative",
-            "implication": "Regulatory pressure on App Store business model could impact future revenue streams and commission structures."
+            "implication": "Regulatory pushback on child safety legislation could increase compliance costs and operational complexity."
         },
         {
-            "headline": "Apple takes China's smartphone battle house to house with free 3-hour iPhone delivery",
+            "headline": "Apple Expands Fitness+ to 28 New Markets Including India and Japan",
             "source": "Yahoo",
-            "date": "2025-12-11",
+            "date": "2025-12-10",
             "sentiment": "Positive",
-            "implication": "Aggressive logistics strategy in China could boost market share in competitive smartphone environment."
-        },
-        {
-            "headline": "UBS Reiterates Neutral on Apple (AAPL) as Interest in Apple Intelligence and Foldables Rises",
-            "source": "Yahoo",
-            "date": "2025-12-11",
-            "sentiment": "Positive",
-            "implication": "Growing consumer interest in AI features and upcoming foldable iPhone could drive future upgrade cycles."
-        },
-        {
-            "headline": "Appeals court backs contempt finding against Apple, but reopens a door for iPhone app fees",
-            "source": "Associated Press Finance",
-            "date": "2025-12-12",
-            "sentiment": "Neutral",
-            "implication": "Mixed legal outcome maintains App Store pressure but preserves commission collection pathways."
+            "implication": "Service expansion drives recurring revenue growth and strengthens ecosystem lock-in across emerging markets."
         }
     ],
     "key_risks": [
-        "Slowing App Store growth momentum and regulatory challenges to commission-based revenue model",
-        "Rising memory prices (DRAM/NAND) due to AI demand could compress margins and impact profitability",
-        "Intense competition in China smartphone market requiring aggressive pricing and delivery strategies"
+        "Slowing App Store growth momentum and regulatory pressures on commission structures",
+        "Rising memory prices (DRAM/NAND) due to AI demand could compress margins",
+        "Intensifying competition in China smartphone market requiring aggressive delivery investments"
     ]
 }

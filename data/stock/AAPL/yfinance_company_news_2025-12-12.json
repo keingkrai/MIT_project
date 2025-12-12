@@ -1,5 +1,127 @@
 [
   {
+    "id": "2a88ab0d-c62e-3a9c-931f-517da63b9bc9",
+    "content": {
+      "id": "2a88ab0d-c62e-3a9c-931f-517da63b9bc9",
+      "contentType": "STORY",
+      "title": "3 Brilliant Growth Stocks to Buy Now and Hold for the Long Term",
+      "description": "",
+      "summary": "The long-term prospects for these stocks look especially bright.",
+      "pubDate": "2025-12-12T08:04:00Z",
+      "displayTime": "2025-12-12T08:04:00Z",
+      "isHosted": true,
+      "bypassModal": false,
+      "previewUrl": null,
+      "thumbnail": {
+        "originalUrl": "https://media.zenfs.com/en/motleyfool.com/631c56584ba83c3ab15ec7a7372c5343",
+        "originalWidth": 1400,
+        "originalHeight": 933,
+        "caption": "A person looking up at drawings of light bulbs with one of them containing a dollar sign.",
+        "resolutions": [
+          {
+            "url": "https://s.yimg.com/uu/api/res/1.2/F6MSbaQhonJ1HnxSvjgRnQ--~B/aD05MzM7dz0xNDAwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/motleyfool.com/631c56584ba83c3ab15ec7a7372c5343",
+            "width": 1400,
+            "height": 933,
+            "tag": "original"
+          },
+          {
+            "url": "https://s.yimg.com/uu/api/res/1.2/2vNysA2fl_VBiP6iVs_P8w--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/motleyfool.com/631c56584ba83c3ab15ec7a7372c5343",
+            "width": 170,
+            "height": 128,
+            "tag": "170x128"
+          }
+        ]
+      },
+      "provider": {
+        "displayName": "Motley Fool",
+        "url": "http://www.fool.com/"
+      },
+      "canonicalUrl": {
+        "url": "https://www.fool.com/investing/2025/12/12/3-brilliant-growth-stocks-to-buy-now-and-hold-for/",
+        "site": "finance",
+        "region": "US",
+        "lang": "en-US"
+      },
+      "clickThroughUrl": {
+        "url": "https://finance.yahoo.com/news/3-brilliant-growth-stocks-buy-080400542.html",
+        "site": "finance",
+        "region": "US",
+        "lang": "en-US"
+      },
+      "metadata": {
+        "editorsPick": false
+      },
+      "finance": {
+        "premiumFinance": {
+          "isPremiumNews": false,
+          "isPremiumFreeNews": false
+        }
+      },
+      "storyline": null
+    }
+  },
+  {
+    "id": "adcb873d-1cab-3471-bcfb-c2d0c959511d",
+    "content": {
+      "id": "adcb873d-1cab-3471-bcfb-c2d0c959511d",
+      "contentType": "STORY",
+      "title": "Prediction: This Could Be the World's Most Valuable Stock in 2026, According to 1 Wall Street Analyst (Hint: Not Nvidia)",
+      "description": "",
+      "summary": "While the artificial intelligence (AI) chipmaker has had an incredible run, another household name could leapfrog into first place.",
+      "pubDate": "2025-12-12T07:20:00Z",
+      "displayTime": "2025-12-12T07:20:00Z",
+      "isHosted": true,
+      "bypassModal": false,
+      "previewUrl": null,
+      "thumbnail": {
+        "originalUrl": "https://media.zenfs.com/en/motleyfool.com/13a25c365f651c00553d2a1788c9eba8",
+        "originalWidth": 1400,
+        "originalHeight": 840,
+        "caption": "A hand holding an iPhone showing the Apple logo.",
+        "resolutions": [
+          {
+            "url": "https://s.yimg.com/uu/api/res/1.2/EI6Nc.Hg6AdURQ1fu_YQ2w--~B/aD04NDA7dz0xNDAwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/motleyfool.com/13a25c365f651c00553d2a1788c9eba8",
+            "width": 1400,
+            "height": 840,
+            "tag": "original"
+          },
+          {
+            "url": "https://s.yimg.com/uu/api/res/1.2/zB3wQmCAEmBPS3lPLRWS2g--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/motleyfool.com/13a25c365f651c00553d2a1788c9eba8",
+            "width": 170,
+            "height": 128,
+            "tag": "170x128"
+          }
+        ]
+      },
+      "provider": {
+        "displayName": "Motley Fool",
+        "url": "http://www.fool.com/"
+      },
+      "canonicalUrl": {
+        "url": "https://www.fool.com/investing/2025/12/12/prediction-this-could-be-the-worlds-most-valuable/",
+        "site": "finance",
+        "region": "US",
+        "lang": "en-US"
+      },
+      "clickThroughUrl": {
+        "url": "https://finance.yahoo.com/news/prediction-could-worlds-most-valuable-072000773.html",
+        "site": "finance",
+        "region": "US",
+        "lang": "en-US"
+      },
+      "metadata": {
+        "editorsPick": false
+      },
+      "finance": {
+        "premiumFinance": {
+          "isPremiumNews": false,
+          "isPremiumFreeNews": false
+        }
+      },
+      "storyline": null
+    }
+  },
+  {
     "id": "c11ce0c5-9146-40bb-ada6-ac538152d72a",
     "content": {
       "id": "c11ce0c5-9146-40bb-ada6-ac538152d72a",
@@ -470,109 +592,6 @@
         "lang": "en-US"
       },
       "clickThroughUrl": null,
-      "metadata": {
-        "editorsPick": false
-      },
-      "finance": {
-        "premiumFinance": {
-          "isPremiumNews": false,
-          "isPremiumFreeNews": false
-        }
-      },
-      "storyline": null
-    }
-  },
-  {
-    "id": "f637b3b2-2780-3a53-b1b3-591174d76ce2",
-    "content": {
-      "id": "f637b3b2-2780-3a53-b1b3-591174d76ce2",
-      "contentType": "STORY",
-      "title": "Deepwater: AI bull run continues in 2026; small cap tech to outperform",
-      "description": "",
-      "summary": "Investing.com -- Deepwater Asset Management has released its market predictions for 2026 on Thursday, forecasting a 10% gain for the Nasdaq driven primarily by continued strength in AI investments.",
-      "pubDate": "2025-12-11T19:00:25Z",
-      "displayTime": "2025-12-11T19:00:25Z",
-      "isHosted": true,
-      "bypassModal": false,
-      "previewUrl": null,
-      "thumbnail": null,
-      "provider": {
-        "displayName": "Investing.com",
-        "url": "https://www.investing.com/"
-      },
-      "canonicalUrl": {
-        "url": "https://finance.yahoo.com/news/deepwater-ai-bull-run-continues-190025339.html",
-        "site": "finance",
-        "region": "US",
-        "lang": "en-US"
-      },
-      "clickThroughUrl": {
-        "url": "https://finance.yahoo.com/news/deepwater-ai-bull-run-continues-190025339.html",
-        "site": "finance",
-        "region": "US",
-        "lang": "en-US"
-      },
-      "metadata": {
-        "editorsPick": false
-      },
-      "finance": {
-        "premiumFinance": {
-          "isPremiumNews": false,
-          "isPremiumFreeNews": false
-        }
-      },
-      "storyline": null
-    }
-  },
-  {
-    "id": "e53ccb4e-0264-39eb-b268-4d868e9d2655",
-    "content": {
-      "id": "e53ccb4e-0264-39eb-b268-4d868e9d2655",
-      "contentType": "STORY",
-      "title": "UBS Reiterates Neutral on Apple (AAPL) as App Store Growth Slows",
-      "description": "",
-      "summary": "Apple Inc. (NASDAQ:AAPL) is one of the Hot AI Stocks on Wall Street’s Radar. On December 9, UBS analyst David Vogt reiterated a Neutral rating on the stock with a $280.00 price target. Firm analysts hold a neutral stance on the stock due to slowing App Store growth momentum and tough December comps despite FX tailwind. […]",
-      "pubDate": "2025-12-11T16:23:22Z",
-      "displayTime": "2025-12-11T16:23:22Z",
-      "isHosted": true,
-      "bypassModal": false,
-      "previewUrl": null,
-      "thumbnail": {
-        "originalUrl": "https://media.zenfs.com/en/insidermonkey.com/736fa60347b771cdb0002673718f4b94",
-        "originalWidth": 1456,
-        "originalHeight": 816,
-        "caption": "",
-        "resolutions": [
-          {
-            "url": "https://s.yimg.com/uu/api/res/1.2/JiKGBBIH1zbbvITKfA_Sgw--~B/aD04MTY7dz0xNDU2O2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/en/insidermonkey.com/736fa60347b771cdb0002673718f4b94",
-            "width": 1456,
-            "height": 816,
-            "tag": "original"
-          },
-          {
-            "url": "https://s.yimg.com/uu/api/res/1.2/Ml7RrNe4tnyWQXHLg3dtVA--~B/Zmk9c3RyaW07aD0xMjg7dz0xNzA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/insidermonkey.com/736fa60347b771cdb0002673718f4b94",
-            "width": 170,
-            "height": 128,
-            "tag": "170x128"
-          }
-        ]
-      },
-      "provider": {
-        "displayName": "Insider Monkey",
-        "url": "http://www.insidermonkey.com"
-      },
-      "canonicalUrl": {
-        "url": "https://finance.yahoo.com/news/ubs-reiterates-neutral-apple-aapl-162322305.html",
-        "site": "finance",
-        "region": "US",
-        "lang": "en-US"
-      },
-      "clickThroughUrl": {
-        "url": "https://finance.yahoo.com/news/ubs-reiterates-neutral-apple-aapl-162322305.html",
-        "site": "finance",
-        "region": "US",
-        "lang": "en-US"
-      },
       "metadata": {
         "editorsPick": false
       },

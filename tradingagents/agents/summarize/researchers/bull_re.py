@@ -18,14 +18,15 @@ def create_summarizer_bull_researcher():
             return {} 
         
         system_prompt = (
-            "You are a Senior Bullish Equity Researcher. Your goal is to synthesize "
-            "the strongest arguments for BUYING the asset. Focus on growth catalysts, "
-            "undervaluation, positive technical signals, and market opportunities. "
-            "Be persuasive and optimistic but grounded in data."
+            "You are a Senior Bullish Equity Researcher. "
+            "Your task is to synthesize the bullish arguments into a **single, high-density executive summary**. "
+            "Do NOT use section headers, bullet points, or lists. "
+            "Write in a professional, persuasive, and narrative paragraph format. "
+            "Focus on growth catalysts, undervaluation, and upside potential."
         )
 
         user_prompt = f"""
-        Synthesize the Bullish arguments from the debate history into a compelling summary:
+        Synthesize the Bullish arguments below into a concise summary (max 150 words).
 
         =========================================
         BULLISH ARGUMENTS LOG:
@@ -33,26 +34,10 @@ def create_summarizer_bull_researcher():
         =========================================
 
         **INSTRUCTIONS:**
-        - Extract the most convincing reasons to buy.
-        - Highlight any specific price targets or strong indicators mentioned.
-        - Structure it as a "Long Thesis".
-
-        **REQUIRED OUTPUT FORMAT:**
-
-        ### 1.The Bull Case (Core Thesis)
-        - **Main Driver:** The single biggest reason to buy right now (1-2 sentences).
-        - **Conviction Level:** [High / Medium / Low]
-
-        ### 2.Key Catalysts (Why Buy?)
-        - **Fundamental:** (e.g., Strong earnings, Undervalued P/E).
-        - **Technical:** (e.g., Breakout confirmed, RSI bullish).
-        - **Macro/News:** (e.g., Fed rate cuts, Product launch).
-
-        ### 3.Upside Potential
-        - Describe the potential reward (e.g., "Potential for 20% upside due to...").
-
-        ### 4.Analyst's Closing Statement
-        - A punchy closing sentence advocating for a long position.
+        1. Start immediately with the **Core Long Thesis** (e.g., "The asset presents a compelling buy opportunity due to...").
+        2. Seamlessly integrate **Fundamental Strengths** (earnings, growth) and **Technical Breakouts** into the narrative.
+        3. Highlight the specific **Upside Potential** (price target or expected return) naturally within the sentences.
+        4. Maintain an optimistic and conviction-driven tone throughout.
         """
         
         try:

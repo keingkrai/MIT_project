@@ -1,8 +1,33 @@
 {
-    "sentiment_score": 50,
-    "sentiment_verdict": "Error",
-    "social_volume_analysis": "Parsing error occurred.",
-    "dominant_narrative": "Error processing data.",
-    "top_discussion_topics": [],
-    "retail_psychology_assessment": "Error occurred during analysis."
+    "sentiment_verdict": "Bullish",
+    "social_volume": "Elevated volume driven by analyst upgrades, iPhone 17 success, and AI integration discussions",
+    "dominant_narrative": "Apple is experiencing strong momentum driven by iPhone 17 sales exceeding expectations and the successful rollout of Apple Intelligence AI platform, with multiple analyst upgrades reinforcing positive sentiment.",
+    "top_topics": [
+        {
+            "topic": "iPhone 17 Sales Performance",
+            "sentiment": "Positive",
+            "analysis_snippet": "The crowd is enthusiastic about iPhone 17 sales exceeding expectations with reports of 14% higher sales compared to previous models."
+        },
+        {
+            "topic": "Apple Intelligence AI Integration",
+            "sentiment": "Positive",
+            "analysis_snippet": "Investors are optimistic about Apple's on-device AI strategy and its potential to strengthen ecosystem lock-in and drive future growth."
+        },
+        {
+            "topic": "Analyst Price Target Upgrades",
+            "sentiment": "Positive",
+            "analysis_snippet": "Multiple analyst upgrades including Wedbush to $350 and Citi to $350 are generating positive momentum and confidence in the stock."
+        },
+        {
+            "topic": "Market Cap Milestones",
+            "sentiment": "Positive",
+            "analysis_snippet": "Discussion focuses on Apple approaching $4 trillion market cap and its position among the world's most valuable companies."
+        },
+        {
+            "topic": "Technical Analysis and Trading Levels",
+            "sentiment": "Mixed",
+            "analysis_snippet": "Traders are monitoring key support and resistance levels with some noting the stock is lagging behind other tech giants."
+        }
+    ],
+    "psychology": "Fear Of Missing Out driven by strong product cycle and AI narrative, with growing confidence in Apple's strategic positioning"
 }

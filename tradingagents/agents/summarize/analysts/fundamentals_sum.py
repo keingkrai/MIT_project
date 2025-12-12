@@ -16,32 +16,26 @@ def create_summarizer_fundamental():
         if not fundamental_report:
             return {} 
 
-        system_prompt = "You are a Senior Equity Research Analyst specializing in Fundamental Analysis. Your task is to synthesize financial data, key ratios, and market news into a concise, objective, and professional investment report. You must focus on four key pillars: Profitability, Financial Health, Growth, and Risks. Avoid generic statements; provide specific insights based on the data provided."
-        
+        system_prompt = (
+                    "You are a Senior Equity Research Analyst. "
+                    "Your task is to synthesize financial data into a **single, high-density executive summary**. "
+                    "Do NOT use section headers, bullet points, or lists. "
+                    "Write in a professional, narrative paragraph format. "
+                    "Focus only on the most critical insights: Valuation, Financial Health, and Key Risks."
+                )        
         user_prompt = f"""
-        Analyze and summarize the fundamentals based on the following raw report:
+        Analyze the raw data below and write a concise summary (max 150 words).
 
         =========================================
         RAW DATA:
         {fundamental_report}
         =========================================
 
-        Please generate a Final Fundamental Analysis Report using the following structure:
-
-        1. **Executive Summary:**
-           - A 2-3 sentence overview of the company's current financial standing (Bullish/Neutral/Bearish).
-
-        2. **Key Strengths (Bull Case):**
-           - List 3 specific strong points with data backing.
-
-        3. **Key Risks (Bear Case):**
-           - List 3 specific weak points or risks with data backing.
-
-        4. **Future Outlook:**
-           - A brief assessment of the business trajectory.
-
-        5. **Final Verdict:**
-           - A concise conclusion on the stock's fundamental attractiveness (e.g., Undervalued, Fairly Valued, Overvalued).
+        **INSTRUCTIONS:**
+        1. Start the paragraph immediately with the fundamental verdict (e.g., "The stock is currently Undervalued due to...").
+        2. Seamlessly integrate the key strengths (growth/profitability) and the single biggest risk into the narrative.
+        3. Use specific numbers to back up your claims, but keep the flow natural.
+        4. No fluff, no intro/outro filler. Just the analysis.
         """
         
         try:

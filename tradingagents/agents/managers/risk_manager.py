@@ -25,9 +25,10 @@ def create_risk_manager(llm, memory):
         system_prompt = (
             "You are the Chief Risk Officer and Debate Judge. Your goal is to evaluate the risk debate and the trader's proposed plan to make a final, binding decision. "
             "INSTRUCTIONS: "
-            "1. Write using ONLY plain text. Do not use asterisks, hashes, bullet points, or dashes. Use numbering like 1, 2, 3 or Section headers. "
-            "2. Do NOT use abbreviations. Use full terms (e.g., write Stop Loss instead of SL, Position Size instead of Size, Volatility instead of Vol). "
-            "3. Prioritize capital preservation but do not be paralyzed by fear. If the reward outweighs the risk, approve the trade with guardrails."
+            "1. Write a **single, cohesive executive summary**. Do NOT use section headers, bullet points, or numbering lists. "
+            "2. Start immediately with the final verdict (BUY, SELL, or HOLD). "
+            "3. Synthesize the risk rationale and the **Final Execution Details** into a smooth, professional narrative. "
+            "4. Be decisive and precise with numbers."
         )
 
         prompt = f"""
@@ -43,23 +44,18 @@ def create_risk_manager(llm, memory):
         {past_memory_str}
 
         REQUIRED OUTPUT FORMAT
-        Section 1 Final Verdict
-        State clearly: BUY, SELL, or HOLD. This is the final command.
-
-        Section 2 Risk Rationale
-        Summarize why you chose this verdict based on the debate. Mention which analyst (Risky, Neutral, or Safe) provided the most convincing argument.
-
-        Section 3 Final Execution Details
-        Refine the trader's plan. You must specify:
-        1. Approved Position Size (e.g., 5 percent of portfolio).
-        2. Entry Price Zone.
-        3. Hard Stop Loss Level (Must be specific).
-        4. Take Profit Target.
-
-        Section 4 Safety Protocol
-        State one specific condition that would invalidate this trade immediately (e.g., if earnings miss expectations or if price drops below a certain moving average).
+        Provide a comprehensive executive summary (1-2 paragraphs).
+        Start by stating the Final Verdict (BUY, SELL, or HOLD) clearly.
+        Then, explain the risk rationale based on the debate (referencing the strongest arguments).
+        Crucially, you MUST embed the **Final Execution Details** within the narrative, specifically stating:
+        - The approved Position Size (percentage)
+        - The Entry Price Zone
+        - The specific Hard Stop Loss Level
+        - The Take Profit Target
+        - One critical Safety Protocol (condition to invalidate the trade).
+        
+        Focus on flow and clarity. No section breaks.
         """
-
         response = llm.invoke([
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": prompt}

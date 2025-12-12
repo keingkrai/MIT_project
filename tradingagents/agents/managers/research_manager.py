@@ -37,21 +37,12 @@ def create_research_manager(llm, memory):
         {past_memory_str}
 
         REQUIRED OUTPUT FORMAT
-        Section 1 The Verdict
-        State clearly: BUY, SELL, or HOLD. Provide a 1 sentence reason for the decision.
-
-        Section 2 Winning Argument
-        Explain which side (Bull or Bear) presented the more compelling case and why. Mention specific data points used (using full names).
-
-        Section 3 Strategic Plan
-        Outline the execution strategy. 
-        - If Buying: Suggest entry urgency and conviction level.
-        - If Selling: Suggest exit urgency.
-        - If Holding: Explain what specific trigger you are waiting for.
-
-        Section 4 Risk Management Note
-        Highlight the single biggest risk identified in the debate that must be monitored.
+        Provide a comprehensive executive summary (1-2 paragraphs). 
+        Start by stating the verdict (BUY, SELL, or HOLD) clearly. 
+        Then, immediately explain the logic by highlighting the most compelling evidence from the debate, the specific execution strategy (entry/exit urgency), and the critical risk to monitor. 
+        Focus only on the core insights and the decision logic. No fluff, no formatting structure.
         """
+        
         response = llm.invoke([
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": prompt}

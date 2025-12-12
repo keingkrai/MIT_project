@@ -90,8 +90,18 @@ async def send_update(websocket: WebSocket, update_type: str, data: Dict[str, An
             "data": data,
             "timestamp": datetime.datetime.now().isoformat()
         })
+    except (RuntimeError, ConnectionError, WebSocketDisconnect) as e:
+        # Connection is closed, ignore silently
+        pass
     except Exception as e:
-        print(f"Error sending update: {e}")
+        # Check if it's a connection-related error
+        error_msg = str(e).lower()
+        # Ignore errors about closed connections or sending to closed sockets
+        if "close" in error_msg or "send" in error_msg or "cannot call" in error_msg:
+            pass  # Connection closed, ignore
+        else:
+            # Log other unexpected errors
+            print(f"Error sending update: {e}")
 
 
 async def run_analysis_stream(websocket: WebSocket, request: AnalysisRequest):

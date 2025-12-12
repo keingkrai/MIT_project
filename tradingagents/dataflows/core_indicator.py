@@ -5,6 +5,7 @@ import requests
 from typing import Annotated
 from datetime import datetime
 from langchain_core.tools import tool
+from concurrent.futures import ThreadPoolExecutor, TimeoutError as FutureTimeoutError, as_completed
 
 # --- Import Provider Functions (ตรวจสอบ Path ให้ถูกต้อง) ---
 from tradingagents.dataflows.y_finance import get_stock_stats_indicators_window
@@ -157,7 +158,15 @@ def get_indicators(
 
     result_str_tv, data_tv = "", pd.DataFrame()
     try:
-        result_str_tv, data_tv = get_tradingview_indicators(symbol, indicator, curr_date, look_back_days)
+        # ใช้ timeout 5 วินาทีสำหรับ TradingView เพื่อไม่ให้รอนานเกินไป
+        with ThreadPoolExecutor(max_workers=1) as executor:
+            future = executor.submit(get_tradingview_indicators, symbol, indicator, curr_date, look_back_days)
+            try:
+                result_str_tv, data_tv = future.result(timeout=5)  # 5 วินาที timeout
+            except FutureTimeoutError:
+                print(f"⚠️ TradingView Timeout (skipped after 5s)")
+                future.cancel()
+                result_str_tv, data_tv = "", pd.DataFrame()
     except Exception as e:
         print(f"⚠️ TradingView Error: {e}")
 
@@ -199,3 +208,78 @@ def get_indicators(
     if result_str_tv: return result_str_tv
     
     return f"No data found for indicator {indicator}"
+
+
+# ==========================================
+# ✅ BATCH INDICATORS TOOL (FAST)
+# ==========================================
+
+@tool
+def get_all_indicators(
+    symbol: str,
+    indicators: str,
+    curr_date: str,
+    look_back_days: int = 30,
+) -> str:
+    """
+    Retrieve MULTIPLE technical indicators in PARALLEL for faster processing.
+    This is MUCH faster than calling get_indicators multiple times sequentially.
+    
+    Args:
+        symbol (str): Ticker symbol (e.g., AAPL).
+        indicators (str): Comma-separated list of indicator codes (e.g., 'rsi,macd,close_50_sma').
+                          Supported: close_50_sma, close_200_sma, close_10_ema, macd, macds, macdh, 
+                                     rsi, boll, boll_ub, boll_lb, atr, vwma
+        curr_date (str): The current date for analysis (YYYY-MM-DD).
+        look_back_days (int): Number of past days to retrieve data for (default: 30).
+        
+    Returns:
+        str: A formatted string containing ALL requested indicator data combined.
+    """
+    # Parse indicators list
+    indicator_list = [ind.strip() for ind in indicators.split(',') if ind.strip()]
+    
+    if not indicator_list:
+        return "Error: No indicators provided. Please provide comma-separated list (e.g., 'rsi,macd,close_50_sma')"
+    
+    print(f"\n🚀 Fetching {len(indicator_list)} indicators in PARALLEL for {symbol}...")
+    print(f"   Indicators: {', '.join(indicator_list)}")
+    
+    # Fetch all indicators in parallel
+    results = {}
+    with ThreadPoolExecutor(max_workers=min(len(indicator_list), 6)) as executor:
+        # Submit all tasks
+        future_to_indicator = {
+            executor.submit(get_indicators, symbol, ind, curr_date, look_back_days): ind
+            for ind in indicator_list
+        }
+        
+        # Collect results as they complete
+        for future in as_completed(future_to_indicator):
+            indicator = future_to_indicator[future]
+            try:
+                result = future.result(timeout=30)  # 30 seconds max per indicator
+                results[indicator] = result
+                print(f"   ✓ {indicator} completed")
+            except Exception as e:
+                print(f"   ✗ {indicator} failed: {e}")
+                results[indicator] = f"Error retrieving {indicator}: {str(e)}"
+    
+    # Combine all results
+    combined_result = f"\n{'='*60}\n"
+    combined_result += f"COMBINED INDICATOR DATA FOR {symbol.upper()}\n"
+    combined_result += f"Date: {curr_date} | Look-back: {look_back_days} days\n"
+    combined_result += f"{'='*60}\n\n"
+    
+    for indicator in indicator_list:
+        combined_result += f"\n{'─'*60}\n"
+        combined_result += f"INDICATOR: {indicator.upper()}\n"
+        combined_result += f"{'─'*60}\n"
+        combined_result += results.get(indicator, f"No data for {indicator}")
+        combined_result += "\n\n"
+    
+    combined_result += f"\n{'='*60}\n"
+    combined_result += f"Total indicators retrieved: {len([r for r in results.values() if not r.startswith('Error')])}/{len(indicator_list)}\n"
+    combined_result += f"{'='*60}\n"
+    
+    return combined_result

@@ -143,12 +143,12 @@ def get_stock_stats_indicators_window(
     before = curr_date_dt - relativedelta(days=look_back_days)
 
     # Optimized: Get stock data once and calculate indicators for all dates
+    date_values = []  # Initialize outside try block
     try:
         indicator_data = _get_stock_stats_bulk(symbol, indicator, curr_date)
         
         # Generate the date range we need
         current_dt = curr_date_dt
-        date_values = []
         
         while current_dt >= before:
             date_str = current_dt.strftime('%Y-%m-%d')
@@ -172,12 +172,18 @@ def get_stock_stats_indicators_window(
         print(f"Error getting bulk stockstats data: {e}")
         # Fallback to original implementation if bulk method fails
         ind_string = ""
+        date_values = []  # Re-initialize in except block
         curr_date_dt = datetime.strptime(curr_date, "%Y-%m-%d")
         while curr_date_dt >= before:
-            indicator_value = get_stockstats_indicator(
-                symbol, indicator, curr_date_dt.strftime("%Y-%m-%d")
-            )
-            ind_string += f"{curr_date_dt.strftime('%Y-%m-%d')}: {indicator_value}\n"
+            try:
+                indicator_value = get_stockstats_indicator(
+                    symbol, indicator, curr_date_dt.strftime("%Y-%m-%d")
+                )
+                date_str = curr_date_dt.strftime('%Y-%m-%d')
+                date_values.append((date_str, indicator_value))
+                ind_string += f"{date_str}: {indicator_value}\n"
+            except Exception:
+                pass  # Skip this date if it fails
             curr_date_dt = curr_date_dt - relativedelta(days=1)
 
     result_str = (

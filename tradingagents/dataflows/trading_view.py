@@ -12,13 +12,16 @@ def get_TV_data_online(
     exchange: Annotated[str, "Exchange code, e.g., NASDAQ"] = "NASDAQ",
     interval: Annotated[str, "Interval for data, e.g., 1d, 1h"] = "1d",
 ):
-    dotenv.load_dotenv()
-    # tv = TvDatafeed(username=os.getenv('TV_USERNAME'), password=os.getenv('TV_PASSWORD'))
-    tv = TvDatafeed()
+    try:
+        dotenv.load_dotenv()
+        # tv = TvDatafeed(username=os.getenv('TV_USERNAME'), password=os.getenv('TV_PASSWORD'))
+        tv = TvDatafeed()
 
-    # Validate date
-    datetime.strptime(start_date, "%Y-%m-%d")
-    datetime.strptime(end_date, "%Y-%m-%d")
+        # Validate date
+        datetime.strptime(start_date, "%Y-%m-%d")
+        datetime.strptime(end_date, "%Y-%m-%d")
+    except Exception as e:
+        return f"# Error: Invalid input parameters: {str(e)}\n", ""
 
     # Interval mapping
     interval_map = {
@@ -33,24 +36,30 @@ def get_TV_data_online(
     }
 
     if interval not in interval_map:
-        return f"Invalid interval. Supported: {list(interval_map.keys())}"
+        return f"# Error: Invalid interval. Supported: {list(interval_map.keys())}\n", ""
 
     # Fetch data
-    data = tv.get_hist(
-        symbol=symbol,
-        exchange=exchange,
-        interval=interval_map[interval],
-        n_bars=5000
-    )
+    try:
+        data = tv.get_hist(
+            symbol=symbol,
+            exchange=exchange,
+            interval=interval_map[interval],
+            n_bars=5000
+        )
+    except Exception as e:
+        return f"# Error: TradingView connection failed: {str(e)}\n", ""
 
     if data is None or data.empty:
-        return f"No data found for symbol '{symbol}' from TradingView"
+        return f"# Error: No data found for symbol '{symbol}' from TradingView\n", ""
 
     # Filter by date
-    data = data.loc[start_date:end_date]
+    try:
+        data = data.loc[start_date:end_date]
+    except Exception:
+        return f"# Error: Failed to filter data for symbol '{symbol}' between {start_date} and {end_date}\n", ""
 
     if data.empty:
-        return f"No data found for symbol '{symbol}' between {start_date} and {end_date}"
+        return f"# Error: No data found for symbol '{symbol}' between {start_date} and {end_date}\n", ""
 
     # Remove timezone
     if data.index.tz:
@@ -132,28 +141,46 @@ def get_tradingview_indicators(symbol, indicator, curr_date, look_back_days = 30
         "vwma": "VWMA: A moving average weighted by volume. Usage: Confirm trends by integrating price action with volume data. Tips: Watch for skewed results from volume spikes; use in combination with other volume analyses."
     }
 
-    tv = TvDatafeed(username=os.getenv('TV_USERNAME'), password=os.getenv('TV_PASSWORD'))
+    try:
+        tv = TvDatafeed(username=os.getenv('TV_USERNAME'), password=os.getenv('TV_PASSWORD'))
+    except Exception as e:
+        error_str = f"# Error: TradingView login failed: {str(e)}\n"
+        return error_str, pd.DataFrame()
 
-    curr_dt = datetime.strptime(curr_date, "%Y-%m-%d")
-    before_dt = curr_dt - timedelta(days=look_back_days)
+    try:
+        curr_dt = datetime.strptime(curr_date, "%Y-%m-%d")
+        before_dt = curr_dt - timedelta(days=look_back_days)
+    except Exception as e:
+        error_str = f"# Error: Invalid date format: {str(e)}\n"
+        return error_str, pd.DataFrame()
 
     # ดึงข้อมูล OHLC จาก TV
-    df = tv.get_hist(symbol, exchange, interval=Interval.in_daily, n_bars=look_back_days + 100)
-    if df.empty:
-        return f"No data found for {symbol}"
-
-    df = df.reset_index()  # datetime index → column 'datetime'
-    df['datetime'] = pd.to_datetime(df['datetime'])
-
-    # wrap เฉพาะ OHLC + volume
-    df_wrap = df[['open', 'high', 'low', 'close', 'volume']].copy()
-    df_wrap = wrap(df_wrap)
-
-    # trigger calculation indicator
     try:
-        df_wrap[indicator]
+        df = tv.get_hist(symbol, exchange, interval=Interval.in_daily, n_bars=look_back_days + 100)
+        if df is None or df.empty:
+            error_str = f"# Error: No data found for {symbol}\n"
+            return error_str, pd.DataFrame()
     except Exception as e:
-        return f"Indicator {indicator} not available: {e}"
+        error_str = f"# Error: TradingView data fetch failed: {str(e)}\n"
+        return error_str, pd.DataFrame()
+
+    try:
+        df = df.reset_index()  # datetime index → column 'datetime'
+        df['datetime'] = pd.to_datetime(df['datetime'])
+
+        # wrap เฉพาะ OHLC + volume
+        df_wrap = df[['open', 'high', 'low', 'close', 'volume']].copy()
+        df_wrap = wrap(df_wrap)
+
+        # trigger calculation indicator
+        try:
+            df_wrap[indicator]
+        except Exception as e:
+            error_str = f"# Error: Indicator {indicator} not available: {str(e)}\n"
+            return error_str, pd.DataFrame()
+    except Exception as e:
+        error_str = f"# Error: Failed to process TradingView data: {str(e)}\n"
+        return error_str, pd.DataFrame()
 
     # merge indicator กลับกับ datetime
     df[indicator] = df_wrap[indicator]

@@ -1,10 +1,10 @@
 {
   "symbol": "MSFT",
-  "timestamp": "2025-12-04T07:13:12.305301+00:00",
+  "timestamp": "2025-12-11T07:50:04.749133+00:00",
   "raw": {
     "yfinance": {
       "overview": {
-        "marketCap": 3551046655902.875,
+        "marketCap": 3557216084186.8613,
         "sharesOutstanding": null,
         "peRatio": null,
         "currency": "USD",
@@ -36,9 +36,9 @@
         "exchange": "NASDAQ NMS - GLOBAL MARKET",
         "sector": "Technology",
         "industry": "Technology",
-        "marketCap": 3550669675082946.5,
+        "marketCap": 3556838468938467.5,
         "sharesOutstanding": 7432.38,
-        "peRatio": 34.7135
+        "peRatio": 34.8566
       },
       "balancesheet": {
         "totalAssets": null,
@@ -63,14 +63,14 @@
         "exchange": "NASDAQ",
         "sector": "TECHNOLOGY",
         "industry": "SOFTWARE - INFRASTRUCTURE",
-        "marketCap": 3642251543000.0,
+        "marketCap": 3657266364000.0,
         "sharesOutstanding": 7432378000.0,
-        "peRatio": 34.83
+        "peRatio": 34.99
       },
       "balancesheet": {
-        "totalAssets": 619003000000.0,
-        "totalLiabilities": 275524000000.0,
-        "shareholderEquity": 343479000000.0
+        "totalAssets": null,
+        "totalLiabilities": null,
+        "shareholderEquity": null
       },
       "cashflow": {
         "operatingCashFlow": 136162000000.0,

@@ -1,15 +1,15 @@
 {
   "symbol": "MSFT",
-  "chosen_source": "alphavantage",
+  "chosen_source": "yfinance",
   "scores": {
-    "yfinance": 14,
+    "yfinance": 11,
     "finnhub": 6,
-    "alphavantage": 14
+    "alphavantage": 11
   },
   "completeness": {
     "yfinance": 13,
     "finnhub": 8,
-    "alphavantage": 16
+    "alphavantage": 13
   },
   "sections": {
     "overview": {
@@ -26,14 +26,14 @@
     },
     "balancesheet": {
       "scores": {
-        "yfinance": 3,
+        "yfinance": 0,
         "finnhub": 0,
-        "alphavantage": 3
+        "alphavantage": 0
       },
       "completeness": {
         "yfinance": 3,
         "finnhub": 0,
-        "alphavantage": 3
+        "alphavantage": 0
       }
     },
     "cashflow": {
@@ -63,14 +63,14 @@
   },
   "final_payload": {
     "overview": {
-      "name": "Microsoft Corporation",
+      "marketCap": 3557216084186.8613,
+      "sharesOutstanding": null,
+      "peRatio": null,
       "currency": "USD",
-      "exchange": "NASDAQ",
-      "sector": "TECHNOLOGY",
-      "industry": "SOFTWARE - INFRASTRUCTURE",
-      "marketCap": 3642251543000.0,
-      "sharesOutstanding": 7432378000.0,
-      "peRatio": 34.83
+      "exchange": "NMS",
+      "name": "Microsoft Corporation",
+      "sector": "Technology",
+      "industry": "Software - Infrastructure"
     },
     "balancesheet": {
       "totalAssets": 619003000000.0,
@@ -80,7 +80,7 @@
     "cashflow": {
       "operatingCashFlow": 136162000000.0,
       "freeCashFlow": 71611000000.0,
-      "capitalExpenditures": 64551000000.0
+      "capitalExpenditures": null
     },
     "incomestatement": {
       "totalRevenue": 281724000000.0,
@@ -88,5 +88,5 @@
       "eps": null
     }
   },
-  "timestamp": "2025-12-04T07:13:12.305301+00:00"
+  "timestamp": "2025-12-11T07:50:04.749133+00:00"
 }

@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 from pydantic import BaseModel, Field
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_core.output_parsers import JsonOutputParser
-from tradingagents.dataflows.core_indicator import get_indicators
+from tradingagents.dataflows.core_indicator import get_indicators, get_all_indicators
 from tradingagents.dataflows.core_stock_price import get_stock_data
 
 
@@ -64,35 +64,34 @@ def create_market_analyst(llm):
         except Exception:
             start_date = "2024-01-01"
 
-        tools = [get_stock_data, get_indicators]
+        tools = [get_stock_data, get_all_indicators]
 
         # ===================== SYSTEM MESSAGE ======================
         system_message = f"""
-You are an AI Trading Analysis Agent.
+You are an AI Trading Analysis Agent. Your goal is to complete analysis FAST (within 5 minutes).
 
-Rules:
+CRITICAL PERFORMANCE RULES:
 1) You MUST call `get_stock_data` FIRST using exactly 1 year of historical data (Start: {start_date}, End: {current_date}).
-2) You MUST call `get_indicators` SECOND using only the most recent 30 days of the fetched price data.
-3) Use ONLY the following indicator names:
 
-[
-    "close_50_sma",
-    "close_200_sma",
-    "close_10_ema",
-    "macd",
-    "macds",
-    "macdh",
-    "rsi",
-    "boll",
-    "boll_ub",
-    "boll_lb",
-    "atr",
-    "vwma"
-]
+2) You MUST call `get_all_indicators` ONCE with ALL indicators in a SINGLE call (NOT multiple calls).
+   - Use comma-separated format: "close_50_sma,close_200_sma,close_10_ema,macd,macds,macdh,rsi,boll,boll_ub,boll_lb,atr,vwma"
+   - This fetches ALL indicators in PARALLEL (much faster than sequential calls)
+   - DO NOT call get_indicators multiple times - use get_all_indicators ONCE
 
-4) After receiving indicator results, return the final answer as a valid JSON object ONLY.
-5) If any indicator fails, still include it with inferred signal + implication.
+3) REQUIRED indicators (all 12 must be included):
+   - close_50_sma, close_200_sma, close_10_ema
+   - macd, macds, macdh
+   - rsi
+   - boll, boll_ub, boll_lb
+   - atr, vwma
+
+4) After receiving ALL indicator results in ONE response, analyze and return the final answer as a valid JSON object ONLY.
+
+5) If any indicator fails, still include it with inferred signal + implication based on available data.
+
 6) Keep analysis concise and trading-focused.
+
+7) SPEED IS CRITICAL: Use get_all_indicators (parallel) NOT multiple get_indicators calls (sequential).
 
 OUTPUT FORMAT:
 {parser.get_format_instructions()}

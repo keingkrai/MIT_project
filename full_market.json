@@ -1,6 +1,6 @@
 {
-    "ticker": "AAPL",
-    "date": "2025-11-30",
+    "ticker": "SPY",
+    "date": "2025-12-12",
     "selected_indicators": [
         "close_50_sma",
         "close_200_sma",
@@ -25,101 +25,100 @@
         {
             "indicator": "close_50_sma",
             "indicator_full_name": "50-Day Simple Moving Average",
-            "signal": "Price at $278.85 is well above 50 SMA at $262.46, indicating strong medium-term uptrend",
-            "implication": "Bullish trend confirmation with 50 SMA acting as dynamic support"
+            "signal": "Price ($689.17) trading above 50 SMA (674.16), indicating bullish medium-term trend",
+            "implication": "Bullish continuation likely as long as price holds above this level"
         },
         {
             "indicator": "close_200_sma",
             "indicator_full_name": "200-Day Simple Moving Average",
-            "signal": "Price significantly above 200 SMA at $226.76, showing strong long-term bullish structure",
-            "implication": "Major uptrend intact with 200 SMA providing strong support zone"
+            "signal": "Price significantly above 200 SMA (617.70), confirming strong long-term uptrend",
+            "implication": "Major support at 200 SMA; overall market structure remains bullish"
         },
         {
             "indicator": "close_10_ema",
             "indicator_full_name": "10-Day Exponential Moving Average",
-            "signal": "Price at $278.85 above 10 EMA at $273.91, maintaining short-term bullish momentum",
-            "implication": "Short-term trend remains positive with 10 EMA as immediate support"
+            "signal": "Price above 10 EMA (683.32), with EMA trending upward",
+            "implication": "Short-term momentum remains positive; watch for EMA as dynamic support"
         },
         {
             "indicator": "macd",
             "indicator_full_name": "Moving Average Convergence Divergence",
-            "signal": "MACD at 4.20, positive but declining from recent peak of 6.29, showing momentum deceleration",
-            "implication": "Bullish momentum weakening but still positive; watch for potential bearish crossover"
+            "signal": "MACD (4.22) above signal line (2.96) and positive, showing bullish momentum",
+            "implication": "Momentum favors continuation of uptrend; monitor for potential divergence"
         },
         {
             "indicator": "macds",
             "indicator_full_name": "MACD Signal Line",
-            "signal": "Signal line at 4.05, MACD remains above signal line but gap narrowing",
-            "implication": "Bullish signal still active but momentum fading; monitor for potential bearish crossover"
+            "signal": "Signal line trending upward from 2.03 to 2.96 over past month",
+            "implication": "Bullish momentum strengthening; supports continuation pattern"
         },
         {
             "indicator": "macdh",
             "indicator_full_name": "MACD Histogram",
-            "signal": "Histogram at 0.16, positive but small, showing reduced bullish momentum",
-            "implication": "Momentum weakening; could signal consolidation or pullback ahead"
+            "signal": "Histogram positive (1.27) and expanding, indicating increasing bullish momentum",
+            "implication": "Momentum acceleration suggests near-term strength"
         },
         {
             "indicator": "rsi",
             "indicator_full_name": "Relative Strength Index",
-            "signal": "RSI at 68.41, approaching overbought territory but not extreme",
-            "implication": "Approaching overbought conditions; potential for near-term consolidation or pullback"
+            "signal": "RSI at 62.20, in neutral territory approaching overbought",
+            "implication": "Room for further upside but approaching overbought conditions; monitor for potential pullback"
         },
         {
             "indicator": "boll",
             "indicator_full_name": "Bollinger Middle Band",
-            "signal": "Price at $278.85 above middle band at $271.51, trading in upper half of Bollinger Bands",
-            "implication": "Bullish price action with middle band as support"
+            "signal": "Price trading above middle band (675.50), indicating bullish bias",
+            "implication": "Upper band acts as resistance; middle band provides support"
         },
         {
             "indicator": "boll_ub",
             "indicator_full_name": "Bollinger Upper Band",
-            "signal": "Price near upper band at $278.78, testing resistance level",
-            "implication": "Approaching overbought territory; potential resistance at upper band"
+            "signal": "Price ($689.17) approaching upper band (696.55)",
+            "implication": "Potential resistance near 696-697; breakout above could signal acceleration"
         },
         {
             "indicator": "boll_lb",
             "indicator_full_name": "Bollinger Lower Band",
-            "signal": "Price well above lower band at $264.25, showing strong bullish positioning",
-            "implication": "Significant room before oversold conditions; lower band provides strong support"
+            "signal": "Lower band at 654.44, well below current price",
+            "implication": "Significant downside buffer before oversold conditions"
         },
         {
             "indicator": "atr",
             "indicator_full_name": "Average True Range",
-            "signal": "ATR at 5.44, indicating moderate volatility levels",
-            "implication": "Moderate price swings expected; suitable for standard position sizing"
+            "signal": "ATR at 7.27, indicating moderate volatility",
+            "implication": "Risk management appropriate; stop-losses should account for typical daily ranges"
         },
         {
             "indicator": "vwma",
             "indicator_full_name": "Volume Weighted Moving Average",
-            "signal": "Price at $278.85 above VWMA at $272.33, confirming trend with volume support",
-            "implication": "Volume confirms bullish trend; institutional participation supporting uptrend"
+            "signal": "Price above VWMA (678.23), suggesting volume-supported price action",
+            "implication": "Uptrend supported by volume; institutional participation likely"
         }
     ],
     "price_action_summary": {
-        "recent_high_low": "Trading near recent highs, approaching upper Bollinger Band resistance",
+        "recent_high_low": "Trading near recent highs (689.17) with strong recovery from November lows (652.53)",
         "support_levels": [
-            "$273.91 (10 EMA)",
-            "$271.51 (Bollinger Middle)",
-            "$264.25 (Bollinger Lower)",
-            "$262.46 (50 SMA)"
+            "683.32 (10 EMA)",
+            "674.16 (50 SMA)",
+            "665.00 (psychological)"
         ],
         "resistance_levels": [
-            "$278.78 (Bollinger Upper Band)",
-            "$279.00 (Psychological level)",
-            "$280.38 (Recent high from 2025-11-25)"
+            "696.55 (Bollinger Upper)",
+            "700.00 (psychological)",
+            "710.00 (next resistance)"
         ],
-        "short_term_behavior": "Testing resistance near upper Bollinger Band with momentum indicators showing signs of fatigue"
+        "short_term_behavior": "Consolidating near highs with bullish bias; showing strength after November correction"
     },
     "market_sentiment": {
         "sentiment_score": 75,
         "sentiment_label": "Bullish"
     },
     "key_risks": [
-        "RSI approaching overbought levels at 68.41",
-        "MACD momentum showing signs of deceleration",
-        "Price testing upper Bollinger Band resistance",
-        "Potential for near-term consolidation or pullback"
+        "RSI approaching overbought territory (62.20)",
+        "Price near Bollinger upper band resistance",
+        "Potential profit-taking after strong rally",
+        "Market breadth divergence could develop"
     ],
-    "short_term_outlook": "Bullish trend remains intact but approaching resistance with momentum indicators showing fatigue; expect potential consolidation or minor pullback before continuation higher",
-    "confidence_score": 0.75
+    "short_term_outlook": "Bullish with potential for continued upside toward 700 resistance, though near-term consolidation or minor pullback likely given overbought conditions",
+    "confidence_score": 0.78
 }

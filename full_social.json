@@ -1,34 +1,34 @@
 {
-    "sentiment_score": 68,
-    "sentiment_verdict": "Bullish",
-    "social_volume": "Elevated due to analyst upgrades and AI strategy discussions",
-    "dominant_narrative": "Retail investors are optimistic about Apple's AI integration strategy and strong iPhone 17 performance, with Wedbush's significant price target increase to $350 fueling positive sentiment. The market is focused on Apple's executive stability and AI roadmap execution.",
+    "sentiment_score": 58,
+    "sentiment_verdict": "Neutral",
+    "social_volume": "Moderate volume with mixed signals - some technical analysis discussions and options trading activity, but overshadowed by unrelated 'spy' content noise",
+    "dominant_narrative": "Retail investors are cautiously optimistic about SPY approaching previous highs, but concerns about technical resistance patterns and Federal Reserve policy decisions create uncertainty. The market appears to be in a holding pattern awaiting the FOMC meeting outcome.",
     "top_topics": [
         {
-            "topic": "Analyst Price Target Increases",
-            "sentiment": "Positive",
-            "analysis_snippet": "Wedbush raised Apple's price target to $350 citing iPhone 17 momentum and AI executive appointments."
-        },
-        {
-            "topic": "Apple Intelligence AI Strategy",
-            "sentiment": "Positive",
-            "analysis_snippet": "Investors are optimistic about Apple's on-device AI integration and hiring of former DeepMind executive."
-        },
-        {
-            "topic": "Executive Stability and Leadership",
-            "sentiment": "Positive",
-            "analysis_snippet": "Tim Cook's commitment to remain CEO until 2027 is viewed as positive for strategic continuity."
-        },
-        {
-            "topic": "Regulatory and Legal Concerns",
+            "topic": "Technical Analysis and Resistance Levels",
             "sentiment": "Mixed",
-            "analysis_snippet": "Bipartisan attorneys general warnings about AI chatbot outputs create regulatory uncertainty."
+            "analysis_snippet": "Traders are discussing triple top reversal patterns and SPY approaching previous highs with caution ahead of the FOMC meeting."
         },
         {
-            "topic": "China Market Performance",
+            "topic": "Options Trading Activity",
             "sentiment": "Positive",
-            "analysis_snippet": "Foreign-branded phone shipments in China increased 13% year-over-year, indicating strong market performance."
+            "analysis_snippet": "Active options trading with reports of successful 0DTE SPY trades and YOLO positions showing confidence in short-term market direction."
+        },
+        {
+            "topic": "Federal Reserve Policy Concerns",
+            "sentiment": "Negative",
+            "analysis_snippet": "Investors express anxiety about upcoming Fed decisions and their potential impact on market direction and valuations."
+        },
+        {
+            "topic": "ETF Investment Strategy",
+            "sentiment": "Positive",
+            "analysis_snippet": "Continued discussion about SPY as a core holding with debates about optimal ETF selection for long-term investment portfolios."
+        },
+        {
+            "topic": "Market Valuation Concerns",
+            "sentiment": "Negative",
+            "analysis_snippet": "Some voices express concern about overvaluation and weakening market fundamentals despite recent rallies."
         }
     ],
-    "psychology": "Optimism driven by analyst upgrades and Fear Of Missing Out on AI integration potential"
+    "psychology": "Cautious optimism mixed with Fear Uncertainty and Doubt about Federal Reserve policy decisions and technical resistance levels"
 }

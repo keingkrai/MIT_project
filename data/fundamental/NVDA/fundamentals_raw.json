@@ -1,10 +1,10 @@
 {
   "symbol": "NVDA",
-  "timestamp": "2025-12-01T05:43:00.111505+00:00",
+  "timestamp": "2025-12-14T11:41:36.445379+00:00",
   "raw": {
     "yfinance": {
       "overview": {
-        "marketCap": 4301985000000.0,
+        "marketCap": 4261212044021.6064,
         "sharesOutstanding": null,
         "peRatio": null,
         "currency": "USD",
@@ -36,9 +36,9 @@
         "exchange": "NASDAQ NMS - GLOBAL MARKET",
         "sector": "Semiconductors",
         "industry": "Semiconductors",
-        "marketCap": 4301100000000000.0,
+        "marketCap": 4252985827834607.0,
         "sharesOutstanding": 24300.0,
-        "peRatio": 43.3587
+        "peRatio": 42.8737
       },
       "balancesheet": {
         "totalAssets": null,
@@ -57,20 +57,29 @@
       }
     },
     "alphavantage": {
-      "overview": {},
+      "overview": {
+        "name": "NVIDIA Corporation",
+        "currency": "USD",
+        "exchange": "NASDAQ",
+        "sector": "TECHNOLOGY",
+        "industry": "SEMICONDUCTORS",
+        "marketCap": 4261212062000.0,
+        "sharesOutstanding": 24305000000.0,
+        "peRatio": 43.32
+      },
       "balancesheet": {
-        "totalAssets": null,
-        "totalLiabilities": null,
-        "shareholderEquity": null
+        "totalAssets": 111601000000.0,
+        "totalLiabilities": 32274000000.0,
+        "shareholderEquity": 79327000000.0
       },
       "cashflow": {
-        "operatingCashFlow": null,
-        "freeCashFlow": null,
-        "capitalExpenditures": null
+        "operatingCashFlow": 64089000000.0,
+        "freeCashFlow": 60853000000.0,
+        "capitalExpenditures": 3236000000.0
       },
       "incomestatement": {
-        "totalRevenue": null,
-        "netIncome": null,
+        "totalRevenue": 130497000000.0,
+        "netIncome": 72880000000.0,
         "eps": null
       }
     }

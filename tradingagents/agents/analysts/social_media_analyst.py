@@ -12,8 +12,7 @@ from tradingagents.agents.utils.agent_utils import get_news, get_social
 # ===================== PYDANTIC MODELS ======================
 class DiscussionTopic(BaseModel):
     topic: str = Field(description="The subject.")
-    sentiment: Literal["Positive", "Negative", "Mixed"]
-    # จำกัดความยาว: Social media ชอบบ่นยาว เราต้องสั่งตัดบท
+    sentiment: Literal["Positive", "Negative", "Mixed"] = Field(description="Feel in social")
     analysis_snippet: str = Field(description="Max 1 sentence summary of the crowd's opinion.")
 
 class SocialMediaReport(BaseModel):

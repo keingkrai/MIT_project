@@ -45,8 +45,6 @@ class MarketReport(BaseModel):
     market_sentiment: MarketSentiment
     key_risks: List[str] = Field(description="List of key technical risks.")
     short_term_outlook: str = Field(description="Concise outlook statement.")
-    confidence_score: float = Field(description="Confidence score between 0.0 and 1.0.")
-
 
 # ===================== AGENT FACTORY ======================
 def create_market_analyst(llm):

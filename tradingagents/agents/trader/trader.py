@@ -105,7 +105,6 @@ def create_trader(llm, memory):
 
             # แปลง Dict กลับเป็น JSON String เพื่อเก็บลง State (ตาม Logic เดิม)
             trader_plan_content = json.dumps(parsed_result, indent=4, ensure_ascii=False)
-            print("✅ Trader: Valid JSON parsed successfully.")
 
         except Exception as e:
             print(f"⚠️ Trader: Parsing Error ({e}). Attempting fallback recovery...")

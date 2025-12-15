@@ -76,3 +76,4 @@ const percentage = Math.round(((completed / teamState.length) * 100) + (inProgre
 
 
 
+

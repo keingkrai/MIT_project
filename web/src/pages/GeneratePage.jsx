@@ -135,6 +135,7 @@ function GeneratePage() {
         ticker={ticker}
         analysisDate={analysisDate}
         reportLength={reportLength}
+        teamState={teamState}
       />
 
       <SummaryPanel ticker={ticker} analysisDate={analysisDate} recommendation={recommendation} />

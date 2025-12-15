@@ -3,27 +3,105 @@
 ===== TOTAL RECORDS CHECK =====
 YFinance:      249
 TwelveData:    249
-TradingView:   0
+TradingView:   249
 
 
 ===== SIMILARITY SCORE =====
-YFinance Score: 48
-TwelveData Score: 48
-TradingView Score: 0
+YFinance Score: 32
+TwelveData Score: 492
+TradingView Score: 496
 
-🏆 Best Source: YFINANCE
+🏆 Best Source: TRADINGVIEW
+
+📊 Indicator 'close_50_sma' Source Comparison for NVDA:
+Yahoo Finance Score: 38
+Alpha Vantage Score: 38
+TradingView Score: 38
+🏆 Best Source: YAHOO, ALPHA, TV
+
+📊 Indicator 'close_200_sma' Source Comparison for NVDA:
+Yahoo Finance Score: 19
+Alpha Vantage Score: 19
+TradingView Score: 0
+🏆 Best Source: YAHOO, ALPHA
+
+📊 Indicator 'close_10_ema' Source Comparison for NVDA:
+Yahoo Finance Score: 38
+Alpha Vantage Score: 38
+TradingView Score: 38
+🏆 Best Source: YAHOO, ALPHA, TV
+
+📊 Indicator 'macd' Source Comparison for NVDA:
+Yahoo Finance Score: 16
+Alpha Vantage Score: 0
+TradingView Score: 16
+🏆 Best Source: YAHOO, TV
+
+📊 Indicator 'macds' Source Comparison for NVDA:
+Yahoo Finance Score: 14
+Alpha Vantage Score: 0
+TradingView Score: 14
+🏆 Best Source: YAHOO, TV
+
+📊 Indicator 'macdh' Source Comparison for NVDA:
+Yahoo Finance Score: 19
+Alpha Vantage Score: 0
+TradingView Score: 19
+🏆 Best Source: YAHOO, TV
+
+📊 Indicator 'rsi' Source Comparison for NVDA:
+Yahoo Finance Score: 38
+Alpha Vantage Score: 38
+TradingView Score: 38
+🏆 Best Source: YAHOO, ALPHA, TV
+
+📊 Indicator 'boll' Source Comparison for NVDA:
+Yahoo Finance Score: 38
+Alpha Vantage Score: 38
+TradingView Score: 38
+🏆 Best Source: YAHOO, ALPHA, TV
+
+📊 Indicator 'boll_ub' Source Comparison for NVDA:
+Yahoo Finance Score: 38
+Alpha Vantage Score: 38
+TradingView Score: 38
+🏆 Best Source: YAHOO, ALPHA, TV
+
+📊 Indicator 'boll_lb' Source Comparison for NVDA:
+Yahoo Finance Score: 38
+Alpha Vantage Score: 38
+TradingView Score: 38
+🏆 Best Source: YAHOO, ALPHA, TV
+
+📊 Indicator 'atr' Source Comparison for NVDA:
+Yahoo Finance Score: 38
+Alpha Vantage Score: 38
+TradingView Score: 38
+🏆 Best Source: YAHOO, ALPHA, TV
+
+📊 Indicator 'vwma' Source Comparison for NVDA:
+Yahoo Finance Score: 19
+Alpha Vantage Score: 0
+TradingView Score: 19
+🏆 Best Source: YAHOO, TV
 
 
 🌐 Social Media News: 
-Bluesky news fetched for AAPL: 30 posts found.
-Mastodon news fetched for AAPL: 120 posts found.
-Subreddit news fetched for AAPL: 5 posts found.
+Bluesky news fetched for NVDA: 30 posts found.
+Mastodon news fetched for NVDA: 120 posts found.
+Subreddit news fetched for NVDA: 18 posts found.
 
 📰 News :
-Fetched 50 news items for AAPL from Finnhub.
-Fetched 10 news items for AAPL from YFinance.
-Fetched 50 news items for AAPL from Alpha Vantage.
+Fetched 50 news items for NVDA from Finnhub.
+Fetched 10 news items for NVDA from YFinance.
+Fetched 50 news items for NVDA from Alpha Vantage.
 
 🌏 Global News: 
 Reddit global news have : 40 posts.
-Yfinance global news have : 47 posts.
+Yfinance global news have : 48 posts.
+
+Fetched fundamentals for NVDA:
+- YFinance: 4 fields fetched
+- Finnhub: 0 fields fetched
+- AlphaVantage: 3 fields fetched
+📜 Fundamental data for NVDA. Chosen source: yfinance

@@ -1,49 +1,49 @@
 {
-    "executive_summary": "Nvidia faces mixed signals with strong Chinese demand for H200 chips offset by AI sector rotation concerns and China's $70B domestic chip push. Regulatory approval for China exports with 25% fee creates revenue opportunity but political risk.",
+    "executive_summary": "Nvidia faces renewed AI bubble concerns and tech selloff pressure following disappointing earnings from Oracle and Broadcom, though strong Chinese demand for H200 chips and potential production expansion provide fundamental support.",
     "market_sentiment_verdict": "Neutral",
     "global_macro_context": {
-        "macro_summary": "Fed leadership uncertainty with Kevin Warsh as potential chair creates policy direction questions. Rate cut momentum fading globally suggests tighter monetary conditions ahead. Geopolitical tensions in Asia and U.S.-China tech competition add market volatility. AI sector rotation from growth to value indicates investor caution about tech valuations amid economic uncertainty."
+        "macro_summary": "The Fed's recent rate cut and dovish stance have boosted market optimism for 2026, with Wall Street expecting lower rates to lift growth. However, geopolitical tensions persist with Germany-China trade concerns and terrorist attacks in Australia. Oil prices are ticking higher on improved China demand, while rate-cut momentum in developed economies appears to be fading, creating a mixed backdrop for tech investments."
     },
     "top_news_developments": [
         {
-            "headline": "Trump allows Nvidia to export H200 chips to China with 25% fee",
-            "source": "Yahoo Finance",
+            "headline": "Nvidia considers more H200 chip output on China demand, sources say",
+            "source": "Yahoo",
             "date": "2025-12-12",
             "sentiment": "Positive",
-            "implication": "Opens significant Chinese market revenue but adds regulatory and tariff complexity."
+            "implication": "Strong Chinese demand for H200 chips could drive revenue growth and justify production expansion."
         },
         {
-            "headline": "China prepares $70B chip incentives to reduce reliance on Nvidia",
-            "source": "Yahoo Finance",
-            "date": "2025-12-12",
-            "sentiment": "Negative",
-            "implication": "Long-term competitive threat as China accelerates domestic semiconductor development."
-        },
-        {
-            "headline": "Alibaba and ByteDance seek Nvidia H200 chips amid supply constraints",
-            "source": "Yahoo Finance",
-            "date": "2025-12-12",
-            "sentiment": "Positive",
-            "implication": "Strong enterprise demand validates AI chip leadership but supply chain pressures remain."
-        },
-        {
-            "headline": "Broadcom, Oracle earnings trigger AI sector selloff",
+            "headline": "Broadcom tumbles 11% despite blockbuster earnings as 'AI angst' weighs on Oracle, Nvidia",
             "source": "CNBC",
             "date": "2025-12-12",
             "sentiment": "Negative",
-            "implication": "Broader AI stock weakness creates headwinds despite Nvidia's strong fundamentals."
+            "implication": "Tech selloff spreads to Nvidia as investors question AI spending sustainability and profitability."
         },
         {
-            "headline": "Nvidia considered most undervalued AI stock ready to soar in 2026",
-            "source": "Motley Fool",
-            "date": "2025-12-14",
+            "headline": "Alibaba and ByteDance Want Nvidia New Chip. Supply Is the Next Question",
+            "source": "Yahoo",
+            "date": "2025-12-12",
             "sentiment": "Positive",
-            "implication": "Analyst optimism suggests significant upside potential despite recent sector volatility."
+            "implication": "Major Chinese tech firms seeking H200 chips indicates strong demand but supply constraints may limit near-term revenue."
+        },
+        {
+            "headline": "Investor Michael Burry Criticizes Nvidia, Warns Of Unpredictable AI Bubble Burst",
+            "source": "Benzinga",
+            "date": "2025-12-14",
+            "sentiment": "Negative",
+            "implication": "High-profile investor warnings about AI bubble could increase market volatility and sentiment pressure."
+        },
+        {
+            "headline": "Nvidia Stock Has Stalled for a Month. This Can Get It Moving Again.",
+            "source": "Yahoo",
+            "date": "2025-12-12",
+            "sentiment": "Neutral",
+            "implication": "Stock consolidation suggests investors await new catalysts like earnings or major product announcements."
         }
     ],
     "key_risks": [
-        "China's $70B domestic chip initiative threatens long-term market share in critical growth region",
-        "AI sector rotation and valuation concerns create near-term price pressure despite strong fundamentals",
-        "Regulatory uncertainty around China exports with 25% tariff adds complexity to revenue streams"
+        "AI bubble concerns intensifying following Oracle and Broadcom earnings disappointments",
+        "Geopolitical risks with China export approvals and potential US-China trade tensions",
+        "Supply chain constraints limiting ability to meet strong Chinese demand for H200 chips"
     ]
 }

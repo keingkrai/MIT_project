@@ -1,8 +1,69 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { jsPDF } from 'jspdf'
 
-function ReportPanel({ reportSections, reportView, setReportView, ticker, analysisDate, reportLength }) {
+function ReportPanel({ reportSections, reportView, setReportView, ticker, analysisDate, reportLength, teamState }) {
   const [copyButtonText, setCopyButtonText] = useState('Copy report')
+  const [outputReports, setOutputReports] = useState([])
+  const [loadingReports, setLoadingReports] = useState(false)
+
+  // Fetch reports from output folder based on reportLength
+  useEffect(() => {
+    const fetchReports = async () => {
+      setLoadingReports(true)
+      try {
+        // Determine API URL
+        const isDevelopment = import.meta.env.DEV
+        let apiUrl
+        if (window.location.protocol === 'file:' || window.location.hostname === '') {
+          apiUrl = 'http://localhost:8000'
+        } else if (isDevelopment) {
+          apiUrl = `${window.location.protocol}//${window.location.host}`
+        } else {
+          apiUrl = `${window.location.protocol}//${window.location.host}`
+        }
+
+        const response = await fetch(`${apiUrl}/api/reports?report_length=${reportLength}`)
+        if (response.ok) {
+          const data = await response.json()
+          if (data.success && data.reports) {
+            // Convert reports object to array format
+            const reportsArray = Object.entries(data.reports).map(([label, text]) => ({
+              key: label.toLowerCase().replace(/\s+/g, '_'),
+              label: label,
+              text: text
+            }))
+            setOutputReports(reportsArray)
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching reports from output:', error)
+      } finally {
+        setLoadingReports(false)
+      }
+    }
+
+    fetchReports()
+  }, [reportLength])
+
+  // Check if all teams have completed
+  const areAllTeamsCompleted = () => {
+    if (!teamState) return false
+    
+    const allTeams = [
+      teamState.analyst,
+      teamState.research,
+      teamState.trader,
+      teamState.risk,
+      teamState.portfolio,
+    ].filter(Boolean) // Filter out undefined teams
+
+    if (allTeams.length === 0) return false
+
+    return allTeams.every((team) => {
+      if (!team || team.length === 0) return true
+      return team.every((member) => member.status === 'completed')
+    })
+  }
 
   const formatInlineMarkdown = (text) => {
     return escapeHtml(text).replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
@@ -139,7 +200,8 @@ function ReportPanel({ reportSections, reportView, setReportView, ticker, analys
   }
 
   const copyReportToClipboard = async () => {
-    const fullText = reportSections.map((section) => `${section.label}\n${section.text}`).join('\n\n')
+    const reportsToUse = outputReports.length > 0 ? outputReports : reportSections
+    const fullText = reportsToUse.map((section) => `${section.label}\n${section.text}`).join('\n\n')
     if (!fullText) return
     try {
       await navigator.clipboard.writeText(fullText)
@@ -152,8 +214,24 @@ function ReportPanel({ reportSections, reportView, setReportView, ticker, analys
   }
 
   const downloadReportAsPdf = () => {
-    const fullText = reportSections.map((section) => `${section.label}\n${section.text}`).join('\n\n')
-    if (!fullText) return
+    const reportsToUse = outputReports.length > 0 ? outputReports : reportSections
+    
+    // Use reportView to determine if we should use summary or full report
+    // If reportView is 'short', use summarized version, otherwise use full
+    let reportForPdf
+    if (reportView === 'short') {
+      // Use summarized version
+      reportForPdf = reportsToUse
+        .map((section) => `${section.label}\n${summarizeSection(section.text)}`)
+        .join('\n\n')
+    } else {
+      // Use full version
+      reportForPdf = reportsToUse
+        .map((section) => `${section.label}\n${section.text}`)
+        .join('\n\n')
+    }
+    
+    if (!reportForPdf) return
 
     const doc = new jsPDF({ unit: 'pt', format: 'a4' })
     const pageWidth = doc.internal.pageSize.getWidth()
@@ -179,15 +257,8 @@ function ReportPanel({ reportSections, reportView, setReportView, ticker, analys
 
     doc.setFontSize(14)
     doc.setFont(undefined, 'bold')
-    doc.text(`Current Report (${reportLength === 'short' ? 'Short' : 'Long'} Format)`, margin, yPosition)
+    doc.text(`Current Report (${reportView === 'short' ? 'Summary Report' : 'Full Report'} Format)`, margin, yPosition)
     yPosition += 20
-
-    let reportForPdf = fullText
-    if (reportLength === 'short') {
-      reportForPdf = reportSections
-        .map((section) => `${section.label}\n${summarizeSection(section.text)}`)
-        .join('\n\n')
-    }
 
     doc.setFontSize(10)
     doc.setFont(undefined, 'normal')
@@ -243,6 +314,71 @@ function ReportPanel({ reportSections, reportView, setReportView, ticker, analys
   }
 
   const renderReportContent = () => {
+    // Use output reports if available, otherwise use WebSocket reportSections
+    const reportsToDisplay = outputReports.length > 0 ? outputReports : reportSections
+
+    if (loadingReports) {
+      return (
+        <div style={{ 
+          textAlign: 'center', 
+          padding: '40px 20px',
+          color: 'var(--text-muted)'
+        }}>
+          <p style={{ fontSize: '1.1rem' }}>
+            ⏳ Loading reports from output folder...
+          </p>
+        </div>
+      )
+    }
+
+    // If using output reports, show them directly (no need to wait for teams)
+    if (outputReports.length > 0) {
+      return reportsToDisplay.map((section, index) => {
+        const displayText = reportView === 'short' ? summarizeSection(section.text) : section.text
+        const elements = convertMarkdownToDom(displayText)
+
+        return (
+          <div key={index} className="report-block">
+            <h3>{section.label}</h3>
+            <div className="report-body">
+              {elements.map((el, idx) => {
+                if (el.type === 'list') {
+                  return (
+                    <ul key={idx} className="report-list">
+                      {el.items.map((item, itemIdx) => (
+                        <li key={itemIdx} dangerouslySetInnerHTML={{ __html: item }} />
+                      ))}
+                    </ul>
+                  )
+                } else {
+                  return <p key={idx} dangerouslySetInnerHTML={{ __html: el.text }} />
+                }
+              })}
+            </div>
+          </div>
+        )
+      })
+    }
+
+    // Fallback to WebSocket reports (original behavior)
+    // Check if all teams are completed
+    if (!areAllTeamsCompleted()) {
+      return (
+        <div style={{ 
+          textAlign: 'center', 
+          padding: '40px 20px',
+          color: 'var(--text-muted)'
+        }}>
+          <p style={{ fontSize: '1.1rem', marginBottom: '12px' }}>
+            ⏳ Waiting for all teams to complete...
+          </p>
+          <p style={{ fontSize: '0.9rem' }}>
+            The report will be displayed once all teams finish their analysis.
+          </p>
+        </div>
+      )
+    }
+
     if (reportSections.length === 0) {
       return <p>Run the pipeline to load the latest markdown report.</p>
     }
@@ -282,18 +418,20 @@ function ReportPanel({ reportSections, reportView, setReportView, ticker, analys
           <small>Live updates from TradingAgents graph</small>
         </div>
         <div className="report-actions">
-          <button
-            className={`report-view-btn ${reportView === 'short' ? 'active' : ''}`}
-            onClick={() => setReportView('short')}
-          >
-            Short
-          </button>
-          <button
-            className={`report-view-btn ${reportView === 'long' ? 'active' : ''}`}
-            onClick={() => setReportView('long')}
-          >
-            Long
-          </button>
+          <div className="report-view-toggle">
+            <button
+              className={`report-view-btn ${reportView === 'short' ? 'active' : ''}`}
+              onClick={() => setReportView('short')}
+            >
+              Summary Report
+            </button>
+            <button
+              className={`report-view-btn ${reportView === 'long' ? 'active' : ''}`}
+              onClick={() => setReportView('long')}
+            >
+              Full Report
+            </button>
+          </div>
           <button onClick={copyReportToClipboard}>{copyButtonText}</button>
           <button className="ghost" onClick={downloadReportAsPdf}>
             Download PDF

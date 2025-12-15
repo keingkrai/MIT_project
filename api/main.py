@@ -109,8 +109,8 @@ def sent_to_telegram(message: str):
 
 
 
-async def send_update(websocket: WebSocket, update_type: str, data: Dict[str, Any], stop_event: asyncio.Event = None):
-    """Send an update to the WebSocket client."""
+async def send_update(websocket: WebSocket, update_type: str, data: Dict[str, Any], stop_event: asyncio.Event = None, retry_count: int = 0):
+    """Send an update to the WebSocket client with retry mechanism."""
     # Check if stop was requested
     if stop_event and stop_event.is_set():
         return False
@@ -119,29 +119,38 @@ async def send_update(websocket: WebSocket, update_type: str, data: Dict[str, An
     try:
         if websocket.client_state.name != "CONNECTED":
             return False
-    except:
+    except Exception as e:
+        logger.debug(f"WebSocket state check failed: {e}")
         return False
     
-    try:
-        await websocket.send_json({
-            "type": update_type,
-            "data": data,
-            "timestamp": datetime.datetime.now().isoformat()
-        })
-        return True
-    except (RuntimeError, ConnectionError, WebSocketDisconnect) as e:
-        # Connection is closed, ignore silently
-        return False
-    except Exception as e:
-        # Check if it's a connection-related error
-        error_msg = str(e).lower()
-        # Ignore errors about closed connections or sending to closed sockets
-        if "close" in error_msg or "send" in error_msg or "cannot call" in error_msg:
-            return False  # Connection closed
-        else:
-            # Log other unexpected errors
-            logger.warning(f"Error sending update: {e}")
+    max_retries = 2
+    for attempt in range(max_retries + 1):
+        try:
+            await websocket.send_json({
+                "type": update_type,
+                "data": data,
+                "timestamp": datetime.datetime.now().isoformat()
+            })
+            return True
+        except (RuntimeError, ConnectionError, WebSocketDisconnect) as e:
+            # Connection is closed, don't retry
+            logger.debug(f"WebSocket connection closed: {e}")
             return False
+        except Exception as e:
+            error_msg = str(e).lower()
+            # Check if it's a connection-related error
+            if "close" in error_msg or "send" in error_msg or "cannot call" in error_msg or "connection" in error_msg:
+                return False  # Connection closed, don't retry
+            else:
+                # Log other unexpected errors and retry if not last attempt
+                if attempt < max_retries:
+                    logger.warning(f"Error sending update (attempt {attempt + 1}/{max_retries + 1}): {e}, retrying...")
+                    await asyncio.sleep(0.1 * (attempt + 1))  # Exponential backoff
+                    continue
+                else:
+                    logger.error(f"Error sending update after {max_retries + 1} attempts: {e}")
+                    return False
+    return False
 
 
 async def run_analysis_stream(websocket: WebSocket, request: AnalysisRequest, stop_event: asyncio.Event = None):
@@ -269,14 +278,20 @@ async def run_analysis_stream(websocket: WebSocket, request: AnalysisRequest, st
         
         # Stream with enhanced rate limiting
         try:
-            for chunk in graph.graph.stream(init_agent_state, **args):
+            stream = graph.graph.stream(init_agent_state, **args)
+            chunk_count = 0
+            for chunk in stream:
+                chunk_count += 1
                 # Check if stop was requested or WebSocket disconnected
                 if not should_continue():
                     logger.info("Analysis stopped: stop requested or WebSocket disconnected")
-                    await send_update_safe("status", {
-                        "message": "Analysis stopped by user",
-                        "agents": agent_status
-                    })
+                    try:
+                        await send_update_safe("status", {
+                            "message": "Analysis stopped by user",
+                            "agents": agent_status
+                        })
+                    except:
+                        pass
                     break
                 
                 # Rate limiting: Add delay between chunks to avoid ResourceExhausted errors
@@ -969,10 +984,21 @@ async def run_analysis_stream(websocket: WebSocket, request: AnalysisRequest, st
             print(f"❌ Failed to summarize: {e}")
 
     except Exception as e:
-        await send_update(websocket, "error", {
-            "message": str(e)
-        })
-        raise
+        error_message = str(e)
+        logger.error(f"Critical error in run_analysis_stream: {error_message}", exc_info=True)
+        
+        # Try to send error message to client before raising
+        try:
+            await send_update_safe("error", {
+                "message": f"Analysis failed: {error_message}",
+                "error_type": type(e).__name__
+            })
+        except:
+            pass  # If we can't send, continue anyway
+        
+        # Don't raise - let the error be handled by the caller
+        # This prevents the WebSocket from closing unexpectedly
+        logger.error(f"Analysis stream ended with error: {error_message}")
 
 
 # Create FastAPI app
@@ -1150,7 +1176,17 @@ async def websocket_endpoint(websocket: WebSocket):
                     logger.info("Analysis task was cancelled")
                 except Exception as e:
                     if not stop_event.is_set():
-                        logger.error(f"Analysis task error: {e}")
+                        error_msg = str(e)
+                        logger.error(f"Analysis task error: {error_msg}", exc_info=True)
+                        # Try to send error to client
+                        try:
+                            if websocket.client_state.name == "CONNECTED":
+                                await send_update(websocket, "error", {
+                                    "message": f"Analysis failed: {error_msg}",
+                                    "error_type": type(e).__name__
+                                })
+                        except:
+                            pass  # If we can't send, continue
                 
             elif data.get("action") == "stop_analysis":
                 logger.info("Stop analysis requested by client - stopping all processes")
@@ -1202,7 +1238,8 @@ async def websocket_endpoint(websocket: WebSocket):
         logger.info("All processes stopped and connection cleaned up")
         
     except Exception as e:
-        logger.error(f"WebSocket error: {e}")
+        error_msg = str(e)
+        logger.error(f"WebSocket error: {error_msg}", exc_info=True)
         stop_event.set()  # Stop any running analysis immediately
         
         # Cancel analysis task immediately
@@ -1213,6 +1250,20 @@ async def websocket_endpoint(websocket: WebSocket):
                 await asyncio.wait_for(analysis_task, timeout=0.5)
             except (asyncio.CancelledError, asyncio.TimeoutError):
                 pass
+        
+        # Try to send error message to client before closing
+        try:
+            if websocket.client_state.name == "CONNECTED":
+                await websocket.send_json({
+                    "type": "error",
+                    "data": {
+                        "message": f"WebSocket error: {error_msg}",
+                        "error_type": type(e).__name__
+                    },
+                    "timestamp": datetime.datetime.now().isoformat()
+                })
+        except:
+            pass  # If we can't send, continue with cleanup
         
         if websocket in active_connections:
             active_connections.remove(websocket)
@@ -1240,6 +1291,109 @@ async def health_check():
             "legacy": "/legacy"
         }
     }
+
+
+@app.get("/api/reports", tags=["Reports"], summary="Get Reports from Output", description="Get reports from output folder based on report length")
+async def get_reports(report_length: str = "long"):
+    """
+    Get reports from output folder.
+    
+    Args:
+        report_length: "short" for summary reports (sum folder) or "long" for full reports (full folder)
+        ticker: Optional ticker symbol to filter reports
+    
+    Returns:
+        Dictionary containing all report sections
+    """
+    output_dir = PROJECT_ROOT / "output"
+    reports = {}
+    
+    try:
+        if report_length == "short":
+            # Get summary reports from output/sum/
+            sum_dir = output_dir / "sum"
+            if sum_dir.exists():
+                # Map of file names to report labels
+                file_mapping = {
+                    "sum_market.txt": "Market Analysis",
+                    "sum_news.txt": "News Analysis",
+                    "sum_social.txt": "Social Sentiment",
+                    "sum_funda.txt": "Fundamentals Review",
+                    "sum_bull.txt": "Bull Research",
+                    "sum_bear.txt": "Bear Research",
+                    "sum_aggressive.txt": "Aggressive View",
+                    "sum_conservative.txt": "Conservative View",
+                    "sum_neutral.txt": "Neutral View",
+                    "sum_trader.txt": "Trader Investment Plan",
+                    "sum_investment_plan.txt": "Investment Plan",
+                    "sum_final_decision.txt": "Portfolio Management Decision"
+                }
+                
+                for filename, label in file_mapping.items():
+                    file_path = sum_dir / filename
+                    if file_path.exists():
+                        try:
+                            with open(file_path, 'r', encoding='utf-8') as f:
+                                content = f.read().strip()
+                                if content:
+                                    reports[label] = content
+                        except Exception as e:
+                            logger.warning(f"Error reading {filename}: {e}")
+        else:
+            # Get full reports from output/full/
+            full_dir = output_dir / "full"
+            if full_dir.exists():
+                # Map of file names to report labels
+                file_mapping = {
+                    "full_market.json": "Market Analysis",
+                    "full_news.json": "News Analysis",
+                    "full_social.json": "Social Sentiment",
+                    "full_funda.json": "Fundamentals Review",
+                    "full_bull.json": "Bull Research",
+                    "full_bear.json": "Bear Research",
+                    "full_aggressive.json": "Aggressive View",
+                    "full_conservative.json": "Conservative View",
+                    "full_neutral.json": "Neutral View",
+                    "full_trader.json": "Trader Investment Plan",
+                    "investment_plan.txt": "Investment Plan",
+                    "final_decision.json": "Portfolio Management Decision"
+                }
+                
+                for filename, label in file_mapping.items():
+                    file_path = full_dir / filename
+                    if file_path.exists():
+                        try:
+                            if filename.endswith('.json'):
+                                with open(file_path, 'r', encoding='utf-8') as f:
+                                    data = json.load(f)
+                                    # Format JSON data as readable text
+                                    if isinstance(data, dict):
+                                        content_parts = []
+                                        for key, value in data.items():
+                                            if isinstance(value, str):
+                                                content_parts.append(f"**{key.replace('_', ' ').title()}:**\n{value}")
+                                            else:
+                                                content_parts.append(f"**{key.replace('_', ' ').title()}:**\n{json.dumps(value, indent=2, ensure_ascii=False)}")
+                                        reports[label] = "\n\n".join(content_parts)
+                                    else:
+                                        reports[label] = json.dumps(data, indent=2, ensure_ascii=False)
+                            else:
+                                with open(file_path, 'r', encoding='utf-8') as f:
+                                    content = f.read().strip()
+                                    if content:
+                                        reports[label] = content
+                        except Exception as e:
+                            logger.warning(f"Error reading {filename}: {e}")
+        
+        return {
+            "success": True,
+            "report_length": report_length,
+            "reports": reports,
+            "count": len(reports)
+        }
+    except Exception as e:
+        logger.error(f"Error getting reports: {e}")
+        raise HTTPException(status_code=500, detail=f"Error reading reports: {str(e)}")
 
 
 @app.get("/api/test", tags=["System"], summary="Test Endpoint", description="Test endpoint to verify API and imports are working correctly")

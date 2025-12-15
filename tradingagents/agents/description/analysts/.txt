@@ -37,7 +37,6 @@ PART 2: SOCIAL & PSYCHOLOGY (วิเคราะห์กระแสสัง
     [analysis_snippet] : สรุปความเห็นมวลชนแบบสั้น
 
 2.2 CLASS: SocialMediaReport (รายงานจิตวิทยา)
-    [sentiment_score]    : คะแนนความบ้าคลั่ง (0-100 Fear-Greed)
     [sentiment_verdict]  : คำตัดสิน (เน้น Euphoria/Panic)
     [social_volume]      : ปริมาณการพูดถึง (เยอะผิดปกติไหม)
     [dominant_narrative] : "สตอรี่" ที่รายย่อยกำลังเชื่อฝังหัว

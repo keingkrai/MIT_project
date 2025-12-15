@@ -9,18 +9,18 @@ class PlanValidation(BaseModel):
     agreement_status: str = Field(description="Agree / Disagree / Partial Agreement")
     validation_notes: str = Field(description="Why you agree or disagree based on raw intelligence.")
 
-class ExecutionDetails(BaseModel):
-    order_type: str = Field(description="Order Type e.g., Market / Limit")
-    position_size_strategy: str = Field(description="e.g., 5 percent of portfolio due to high volatility.")
-    entry_price_target: str = Field(description="Specific price or 'Current Market Price'")
-    stop_loss_level: str = Field(description="Specific price level")
-    take_profit_target: str = Field(description="Specific price level")
+# class ExecutionDetails(BaseModel):
+#     order_type: str = Field(description="Order Type e.g., Market / Limit")
+#     position_size_strategy: str = Field(description="e.g., 5 percent of portfolio due to high volatility.")
+#     entry_price_target: str = Field(description="Specific price or 'Current Market Price'")
+#     stop_loss_level: str = Field(description="Specific price level")
+#     take_profit_target: str = Field(description="Specific price level")
 
 class TraderDecision(BaseModel):
     plan_validation: PlanValidation
     memory_application: str = Field(description="Specific lesson applied from past reflections to this trade.")
     final_decision_signal: str = Field(description="BUY / SELL / HOLD")
-    execution_details: ExecutionDetails
+    # execution_details: ExecutionDetails
     trader_commentary: str = Field(description="Final remarks or warnings for the Risk Manager.")
 
 # --- Function หลัก ---

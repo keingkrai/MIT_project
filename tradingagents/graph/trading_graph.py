@@ -125,6 +125,9 @@ class TradingAgentsGraph:
         elif self.config["llm_provider"].lower() == "deepseek":
             self.deep_thinking_llm = ChatOpenAI(model=self.config["deep_think_llm"], base_url=self.config["backend_url"],  api_key=os.getenv("DEEPSEEK_API_KEY"))
             self.quick_thinking_llm = ChatOpenAI(model=self.config["quick_think_llm"], base_url=self.config["backend_url"],  api_key=os.getenv("DEEPSEEK_API_KEY"))
+        elif self.config["llm_provider"].lower() == "google":
+            self.deep_thinking_llm = ChatGoogleGenerativeAI(model=self.config["deep_think_llm"])
+            self.quick_thinking_llm = ChatGoogleGenerativeAI(model=self.config["quick_think_llm"])
         else:
             raise ValueError(f"Unsupported LLM provider: {self.config['llm_provider']}")
         

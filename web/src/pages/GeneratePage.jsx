@@ -31,7 +31,7 @@ function GeneratePage() {
 
   return (
     <div className="page-content">
-      <header className="main-header flex-shrink-0">
+      <header className="main-header">
         <div>
           <p className="eyebrow">Trading workflow</p>
           <h1>Generate</h1>
@@ -87,14 +87,14 @@ function GeneratePage() {
                 className={`report-length-option ${reportLength === 'short' ? 'active' : ''}`}
                 onClick={() => setReportLength('short')}
               >
-                <strong>Short</strong>
-                <span>Concise summary with key points</span>
+                <strong>Summary Report</strong>
+                <span>Concise summary with key point</span>
               </button>
               <button
                 className={`report-length-option ${reportLength === 'long' ? 'active' : ''}`}
                 onClick={() => setReportLength('long')}
               >
-                <strong>Long</strong>
+                <strong>Full Report</strong>
                 <span>Comprehensive detailed analysis</span>
               </button>
             </div>

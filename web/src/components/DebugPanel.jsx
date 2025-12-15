@@ -30,10 +30,11 @@ function DebugPanel() {
   const researchProgress = calculateTeamProgress(teamState.research)
   const traderProgress = calculateTeamProgress(teamState.trader)
   const riskProgress = calculateTeamProgress(teamState.risk)
+  const portfolioProgress = calculateTeamProgress(teamState.portfolio)
 
-  const totalAgents = analystProgress.total + researchProgress.total + traderProgress.total + riskProgress.total
-  const totalCompleted = analystProgress.completed + researchProgress.completed + traderProgress.completed + riskProgress.completed
-  const totalInProgress = analystProgress.inProgress + researchProgress.inProgress + traderProgress.inProgress + riskProgress.inProgress
+  const totalAgents = analystProgress.total + researchProgress.total + traderProgress.total + riskProgress.total + portfolioProgress.total
+  const totalCompleted = analystProgress.completed + researchProgress.completed + traderProgress.completed + riskProgress.completed + portfolioProgress.completed
+  const totalInProgress = analystProgress.inProgress + researchProgress.inProgress + traderProgress.inProgress + riskProgress.inProgress + portfolioProgress.inProgress
   const overallProgress = Math.round((totalCompleted / totalAgents) * 100)
 
   return (
@@ -136,12 +137,22 @@ function DebugPanel() {
               </div>
             </div>
             <div className="debug-item">
-              <div className="debug-label">Risk & Portfolio</div>
+              <div className="debug-label">Risk Team</div>
               <div className="debug-value">
                 {riskProgress.percentage}% ({riskProgress.completed}/{riskProgress.total})
                 <br />
                 <small style={{ color: 'var(--text-muted)', fontSize: '0.75rem' }}>
                   {riskProgress.inProgress} in progress, {riskProgress.pending} pending
+                </small>
+              </div>
+            </div>
+            <div className="debug-item">
+              <div className="debug-label">Portfolio Team</div>
+              <div className="debug-value">
+                {portfolioProgress.percentage}% ({portfolioProgress.completed}/{portfolioProgress.total})
+                <br />
+                <small style={{ color: 'var(--text-muted)', fontSize: '0.75rem' }}>
+                  {portfolioProgress.inProgress} in progress, {portfolioProgress.pending} pending
                 </small>
               </div>
             </div>

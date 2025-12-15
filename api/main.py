@@ -169,14 +169,14 @@ async def run_analysis_stream(websocket: WebSocket, request: AnalysisRequest, st
     try:
         # Create config
         config = DEFAULT_CONFIG.copy()
-        config["max_debate_rounds"] = request.research_depth
-        config["max_risk_discuss_rounds"] = request.research_depth
+        #config["max_debate_rounds"] = request.research_depth
+        #config["max_risk_discuss_rounds"] = request.research_depth
         
         # Hardcoded to use DeepSeek AI - override any frontend requests
-        config["quick_think_llm"] = "deepseek-chat"  # Hardcoded DeepSeek Chat
-        config["deep_think_llm"] = "deepseek-reasoner"  # Hardcoded DeepSeek Reasoner
-        config["backend_url"] = "https://api.deepseek.com/v1"  # Hardcoded DeepSeek API endpoint
-        config["llm_provider"] = "deepseek"  # Hardcoded DeepSeek provider
+        #config["quick_think_llm"] = "deepseek-chat"  # Hardcoded DeepSeek Chat
+        #config["deep_think_llm"] = "deepseek-reasoner"  # Hardcoded DeepSeek Reasoner
+        #config["backend_url"] = "https://api.deepseek.com/v1"  # Hardcoded DeepSeek API endpoint
+        #config["llm_provider"] = "deepseek"  # Hardcoded DeepSeek provider
         
         # Log the models being used
         logger.info(f"Using models - Quick: {config['quick_think_llm']}, Deep: {config['deep_think_llm']}")

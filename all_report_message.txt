@@ -1,145 +1,32 @@
 🏷️ Stock Data Source Comparison Result:
 
 ===== TOTAL RECORDS CHECK =====
-YFinance:      250
-TwelveData:    250
-TradingView:   250
+YFinance:      249
+TwelveData:    249
+TradingView:   249
 
 
 ===== SIMILARITY SCORE =====
-YFinance Score: 16
-TwelveData Score: 487
-TradingView Score: 487
+YFinance Score: 32
+TwelveData Score: 492
+TradingView Score: 496
 
-🏆 Best Source: TWELVEDATA
+🏆 Best Source: TRADINGVIEW
 
-📊 Indicator 'macd' Source Comparison for GOOGL:
-Yahoo Finance Score: 21
-Alpha Vantage Score: 0
-TradingView Score: 21
-🏆 Best Source: YAHOO, TV
-
-📊 Indicator 'boll' Source Comparison for GOOGL:
-Yahoo Finance Score: 42
-Alpha Vantage Score: 42
-TradingView Score: 42
-🏆 Best Source: YAHOO, ALPHA, TV
-
-📊 Indicator 'atr' Source Comparison for GOOGL:
-Yahoo Finance Score: 42
-Alpha Vantage Score: 42
-TradingView Score: 42
-🏆 Best Source: YAHOO, ALPHA, TV
-
-📊 Indicator 'close_50_sma' Source Comparison for GOOGL:
-Yahoo Finance Score: 42
-Alpha Vantage Score: 42
-TradingView Score: 42
-🏆 Best Source: YAHOO, ALPHA, TV
-
-📊 Indicator 'close_10_ema' Source Comparison for GOOGL:
-Yahoo Finance Score: 42
-Alpha Vantage Score: 42
-TradingView Score: 42
-🏆 Best Source: YAHOO, ALPHA, TV
-
-📊 Indicator 'close_200_sma' Source Comparison for GOOGL:
-Yahoo Finance Score: 21
-Alpha Vantage Score: 21
-TradingView Score: 0
-🏆 Best Source: YAHOO, ALPHA
-
-
-🌐 Social Media News: 
-Bluesky news fetched for GOOGL: 29 posts found.
-Mastodon news fetched for GOOGL: 120 posts found.
-Subreddit news fetched for GOOGL: 75 posts found.
-
-📊 Indicator 'close_10_ema' Source Comparison for GOOGL:
-Yahoo Finance Score: 21
-Alpha Vantage Score: 21
-TradingView Score: 0
-🏆 Best Source: YAHOO, ALPHA
+Mastodon news fetched for NVDA: 120 posts found.
+Subreddit news fetched for NVDA: 18 posts found.
 
 📰 News :
-Fetched 50 news items for GOOGL from Finnhub.
-Fetched 10 news items for GOOGL from YFinance.
-Fetched 50 news items for GOOGL from Alpha Vantage.
+Fetched 50 news items for NVDA from Finnhub.
 
 🌏 Global News: 
 Reddit global news have : 40 posts.
 Yfinance global news have : 47 posts.
-📊 Indicator 'macd' Source Comparison for GOOGL:
-Yahoo Finance Score: 21
-Alpha Vantage Score: 0
-TradingView Score: 21
-🏆 Best Source: YAHOO, TV
+Fetched 10 news items for NVDA from YFinance.
+Fetched 50 news items for NVDA from Alpha Vantage.
 
-
-Fetched fundamentals for GOOGL:
+Fetched fundamentals for NVDA:
 - YFinance: 4 fields fetched
 - Finnhub: 0 fields fetched
 - AlphaVantage: 3 fields fetched
-📜 Fundamental data for GOOGL. Chosen source: yfinance
-📊 Indicator 'macds' Source Comparison for GOOGL:
-Yahoo Finance Score: 21
-Alpha Vantage Score: 0
-TradingView Score: 21
-🏆 Best Source: YAHOO, TV
-
-📊 Indicator 'macdh' Source Comparison for GOOGL:
-Yahoo Finance Score: 12
-Alpha Vantage Score: 0
-TradingView Score: 12
-🏆 Best Source: YAHOO, TV
-
-📊 Indicator 'rsi' Source Comparison for GOOGL:
-Yahoo Finance Score: 42
-Alpha Vantage Score: 42
-TradingView Score: 42
-🏆 Best Source: YAHOO, ALPHA, TV
-
-📊 Indicator 'boll' Source Comparison for GOOGL:
-Yahoo Finance Score: 42
-Alpha Vantage Score: 42
-TradingView Score: 42
-🏆 Best Source: YAHOO, ALPHA, TV
-
-📊 Indicator 'boll_ub' Source Comparison for GOOGL:
-Yahoo Finance Score: 42
-Alpha Vantage Score: 42
-TradingView Score: 42
-🏆 Best Source: YAHOO, ALPHA, TV
-
-📊 Indicator 'boll_lb' Source Comparison for GOOGL:
-Yahoo Finance Score: 42
-Alpha Vantage Score: 42
-TradingView Score: 42
-🏆 Best Source: YAHOO, ALPHA, TV
-
-📊 Indicator 'atr' Source Comparison for GOOGL:
-Yahoo Finance Score: 42
-Alpha Vantage Score: 42
-TradingView Score: 42
-🏆 Best Source: YAHOO, ALPHA, TV
-
-📊 Indicator 'vwma' Source Comparison for GOOGL:
-Yahoo Finance Score: 21
-Alpha Vantage Score: 0
-TradingView Score: 21
-🏆 Best Source: YAHOO, TV
-
-
-🌐 Social Media News: 
-Bluesky news fetched for GOOGL: 30 posts found.
-Mastodon news fetched for GOOGL: 120 posts found.
-Subreddit news fetched for GOOGL: 75 posts found.
-
-📰 News :
-Fetched 50 news items for GOOGL from Finnhub.
-Fetched 10 news items for GOOGL from YFinance.
-Fetched 50 news items for GOOGL from Alpha Vantage.
-
-🌏 Global News: 
-Reddit global news have : 40 posts.
-Yfinance global news have : 47 posts.
+📜 Fundamental data for NVDA. Chosen source: yfinance

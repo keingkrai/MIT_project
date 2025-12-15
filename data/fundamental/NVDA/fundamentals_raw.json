@@ -1,18 +1,10 @@
 {
   "symbol": "NVDA",
-<<<<<<< HEAD
-  "timestamp": "2025-12-09T04:35:37.959659+00:00",
+  "timestamp": "2025-12-15T03:45:02.247029+00:00",
   "raw": {
     "yfinance": {
       "overview": {
-        "marketCap": 4517585924301.147,
-=======
-  "timestamp": "2025-12-01T05:43:00.111505+00:00",
-  "raw": {
-    "yfinance": {
-      "overview": {
-        "marketCap": 4301985000000.0,
->>>>>>> tang
+        "marketCap": 4261212044021.6064,
         "sharesOutstanding": null,
         "peRatio": null,
         "currency": "USD",
@@ -38,66 +30,35 @@
       }
     },
     "finnhub": {
-      "overview": {
-        "name": "NVIDIA Corp",
-        "currency": "USD",
-        "exchange": "NASDAQ NMS - GLOBAL MARKET",
-        "sector": "Semiconductors",
-        "industry": "Semiconductors",
-<<<<<<< HEAD
-        "marketCap": 4508865090520854.0,
-        "sharesOutstanding": 24300.0,
-        "peRatio": 44.684
-=======
-        "marketCap": 4301100000000000.0,
-        "sharesOutstanding": 24300.0,
-        "peRatio": 43.3587
->>>>>>> tang
-      },
-      "balancesheet": {
-        "totalAssets": null,
-        "totalLiabilities": null,
-        "shareholderEquity": null
-      },
-      "cashflow": {
-        "operatingCashFlow": null,
-        "freeCashFlow": null,
-        "capitalExpenditures": null
-      },
-      "incomestatement": {
-        "totalRevenue": null,
-        "netIncome": null,
-        "eps": null
-      }
+      "overview": {},
+      "balancesheet": {},
+      "cashflow": {},
+      "incomestatement": {}
     },
     "alphavantage": {
-<<<<<<< HEAD
       "overview": {
         "name": "NVIDIA Corporation",
         "currency": "USD",
         "exchange": "NASDAQ",
         "sector": "TECHNOLOGY",
         "industry": "SEMICONDUCTORS",
-        "marketCap": 4441136693000.0,
+        "marketCap": 4261212062000.0,
         "sharesOutstanding": 24305000000.0,
-        "peRatio": 45.26
+        "peRatio": 43.32
       },
-=======
-      "overview": {},
->>>>>>> tang
       "balancesheet": {
         "totalAssets": null,
         "totalLiabilities": null,
         "shareholderEquity": null
       },
       "cashflow": {
-        "operatingCashFlow": null,
-        "freeCashFlow": null,
-        "capitalExpenditures": null
+        "operatingCashFlow": 64089000000.0,
+        "freeCashFlow": 60853000000.0,
+        "capitalExpenditures": 3236000000.0
       },
       "incomestatement": {
-        "totalRevenue": null,
-        "netIncome": null,
+        "totalRevenue": 130497000000.0,
+        "netIncome": 72880000000.0,
         "eps": null
       }
     }

@@ -2,38 +2,26 @@
   "symbol": "NVDA",
   "chosen_source": "yfinance",
   "scores": {
-<<<<<<< HEAD
-    "yfinance": 13,
-    "finnhub": 5,
-    "alphavantage": 14
-=======
-    "yfinance": 3,
-    "finnhub": 3,
-    "alphavantage": 0
->>>>>>> tang
+    "yfinance": 9,
+    "finnhub": 0,
+    "alphavantage": 9
   },
   "completeness": {
     "yfinance": 13,
-    "finnhub": 8,
-    "alphavantage": 0
+    "finnhub": 0,
+    "alphavantage": 13
   },
   "sections": {
     "overview": {
       "scores": {
-<<<<<<< HEAD
-        "yfinance": 6,
-        "finnhub": 5,
-        "alphavantage": 7
-=======
-        "yfinance": 3,
-        "finnhub": 3,
-        "alphavantage": 0
->>>>>>> tang
+        "yfinance": 5,
+        "finnhub": 0,
+        "alphavantage": 5
       },
       "completeness": {
         "yfinance": 6,
-        "finnhub": 8,
-        "alphavantage": 0
+        "finnhub": 0,
+        "alphavantage": 8
       }
     },
     "balancesheet": {
@@ -50,48 +38,39 @@
     },
     "cashflow": {
       "scores": {
-        "yfinance": 0,
+        "yfinance": 2,
         "finnhub": 0,
-        "alphavantage": 0
+        "alphavantage": 2
       },
       "completeness": {
         "yfinance": 2,
         "finnhub": 0,
-        "alphavantage": 0
+        "alphavantage": 3
       }
     },
     "incomestatement": {
       "scores": {
-        "yfinance": 0,
+        "yfinance": 2,
         "finnhub": 0,
-        "alphavantage": 0
+        "alphavantage": 2
       },
       "completeness": {
         "yfinance": 2,
         "finnhub": 0,
-        "alphavantage": 0
+        "alphavantage": 2
       }
     }
   },
   "final_payload": {
     "overview": {
-      "marketCap": 4301985000000.0,
+      "marketCap": 4261212044021.6064,
       "sharesOutstanding": null,
       "peRatio": null,
       "currency": "USD",
-<<<<<<< HEAD
-      "exchange": "NASDAQ",
-      "sector": "TECHNOLOGY",
-      "industry": "SEMICONDUCTORS",
-      "marketCap": 4441136693000.0,
-      "sharesOutstanding": 24305000000.0,
-      "peRatio": 45.26
-=======
       "exchange": "NMS",
       "name": "NVIDIA Corporation",
       "sector": "Technology",
       "industry": "Semiconductors"
->>>>>>> tang
     },
     "balancesheet": {
       "totalAssets": 111601000000.0,
@@ -109,9 +88,5 @@
       "eps": null
     }
   },
-<<<<<<< HEAD
-  "timestamp": "2025-12-09T04:35:37.959659+00:00"
-=======
-  "timestamp": "2025-12-01T05:43:00.111505+00:00"
->>>>>>> tang
+  "timestamp": "2025-12-15T03:45:02.247029+00:00"
 }

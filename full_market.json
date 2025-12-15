@@ -1,6 +1,6 @@
 {
-    "ticker": "GOOGL",
-    "date": "2025-12-12",
+    "ticker": "NVDA",
+    "date": "2025-12-14",
     "selected_indicators": [
         "close_50_sma",
         "close_200_sma",
@@ -16,109 +16,109 @@
         "vwma"
     ],
     "market_overview": {
-        "trend_direction": "Bullish",
-        "momentum_state": "Strong",
-        "volatility_level": "Moderate",
+        "trend_direction": "Bearish",
+        "momentum_state": "Weak",
+        "volatility_level": "High",
         "volume_condition": "Neutral"
     },
     "indicator_analysis": [
         {
             "indicator": "close_50_sma",
             "indicator_full_name": "50-day Simple Moving Average",
-            "signal": "Price at $312.43 is above 50 SMA at $280.22, indicating strong medium-term uptrend",
-            "implication": "Bullish trend confirmation with potential support at $280 level"
+            "signal": "Price below 50-day SMA indicating short-term bearish trend",
+            "implication": "Short-term selling pressure and potential further downside"
         },
         {
             "indicator": "close_200_sma",
             "indicator_full_name": "200-day Simple Moving Average",
-            "signal": "Price significantly above 200 SMA at $207.84, showing long-term bullish structure",
-            "implication": "Major uptrend intact with substantial distance from long-term average"
+            "signal": "Price below 200-day SMA indicating long-term bearish trend",
+            "implication": "Long-term trend reversal to bearish territory"
         },
         {
             "indicator": "close_10_ema",
             "indicator_full_name": "10-day Exponential Moving Average",
-            "signal": "Price at $312.43 is near 10 EMA at $314.80, showing short-term consolidation",
-            "implication": "Short-term momentum stabilizing after recent advance"
+            "signal": "Price below 10-day EMA showing immediate bearish momentum",
+            "implication": "Strong selling pressure in recent sessions"
         },
         {
             "indicator": "macd",
             "indicator_full_name": "Moving Average Convergence Divergence",
-            "signal": "MACD at 11.04 remains positive but declining from recent highs",
-            "implication": "Bullish momentum slowing, potential consolidation phase"
-        },
-        {
-            "indicator": "rsi",
-            "indicator_full_name": "Relative Strength Index",
-            "signal": "RSI at 58.51 in neutral territory, not overbought",
-            "implication": "Room for further upside without immediate overbought concerns"
-        },
-        {
-            "indicator": "boll",
-            "indicator_full_name": "Bollinger Bands Middle",
-            "signal": "Price above Bollinger middle band at $306.89",
-            "implication": "Bullish positioning within volatility bands"
-        },
-        {
-            "indicator": "atr",
-            "indicator_full_name": "Average True Range",
-            "signal": "ATR at 9.23 indicates moderate volatility",
-            "implication": "Normal volatility environment for position sizing"
-        },
-        {
-            "indicator": "vwma",
-            "indicator_full_name": "Volume Weighted Moving Average",
-            "signal": "Data not available, inferred from price-volume relationship",
-            "implication": "Price action supported by volume trends"
+            "signal": "MACD below signal line and negative histogram",
+            "implication": "Bearish momentum accelerating"
         },
         {
             "indicator": "macds",
             "indicator_full_name": "MACD Signal Line",
-            "signal": "Signal line data not available, inferred from MACD trend",
-            "implication": "Momentum analysis based on MACD direction"
+            "signal": "Signal line above MACD line",
+            "implication": "Confirmation of bearish trend"
         },
         {
             "indicator": "macdh",
             "indicator_full_name": "MACD Histogram",
-            "signal": "Histogram data not available, inferred from MACD values",
-            "implication": "Momentum strength assessment based on MACD levels"
+            "signal": "Negative histogram expanding",
+            "implication": "Bearish momentum strengthening"
+        },
+        {
+            "indicator": "rsi",
+            "indicator_full_name": "Relative Strength Index",
+            "signal": "RSI below 40 indicating oversold conditions",
+            "implication": "Potential for short-term bounce but overall bearish"
+        },
+        {
+            "indicator": "boll",
+            "indicator_full_name": "Bollinger Bands Middle Band",
+            "signal": "Price below middle band",
+            "implication": "Bearish price action with downside pressure"
         },
         {
             "indicator": "boll_ub",
-            "indicator_full_name": "Bollinger Bands Upper",
-            "signal": "Upper band data not available, inferred from middle band",
-            "implication": "Resistance levels based on volatility expansion"
+            "indicator_full_name": "Bollinger Bands Upper Band",
+            "signal": "Price far from upper band",
+            "implication": "No immediate resistance from upper band"
         },
         {
             "indicator": "boll_lb",
-            "indicator_full_name": "Bollinger Bands Lower",
-            "signal": "Lower band data not available, inferred from middle band",
-            "implication": "Support levels based on volatility contraction"
+            "indicator_full_name": "Bollinger Bands Lower Band",
+            "signal": "Price approaching lower band",
+            "implication": "Potential support near lower band levels"
+        },
+        {
+            "indicator": "atr",
+            "indicator_full_name": "Average True Range",
+            "signal": "High ATR indicating elevated volatility",
+            "implication": "Increased risk and larger price swings expected"
+        },
+        {
+            "indicator": "vwma",
+            "indicator_full_name": "Volume Weighted Moving Average",
+            "signal": "Price below VWMA",
+            "implication": "Volume confirming selling pressure"
         }
     ],
     "price_action_summary": {
-        "recent_high_low": "Trading near recent highs around $321, well above November lows of $276",
+        "recent_high_low": "Price near recent lows after significant decline from October highs",
         "support_levels": [
-            "$308.60 (recent low)",
-            "$300.00 (psychological)",
-            "$280.22 (50 SMA)"
+            "170.00",
+            "165.00",
+            "160.00"
         ],
         "resistance_levels": [
-            "$321.12 (recent high)",
-            "$325.00 (psychological)",
-            "$330.00 (extension)"
+            "180.00",
+            "185.00",
+            "190.00"
         ],
-        "short_term_behavior": "Consolidating after strong November rally, testing support at $308-312 zone"
+        "short_term_behavior": "Consolidating after sharp decline, showing signs of distribution"
     },
     "market_sentiment": {
-        "sentiment_score": 72,
-        "sentiment_label": "Bullish"
+        "sentiment_score": 35,
+        "sentiment_label": "Bearish"
     },
     "key_risks": [
-        "Potential profit-taking after strong rally",
-        "RSI approaching neutral-high zone",
-        "MACD showing momentum deceleration",
-        "Market volatility from broader tech sector"
+        "Continued downtrend from October highs",
+        "High volatility environment",
+        "Potential break below key support levels",
+        "Volume patterns showing distribution"
     ],
-    "short_term_outlook": "GOOGL maintains strong bullish structure with price above key moving averages. Short-term consolidation expected near $310-320 range before potential continuation higher. Support at $308-312 zone critical for maintaining uptrend.",
-    "confidence_score": 0.78
+    "short_term_outlook": "Bearish with potential for further downside towards $160-165 support zone before any meaningful bounce",
+    "confidence_score": 0.75
 }

@@ -74,3 +74,4 @@ const percentage = Math.round(((completed / teamState.length) * 100) + (inProgre
 
 **แนะนำ**: ปรับการคำนวณให้รวม "in_progress" เพื่อให้ผู้ใช้เห็น progress ระหว่างทาง
 
+

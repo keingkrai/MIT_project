@@ -1,34 +1,34 @@
 {
     "sentiment_score": 58,
     "sentiment_verdict": "Neutral",
-    "social_volume": "Elevated due to regulatory concerns and AI competition developments",
-    "dominant_narrative": "Alphabet faces significant regulatory headwinds with EU antitrust probes and Disney copyright infringement claims, but maintains strong AI momentum with Gemini gaining ground on ChatGPT and Waymo's autonomous vehicle expansion. The market is balancing regulatory risks against continued AI innovation leadership.",
+    "social_volume": "Moderate volume with mixed signals - some stock discussion but significant noise from accessibility community",
+    "dominant_narrative": "The market is focused on NVIDIA's China export policy developments and potential AI bubble concerns, while retail investors debate exit strategies amid rotation-heavy market conditions. However, social data is heavily polluted by discussions about the NVDA screen reader software rather than the stock.",
     "top_topics": [
         {
-            "topic": "EU Regulatory Probes and Fines",
-            "sentiment": "Negative",
-            "analysis_snippet": "European regulators are investigating Google for illegal web scraping to train AI and potential fines for Google Play favoritism, creating significant regulatory uncertainty."
-        },
-        {
-            "topic": "AI Competition with OpenAI",
+            "topic": "China Export Policy for H200 Chips",
             "sentiment": "Mixed",
-            "analysis_snippet": "Google's Gemini AI is gaining ground on ChatGPT, but faces simultaneous competition from OpenAI's GPT-5.2 release and regulatory scrutiny over training data practices."
+            "analysis_snippet": "Investors are cautiously optimistic about Trump's approval of H200 chip exports to China but concerned about China's reported plans to limit access."
         },
         {
-            "topic": "Waymo Autonomous Vehicle Expansion",
-            "sentiment": "Positive",
-            "analysis_snippet": "Waymo's rapid growth to 14 million rides in 2025 and plans for 1 million weekly robotaxi rides are seen as positive validation of Alphabet's long-term autonomous vehicle strategy."
-        },
-        {
-            "topic": "Copyright and Legal Challenges",
+            "topic": "AI Bubble Concerns",
             "sentiment": "Negative",
-            "analysis_snippet": "Disney issued a cease-and-desist letter over AI copyright infringement, while India proposes charging for training AI on copyrighted content, creating legal headwinds."
+            "analysis_snippet": "Growing discussions about when and how the AI bubble might burst, with investors questioning long-term sustainability."
         },
         {
-            "topic": "AI Innovation and Market Position",
-            "sentiment": "Positive",
-            "analysis_snippet": "Geoffrey Hinton's endorsement that Google is beginning to overtake OpenAI and the company's full-stack AI capabilities are viewed as competitive strengths."
+            "topic": "Portfolio Rotation and Exit Strategies",
+            "sentiment": "Mixed",
+            "analysis_snippet": "Active debate about exit strategies for NVIDIA holdings as investors consider rotating into other sectors ahead of year-end."
+        },
+        {
+            "topic": "Market Value Assessment",
+            "sentiment": "Neutral",
+            "analysis_snippet": "Analysts and investors are evaluating whether NVIDIA still represents good value at current levels amid high expectations."
+        },
+        {
+            "topic": "Screen Reader Software Confusion",
+            "sentiment": "Neutral",
+            "analysis_snippet": "Significant noise in social data from accessibility community discussing NVDA screen reader software unrelated to NVIDIA stock."
         }
     ],
-    "psychology": "Cautious optimism tempered by regulatory fear, with investors balancing strong AI fundamentals against mounting legal and compliance risks."
+    "psychology": "Cautious optimism tempered by valuation concerns and Fear Of Missing Out on potential continued AI growth, with growing awareness of bubble risks."
 }

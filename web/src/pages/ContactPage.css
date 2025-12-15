@@ -1,0 +1,153 @@
+.contact-page {
+  padding: 40px;
+  background: #1A1A1A;
+  min-height: 100vh;
+  color: #FFFFFF;
+}
+
+.contact-page-title {
+  font-size: 3rem;
+  font-weight: 700;
+  color: #FFFFFF;
+  margin-bottom: 40px;
+  text-transform: uppercase;
+}
+
+.contact-cards-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.contact-card {
+  background: #2A2A2A;
+  border-radius: 12px;
+  padding: 24px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.contact-card:hover {
+  background: #333333;
+  border-color: rgba(33, 150, 243, 0.3);
+}
+
+.contact-card.expanded {
+  background: #2A2A2A;
+  border-color: rgba(33, 150, 243, 0.5);
+}
+
+.contact-card-main {
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+}
+
+.contact-avatar {
+  flex-shrink: 0;
+}
+
+.avatar-placeholder {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.contact-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.contact-field {
+  display: flex;
+  gap: 12px;
+  align-items: baseline;
+}
+
+.field-label {
+  font-weight: 600;
+  color: #FFFFFF;
+  min-width: 100px;
+  font-size: 0.95rem;
+}
+
+.field-value {
+  color: #CCCCCC;
+  font-size: 0.95rem;
+  flex: 1;
+}
+
+.contact-details {
+  margin-top: 24px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.detail-box {
+  flex: 1;
+  min-width: 200px;
+  background: rgba(33, 150, 243, 0.1);
+  border: 1px solid rgba(33, 150, 243, 0.3);
+  border-radius: 8px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.detail-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: rgba(33, 150, 243, 0.8);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.detail-value {
+  font-size: 0.95rem;
+  color: #FFFFFF;
+  word-break: break-word;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .contact-page {
+    padding: 24px;
+  }
+
+  .contact-page-title {
+    font-size: 2rem;
+  }
+
+  .contact-card-main {
+    flex-direction: column;
+  }
+
+  .contact-details {
+    flex-direction: column;
+  }
+
+  .detail-box {
+    min-width: 100%;
+  }
+}
+
+
+
+
+
+
+
+
+
+

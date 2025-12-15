@@ -1,0 +1,158 @@
+.public-docs-page {
+  padding: 40px;
+  background: #1A1A1A;
+  min-height: 100vh;
+  color: #FFFFFF;
+}
+
+.back-link {
+  background: none;
+  border: none;
+  color: #FFFFFF;
+  font-size: 0.9rem;
+  cursor: pointer;
+  padding: 0;
+  margin-bottom: 40px;
+  text-decoration: none;
+  opacity: 0.7;
+  transition: opacity 0.3s ease;
+  display: inline-block;
+}
+
+.back-link:hover {
+  opacity: 1;
+}
+
+.public-docs-title {
+  font-size: 3rem;
+  font-weight: 700;
+  color: #FFFFFF;
+  margin-bottom: 50px;
+  text-transform: uppercase;
+}
+
+.public-docs-section {
+  margin-bottom: 50px;
+}
+
+.public-section-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #FFFFFF;
+  margin-bottom: 24px;
+}
+
+.public-docs-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+}
+
+.public-doc-card {
+  background: #2A2A2A;
+  border-radius: 12px;
+  padding: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.public-doc-card:hover {
+  background: #333333;
+  border-color: rgba(33, 150, 243, 0.3);
+  transform: translateY(-2px);
+}
+
+.public-doc-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.public-icon-placeholder {
+  width: 80px;
+  height: 80px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+}
+
+.public-doc-card-title {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #FFFFFF;
+  margin: 0;
+}
+
+.public-doc-card-description {
+  font-size: 0.95rem;
+  color: #CCCCCC;
+  line-height: 1.6;
+  margin: 0;
+  flex: 1;
+}
+
+.public-doc-btn {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+  margin-top: auto;
+}
+
+.public-doc-btn.green {
+  background: #4CAF50;
+  color: #FFFFFF;
+}
+
+.public-doc-btn.green:hover {
+  background: #45a049;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+}
+
+.public-doc-btn.blue {
+  background: #2196F3;
+  color: #FFFFFF;
+}
+
+.public-doc-btn.blue:hover {
+  background: #1976D2;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(33, 150, 243, 0.3);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .public-docs-page {
+    padding: 24px;
+  }
+
+  .public-docs-title {
+    font-size: 2rem;
+  }
+
+  .public-docs-cards {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+
+
+
+
+
+
+
+

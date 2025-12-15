@@ -1,0 +1,90 @@
+
+--------------------------------------------------------------------------------
+PART 1: TECHNICAL ANALYSIS (วิเคราะห์เทคนิค)
+เป้าหมาย: หาจังหวะซื้อขาย (Good Timing) ดูเทรนด์และจุดเข้าออก
+--------------------------------------------------------------------------------
+
+1.1 CLASS: MarketOverview (ภาพรวมกราฟ)
+    [trend_direction]  : ทิศทางหลัก (Bullish / Bearish / Sideways)
+    [momentum_state]   : แรงส่ง (Strong / Weak / Diverging / Neutral)
+    [volatility_level] : ความผันผวน (Low / High)
+    [volume_condition] : สภาพคล่อง (Rising / Falling)
+
+1.2 CLASS: IndicatorAnalysis (เจาะลึกอินดิเคเตอร์)
+    [indicator]           : รหัสเครื่องมือ (เช่น rsi_14, macd)
+    [indicator_full_name] : ชื่อเต็ม
+    [signal]              : สัญญาณที่พบ (เช่น Overbought, Golden Cross)
+    [implication]         : คำแนะนำการเทรดจากสัญญาณนั้น
+
+1.3 CLASS: PriceActionSummary (พฤติกรรมราคา)
+    [recent_high_low]     : ตำแหน่งราคาเทียบกับ High/Low ล่าสุด
+    [support_levels]      : List แนวรับ (ราคาที่น่าจะเด้งขึ้น)
+    [resistance_levels]   : List แนวต้าน (ราคาที่น่าจะร่วงลง)
+    [short_term_behavior] : รูปแบบแท่งเทียน (Candlestick Patterns)
+
+1.4 CLASS: MarketSentiment (อารมณ์จากกราฟ)
+    [sentiment_score] : คะแนนความกลัว/โลภ (0-100)
+    [sentiment_label] : ป้ายกำกับ (Fear / Greed)
+
+--------------------------------------------------------------------------------
+PART 2: SOCIAL & PSYCHOLOGY (วิเคราะห์กระแสสังคม)
+เป้าหมาย: จับอารมณ์รายย่อย (Contrarian) ดูความคลั่งและความกลัว
+--------------------------------------------------------------------------------
+
+2.1 CLASS: DiscussionTopic (ประเด็นร้อน)
+    [topic]            : หัวข้อที่คนพูดถึง
+    [sentiment]        : อารมณ์ (Positive / Negative / Mixed)
+    [analysis_snippet] : สรุปความเห็นมวลชนแบบสั้น
+
+2.2 CLASS: SocialMediaReport (รายงานจิตวิทยา)
+    [sentiment_verdict]  : คำตัดสิน (เน้น Euphoria/Panic)
+    [social_volume]      : ปริมาณการพูดถึง (เยอะผิดปกติไหม)
+    [dominant_narrative] : "สตอรี่" ที่รายย่อยกำลังเชื่อฝังหัว
+    [top_topics]         : List ประเด็นร้อน 3-5 เรื่อง (Object จากข้อ 4.1)
+    [psychology]         : สภาวะจิตวิทยา (FOMO, Capitulation, HODL)
+
+================================================================================
+
+--------------------------------------------------------------------------------
+PART 3: NEWS & MACRO ANALYSIS (วิเคราะห์ข่าวและมหภาค)
+เป้าหมาย: หาปัจจัยเร่ง (Catalyst) ดูสภาพแวดล้อมและข่าวดี/ร้าย
+--------------------------------------------------------------------------------
+
+3.1 CLASS: GlobalMacroContext (ภาพใหญ่เศรษฐกิจโลก)
+    [macro_summary] : สรุปสั้นๆ เรื่อง Fed, ดอกเบี้ย, สงคราม (Max 5 ประโยค)
+
+3.2 CLASS: CompanyNewsItem (ข่าวรายบริษัท)
+    [headline]    : พาดหัวข่าว
+    [source]      : แหล่งที่มา
+    [date]        : วันที่ข่าวออก
+    [sentiment]   : อารมณ์ข่าว (Positive / Negative / Neutral)
+    [implication] : นัยยะต่อราคาหุ้น (ข่าวนี้จะทำให้หุ้นขึ้นหรือลงเพราะอะไร)
+
+3.3 CLASS: NewsReport (รายงานสรุปข่าว)
+    [executive_summary]        : ข่าวที่สำคัญที่สุดของวันนี้ (Max 50 คำ)
+    [market_sentiment_score]   : คะแนนอารมณ์ตลาดรวม (0-100)
+    [market_sentiment_verdict] : คำตัดสิน (Bullish / Bearish / Neutral)
+    [global_macro_context]     : (Object ข้อมูลจากข้อ 3.1)
+    [top_news_developments]    : List ข่าวเด่น 3-5 ข่าว (Object จากข้อ 3.2)
+    [key_risks]                : ความเสี่ยงที่ต้องระวังจากข่าว
+
+--------------------------------------------------------------------------------
+PART 4: FUNDAMENTAL ANALYSIS (วิเคราะห์พื้นฐาน)
+เป้าหมาย: คัดกรองหุ้นดี (Good Asset) ดูสุขภาพการเงินและความคุ้มค่า
+--------------------------------------------------------------------------------
+
+4.1 CLASS: ComprehensiveMetrics (ตัวชี้วัดทางการเงิน)
+    [revenue_growth_year_over_year] : การเติบโตของรายได้เทียบปีต่อปี (%) -> วัด Speed ของธุรกิจ
+    [net_profit_margin]             : อัตรากำไรสุทธิ (%) -> วัดประสิทธิภาพการคุมต้นทุน
+    [price_to_earnings_ratio]       : P/E Ratio -> วัดความถูกแพง (กี่ปีคืนทุน)
+    [debt_to_equity_ratio]          : D/E Ratio -> วัดความเสี่ยงหนี้สิน (ต่ำ = ปลอดภัย)
+    [return_on_equity]              : ROE (%) -> วัดความเก่งของผู้บริหารในการหมุนเงิน
+    [free_cash_flow_status]         : สถานะกระแสเงินสดอิสระ -> ยืนยันเงินสดจริง (ต้องไม่ติดลบ)
+
+4.2 CLASS: FundamentalReport (รายงานสรุปพื้นฐาน)
+    [executive_summary]      : บทสรุปผู้บริหาร (ภาพรวมธุรกิจใน 1 ย่อหน้า)
+    [valuation_status]       : สถานะมูลค่า (Undervalued / Fair / Overvalued)
+    [financial_health_score] : คะแนนสุขภาพการเงิน (0-100)
+    [comprehensive_metrics]  : (Object ข้อมูลจากข้อ 1.1)
+    [key_strengths_analysis] : List จุดแข็ง (เช่น แบรนด์แกร่ง, ผูกขาดตลาด)
+    [key_risks_analysis]     : List ความเสี่ยง (เช่น กฎหมายเปลี่ยน, ต้นทุนพุ่ง)

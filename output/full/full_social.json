@@ -1,0 +1,33 @@
+{
+    "sentiment_verdict": "Bullish",
+    "social_volume": "Elevated due to earnings results and China export policy developments",
+    "dominant_narrative": "NVIDIA maintains strong momentum with blowout Q4 earnings results, while geopolitical developments around China export approvals for H200 chips create both opportunities and uncertainties for future growth in key markets.",
+    "top_topics": [
+        {
+            "topic": "Q4 Earnings Performance",
+            "sentiment": "Positive",
+            "analysis_snippet": "Social media discussions highlight strong Q4 results that exceeded expectations, reinforcing NVIDIA's dominant position in AI hardware."
+        },
+        {
+            "topic": "China Export Policy Developments",
+            "sentiment": "Mixed",
+            "analysis_snippet": "Mixed reactions to Trump administration's approval of H200 chip exports to China, with concerns about potential Chinese market access limitations despite policy changes."
+        },
+        {
+            "topic": "Valuation and Bubble Concerns",
+            "sentiment": "Negative",
+            "analysis_snippet": "Growing discussions about potential overvaluation and AI bubble risks, with comparisons to historical PE ratios raising sustainability questions."
+        },
+        {
+            "topic": "Institutional Options Activity",
+            "sentiment": "Positive",
+            "analysis_snippet": "High institutional options trading volume indicates continued strong institutional interest and positioning in NVIDIA stock."
+        },
+        {
+            "topic": "Market Rotation and Year-End Positioning",
+            "sentiment": "Mixed",
+            "analysis_snippet": "Discussions about portfolio rotation away from concentrated tech positions as investors rebalance for year-end, creating mixed sentiment about near-term price action."
+        }
+    ],
+    "psychology": "Fear Of Missing Out combined with valuation anxiety as retail investors balance strong fundamentals against extended valuations"
+}

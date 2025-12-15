@@ -1,12 +1,34 @@
 import functools
-import time
 import json
-import re
+from pydantic import BaseModel, Field
+from langchain_core.output_parsers import JsonOutputParser
+from langchain_core.prompts import PromptTemplate
+
+# 1. กำหนดโครงสร้างข้อมูลที่ต้องการด้วย Pydantic (Schema Definition)
+class PlanValidation(BaseModel):
+    agreement_status: str = Field(description="Agree / Disagree / Partial Agreement")
+    validation_notes: str = Field(description="Why you agree or disagree based on raw intelligence.")
+
+# class ExecutionDetails(BaseModel):
+#     order_type: str = Field(description="Order Type e.g., Market / Limit")
+#     position_size_strategy: str = Field(description="e.g., 5 percent of portfolio due to high volatility.")
+#     entry_price_target: str = Field(description="Specific price or 'Current Market Price'")
+#     stop_loss_level: str = Field(description="Specific price level")
+#     take_profit_target: str = Field(description="Specific price level")
+
+class TraderDecision(BaseModel):
+    plan_validation: PlanValidation
+    memory_application: str = Field(description="Specific lesson applied from past reflections to this trade.")
+    final_decision_signal: str = Field(description="BUY / SELL / HOLD")
+    # execution_details: ExecutionDetails
+    trader_commentary: str = Field(description="Final remarks or warnings for the Risk Manager.")
+
+# --- Function หลัก ---
 
 def create_trader(llm, memory):
     def trader_node(state, name):
-        company_name = state["company_of_interest"]
-        investment_plan = state["investment_plan"]
+        company_name = state.get("company_of_interest", "Unknown Company")
+        investment_plan = state.get("investment_plan", "N/A")
         
         # 1. ดึงรายงานดิบทั้งหมด
         market_report = state.get("market_report", "N/A")
@@ -25,18 +47,21 @@ def create_trader(llm, memory):
         else:
             past_memory_str = "No relevant past memories found."
 
-        # 3. JSON System Prompt
+        # 3. Setup Parser (พระเอกของเรา)
+        parser = JsonOutputParser(pydantic_object=TraderDecision)
+
+        # 4. System Prompt + Format Instructions (ใส่ format อัตโนมัติ)
         system_msg = (
-            "You are a Senior Head Trader. Your job is to audit the investment plan and issue a final execution order in **JSON format**.\n"
-            "**INSTRUCTIONS:**\n"
-            "1. **Audit:** Verify the proposed plan against raw intelligence reports.\n"
-            "2. **Decide:** Make a definitive BUY, SELL, or HOLD call.\n"
-            "3. **Format:** Return strictly valid JSON. No markdown code blocks.\n"
-            "4. **No Abbreviations:** Use full terms (e.g., 'Stop Loss', 'Take Profit')."
+            "You are a Senior Head Trader. Your job is to audit the investment plan and issue a final execution order.\n"
+            "INSTRUCTIONS:\n"
+            "1. Audit: Verify the proposed plan against raw intelligence reports.\n"
+            "2. Decide: Make a definitive BUY, SELL, or HOLD call.\n"
+            "3. No Markdown: Output strictly clean JSON.\n"
+            "\n{format_instructions}" 
         )
 
-        # 4. User Prompt with JSON Structure
-        user_content = f"""
+        # 5. User Prompt
+        user_template = """
         Review the Intelligence Reports and the Proposed Plan to make your decision for {company_name}.
 
         RAW INTELLIGENCE REPORTS
@@ -51,95 +76,53 @@ def create_trader(llm, memory):
         PAST REFLECTIONS
         {past_memory_str}
         
-        IMPORTANT
-        - Must json format only.
-
-        **REQUIRED JSON STRUCTURE:**
-        {{
-            "plan_validation": {{
-                "agreement_status": "String: Agree / Disagree / Partial Agreement",
-                "validation_notes": "String: Why you agree or disagree based on raw intelligence."
-            }},
-            "memory_application": "String: Specific lesson applied from past reflections to this trade.",
-            "final_decision_signal": "String: BUY / SELL / HOLD",
-            "execution_details": {{
-                "order_type": "String: e.g., Market / Limit",
-                "position_size_strategy": "String: e.g., 5 percent of portfolio due to high volatility.",
-                "entry_price_target": "String: Specific price or 'Current Market Price'",
-                "stop_loss_level": "String: Specific price level",
-                "take_profit_target": "String: Specific price level"
-            }},
-            "trader_commentary": "String: Final remarks or warnings for the Risk Manager."
-        }}
+        Response needs to follow the JSON schema strictly.
         """
 
-        # Get report length from state
-        report_length = state.get("report_length", "long")
-        
-        # Create style instructions based on length
-        if report_length == "short":
-            style_instruction = """
-**WRITING STYLE - SHORT FORMAT:**
-- Write a brief trading plan using bullet points only
-- Keep it concise - maximum 8-10 bullet points
-- Use simple, clear language
-- Focus on the most important actions and reasoning
-- Explain your decision in plain English
-- Format everything as bullet points (no paragraphs)
-"""
-        else:
-            style_instruction = """
-**WRITING STYLE - LONG FORMAT:**
-- Write a comprehensive but easy-to-understand trading plan using bullet points
-- Use clear, simple language - avoid jargon
-- Explain your reasoning step-by-step in bullet points
-- Break down complex trading concepts into simple bullet points
-- Use headings to organize sections, then bullet points under each
-- Keep each bullet point short and focused
-"""
-        
-        messages = [
-            {"role": "system", "content": system_msg},
-            {"role": "user", "content": user_content},
-        ]
+        # สร้าง Prompt Template เพื่อรวม System และ User เข้าด้วยกัน
+        prompt = PromptTemplate(
+            template=f"{system_msg}\n\n{user_template}",
+            input_variables=["company_name", "market_report", "sentiment_report", 
+                             "news_report", "fundamentals_report", "investment_plan", "past_memory_str"],
+            partial_variables={"format_instructions": parser.get_format_instructions()}
+        )
 
-        result = llm.invoke(messages)
-        
-        trader_plan_content = ""
+        # 6. สร้าง Chain และ Invoke (Prompt -> LLM -> Parser)
+        # การใช้ | parser จะช่วยตัด Markdown และ Parse string เป็น Dict ให้เลย
+        chain = prompt | llm | parser
 
-        # --- 5. JSON Parsing Logic ---
         try:
-            raw_content = result.content
-            # Clean markdown if present
-            clean_content = raw_content.strip()
-            if clean_content.startswith("```json"):
-                clean_content = clean_content[7:]
-            elif clean_content.startswith("```"):
-                clean_content = clean_content[3:]
-            if clean_content.endswith("```"):
-                clean_content = clean_content[:-3]
-            
-            # Regex Extraction
-            match = re.search(r"\{[\s\S]*\}", clean_content)
-            if match:
-                json_str = match.group(0)
-                parsed_json = json.loads(json_str)
-                trader_plan_content = json.dumps(parsed_json, indent=4, ensure_ascii=False)
-            else:
-                print("⚠️ Trader: No JSON found. Using raw text.")
-                # Fallback structure
-                trader_plan_content = json.dumps({
-                    "final_decision_signal": "HOLD (Parsing Error)",
-                    "trader_commentary": raw_content
-                }, indent=4)
-                
+            # เรียกใช้งาน Chain
+            parsed_result = chain.invoke({
+                "company_name": company_name,
+                "market_report": market_report,
+                "sentiment_report": sentiment_report,
+                "news_report": news_report,
+                "fundamentals_report": fundamentals_report,
+                "investment_plan": investment_plan,
+                "past_memory_str": past_memory_str
+            })
+
+            # แปลง Dict กลับเป็น JSON String เพื่อเก็บลง State (ตาม Logic เดิม)
+            trader_plan_content = json.dumps(parsed_result, indent=4, ensure_ascii=False)
+
         except Exception as e:
-            print(f"⚠️ Trader: JSON Parse Error ({e}). Saving raw content.")
-            trader_plan_content = result.content
+            print(f"⚠️ Trader: Parsing Error ({e}). Attempting fallback recovery...")
+            # Fallback กรณีแย่ที่สุด (เช่น Model เอ๋อจนแก้ไม่ได้)
+            fallback_data = {
+                "final_decision_signal": "HOLD (System Error)",
+                "trader_commentary": f"JSON Parsing failed: {str(e)}",
+                "plan_validation": {"agreement_status": "Error", "validation_notes": "Parsing failed"},
+                "execution_details": {},
+                "memory_application": "N/A"
+            }
+            trader_plan_content = json.dumps(fallback_data, indent=4)
 
         return {
-            "messages": [result],
-            "trader_investment_plan": trader_plan_content, # เก็บ JSON String
+            # หมายเหตุ: ถ้าต้องการเก็บ raw message อาจต้องปรับ logic นิดหน่อย 
+            # แต่ปกติถ้าใช้ parser เราจะเก็บผลลัพธ์สุดท้ายเลย
+            "messages": [f"Trader Decision: {parsed_result.get('final_decision_signal', 'Unknown')}"], 
+            "trader_investment_plan": trader_plan_content,
             "sender": name,
         }
 

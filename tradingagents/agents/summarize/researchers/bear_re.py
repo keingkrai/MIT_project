@@ -18,14 +18,15 @@ def create_summarizer_bear_researcher():
             return {} 
         
         system_prompt = (
-            "You are a Senior Bearish Equity Researcher (Short Seller). Your goal is to synthesize "
-            "the strongest arguments for SELLING or AVOIDING the asset. Focus on overvaluation, "
-            "deteriorating fundamentals, negative technical signals, and market risks. "
-            "Be skeptical, critical, and grounded in data."
+            "You are a Senior Bearish Equity Researcher (Short Seller). "
+            "Your task is to synthesize the bearish arguments into a **single, high-density executive summary**. "
+            "Do NOT use section headers, bullet points, or lists. "
+            "Write in a professional, critical, and narrative paragraph format. "
+            "Focus on overvaluation, technical breakdown signals, and downside targets."
         )
 
         user_prompt = f"""
-        Synthesize the Bearish arguments from the debate history into a compelling summary:
+        Synthesize the Bearish arguments below into a concise summary (max 150 words).
 
         =========================================
         BEARISH ARGUMENTS LOG:
@@ -33,26 +34,10 @@ def create_summarizer_bear_researcher():
         =========================================
 
         **INSTRUCTIONS:**
-        - Extract the most convincing reasons to sell or short.
-        - Highlight specific resistance levels, overbought signals, or weak metrics.
-        - Structure it as a "Short Thesis" (Bear Case).
-
-        **REQUIRED OUTPUT FORMAT:**
-
-        ### 1.The Bear Case (Core Thesis)
-        - **Main Concern:** The single biggest risk or reason to sell right now (1-2 sentences).
-        - **Conviction Level:** [High / Medium / Low]
-
-        ### 2.Key Risks (Why Sell?)
-        - **Fundamental:** (e.g., Overvalued P/E, Declining Growth).
-        - **Technical:** (e.g., Hitting Resistance, RSI Overbought, Death Cross).
-        - **Macro/News:** (e.g., Inflation, Regulatory crackdown).
-
-        ### 3.Downside Risk
-        - Describe the potential drop (e.g., "Risk of 15% correction to support at $X").
-
-        ### 4.Analyst's Closing Statement
-        - A punchy closing sentence advocating for selling or staying in cash.
+        1. Start immediately with the **Core Short Thesis** (e.g., "The asset is critically overvalued due to...").
+        2. Seamlessly integrate **Fundamental Flaws** (weak earnings, debt) and **Technical Warnings** (resistance, divergence).
+        3. Highlight the specific **Downside Risk** (price target or % drop) naturally within the sentences.
+        4. Maintain a skeptical and cautionary tone throughout.
         """
         
         try:

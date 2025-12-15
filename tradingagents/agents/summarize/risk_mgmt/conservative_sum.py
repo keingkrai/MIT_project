@@ -16,57 +16,28 @@ def create_summarizer_conservative():
         if not conservative_report:
             return {} 
 
-        system_prompt = """You are a Senior Conservative-Risk Analyst.
-Your role is to analyze safe, cautious, and risk-averse debate content and convert it into a concise, 
-actionable summary.
-
-Your analysis must:
-- Focus strictly on the information inside the provided conservative debate history.
-- Identify caution signals, risk-avoidance reasoning, stability-focused viewpoints, and concerns about uncertainty.
-- Highlight conservative logic, risk minimization principles, and defensive arguments.
-- Avoid explaining what metrics or concepts mean.
-- Present insights clearly, carefully, and objectively.
-
-Goal: Produce a clean, highly-structured conservative summary that highlights stable viewpoints,
-risk-averse thinking, and protective strategies suitable for decision-making."""
+        system_prompt = (
+            "You are a Senior Conservative-Risk Analyst. "
+            "Your task is to synthesize the cautious and defensive arguments into a **single, high-density executive summary**. "
+            "Do NOT use section headers, bullet points, or lists. "
+            "Write in a prudent, risk-averse, and narrative paragraph format. "
+            "Focus on capital preservation, downside risks, and uncertainty avoidance."
+        )
+        
         user_prompt = f"""
-Synthesize the following conservative and risk-averse debate content into a concise analytical summary:
+        Synthesize the conservative debate history below into a concise summary (max 150 words).
 
-=========================================
-RAW CONSERVATIVE DEBATE HISTORY:
-{conservative_report}
-=========================================
+        =========================================
+        RAW CONSERVATIVE DEBATE HISTORY:
+        {conservative_report}
+        =========================================
 
-**INSTRUCTIONS:**
-- Base your conclusions strictly on the cautious, conservative, or safety-focused arguments in the data.
-- Identify warnings, uncertainties, concerns, risk-avoidance logic, and arguments favoring stability.
-- Highlight contradictions or points where caution conflicts with optimism.
-- Keep the summary structured, clean, and easy to scan.
-- Do NOT add any external assumptions.
-
-**REQUIRED OUTPUT FORMAT:**
-
-### 1. Conservative Stance Overview
-- **Position:** [Risk-Averse / Defensive / Cautiously Neutral / Seeking Stability]
-- **Confidence Level:** [High / Medium / Low]
-- **Reasoning Summary:** Short explanation derived directly from the debate content.
-
-### 2. Key Conservative Arguments
-- **Primary Concerns:** (Risks, uncertainties, threats, unclear signals)
-- **Stability Factors:** (Elements supporting caution or defensive positioning)
-- **Evidence Used:** (Any data or reasoning used to justify the conservative view)
-- **Risk-Avoidance Principles:** (Focus on safety, capital preservation, uncertainty reduction)
-
-### 3. Critical Observations
-- **Conflicts or Caution Flags:** (e.g., “Positive short-term movement but high long-term uncertainty”)
-- **Fragile Areas:** (Weak signals, limited confirmation, unclear trends)
-- **Potential Downside Catalysts:** (Events that could increase risk)
-
-### 4. Actionable Conservative Insight
-- Provide 1–2 concise defensive or protective recommendations 
-  (e.g., “Wait for clearer confirmation,” “Avoid aggressive positioning,” 
-   “Monitor for downside catalysts before committing capital.”)
-"""
+        **INSTRUCTIONS:**
+        1. Start immediately with the **Conservative Stance** (e.g., "The Conservative view strongly advises caution due to...").
+        2. Seamlessly integrate **Primary Concerns** (valuations, macro headwinds) and **Defensive Logic** into the narrative.
+        3. Highlight the **Fragility** of the current setup naturally within the text.
+        4. Conclude with a **Protective Recommendation** (e.g., "Prioritize cash and await better risk-reward").
+        """
         try:
             response = client.chat.completions.create(
                 model="typhoon-v2.1-12b-instruct",

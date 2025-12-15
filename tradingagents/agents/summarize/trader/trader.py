@@ -17,14 +17,15 @@ def create_summarizer_trader():
             return {} 
         
         system_prompt = (
-            "You are a Senior Execution Trader. Your goal is to formulate a clear, "
-            "tactical trading plan based on the analysis provided. "
-            "Focus on Price Levels (Entry, Stop Loss, Take Profit), "
-            "Position Sizing logic, and the specific Strategy (Breakout, Reversal, Trend Following)."
+            "You are a Senior Execution Trader. "
+            "Your task is to synthesize the Trading Plan into a **single, high-density execution summary**. "
+            "Do NOT use section headers, bullet points, or lists. "
+            "Write in a precise, tactical, and narrative paragraph format. "
+            "Focus strictly on the Action, Exact Price Levels, and Position Sizing."
         )
 
         user_prompt = f"""
-        Synthesize the following Trading Plan into a concise execution setup:
+        Synthesize the trading plan below into a concise summary (max 150 words).
 
         =========================================
         RAW TRADING PLAN:
@@ -32,28 +33,10 @@ def create_summarizer_trader():
         =========================================
 
         **INSTRUCTIONS:**
-        - Extract the concrete numbers (Prices, %. allocation).
-        - Identify the core strategy used.
-        - Be tactical and precise.
-
-        **REQUIRED OUTPUT FORMAT:**
-
-        ### 1.Trade Setup (The Action)
-        - **Strategy:** (e.g., "Trend Following Breakout", "Mean Reversion").
-        - **Action:** [BUY / SELL / WAIT]
-        - **Timeframe:** (e.g., Swing Trade, Long Term Investment).
-
-        ### 2.Key Levels (The Numbers)
-        - **Entry Zone:** [Price Range]
-        - **Stop Loss:** [Price Level] (Crucial!)
-        - **Target/Take Profit:** [Price Level]
-
-        ### 3.Position Sizing
-        - **Proposed Size:** (e.g., "5% of Portfolio", "Medium Conviction").
-        - **Risk Rationale:** Why this size? (e.g., "High volatility warrants smaller size").
-
-        ### 4.Trader's Note
-        - A brief comment on execution timing (e.g., "Enter at market open", "Wait for close above $X").
+        1. Start immediately with the **Primary Action & Strategy** (e.g., "Execute a Breakout Long on [Symbol]...").
+        2. Seamlessly embed the **Exact Key Levels** (Entry Zone, Hard Stop Loss, Take Profit) into the narrative.
+        3. Specify the **Position Size & Risk Rationale** clearly within the text.
+        4. Conclude with the **Execution Trigger** (e.g., "Enter only upon market open").
         """
         
         try:

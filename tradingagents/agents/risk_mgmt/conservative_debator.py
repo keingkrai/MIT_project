@@ -20,16 +20,17 @@ def create_safe_debator(llm):
         trader_decision = state["trader_investment_plan"]
         
         system_prompt = (
-            "You are a Senior Conservative Risk Analyst. Your number one priority is Capital Preservation. "
-            "You are skeptical of hype and high volatility. You must critique the Risky and Neutral analysts for being reckless. "
-            "INSTRUCTIONS "
-            "1. Write using ONLY plain text. Do not use asterisks, hashes, or dashes. "
-            "2. Do NOT use abbreviations. Use full terms (e.g., Maximum Drawdown, Stop Loss, Moving Average). "
+            "You are a Senior Conservative Risk Analyst. "
+            "Your number one priority is Capital Preservation. "
+            "You are skeptical of hype and high volatility. "
+            "INSTRUCTIONS: "
+            "1. Write a **single, cohesive argument**. Do NOT use section headers, bullet points, or lists. "
+            "2. Write using ONLY plain text. Do NOT use abbreviations. "
             "3. Focus on the Downside. Ask: What if this goes wrong?"
         )
 
         user_prompt = f"""
-        Review the Trader Plan and the Debate to formulate your Conservative argument.
+        Review the Trader Plan and the Debate to formulate your Conservative argument (max 150 words).
 
         TRADER PLAN
         {trader_decision}
@@ -45,15 +46,10 @@ def create_safe_debator(llm):
         Risky Argument: {current_risky_response}
         Neutral Argument: {current_neutral_response}
 
-        REQUIRED OUTPUT FORMAT
-        Section 1 Direct Rebuttal
-        Directly counter the points made by the Risky and Neutral analysts. Explain why their optimism ignores potential dangers.
-
-        Section 2 Worst Case Scenario
-        Describe exactly how the trade could fail based on the data (e.g., Economic Recession, Overbought Signals).
-
-        Section 3 Protective Measures
-        Propose stricter safety rules. Suggest reducing the Position Size or tightening the Stop Loss.
+        **INSTRUCTIONS:**
+        1. Start by **Directly Rebutting** the Risky/Neutral analysts (explain why their optimism is dangerous).
+        2. Pivot immediately to the **Worst Case Scenario**, citing specific data (e.g., Resistance levels, Economic downturns) that could crash the trade.
+        3. Conclude with **Protective Measures**, demanding a reduced Position Size or a tighter Stop Loss to ensure survival.
         """
 
         response = llm.invoke([

@@ -16,58 +16,28 @@ def create_summarizer_neutral():
         if not neutral_report:
             return {} 
 
-        system_prompt = """You are a Senior Neutral-Stance Analyst.
-Your job is to interpret balanced, non-biased debate content and produce a concise, 
-objective summary without leaning toward bullish or bearish extremes.
-
-Your analysis must:
-- Focus purely on the information in the provided neutral debate history.
-- Identify balanced reasoning, evenly weighted arguments, and points of agreement or uncertainty.
-- Highlight central themes, factual observations, and stable or indecisive areas.
-- Avoid emotional tone, bias, or directional assumptions.
-- Present all insights clearly, analytically, and with strict neutrality.
-
-Goal: Produce a clean, structured neutral summary suitable for decision-making without bias or speculation."""
+        system_prompt = (
+            "You are a Senior Neutral-Stance Analyst. "
+            "Your task is to synthesize the balanced and objective arguments into a **single, high-density executive summary**. "
+            "Do NOT use section headers, bullet points, or lists. "
+            "Write in a professional, unbiased, and narrative paragraph format. "
+            "Focus on the tension between bullish and bearish factors and the rationale for a middle-ground strategy."
+        )
 
         user_prompt = f"""
-Synthesize the following neutral, balanced debate content into a concise analytical summary:
+        Synthesize the neutral debate history below into a concise summary (max 150 words).
 
-=========================================
-RAW NEUTRAL DEBATE HISTORY:
-{neutral_report}
-=========================================
+        =========================================
+        RAW NEUTRAL DEBATE HISTORY:
+        {neutral_report}
+        =========================================
 
-**INSTRUCTIONS:**
-- Base all conclusions strictly on the provided neutral discussion.
-- Identify balanced viewpoints, areas of uncertainty, evenly weighted pros/cons, 
-  and observations that do not strongly lean in any direction.
-- Highlight points of agreement, unresolved questions, and mixed or ambiguous signals.
-- Keep the summary structured, clean, and easy to scan.
-- Do NOT add external assumptions or take sides.
-
-**REQUIRED OUTPUT FORMAT:**
-
-### 1. Neutral Overview
-- **Stance:** [Balanced / Mixed / Indecisive / Observational]
-- **Clarity Level:** [Clear / Partially Clear / Uncertain]
-- **Reasoning Summary:** Short neutral explanation based only on the provided content.
-
-### 2. Key Neutral Insights
-- **Main Observations:** (Facts, signals, or narratives that appear consistent)
-- **Balanced Points:** (Pros vs cons, mixed indicators, dual-sided arguments)
-- **Uncertainties:** (Areas lacking clarity, inconsistent evidence, or ambiguous sentiment)
-- **Consensus Areas:** (Topics the discussion broadly agrees on)
-
-### 3. Critical Observations
-- **Conflicts or Mixed Signals:** (e.g., “Some see upside potential while sentiment remains muted”)
-- **Gaps in Information:** (Missing confirmation, unclear drivers)
-- **Stability Factors:** (Elements indicating neutrality or low conviction)
-
-### 4. Actionable Neutral Insight
-- Provide 1–2 balanced, non-directional interpretations 
-  (e.g., “Wait for clearer confirmation,” “Monitor both upside and downside catalysts,” 
-   “Neutral stance appropriate until new data shifts conviction.”)
-"""
+        **INSTRUCTIONS:**
+        1. Start immediately with the **Balanced Verdict** (e.g., "The Neutral view suggests a wait-and-see approach due to...").
+        2. Seamlessly integrate the **Conflicting Signals** (Pros vs. Cons) and **Uncertainties** into the narrative.
+        3. Explain the **Risk-Reward Tension** naturally within the text.
+        4. Conclude with a **Prudent Compromise** (e.g., "Accumulate only on confirmed dips").
+        """
         
         try:
             response = client.chat.completions.create(

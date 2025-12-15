@@ -16,55 +16,28 @@ def create_summarizer_aggressive():
         if not aggressive_report:
             return {} 
 
-        system_prompt = """You are a Senior Risk & Aggressive-Stance Analyst.
-Your job is to analyze high-risk debate logs, aggressive viewpoints, contrarian opinions, 
-and bold speculative arguments, then convert them into a concise, actionable summary.
+        system_prompt = (
+            "You are a Senior Aggressive Strategy Analyst. "
+            "Your task is to synthesize the high-risk/speculative arguments into a **single, high-density executive summary**. "
+            "Do NOT use section headers, bullet points, or lists. "
+            "Write in a bold, narrative paragraph format. "
+            "Focus on momentum, speculative catalysts, and asymmetric upside opportunities."
+        )
 
-Your analysis must:
-- Focus strictly on the information inside the provided risky debate history.
-- Identify aggressive viewpoints, speculative reasoning, fear/greed elements, and risk-heavy assumptions.
-- Highlight conflicts between aggressive and conservative perspectives.
-- Avoid explaining what the metrics or concepts mean.
-- Present insights clearly, analytically, and without emotional bias.
-
-Goal: Produce a sharp, high-clarity summary of aggressive reasoning, highlighting risks, opportunities, 
-and extreme viewpoints in a structured, decision-ready format."""
         user_prompt = f"""
-Synthesize the following aggressive/contrarian debate content into a concise analytical summary:
+        Synthesize the aggressive debate history below into a concise summary (max 150 words).
 
-=========================================
-RAW RISK & AGGRESSIVE DEBATE HISTORY:
-{aggressive_report}
-=========================================
+        =========================================
+        RAW RISK & AGGRESSIVE DEBATE HISTORY:
+        {aggressive_report}
+        =========================================
 
-**INSTRUCTIONS:**
-- Base your conclusions strictly on the risky, aggressive, or contrarian perspectives provided.
-- Identify aggressive reasoning, bold assumptions, fear/greed behavior, and speculative logic.
-- Highlight contradictions or internal conflicts within the arguments.
-- Keep the summary structured, clean, and easy to scan.
-- Do NOT add external assumptions.
-
-**REQUIRED OUTPUT FORMAT:**
-
-### 1. Aggressive Stance Overview
-- **Direction:** [Strongly Bullish / Aggressive Bearish / Contrarian / Highly Speculative]
-- **Confidence Level:** [High / Medium / Low]
-- **Reasoning Summary:** Short rationale directly derived from the debate content.
-
-### 2. Key Aggressive Arguments
-- **High-Risk Claims:** (Statements based on bold/speculative logic)
-- **Supporting Evidence:** (Data or narratives used to justify them)
-- **Speculative Drivers:** (Greed signals, FOMO, panic reasoning, rapid-reversal expectations)
-
-### 3. Critical Risk Observations
-- **Conflicts or Logical Tensions:** (e.g., “Bullish conviction despite negative macro context”)
-- **Fragile Assumptions:** (Things that could easily fail)
-- **Potential Breaking Points:** (Conditions where aggressive stance collapses)
-
-### 4. Actionable Aggressive Insight
-- Provide 1–2 concise aggressive or contrarian insights 
-  (e.g., “High-reward setup if X occurs,” “Watch for capitulation signal at Y,” “Momentum flip could ignite upside volatility.”)
-"""
+        **INSTRUCTIONS:**
+        1. Start immediately with the **Aggressive Stance & Conviction** (e.g., "The Aggressive view strongly advocates for...").
+        2. Seamlessly integrate **Speculative Drivers** (FOMO, squeeze potential) and **Contrarian Logic** into the narrative.
+        3. Highlight the **Asymmetric Reward** (High Upside) naturally within the text.
+        4. Conclude with the **Critical Trigger** or condition required for this high-risk play to pay off.
+        """
         
         try:
             response = client.chat.completions.create(
